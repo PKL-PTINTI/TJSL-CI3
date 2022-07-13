@@ -13,6 +13,7 @@
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <!-- CSS Libraries -->
+    <link href="<?= base_url(); ?>assets/fontawesome/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url() ?>node_modules/jqvmap/dist/jqvmap.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>node_modules/summernote/dist/summernote-bs4.css">
     <link rel="stylesheet" href="<?= base_url() ?>node_modules/owl.carousel/dist/assets/owl.carousel.min.css">
@@ -263,57 +264,64 @@
                 </ul>
             </nav>
             <div class="main-sidebar sidebar-style-2">
-            <aside id="sidebar-wrapper">
-          <div class="sidebar-brand">
-            <a href="index.html">TJSL</a>
-          </div>
-          <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">St</a>
-          </div>
-          <ul class="sidebar-menu">
-              <li class="menu-header">Dashboard</li>
-              <li class="nav-item active">
-                <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
-              </li>
-              <li class="menu-header">Managemenet Data</li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Mitra Binaan</span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="#">Lancar</a></li>
-                  <li><a class="nav-link" href="#">Kurang Lancar</a></li>
-                  <li><a class="nav-link" href="#">Diragukan</a></li>
-                  <li><a class="nav-link" href="#">Macet</a></li>
-                </ul>
-              </li>
-              <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Saldo Kas dan Bank</span></a></li>
-              <li class="menu-header">Laporan</li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Jurnal</span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="components-article.html">Transaksi Jurnal</a></li>
-                  <li><a class="nav-link beep beep-sidebar" href="components-avatar.html">Transaksi Kas</a></li>
-                  <li><a class="nav-link" href="components-chat-box.html">Transaksi BRI</a></li>
-                  <li><a class="nav-link beep beep-sidebar" href="components-empty-state.html">Transaksi Mandiri</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan Keuangan</span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="forms-advanced-form.html">Posisi Keuangan</a></li>
-                  <li><a class="nav-link" href="forms-editor.html">Arus Kas</a></li>
-                  <li><a class="nav-link" href="forms-validation.html">Kinerja</a></li>
-                  <li><a class="nav-link" href="forms-validation.html">Catatan</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-map-marker-alt"></i> <span>Lainnya</span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="gmaps-advanced-route.html">COA</a></li>
-                  <li><a href="gmaps-draggable-marker.html">Aging Rate</a></li>
-                  <li><a href="gmaps-geocoding.html">RKA</a></li>
-                  <li><a href="gmaps-geolocation.html">Neraca Saldo</a></li>
-                </ul>
-              </li>
+                <aside id="sidebar-wrapper">
+                    <div class="sidebar-brand">
+                        <a href="index.html">TJSL</a>
+                    </div>
+                    <div class="sidebar-brand sidebar-brand-sm">
+                        <a href="index.html">St</a>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">Dashboard</li>
+                        <li class="nav-item active">
+                            <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                        </li>
+                        <li class="menu-header">Managemenet Data</li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                                    class="fas fa-columns"></i> <span>Mitra Binaan</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="#">Lancar</a></li>
+                                <li><a class="nav-link" href="#">Kurang Lancar</a></li>
+                                <li><a class="nav-link" href="#">Diragukan</a></li>
+                                <li><a class="nav-link" href="#">Macet</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Saldo Kas dan
+                                    Bank</span></a></li>
+                        <li class="menu-header">Laporan</li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i>
+                                <span>Jurnal</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="components-article.html">Transaksi Jurnal</a></li>
+                                <li><a class="nav-link beep beep-sidebar" href="components-avatar.html">Transaksi
+                                        Kas</a></li>
+                                <li><a class="nav-link" href="components-chat-box.html">Transaksi BRI</a></li>
+                                <li><a class="nav-link beep beep-sidebar" href="components-empty-state.html">Transaksi
+                                        Mandiri</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan
+                                    Keuangan</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="forms-advanced-form.html">Posisi Keuangan</a></li>
+                                <li><a class="nav-link" href="forms-editor.html">Arus Kas</a></li>
+                                <li><a class="nav-link" href="forms-validation.html">Kinerja</a></li>
+                                <li><a class="nav-link" href="forms-validation.html">Catatan</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-map-marker-alt"></i>
+                                <span>Lainnya</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="gmaps-advanced-route.html">COA</a></li>
+                                <li><a href="gmaps-draggable-marker.html">Aging Rate</a></li>
+                                <li><a href="gmaps-geocoding.html">RKA</a></li>
+                                <li><a href="gmaps-geolocation.html">Neraca Saldo</a></li>
+                            </ul>
+                        </li>
                         <li class="menu-header">Pages</li>
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
@@ -410,7 +418,8 @@
 
     <!-- Template JS File -->
     <script src="<?= base_url() ?>assets/js/scripts.js"></script>
-    <script src="<?= base_url() ?>assets/js/custom.js"></script>
+    <sc
+ript src="<?= base_url() ?>assets/js/custom.js"></script>
 
     <!-- Page Specific JS File -->
     <script src="<?= base_url() ?>assets/js/page/index.js"></script>
