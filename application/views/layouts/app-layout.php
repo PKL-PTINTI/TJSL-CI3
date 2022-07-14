@@ -242,7 +242,7 @@
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png"
                                 class="rounded-circle mr-1">
-                            <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                            <div class="d-sm-none d-lg-inline-block">Hi, <?= $this->session->userdata('nama_lengkap'); ?></div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">Logged in 5 min ago</div>
@@ -256,7 +256,7 @@
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item has-icon text-danger">
+                            <a href="<?= base_url('auth/logout'); ?>" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </div>
@@ -331,8 +331,7 @@
             </div>
             <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad
-                        Nauval Azhar</a>
+                    Copyright &copy; 2022 <div class="bullet"></div> Design By TJSL</a>
                 </div>
                 <div class="footer-right">
                     2.3.0
@@ -366,8 +365,7 @@
 
     <!-- Template JS File -->
     <script src="<?= base_url() ?>assets/js/scripts.js"></script>
-    <sc
-ript src="<?= base_url() ?>assets/js/custom.js"></script>
+    <script src="<?= base_url() ?>assets/js/custom.js"></script>
 
     <!-- Page Specific JS File -->
     <script src="<?= base_url() ?>assets/js/page/index.js"></script>

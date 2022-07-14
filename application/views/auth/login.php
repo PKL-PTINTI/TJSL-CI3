@@ -31,7 +31,8 @@
               <div class="card-header"><h4>Login</h4></div>
 
               <div class="card-body">
-                <form method="POST" action="#" class="needs-validation" novalidate="">
+              <?= $this->session->flashdata('message'); ?>
+                <form method="POST" action="<?= base_url('auth'); ?>" class="needs-validation" novalidate="">
                   <div class="form-group">
                     <label for="username">Username</label>
                     <input id="username" type="username" class="form-control" name="username" tabindex="1" required autofocus>
@@ -39,7 +40,7 @@
                       Please fill in your username
                     </div>
                   </div>
-
+                  
                   <div class="form-group">
                     <div class="d-block">
                     	<label for="password" class="control-label">Password</label>
