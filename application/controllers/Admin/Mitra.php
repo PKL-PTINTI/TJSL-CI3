@@ -36,7 +36,7 @@ class Mitra extends CI_Controller {
 	public function bermasalah()
 	{
 		$data = [
-			'title' => 'Managment Data Mitra',
+			'title' => 'Management Data Mitra',
 			'header' => 'Data Mitra Bermasalah',
 			'mitra' => $this->mitra_model->getMitraBermasalah(),
 		];
