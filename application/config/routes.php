@@ -52,3 +52,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['admin/mitra/kolektibilitas/(:any)'] = 'admin/mitra/mitrakolektibilitas/$1';
+$route['admin/mitra/masalah/(:any)'] = 'admin/mitra/mitramasalah/$1';
+
+$route['admin/mitra/kolektibilitas/lancar/(:any)'] = 'admin/mitra/sektorlancar/$1';
+$route['admin/mitra/kolektibilitas/kuranglancar/(:any)'] = 'admin/mitra/sektorkuranglancar/$1';
+$route['admin/mitra/kolektibilitas/diragukan/(:any)'] = 'admin/mitra/sektordiragukan/$1';
+$route['admin/mitra/kolektibilitas/macet/(:any)'] = 'admin/mitra/sektormacet/$1';

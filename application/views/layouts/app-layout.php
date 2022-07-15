@@ -266,25 +266,34 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html">TJSL</a>
+                        <a href="/admin/dashboard">TJSL</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="index.html">St</a>
+                        <a href="/admin/dashboard">St</a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">Dashboard</li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
                         </li>
                         <li class="menu-header">Managemenet Data</li>
-                        <li class="nav-item dropdown">
+                        <li
+                            class="nav-item dropdown <?php if(uri_string() == 'admin/mitra/lancar' || 'admin/mitra/kuranglancar'|| 'admin/mitra/diragukan' || 'admin/mitra/macet' || '/admin/mitra' ) { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fas fa-columns"></i> <span>Mitra Binaan</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="#">Lancar</a></li>
-                                <li><a class="nav-link" href="#">Kurang Lancar</a></li>
-                                <li><a class="nav-link" href="#">Diragukan</a></li>
-                                <li><a class="nav-link" href="#">Macet</a></li>
+                                <li><a class="nav-link" href="<?= base_url('/admin/mitra') ?>">Semua Mitra</a></li>
+                                <li><a class="nav-link"
+                                        href="<?= base_url('/admin/mitra/kolektibilitas/lancar') ?>">Lancar</a></li>
+                                <li><a class="nav-link"
+                                        href="<?= base_url('/admin/mitra/kolektibilitas/kuranglancar') ?>">Kurang
+                                        Lancar</a></li>
+                                <li><a class="nav-link"
+                                        href="<?= base_url('/admin/mitra/kolektibilitas/diragukan') ?>">Diragukan</a>
+                                </li>
+                                <li><a class="nav-link"
+                                        href="<?= base_url('/admin/mitra/kolektibilitas/macet') ?>">Macet</a>
+                                </li>
                             </ul>
                         </li>
                         <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Saldo Kas dan
@@ -365,11 +374,17 @@
 
     <!-- Template JS File -->
     <script src="<?= base_url() ?>assets/js/scripts.js"></script>
+<<<<<<< Updated upstream
     <script src="<?= base_url() ?>assets/js/custom.js"></script>
+=======
+    <sc ript src="<?= base_url() ?>assets/js/custom.js">
+        </script>
+>>>>>>> Stashed changes
 
-    <!-- Page Specific JS File -->
-    <script src="<?= base_url() ?>assets/js/page/index.js"></script>
-    <script src="<?= base_url() ?>assets/js/page/modules-datatables.js"></script>
+        <!-- Page Specific JS File -->
+
+        <script src="<?= base_url() ?>assets/js/page/index.js"></script>
+        <script src="<?= base_url() ?>assets/js/page/modules-datatables.js"></script>
 </body>
 
 </html>

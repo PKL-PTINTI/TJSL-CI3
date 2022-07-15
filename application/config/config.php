@@ -23,7 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+<<<<<<< Updated upstream
 $config['base_url'] = 'http://localhost/TJSL-CI3';
+=======
+$config['base_url'] = 'http://localhost/tjsl';
+>>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
