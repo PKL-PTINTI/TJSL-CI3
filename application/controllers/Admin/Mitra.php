@@ -36,11 +36,6 @@ class Mitra extends CI_Controller {
 	public function mitrakolektibilitas($kolektibilitas)
 	{		
 		$data = [
-<<<<<<< Updated upstream
-			'title' => 'Management Data Mitra',
-			'header' => 'Data Mitra Bermasalah',
-			'mitra' => $this->mitra_model->getMitraBermasalah(),
-=======
 			'title' => 'Mitra ' . $kolektibilitas,
 			'header' => 'Data Mitra ' . ucfirst($kolektibilitas),
 		];
@@ -59,7 +54,6 @@ class Mitra extends CI_Controller {
 			'title' => 'Mitra Sektor ' . ucfirst($sektor),
 			'header' => 'Data Mitra Sektor ' . ucfirst($sektor) .' Lancar',
 			'mitra' => $this->mitra_model->getMitraSektorLancar($sektor),
->>>>>>> Stashed changes
 		];
 
 		$this->template->load('mitra/index', $data);
