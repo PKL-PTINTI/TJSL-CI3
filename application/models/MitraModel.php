@@ -178,6 +178,17 @@ class MitraModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getMitraMasalahKolektibilitas($masalah, $kolektibilitas){
+		$this->db->select('*');
+		$this->db->from('mitra');
+		$this->db->where('kolektibilitas', $kolektibilitas, ucfirst($kolektibilitas), strtoupper($kolektibilitas));
+		$this->db->where('tdkbermasalah', $masalah, ucfirst($masalah), strtoupper($masalah));
+		$this->db->order_by('startcicil', 'DESC');
+		$query = $this->db->get();
+		
+		return $query->result();
+	}
+
     public function getMitraKolektibilitas($kolektibilitas){
 		$this->db->select('*');
 		$this->db->from('mitra');

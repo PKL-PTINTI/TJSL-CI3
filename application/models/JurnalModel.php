@@ -163,6 +163,33 @@ class JurnalModel extends CI_Model {
 		$this->db->insert('opex', $data);
 	}
 
+    public function getKasBri(){
+        $this->db->select('*');
+        $this->db->from('kasbri');
+        $this->db->order_by('id_bri', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        
+        return $query->result();
+    }
+
+    public function insertKasBri($data){
+        $this->db->insert('kasbri', $data);
+    }
+
+    public function getKasMandiri(){
+        $this->db->select('*');
+        $this->db->from('kasmandiri');
+        $this->db->order_by('id_mandiri', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        
+        return $query->result();
+    }
+
+    public function insertKasMandiri($data){
+        $this->db->insert('kasmandiri', $data);
+    }
 }
 
 	

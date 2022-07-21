@@ -10,5 +10,14 @@ class AgingRateModel extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+	public function storeAging($table, $data)
+	{
+		$this->db->insert($table, $data);
+	}
 	
+	public function storeAgingMasalah($table, $data)
+	{
+		$this->db->insert($table, $data);
+	}
 }

@@ -159,31 +159,102 @@ class Jurnal extends CI_Controller {
 		$korekPasangan = $this->input->post('korekPasangan');
 
 		$deskripsi = $this->jurnal_model->getDeskripsiAkun($korek)->deskripsiAkun;
+
+		$time = time();
+
+		if($nomor_bukti=='') {
+				$nomor_bukti = $tanggal_transaksi.'/'.$time.'/'.'tjsl';		
+		} else {
+				$nomor_bukti = $nomor_bukti.'/tjsl/'.$tanggal_transaksi.'/'.$time;		
+		}
 		
+		$this->jurnal_model->insert([
+			'id_akun' => $korek,
+			'tanggal' => $tanggal_transaksi,
+			'pemasukan' => $jumlah_pemasukan,
+			'pengeluaran' => '0',
+			'deskripsi' => $deskripsi,
+			'keterangan' => $keterangan,
+			'updated' => $this->session->userdata('username'),
+			'tglUpdate' => date('Y-m-d H:i:s'),
+			'nobukti' => $nomor_bukti,
+			'tot_pemasukan' => '0',
+			'tot_pengeluaran' => '0',
+			'tampil' => '0',
+			
+		]);
+
+		//101010101	 Aktiva Lancar/Kas & Setara Kas/Kas/Program Kemitraan 
+		//101010201	 Aktiva Lancar/Kas & Setara Kas/Bank/Mandiri 
+		//101010204	 Aktiva Lancar/Kas & Setara Kas/Bank/BRI 
+
+		if($korek == '0101010204'){
+			$kasbri = $this->jurnal_model->getKasBri();
+
+			if($kasbri){
+				$saldo = $kasbri->saldobri;
+			} else {
+				$saldo = 0;
+			}
+
+			$saldo = $saldo + $jumlah_pemasukan;
+
+			$this->jurnal_model->insertKasBri([
+				'korek' => $korek,
+				'pemasukanbri' => $jumlah_pemasukan,
+				'pengeluaranbri' => '0',
+				'tanggal' => $tanggal_transaksi,
+				'saldobri' => $saldo,
+				'ketbri' => $keterangan,
+				'nobukti' => $nomor_bukti,
+			]);
+			
+		}
+
+		if($korek == '0101010201'){
+			$kasmandiri = $this->jurnal_model->getKasMandiri();
+
+			if($kasmandiri){
+				$saldo = $kasmandiri->saldomandiri;
+			} else {
+				$saldo = 0;
+			}
+
+			$saldo = $saldo + $jumlah_pemasukan;
+
+			$this->jurnal_model->insertKasMandiri([
+				'korek' => $korek,
+				'pemasukanmandiri' => $jumlah_pemasukan,
+				'pengeluaranmandiri' => '0',
+				'tanggal' => $tanggal_transaksi,
+				'saldomandiri' => $saldo,
+				'ketmandiri' => $keterangan,
+				'nobukti' => $nomor_bukti,
+			]);	
+		}
+
 	}
-
-	public function voucher(){
-		$data = [
-			'title' => 'Tambah Data Transaksi Voucher',
-			'header' => 'Tambah Data Transaksi Voucher',
-			'korek' => $this->jurnal_model->getKodeRekening(),
-		];
-
-		$this->template->load('jurnal/voucher', $data);
-	}
-
-	public function addVoucher(){
-		$nomor_bukti = $this->input->post('nomor_bukti');
-		$tanggal_transaksi = $this->input->post('tanggal_transaksi');
-		$korek = $this->input->post('korek');
-		$keterangan = $this->input->post('keterangan');
-		$jumlah_pemasukan = $this->input->post('jumlah_pemasukan');
-		$korekPasangan = $this->input->post('korekPasangan');
-
-		$deskripsi = $this->jurnal_model->getDeskripsiAkun($korek)->deskripsiAkun;
-		
-	}
-
 	
-
 }
+	
+	// 	public function voucher(){
+	// 	$data = [
+	// 		'title' => 'Tambah Data Transaksi Voucher',s
+	// 		'header' => 'Tambah Data Transaksi Voucher',
+	// 		'korek' => $this->jurnal_model->getKodeRekening(),
+	// 	];
+
+	// 	$this->template->load('jurnal/voucher', $data);
+	// }
+
+	// public function addVoucher(){
+	// 	$nomor_bukti = $this->input->post('nomor_bukti');
+	// 	$tanggal_transaksi = $this->input->post('tanggal_transaksi');
+	// 	$korek = $this->input->post('korek');
+	// 	$keterangan = $this->input->post('keterangan');
+	// 	$jumlah_pemasukan = $this->input->post('jumlah_pemasukan');
+	// 	$korekPasangan = $this->input->post('korekPasangan');
+
+	// 	$deskripsi = $this->jurnal_model->getDeskripsiAkun($korek)->deskripsiAkun;
+		
+	// }
