@@ -7,6 +7,28 @@
 
 "use strict";
 
-// $("#table-1").dataTable({
-// 	columnDefs: [{ sortable: false, targets: [2, 3] }],
-// });
+$("#table-cicilan-1").dataTable({
+	columnDefs: [{ sortable: false, targets: [2, 3] }],
+});
+
+$("#table-cicilan-2").dataTable({
+	columnDefs: [{ sortable: false, targets: [2, 3] }],
+});
+
+// init datatable serverside
+let url = "http://localhost:3000/admin/jurnal/get_jurnal";
+
+let table = $("#table-jurnal").DataTable({
+	processing: true,
+	serverSide: true,
+	order: [],
+	ajax: {
+		url: url,
+		method: "POST",
+	},
+});
+
+function changeUrlJurnal(url, title) {
+	table.ajax.url(url).load();
+	$("#header").text(title);
+}

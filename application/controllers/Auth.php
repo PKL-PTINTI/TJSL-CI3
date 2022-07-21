@@ -39,6 +39,7 @@ class Auth extends CI_Controller
                     'username' => $user['username'],
                     'nama_lengkap' => $user['nama_lengkap'],
                     'id_admin' => $user['id_admin'],
+					'loggedin' => date('Y-m-d H:i:s')
                 ];
                 $this->session->set_userdata($data);
                 redirect(base_url('admin/dashboard'));
@@ -57,8 +58,14 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('username');
         $this->session->unset_userdata('nama_lengkap');
         $this->session->unset_userdata('id_admin');
+        $this->session->unset_userdata('loggedin');
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logged out!</div>');
         redirect(base_url('auth'));
     }
+
+	public function blocked()
+	{
+		$this->load->view('auth/blocked');
+	}
 }

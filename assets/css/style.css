@@ -1028,7 +1028,7 @@ select.form-control:not([size]):not([multiple]) {
 .card .card-stats .card-stats-item {
   width: 33.3333333333%;
   text-align: center;
-  padding: 5px 20px;
+  padding: 5px 5px;
 }
 .card .card-stats .card-stats-item .card-stats-item-label {
   font-size: 12px;

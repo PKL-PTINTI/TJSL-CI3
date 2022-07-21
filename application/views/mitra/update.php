@@ -1,10 +1,10 @@
 <section class="section">
     <div class="section-header">
-        <h1>Input Data Mitra Baru</h1>
+        <h1>Data Mitra <?= $mitra->nama_peminjam ?></h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="<?= base_url('admin/mitra') ?>">Mitra</a></div>
-            <div class="breadcrumb-item">Input Data Mitra Baru</div>
+            <div class="breadcrumb-item">Update Data Mitra</div>
         </div>
     </div>
 
@@ -13,30 +13,34 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Mitra Baru</h4>
+                        <h4>Update Data Mitra A.N <?= $mitra->nama_peminjam ?></h4>
                     </div>
                     <div class="card-body">
                         <form action="<?= base_url('admin/mitra/store') ?>" method="post">
                             <div class="form-group">
                                 <label>Nomor Kontrak</label>
                                 <input type="text" class="form-control" placeholder="Nomor Kontrak"
-                                    name="nomor_kontrak">
+                                    value="<?= $mitra->nokontrak ?>" name="nomor_kontrak">
                             </div>
                             <div class="form-group">
                                 <label>Tanggal Kontrak</label>
-                                <input type="text" class="form-control datepicker" name="tanggal_kontrak">
+                                <input type="text" class="form-control datepicker" value="<?= $mitra->tglkontrak ?>"
+                                    name="tanggal_kontrak">
                             </div>
                             <div class="form-group">
                                 <label>Nama Mitra</label>
-                                <input type="text" class="form-control" placeholder="Nama Mitra" name="nama_mitra">
+                                <input type="text" class="form-control" placeholder="Nama Mitra"
+                                    value="<?= $mitra->nama_peminjam ?>" name="nama_mitra">
                             </div>
                             <div class="form-group">
                                 <label>Alamat Rumah</label>
-                                <input type="text" class="form-control" placeholder="Alamat Rumah" name="alamat_rumah">
+                                <input type="text" class="form-control" placeholder="Alamat Rumah"
+                                    value="<?= $mitra->alamat_rumah ?>" name="alamat_rumah">
                             </div>
                             <div class="form-group">
                                 <label>Alamat Usaha</label>
-                                <input type="text" class="form-control" placeholder="Alamat Usaha" name="alamat_usaha">
+                                <input type="text" class="form-control" placeholder="Alamat Usaha"
+                                    value="<?= $mitra->alamat_usaha ?>" name="alamat_usaha">
                             </div>
                             <div class="form-group">
                                 <label>Lokasi Usaha</label>
@@ -51,11 +55,12 @@
                             <div class=" form-group">
                                 <label>Nama Perusahaan</label>
                                 <input type="text" class="form-control" placeholder="Nama Perusahaan"
-                                    name="nama_perusahaan">
+                                    value="<?= $mitra->namaPerusahaan ?>" name="nama_perusahaan">
                             </div>
                             <div class="form-group">
                                 <label>No Handphone</label>
-                                <input type="text" class="form-control" placeholder="No Handphone" name="no_handphone">
+                                <input type="text" class="form-control" placeholder="No Handphone"
+                                    value="<?= $mitra->hp ?>" name="no_handphone">
                             </div>
 
                             <div class="form-group">
@@ -84,13 +89,14 @@
 
                             <div class="form-group">
                                 <label>Nomor KTP Mitra</label>
-                                <input type="text" class="form-control" placeholder="Nomor KTP Mitra" name="nomor_ktp">
+                                <input type="text" class="form-control" placeholder="Nomor KTP Mitra"
+                                    value="<?= $mitra->ktp ?>" name="nomor_ktp">
                             </div>
 
                             <div class="form-group">
                                 <label>No Rekening Bank Mitra</label>
                                 <input type="text" class="form-control" placeholder="No Rekening Bank Mitra"
-                                    name="norek_mitra">
+                                    value="<?= $mitra->noRekBank ?>" name="norek_mitra">
                             </div>
 
                             <div class="form-group">
@@ -107,12 +113,14 @@
 
                             <div class="form-group">
                                 <label>Tanggal Proposal Pengajuan</label>
-                                <input type="text" class="form-control datepicker" name="tanggal_pengajuan">
+                                <input type="text" class="form-control datepicker" value="<?= $mitra->tglproposal ?>"
+                                    name="tanggal_pengajuan">
                             </div>
 
                             <div class="form-group">
                                 <label>Tanggal Survey Lokasi</label>
-                                <input type="text" class="form-control datepicker" name="tanggal_survey">
+                                <input type="text" class="form-control datepicker" value="<?= $mitra->tglSurvey ?>"
+                                    name="tanggal_survey">
                             </div>
 
                             <div class="form-group">
@@ -130,7 +138,7 @@
                             <div class="form-group">
                                 <label>Jaminan (Kolateral)</label>
                                 <input type="text" class="form-control" placeholder="Jaminan (Kolateral)"
-                                    name="jaminan">
+                                    value="<?= $mitra->jaminan ?>" name="jaminan">
                             </div>
 
                             <div class="form-group">
@@ -141,19 +149,21 @@
                                             Rp.
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control currency" name="nilai_pinjaman">
+                                    <input type="number" class="form-control currency" value="<?= $mitra->pinjaman ?>"
+                                        name="nilai_pinjaman">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Lama Pinjaman</label>
                                 <input type="number" class="form-control" placeholder="Lama Pinjaman (Bulan)"
-                                    name="lama_pinjaman">
+                                    value="<?= $mitra->lama_pinjam ?>" name="lama_pinjaman">
                             </div>
 
                             <div class="form-group">
                                 <label>Jasa (%) Per Tahun</label>
-                                <input type="number" class="form-control" placeholder="Jasa (%) Per Tahun" name="jasa">
+                                <input type="number" class="form-control" placeholder="Jasa (%) Per Tahun"
+                                    value="<?= $mitra->jasa ?>" name="jasa">
                             </div>
 
                             <div class="form-group">
@@ -169,23 +179,15 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Keterangan Jurnal</label>
-                                <input type="text" class="form-control" placeholder="Keterangan Jurnal"
-                                    name="keterangan">
-                                <p class="text-primary">Keterangan untuk di JURNAL, tuliskan nama dan ambil dari bank
-                                    mana</p>
-                            </div>
-
-                            <div class="form-group">
                                 <label>No VA (Virtual Account Bank BRI)</label>
                                 <input type="text" class="form-control" placeholder="No VA (Virtual Account Bank BRI)"
-                                    name="no_va">
+                                    value="<?= $mitra->VA ?>" name="no_va">
                             </div>
 
                             <div class="form-group">
                                 <label>Lokasi Google Maps</label>
                                 <input type="text" class="form-control" placeholder="Lokasi Google Maps"
-                                    name="lokasi_google_maps">
+                                    value="<?= $mitra->googlemaps ?>" name="lokasi_google_maps">
                             </div>
 
                             <div class="form-group">
@@ -196,7 +198,8 @@
                                             Rp.
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control currency" name="nilai_aset">
+                                    <input type="number" class="form-control currency" value="<?= $mitra->nilaiAset ?>"
+                                        name="nilai_aset">
                                 </div>
                             </div>
 
@@ -208,7 +211,8 @@
                                             Rp.
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control currency" name="nilai_omset">
+                                    <input type="number" class="form-control currency" value="<?= $mitra->nilaiOmset ?>"
+                                        name="nilai_omset">
                                 </div>
                             </div>
 
@@ -226,7 +230,8 @@
 
                             <div class="form-group">
                                 <label>Sumber Dana</label>
-                                <input type="text" class="form-control" placeholder="Sumber Dana" name="sumber_dana">
+                                <input type="text" class="form-control" placeholder="Sumber Dana"
+                                    value="<?= $mitra->sumberDana ?>" name="sumber_dana">
                             </div>
 
                             <div class="form-group">
@@ -255,18 +260,20 @@
 
                             <div class="form-group">
                                 <label>Jumlah SDM</label>
-                                <input type="text" class="form-control" placeholder="Jumlah SDM" name="jumlah_sdm">
+                                <input type="text" class="form-control" placeholder="Jumlah SDM"
+                                    value="<?= $mitra->jumlahSDM ?>" name="jumlah_sdm">
                             </div>
 
                             <div class="form-group">
                                 <label>Sub Sektor</label>
-                                <input type="text" class="form-control" placeholder="Sub Sektor" name="sub_sektor">
+                                <input type="text" class="form-control" placeholder="Sub Sektor"
+                                    value="<?= $mitra->subSektor ?>" name="sub_sektor">
                             </div>
 
                             <div class="form-group">
                                 <label>Nama Produk/Jasa</label>
                                 <input type="text" class="form-control" placeholder="Nama Produk/Jasa"
-                                    name="nama_produkjasa">
+                                    value="<?= $mitra->prodJasa ?>" name="nama_produkjasa">
                             </div>
 
                             <div class="form-group">

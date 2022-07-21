@@ -6,20 +6,29 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title><?= $title; ?></title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png') ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png') ?>">
+    <link rel="manifest" href="<?= base_url('assets/img/site.webmanifest') ?>">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
     <!-- General CSS Files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/85cafb174a.js" crossorigin="anonymous"></script>
 
     <!-- CSS Libraries -->
-    <link href="<?= base_url(); ?>assets/fontawesome/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url() ?>node_modules/jqvmap/dist/jqvmap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>node_modules/summernote/dist/summernote-bs4.css">
-    <link rel="stylesheet" href="<?= base_url() ?>node_modules/owl.carousel/dist/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>node_modules/owl.carousel/dist/assets/owl.theme.default.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>node_modules/datatables.net-select-bs4/css/select.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="<?= base_url() ?>node_modules/bootstrap-daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="<?= base_url() ?>node_modules/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>node_modules/izitoast/dist/css/iziToast.min.css">
+    <script src="<?= base_url() ?>node_modules/izitoast/dist/js/iziToast.min.js"></script>
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css">
@@ -51,14 +60,6 @@
                                 <a href="#">How to hack NASA using CSS</a>
                                 <a href="#" class="search-close"><i class="fas fa-times"></i></a>
                             </div>
-                            <div class="search-item">
-                                <a href="#">Kodinger.com</a>
-                                <a href="#" class="search-close"><i class="fas fa-times"></i></a>
-                            </div>
-                            <div class="search-item">
-                                <a href="#">#Stisla</a>
-                                <a href="#" class="search-close"><i class="fas fa-times"></i></a>
-                            </div>
                             <div class="search-header">
                                 Result
                             </div>
@@ -67,20 +68,6 @@
                                     <img class="mr-3 rounded" width="30"
                                         src="<?= base_url() ?>assets/img/products/product-3-50.png" alt="product">
                                     oPhone S9 Limited Edition
-                                </a>
-                            </div>
-                            <div class="search-item">
-                                <a href="#">
-                                    <img class="mr-3 rounded" width="30"
-                                        src="<?= base_url() ?>assets/img/products/product-2-50.png" alt="product">
-                                    Drone X2 New Gen-7
-                                </a>
-                            </div>
-                            <div class="search-item">
-                                <a href="#">
-                                    <img class="mr-3 rounded" width="30"
-                                        src="<?= base_url() ?>assets/img/products/product-1-50.png" alt="product">
-                                    Headphone Blitz
                                 </a>
                             </div>
                             <div class="search-header">
@@ -92,14 +79,6 @@
                                         <i class="fas fa-code"></i>
                                     </div>
                                     Stisla Admin Template
-                                </a>
-                            </div>
-                            <div class="search-item">
-                                <a href="#">
-                                    <div class="search-icon bg-primary text-white mr-3">
-                                        <i class="fas fa-laptop"></i>
-                                    </div>
-                                    Create a new Homepage Design
                                 </a>
                             </div>
                         </div>
@@ -138,40 +117,6 @@
                                         <div class="time">12 Hours Ago</div>
                                     </div>
                                 </a>
-                                <a href="#" class="dropdown-item dropdown-item-unread">
-                                    <div class="dropdown-item-avatar">
-                                        <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-3.png"
-                                            class="rounded-circle">
-                                        <div class="is-online"></div>
-                                    </div>
-                                    <div class="dropdown-item-desc">
-                                        <b>Agung Ardiansyah</b>
-                                        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                        <div class="time">12 Hours Ago</div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="dropdown-item-avatar">
-                                        <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-4.png"
-                                            class="rounded-circle">
-                                    </div>
-                                    <div class="dropdown-item-desc">
-                                        <b>Ardian Rahardiansyah</b>
-                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit ess</p>
-                                        <div class="time">16 Hours Ago</div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="dropdown-item-avatar">
-                                        <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-5.png"
-                                            class="rounded-circle">
-                                    </div>
-                                    <div class="dropdown-item-desc">
-                                        <b>Alfa Zulkarnain</b>
-                                        <p>Exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-                                        <div class="time">Yesterday</div>
-                                    </div>
-                                </a>
                             </div>
                             <div class="dropdown-footer text-center">
                                 <a href="#">View All <i class="fas fa-chevron-right"></i></a>
@@ -205,33 +150,6 @@
                                         <div class="time">10 Hours Ago</div>
                                     </div>
                                 </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="dropdown-item-icon bg-success text-white">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="dropdown-item-desc">
-                                        <b>Kusnaedi</b> has moved task <b>Fix bug header</b> to <b>Done</b>
-                                        <div class="time">12 Hours Ago</div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="dropdown-item-icon bg-danger text-white">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </div>
-                                    <div class="dropdown-item-desc">
-                                        Low disk space. Let's clean it!
-                                        <div class="time">17 Hours Ago</div>
-                                    </div>
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <div class="dropdown-item-icon bg-info text-white">
-                                        <i class="fas fa-bell"></i>
-                                    </div>
-                                    <div class="dropdown-item-desc">
-                                        Welcome to Stisla template!
-                                        <div class="time">Yesterday</div>
-                                    </div>
-                                </a>
                             </div>
                             <div class="dropdown-footer text-center">
                                 <a href="#">View All <i class="fas fa-chevron-right"></i></a>
@@ -242,10 +160,13 @@
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png"
                                 class="rounded-circle mr-1">
-                            <div class="d-sm-none d-lg-inline-block">Hi, <?= $this->session->userdata('nama_lengkap'); ?></div>
+                            <div class="d-sm-none d-lg-inline-block">Hi,
+                                <?= $this->session->userdata('nama_lengkap'); ?></div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-title">Logged in 5 min ago</div>
+                            <div class="dropdown-title">Logged in
+                                <?php use Carbon\Carbon; echo Carbon::parse($this->session->userdata('loggedin'))->diffForHumans(); ?>
+                            </div>
                             <a href="features-profile.html" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
@@ -266,21 +187,22 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="/admin/dashboard">TJSL</a>
+                        <a href="<?= base_url('/admin/dashboard') ?>">TJSL</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="/admin/dashboard">St</a>
+                        <a href="<?= base_url('/admin/dashboard') ?>">St</a>
                     </div>
                     <ul class="sidebar-menu">
-                        <li class="menu-header">Dashboard</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                        <li class="menu-header">
+                            Dashboard</li>
+                        <li class="nav-item <?php if($this->uri->segment(2) == 'dashboard') { echo 'active'; } ?>">
+                            <a href="<?= base_url('/admin/dashboard') ?>" class="nav-link"><i
+                                    class="fa-solid fa-house-chimney"></i><span>Dashboard</span></a>
                         </li>
-                        <li class="menu-header">Managemenet Data</li>
-                        <li
-                            class="nav-item dropdown <?php if(uri_string() == 'admin/mitra/lancar' || 'admin/mitra/kuranglancar'|| 'admin/mitra/diragukan' || 'admin/mitra/macet' || '/admin/mitra' ) { echo 'active'; } ?>">
+                        <li class="menu-header">Management Data</li>
+                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'mitra') { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                                    class="fas fa-columns"></i> <span>Mitra Binaan</span></a>
+                                    class="fa-solid fa-people-roof"></i> <span>Mitra Binaan</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="<?= base_url('/admin/mitra') ?>">Semua Mitra</a></li>
                                 <li><a class="nav-link"
@@ -296,24 +218,33 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Saldo Kas dan
+                        <li><a class="nav-link" href="blank.html"><i class="fa-solid fa-building-columns"></i>
+                                <span>Saldo Kas dan
                                     Bank</span></a></li>
                         <li class="menu-header">Laporan</li>
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i>
+                            <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-book-open"></i>
                                 <span>Jurnal</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="components-article.html">Transaksi Jurnal</a></li>
-                                <li><a class="nav-link beep beep-sidebar" href="components-avatar.html">Transaksi
+                                <li><a class="nav-link" href="<?= base_url('/admin/jurnal') ?>">Transaksi Jurnal</a>
+                                </li>
+                                <li><a class="nav-link" href="#"
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/kas', 'Transaksi Kas')">Transaksi
                                         Kas</a></li>
-                                <li><a class="nav-link" href="components-chat-box.html">Transaksi BRI</a></li>
-                                <li><a class="nav-link beep beep-sidebar" href="components-empty-state.html">Transaksi
+                                <li><a class="nav-link" href="#"
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bri', 'Transaksi BRI')">Transaksi
+                                        BRI</a></li>
+                                <li><a class="nav-link" href="#"
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/mandiri', 'Transaksi Mandiri')">Transaksi
                                         Mandiri</a></li>
+                                <li><a class="nav-link" href="#"
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bank', 'Transaksi Bank')">Transaksi
+                                        Bank</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan
-                                    Keuangan</span></a>
+                            <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-magnifying-glass-chart"></i>
+                                <span>Laporan Keuangan</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="forms-advanced-form.html">Posisi Keuangan</a></li>
                                 <li><a class="nav-link" href="forms-editor.html">Arus Kas</a></li>
@@ -321,8 +252,8 @@
                                 <li><a class="nav-link" href="forms-validation.html">Catatan</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-map-marker-alt"></i>
+                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'coa') { echo 'active'; } ?>">
+                            <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-bars"></i>
                                 <span>Lainnya</span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="gmaps-advanced-route.html">COA</a></li>
@@ -340,10 +271,10 @@
             </div>
             <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright &copy; 2022 <div class="bullet"></div> Design By TJSL</a>
+                    Copyright &copy; <?= date('Y') ?> <div class="bullet"></div> Develop By RPL SMKN 1 CIAMIS</a>
                 </div>
                 <div class="footer-right">
-                    2.3.0
+                    1.0.0
                 </div>
             </footer>
         </div>
@@ -364,27 +295,22 @@
     <!-- JS Libraies -->
     <script src="<?= base_url() ?>node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
     <script src="<?= base_url() ?>node_modules/chart.js/dist/Chart.min.js"></script>
-    <script src="<?= base_url() ?>node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
-    <script src="<?= base_url() ?>node_modules/summernote/dist/summernote-bs4.js"></script>
-    <script src="<?= base_url() ?>node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
 
     <script src="<?= base_url() ?>node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?= base_url() ?>node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="<?= base_url() ?>node_modules/datatables.net-select-bs4/js/select.bootstrap4.min.js"></script>
+
+    <script src="<?= base_url() ?>node_modules/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="<?= base_url() ?>node_modules/select2/dist/js/select2.full.min.js"></script>
 
     <!-- Template JS File -->
     <script src="<?= base_url() ?>assets/js/scripts.js"></script>
-<<<<<<< Updated upstream
     <script src="<?= base_url() ?>assets/js/custom.js"></script>
-=======
-    <sc ript src="<?= base_url() ?>assets/js/custom.js">
-        </script>
->>>>>>> Stashed changes
 
-        <!-- Page Specific JS File -->
-
-        <script src="<?= base_url() ?>assets/js/page/index.js"></script>
-        <script src="<?= base_url() ?>assets/js/page/modules-datatables.js"></script>
+    <script src="<?= base_url() ?>assets/js/page/index.js"></script>
+    <script src="<?= base_url() ?>assets/js/page/modules-datatables.js"></script>
 </body>
+
+
+
 
 </html>
