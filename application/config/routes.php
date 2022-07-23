@@ -55,21 +55,25 @@ $route['translate_uri_dashes'] = FALSE;
 
 // TASK: Mitra Management System
 
-$route['admin/mitra/kolektibilitas/(:any)'] = 'admin/mitra/mitrakolektibilitas/$1';
-$route['admin/mitra/masalah/(:any)'] = 'admin/mitra/mitramasalah/$1';
+// $route['admin/mitra/kolektibilitas/(:any)'] = 'admin/mitra/mitrakolektibilitas/$1';
+// $route['admin/mitra/masalah/(:any)'] = 'admin/mitra/mitramasalah/$1';
 
-$route['admin/mitra/status/(:any)/(:any)'] = 'admin/mitra/statussektor/$1/$2';
+// $route['admin/mitra/status/(:any)/(:any)'] = 'admin/mitra/statussektor/$1/$2';
 
-$route['admin/mitra/kolektibilitas/lancar/(:any)'] = 'admin/mitra/sektorlancar/$1';
-$route['admin/mitra/kolektibilitas/kuranglancar/(:any)'] = 'admin/mitra/sektorkuranglancar/$1';
-$route['admin/mitra/kolektibilitas/diragukan/(:any)'] = 'admin/mitra/sektordiragukan/$1';
-$route['admin/mitra/kolektibilitas/macet/(:any)'] = 'admin/mitra/sektormacet/$1';
+// $route['admin/mitra/kolektibilitas/lancar/(:any)'] = 'admin/mitra/sektorlancar/$1';
+// $route['admin/mitra/kolektibilitas/kuranglancar/(:any)'] = 'admin/mitra/sektorkuranglancar/$1';
+// $route['admin/mitra/kolektibilitas/diragukan/(:any)'] = 'admin/mitra/sektordiragukan/$1';
+// $route['admin/mitra/kolektibilitas/macet/(:any)'] = 'admin/mitra/sektormacet/$1';
+
+$route['admin/mitra/get_data_mitra/kolektibilitas/(:any)'] = 'admin/mitra/get_data_mitra/$1';
+$route['admin/mitra/get_data_mitra/masalah/(:any)'] = 'admin/mitra/get_data_mitra/$1';
+$route['admin/mitra/get_data_mitra/koleksektor/(:any)/(:any)'] = 'admin/mitra/get_data_mitra/$1/$2';
+$route['admin/mitra/get_data_mitra/masalahsektor/(:any)/(:any)'] = 'admin/mitra/get_data_mitra/$1/$2';
 
 $route['admin/mitra/update/(:any)'] = 'admin/mitra/update/$1';
 $route['admin/mitra/destroy/(:any)'] = 'admin/mitra/destroy/$1';
 
 $route['admin/mitra/cicilan/(:any)'] = 'admin/mitra/rincianCicilan/$1';
-
 $route['admin/mitra/cicilan/create/(:any)'] = 'admin/mitra/cretaeCicilan/$1';
 
 // ENDTASK: Mitra Management System

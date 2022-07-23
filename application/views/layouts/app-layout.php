@@ -205,16 +205,21 @@
                                     class="fa-solid fa-people-roof"></i> <span>Mitra Binaan</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="<?= base_url('/admin/mitra') ?>">Semua Mitra</a></li>
-                                <li><a class="nav-link"
-                                        href="<?= base_url('/admin/mitra/kolektibilitas/lancar') ?>">Lancar</a></li>
-                                <li><a class="nav-link"
-                                        href="<?= base_url('/admin/mitra/kolektibilitas/kuranglancar') ?>">Kurang
-                                        Lancar</a></li>
-                                <li><a class="nav-link"
-                                        href="<?= base_url('/admin/mitra/kolektibilitas/diragukan') ?>">Diragukan</a>
+                                <li><a class="nav-link" onclick="
+                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/lancar', 'Lancar'
+                                        )">Lancar</a>
                                 </li>
-                                <li><a class="nav-link"
-                                        href="<?= base_url('/admin/mitra/kolektibilitas/macet') ?>">Macet</a>
+                                <li><a class="nav-link" onclick="
+                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/kuranglancar', 'Kurang Lancar'
+                                        )">Kurang
+                                        Lancar</a></li>
+                                <li><a class="nav-link" onclick="
+                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/diragukan', 'Diragukan'
+                                        )">Diragukan</a>
+                                </li>
+                                <li><a class="nav-link" onclick="
+                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/macet', 'Macet'
+                                        )">Macet</a>
                                 </li>
                             </ul>
                         </li>

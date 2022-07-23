@@ -25,33 +25,28 @@ class Jurnal extends CI_Controller {
 
 	public function get_jurnal(){
 		$list = $this->jurnal_model->get_datatables();
-		$jurnal = $this->jurnal_model->get_jurnal();
+		if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+		$jurnal = $this->db->query("SELECT SUM(pemasukan) AS pemasukan, 
+									SUM(pengeluaran) AS pengeluaran 
+									FROM opex WHERE tanggal >= '$tahun' 
+									AND tanggal <= '".date('Y-m-d H:i:s', time())."' 
+									AND tampil = '0'")->result(); 
         $data = array();
         $no = $this->input->post('start');
-		$total_pemasukan = 0;
-		$total_pengeluaran = 0;
+		$total_pemasukan = $jurnal['0']->pemasukan;
+		$total_pengeluaran = $jurnal['0']->pengeluaran;
 
-		$tgl_pertama = date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () )));
-		if($tgl_pertama >= '2022-01-01' AND $tgl_pertama < '2023-01-01'){
-			$awaltahunlalu='2022-01-01';
-		}
-		if($tgl_pertama >= '2023-01-01' AND $tgl_pertama < '2024-01-01'){
-			$awaltahunlalu='2023-01-01';
-		}
-		if($tgl_pertama >= '2024-01-01' AND $tgl_pertama < '2025-01-01'){
-			$awaltahunlalu='2024-01-01';
-		}
-		if($tgl_pertama >= '2025-01-01' AND $tgl_pertama < '2026-01-01'){
-			$awaltahunlalu='2025-01-01';
-		}
-
-		foreach($jurnal as $jrnl){
-			$total_pemasukan += $jrnl->pemasukan;
-			$total_pengeluaran += $jrnl->pengeluaran;
-		}
+		$tot_pengeluaran = 0;
+		$tot_pemasukan = 0;
 
         foreach ($list as $data_jurnal) {
             $no++;
+			$saldo = number_format($data_jurnal->pemasukan - $data_jurnal->pengeluaran, 2);
+			$tot_pengeluaran += $data_jurnal->pengeluaran;
+			$tot_pemasukan += $data_jurnal->pemasukan;
+
             $row = array();
 			$row[] = $no;
             $row[] = $data_jurnal->id_opex;
@@ -59,6 +54,8 @@ class Jurnal extends CI_Controller {
             $row[] = $data_jurnal->tanggal;
 			$row[] = $data_jurnal->pemasukan;
 			$row[] = $data_jurnal->pengeluaran;
+			$row[] = ($saldo < 0) ? number_format(0, 2) : $saldo;
+			$row[] = ($tot_pengeluaran == $tot_pemasukan) ? "MATCH" : null;
 			$row[] = $data_jurnal->deskripsi;
 			$row[] = $data_jurnal->keterangan;
 			$row[] = $data_jurnal->nobukti;
@@ -78,8 +75,10 @@ class Jurnal extends CI_Controller {
 			'',
 			'',
 			'',
-			$total_pemasukan,
-			$total_pengeluaran,
+			number_format($total_pemasukan),
+			number_format($total_pengeluaran),
+			'',
+			'',
 			'',
 			'',
 			'',
@@ -108,8 +107,38 @@ class Jurnal extends CI_Controller {
 		$list = $this->jurnal_model->get_datatables_bank($bank);
         $data = array();
         $no = $this->input->post('start');
+
+		if($bank == 'kas'){
+			$id_akun = '101010101';
+		} elseif ($bank == 'bri') {
+			$id_akun = '101010204';
+		} elseif ($bank == 'mandiri') {
+			$id_akun = '101010201';
+		} elseif ($bank == 'bank') {
+			$id_akun = "101010201' AND '101010204";
+		}
+
+		if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+		$jurnal = $this->db->query("SELECT SUM(pemasukan) AS pemasukan, 
+									SUM(pengeluaran) AS pengeluaran 
+									FROM opex WHERE id_akun = '$id_akun' AND tanggal >= '$tahun' 
+									AND tanggal <= '".date('Y-m-d H:i:s', time())."' 
+									AND tampil = '0'")->result();
+
+		$total_pemasukan = $jurnal['0']->pemasukan;
+		$total_pengeluaran = $jurnal['0']->pengeluaran;
+
+		$tot_pengeluaran = 0;
+		$tot_pemasukan = 0;
+		
         foreach ($list as $data_jurnal) {
             $no++;
+			$saldo = number_format($data_jurnal->pemasukan - $data_jurnal->pengeluaran, 2);
+			$tot_pengeluaran += $data_jurnal->pengeluaran;
+			$tot_pemasukan += $data_jurnal->pemasukan;
+			
             $row = array();
 			$row[] = $no;
             $row[] = $data_jurnal->id_opex;
@@ -117,6 +146,8 @@ class Jurnal extends CI_Controller {
             $row[] = $data_jurnal->tanggal;
 			$row[] = $data_jurnal->pemasukan;
 			$row[] = $data_jurnal->pengeluaran;
+			$row[] = ($saldo < 0) ? number_format(0, 2) : $saldo;
+			$row[] = ($tot_pengeluaran == $tot_pemasukan) ? "MATCH" : null;
 			$row[] = $data_jurnal->deskripsi;
 			$row[] = $data_jurnal->keterangan;
 			$row[] = $data_jurnal->nobukti;
@@ -130,6 +161,29 @@ class Jurnal extends CI_Controller {
             <a class="btn btn-danger btn-sm "><i class="fa fa-trash"></i> </a>';
             $data[] = $row;
         }
+
+		$hasil = [
+			'Total',
+			'',
+			'',
+			'',
+			number_format($total_pemasukan),
+			number_format($total_pengeluaran),
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+			'',
+		];
+
+		$data[] = $hasil;
+
         $output = array(
             "draw" => $this->input->post('draw'),
             "recordsTotal" => $this->jurnal_model->count_all_bank(),
@@ -158,8 +212,8 @@ class Jurnal extends CI_Controller {
 		$keterangan = $this->input->post('keterangan');
 		$korekPasangan = $this->input->post('korekPasangan');
 
-		$deskripsi = $this->jurnal_model->getDeskripsiAkun($korek)->deskripsiAkun;
-
+		$deskripsiKorek = $this->jurnal_model->getDeskripsiAkun($korek)['0']->deskripsiAkun;
+		$deskripsiKorekPasangan = $this->jurnal_model->getDeskripsiAkun($korekPasangan)['0']->deskripsiAkun;
 		$time = time();
 
 		if($nomor_bukti=='') {
@@ -173,7 +227,7 @@ class Jurnal extends CI_Controller {
 			'tanggal' => $tanggal_transaksi,
 			'pemasukan' => $jumlah_pemasukan,
 			'pengeluaran' => '0',
-			'deskripsi' => $deskripsi,
+			'deskripsi' => $deskripsiKorek,
 			'keterangan' => $keterangan,
 			'updated' => $this->session->userdata('username'),
 			'tglUpdate' => date('Y-m-d H:i:s'),
@@ -188,16 +242,27 @@ class Jurnal extends CI_Controller {
 		//101010201	 Aktiva Lancar/Kas & Setara Kas/Bank/Mandiri 
 		//101010204	 Aktiva Lancar/Kas & Setara Kas/Bank/BRI 
 
+		//pemasukan
+
+		if($korek == '0101010101' OR '0101010102'){
+			$kaskecil = $this->jurnal_model->getKasKecil();
+			$saldo = ($kaskecil) ? $kaskecil['0']->saldokaskecil + $jumlah_pemasukan : 0;
+
+			$this->jurnal_model->insertKasKecil([
+				'korek' => $korek,
+				'pemasukankaskecil' => $jumlah_pemasukan,
+				'pengeluarankaskecil' => '0',
+				'tanggal' => $tanggal_transaksi,
+				'saldokaskecil' => $saldo,
+				'ketkaskecil' => $keterangan,
+				'nobukti' => $nomor_bukti,
+			]);
+			
+		}
+
 		if($korek == '0101010204'){
 			$kasbri = $this->jurnal_model->getKasBri();
-
-			if($kasbri){
-				$saldo = $kasbri->saldobri;
-			} else {
-				$saldo = 0;
-			}
-
-			$saldo = $saldo + $jumlah_pemasukan;
+			$saldo = ($kasbri) ? $kasbri['0']->saldobri + $jumlah_pemasukan : 0;
 
 			$this->jurnal_model->insertKasBri([
 				'korek' => $korek,
@@ -213,14 +278,7 @@ class Jurnal extends CI_Controller {
 
 		if($korek == '0101010201'){
 			$kasmandiri = $this->jurnal_model->getKasMandiri();
-
-			if($kasmandiri){
-				$saldo = $kasmandiri->saldomandiri;
-			} else {
-				$saldo = 0;
-			}
-
-			$saldo = $saldo + $jumlah_pemasukan;
+			$saldo = ($kasmandiri) ? $kasmandiri['0']->saldomandiri + $jumlah_pemasukan : 0;
 
 			$this->jurnal_model->insertKasMandiri([
 				'korek' => $korek,
@@ -233,7 +291,61 @@ class Jurnal extends CI_Controller {
 			]);	
 		}
 
+		// Pengeluaran
+
+		if($korek == '0101010101' OR '0101010102'){
+			$kaskecil = $this->jurnal_model->getKasKecil();
+			$saldo = ($kaskecil) ? $kaskecil['0']->saldokaskecil - $jumlah_pengeluaran : 0;
+
+			$this->jurnal_model->insertKasKecil([
+				'korek' => $korek,
+				'pemasukankaskecil' => '0',
+				'pengeluarankaskecil' => $jumlah_pengeluaran,
+				'tanggal' => $tanggal_transaksi,
+				'saldokaskecil' => $saldo,
+				'ketkaskecil' => $keterangan,
+				'nobukti' => $nomor_bukti,
+			]);
+			
+		}
+
+		if($korek == '0101010204'){
+			$kasbri = $this->jurnal_model->getKasBri();
+			$saldo = ($kasbri) ? $kasbri['0']->saldobri - $jumlah_pengeluaran : 0;
+
+			$this->jurnal_model->insertKasBri([
+				'korek' => $korek,
+				'pemasukanbri' => '0',
+				'pengeluaranbri' => $jumlah_pengeluaran,
+				'tanggal' => $tanggal_transaksi,
+				'saldobri' => $saldo,
+				'ketbri' => $keterangan,
+				'nobukti' => $nomor_bukti,
+			]);
+			
+		}
+
+		if($korek == '0101010201'){
+			$kasmandiri = $this->jurnal_model->getKasMandiri();
+			$saldo = ($kasmandiri) ? $kasmandiri['0']->saldomandiri - $jumlah_pengeluaran : 0;
+
+			$this->jurnal_model->insertKasMandiri([
+				'korek' => $korek,
+				'pemasukanmandiri' => '0',
+				'pengeluaranmandiri' => $jumlah_pengeluaran,
+				'tanggal' => $tanggal_transaksi,
+				'saldomandiri' => $saldo,
+				'ketmandiri' => $keterangan,
+				'nobukti' => $nomor_bukti,
+			]);	
+		}
+
+
+	$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
+	redirect(base_url('admin/jurnal/'.$no_bukti));
+
 	}
+
 	
 }
 	
@@ -258,3 +370,5 @@ class Jurnal extends CI_Controller {
 	// 	$deskripsi = $this->jurnal_model->getDeskripsiAkun($korek)->deskripsiAkun;
 		
 	// }
+
+	

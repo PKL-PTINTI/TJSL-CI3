@@ -18,6 +18,14 @@ class JurnalModel extends CI_Model {
 
 	private function _get_datatables_query(){
 		$this->db->from($this->table);
+		
+		if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+
+		$this->db->where('tanggal >=', $tahun);
+		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
+		$this->db->where('tampil', '0');
         $i = 0;
 		
         foreach ($this->column_search as $item) // loop kolom 
@@ -66,6 +74,14 @@ class JurnalModel extends CI_Model {
     public function count_all()
     {
         $this->db->from($this->table);
+		
+		if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+
+		$this->db->where('tanggal >=', $tahun);
+		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
+		$this->db->where('tampil', '0');
         return $this->db->count_all_results();
     }
 
@@ -82,6 +98,14 @@ class JurnalModel extends CI_Model {
 			$this->db->where('id_akun', '101010204');
 			$this->db->or_where('id_akun', '101010201');
 		}
+
+		if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+
+		$this->db->where('tanggal >=', $tahun);
+		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
+		$this->db->where('tampil', '0');
 
         $i = 0;
 		
@@ -131,6 +155,14 @@ class JurnalModel extends CI_Model {
     public function count_all_bank()
     {
         $this->db->from($this->table);
+		
+		if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+
+		$this->db->where('tanggal >=', $tahun);
+		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
+		$this->db->where('tampil', '0');
         return $this->db->count_all_results();
     }
 
@@ -163,6 +195,20 @@ class JurnalModel extends CI_Model {
 		$this->db->insert('opex', $data);
 	}
 
+    public function getKasKecil(){
+        $this->db->select('*');
+        $this->db->from('kaskecil');
+        $this->db->order_by('id_kaskecil', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        
+        return $query->result();
+    }
+
+    public function insertKasKecil($data){
+        $this->db->insert('kaskecil', $data);
+    }
+    
     public function getKasBri(){
         $this->db->select('*');
         $this->db->from('kasbri');
@@ -190,6 +236,13 @@ class JurnalModel extends CI_Model {
     public function insertKasMandiri($data){
         $this->db->insert('kasmandiri', $data);
     }
+
+    public function destroy($id){
+		$this->db->where('id', $id);
+		$this->db->delete('jurnal');
+	}
+
+
 }
 
 	

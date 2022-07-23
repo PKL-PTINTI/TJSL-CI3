@@ -21,8 +21,8 @@
                                 <?php if(uri_string() == 'admin/jurnal'): ?>
                                 <?php endif; ?>
                                 <div>
-                                    <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/jurnal/create') ?>">Tambah Data Jurnal</a>
+                                    <a class="btn btn-primary mb-3" href="<?= base_url('admin/jurnal/create') ?>">Tambah
+                                        Data Jurnal</a>
                                     <a class="btn btn-primary mb-3 "
                                         href="<?= base_url('admin/jurnal/voucher') ?>">Tambah Data Voucher</a>
                                 </div>
@@ -38,6 +38,8 @@
                                         <th>Tanggal</th>
                                         <th>Pemasukan</th>
                                         <th>Pengeluaran</th>
+                                        <th>Saldo</th>
+                                        <th>Status Balance</th>
                                         <th>Deskripsi</th>
                                         <th>Keterangan</th>
                                         <th>No bukti</th>
@@ -49,8 +51,19 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+                                <!-- <div class="dropdown">
+                                    <div id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" 
+                                        aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </div>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" 
+                                            href="<?= base_url('admin/jurnal/destroy/' . $row->nobukti) ?>"><i
+                                            class="fa-solid fa-money-bill-transfer pr-2 text-primary"></i>Delete</a>
+                                    </div>
+                                </div> --> 
                             </table>
-                        </div>
+                        </div>   
                     </div>
                 </div>
             </div>

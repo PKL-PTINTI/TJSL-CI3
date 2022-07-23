@@ -162,6 +162,8 @@ class AgingRate extends CI_Controller {
 		// 	'totalDiragukanNormal' => $totalDiragukanNormal,
 		// 	'totalMacetNormal' => $totalMacetNormal
 		// ]);
+
+        
 	}
 }
 																																												

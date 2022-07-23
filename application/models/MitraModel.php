@@ -3,6 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MitraModel extends CI_Model {
 
+	var $table = 'mitra';
+    var $column_order = array('nama_peminjam', 'nokontrak', 'lokasiUsaha', 'startcicil', 'kolektibilitas', 'pinjpokok', 'pinjjasa', 'angpokok', 'angjasa', 'angjumlah', 'saldopokok', 'saldojasa', 'saldojumlah', 'namaPerusahaan', 'provinsi', 'lokasiUsaha', 'sektorUsaha', 'skalaUsaha', 'ktp', 'pelaksanaanProgram', 'sumberDana', 'nilaiAset', 'nilaiOmset', 'rekondisi', 'tgl_rekondisi', 'selisihHari', 'kelebihanAngsuran', 'tglkontrak', 'tgljatuhtempo', 'pinjpokok', 'saldopokok', 'saldojasa', 'angpokok', 'angjasa', 'tglcicilanterakhir', 'tdkbermasalah', 'kondisiPinjaman', 'jenisPembayaran', 'bankAccount', 'jumlahSDM', 'kelebihanAngsuran', 'subSektor', 'tambahanDana',null); 
+    var $column_search = array('nama_peminjam', 'nokontrak', 'lokasiUsaha', 'startcicil', 'kolektibilitas', 'pinjpokok', 'pinjjasa', 'angpokok', 'angjasa', 'angjumlah', 'saldopokok', 'saldojasa', 'saldojumlah', 'namaPerusahaan', 'provinsi', 'lokasiUsaha', 'sektorUsaha', 'skalaUsaha', 'ktp', 'pelaksanaanProgram', 'sumberDana', 'nilaiAset', 'nilaiOmset', 'rekondisi', 'tgl_rekondisi', 'selisihHari', 'kelebihanAngsuran', 'tglkontrak', 'tgljatuhtempo', 'pinjpokok', 'saldopokok', 'saldojasa', 'angpokok', 'angjasa', 'tglcicilanterakhir', 'tdkbermasalah', 'kondisiPinjaman', 'jenisPembayaran', 'bankAccount', 'jumlahSDM', 'kelebihanAngsuran', 'subSektor', 'tambahanDana'); 
+    var $order = array('startcicil' => 'desc');
+
 	public function getMitra($id = null)
 	{
 		if ($id === null) {
@@ -21,6 +26,82 @@ class MitraModel extends CI_Model {
 			return $query->row();
 		}
 	}
+
+	private function _get_data_mitra_query($param1, $param2){
+		$this->db->from($this->table);
+		$i = 0;
+		
+		// Kolektibilitas
+		if($param1 == 'lancar' || $param1 == 'diragukan' || $param1 == 'macet'){
+			$this->db->where('kolektibilitas', $param1, ucfirst($param1), strtoupper($param1));
+			if ($param2) {
+				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
+			}
+		}
+
+		if($param1 == 'kuranglancar'){
+			$this->db->where('kolektibilitas', 'kurang lancar', 'Kurang Lancar', 'KURANG LANCAR');
+			if ($param2) {
+				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
+			}
+		}
+
+		// TDK Bermasalah
+		if($param1 == 'normal' || $param1 == 'masalah' || $param1 == 'khusus' || $param1 == 'wo'){
+			$this->db->where('tdkbermasalah', $param1, ucfirst($param1), strtoupper($param1));
+			if ($param2) {
+				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
+			}
+		}
+
+        foreach ($this->column_search as $item) // loop kolom 
+        {
+            if ($this->input->post('search')['value']) // jika datatable mengirim POST untuk search
+            {
+                if ($i === 0)
+                {
+                    $this->db->group_start();
+                    $this->db->like($item, $this->input->post('search')['value']);
+                } else {
+                    $this->db->or_like($item, $this->input->post('search')['value']);
+                }
+                if (count($this->column_search) - 1 == $i) //looping terakhir
+                    $this->db->group_end();
+            }
+            $i++;
+        }
+
+        if ($this->input->post('order')) {
+            $this->db->order_by($this->column_order[$this->input->post('order')['0']['column']], $this->input->post('order')['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+	}
+
+	function get_data_mitra($param1, $param2)
+    {
+		$this->_get_data_mitra_query($param1, $param2);
+        if ($this->input->post('length') != -1){
+            $this->db->limit($this->input->post('length'), $this->input->post('start'));
+		}
+		
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_mitra($param1, $param2)
+    {
+        $this->_get_data_mitra_query($param1, $param2);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_mitra($param1, $param2)
+    {
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
 
 	public function getMitraKontrak($no_kontrak)
 	{
@@ -142,7 +223,7 @@ class MitraModel extends CI_Model {
 	public function getOpexCicilan(){
 		$this->db->select('*');
 		$this->db->from('opex');
-		$this->db->where('id_akun','403010100');
+		$this->db->where('id_akun', '403010100');
 		$this->db->or_where('id_akun', '101060201');
 		$this->db->or_where('id_akun', '101060202');
 		$this->db->or_where('id_akun', '101060203');

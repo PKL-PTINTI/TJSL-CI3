@@ -20,15 +20,178 @@ class Mitra extends CI_Controller {
 		}
 	}
 
-	public function index()
-	{
+	public function index(){
 		$data = [
-			'title' => 'Managment Data Mitra',
-			'header' => 'Data Mitra',
-			'mitra' => $this->mitra_model->getMitra(),
+			'title' => 'Management Data Mitra',
+			'header' => 'Data Mitra'
 		];
 
 		$this->template->load('mitra/index', $data);
+	}
+
+	public function get_data_mitra($param1 = NULL, $param2 = NULL){
+		$list = $this->mitra_model->get_data_mitra($param1, $param2);
+        $data = array();
+        $no = $this->input->post('start');
+
+		$total = $this->_countAllAmount($param1, $param2);
+
+        foreach ($list as $mitra) {
+            $no++;
+            $row = array();
+			$row[] = $no;
+            $row[] = $mitra->nama_peminjam;
+            $row[] = $mitra->nokontrak;
+            $row[] = $mitra->lokasiUsaha;
+            $row[] = $mitra->startcicil;
+            $row[] = $mitra->kolektibilitas;
+            $row[] = number_format($mitra->pinjpokok);
+            $row[] = number_format($mitra->pinjjasa);
+			$row[] = number_format($mitra->pinjpokok + $mitra->pinjjasa);
+            $row[] = number_format($mitra->angpokok);
+            $row[] = number_format($mitra->angjasa);
+            $row[] = number_format($mitra->angjumlah);
+            $row[] = number_format($mitra->saldopokok);
+            $row[] = number_format($mitra->saldojasa);
+            $row[] = number_format($mitra->saldojumlah);
+            $row[] = $mitra->namaPerusahaan;
+            $row[] = $mitra->provinsi;
+            $row[] = $mitra->lokasiUsaha;
+            $row[] = $mitra->sektorUsaha;
+            $row[] = $mitra->skalaUsaha;
+            $row[] = $mitra->ktp;
+            $row[] = $mitra->pelaksanaanProgram;
+            $row[] = $mitra->sumberDana;
+            $row[] = number_format($mitra->nilaiAset);
+            $row[] = number_format($mitra->nilaiOmset);
+            $row[] = $mitra->rekondisi;
+            $row[] = $mitra->tgl_rekondisi;
+            $row[] = $mitra->selisihHari;
+            $row[] = $mitra->kelebihanAngsuran;
+            $row[] = $mitra->tglkontrak;
+            $row[] = $mitra->tgljatuhtempo;
+            $row[] = number_format($mitra->pinjpokok);
+            $row[] = number_format($mitra->saldopokok);
+            $row[] = number_format($mitra->saldojasa);
+            $row[] = number_format($mitra->angpokok);
+            $row[] = number_format($mitra->angjasa);
+            $row[] = $mitra->tglcicilanterakhir;
+            $row[] = $mitra->tdkbermasalah;
+            $row[] = $mitra->kondisiPinjaman;
+            $row[] = $mitra->jenisPembayaran;
+            $row[] = $mitra->bankAccount;
+            $row[] = $mitra->jumlahSDM;
+            $row[] = $mitra->kelebihanAngsuran;
+            $row[] = $mitra->subSektor;
+            $row[] = $mitra->tambahanDana;
+
+			$row[] =  '';
+            $data[] = $row;
+        }
+
+		$hasil = [
+			'', '', '', '', '', 'TOTAL :',
+			number_format($total['pinjpokok']),
+			number_format($total['pinjjasa']),
+			number_format($total['pinjjumlah']),
+			number_format($total['angpokok']),
+			number_format($total['angjasa']),
+			number_format($total['angjumlah']),
+			number_format($total['saldopokok']),
+			number_format($total['saldojasa']),
+			number_format($total['saldojumlah']),
+			'', '', '', '', '', '', '', '', '', '',
+			'', '', '', '', '', '', '', '', '', '',
+			'', '', '', '', '', '', '', '', '', '', '',
+		];
+
+		$data[] = $hasil;
+
+        $output = array(
+            "draw" => $this->input->post('draw'),
+            "recordsTotal" => $this->mitra_model->count_all_mitra($param1, $param2),
+            "recordsFiltered" => $this->mitra_model->count_filtered_mitra($param1, $param2),
+            "data" => $data,
+        );
+		
+        echo json_encode($output);
+	}
+
+	private function _countAllAmount($param1, $param2){
+		$this->db->select('pinjpokok');
+		$this->db->select('pinjjasa');
+		$this->db->select('pinjjumlah');
+		$this->db->select('angpokok');
+		$this->db->select('angjasa');
+		$this->db->select('angjumlah');
+		$this->db->select('saldopokok');
+		$this->db->select('saldojasa');
+		$this->db->select('saldojumlah');
+		$this->db->from('mitra');
+
+		if($param1 == 'lancar' || $param1 == 'diragukan' || $param1 == 'macet'){
+			$this->db->where('kolektibilitas', $param1, ucfirst($param1), strtoupper($param1));
+			// $this->db->or_where('saldopokok > ', 0);
+			if ($param2) {
+				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
+				// $this->db->or_where('saldopokok > ', 0);
+			}
+		}
+
+		if($param1 == 'kuranglancar'){
+			$this->db->where('kolektibilitas', 'kurang lancar', 'Kurang Lancar', 'KURANG LANCAR');
+			// $this->db->or_where('saldopokok > ', 0);
+			if ($param2) {
+				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
+				// $this->db->or_where('saldopokok > ', 0);
+			}
+		}
+
+		// TDK Bermasalah
+		if($param1 == 'normal' || $param1 == 'masalah' || $param1 == 'khusus' || $param1 == 'wo'){
+			$this->db->where('tdkbermasalah', $param1, ucfirst($param1), strtoupper($param1));
+			// $this->db->or_where('saldopokok > ', 0);
+			if ($param2) {
+				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
+				// $this->db->or_where('saldopokok > ', 0);
+			}
+		}
+
+		$query = $this->db->get();
+		$result = $query->result_array();
+		$pinjpokok = 0;
+		$pinjjasa = 0;
+		$pinjjumlah = 0;
+		$angpokok = 0;
+		$angjasa = 0;
+		$angjumlah = 0;
+		$saldopokok = 0;
+		$saldojasa = 0;
+		$saldojumlah = 0;
+
+		foreach ($result as $value) {
+			$pinjpokok += $value['pinjpokok'];
+			$pinjjasa += $value['pinjjasa'];
+			$pinjjumlah += $value['pinjjumlah'];
+			$angpokok += $value['angpokok'];
+			$angjasa += $value['angjasa'];
+			$angjumlah += $value['angjumlah'];
+			$saldopokok += $value['saldopokok'];
+			$saldojasa += $value['saldojasa'];
+			$saldojumlah += $value['saldojumlah'];
+		}
+
+		return [
+			'pinjpokok' => $pinjpokok,
+			'pinjjasa' => $pinjjasa,
+			'pinjjumlah' => $pinjjumlah,
+			'angpokok' => $angpokok,
+			'angjasa' => $angjasa,
+			'angjumlah' => $angjumlah,
+			'saldopokok' => $saldopokok,
+			'saldojasa' => $saldojasa,
+			'saldojumlah' => $saldojumlah,
+		];
 	}
 
 	public function mitramasalah($status)
