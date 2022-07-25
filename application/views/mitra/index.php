@@ -41,28 +41,38 @@
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start"
                                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);">
+
                                         <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/industri'); ?>">Sektor
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor
                                             Industri</a>
                                         <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/perdagangan'); ?>">Sektor
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor
                                             Perdagangan</a>
                                         <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/pertanian'); ?>">Sektor
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor
                                             Pertanian</a>
                                         <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/perkebunan'); ?>">Sektor
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor
                                             Perkebunan</a>
                                         <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/perikanan'); ?>">Sektor
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor
                                             Perikanan</a>
                                         <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/peternakan'); ?>">Sektor
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor
                                             Peternakan</a>
                                         <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/jasa'); ?>">Sektor
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor
                                             Jasa</a>
-                                        <a class="dropdown-item" href="#">Sektor Lain-lain</a>
+                                        <a class="dropdown-item"
+                                            onclick="changeUrlMitra('admin/mitra/get_data_mitra/koleksektor/')"
+                                            href="#">Sektor Lain-lain</a>
                                     </div>
                                 </div>
                                 <div class="sektor-kolek dropdown pr-4 d-none">
@@ -71,30 +81,23 @@
                                         aria-expanded="false">
                                         Sektor
                                     </button>
-                                    <div class="dropdown-menu" x-placement="bottom-start"
+                                    <div class="dropdown-menu menu-kolek" x-placement="bottom-start"
                                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);">
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/industri'); ?>">Sektor
+                                        <a class="dropdown-item" data-sektor="industri" href="#">Sektor
                                             Industri</a>
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/perdagangan'); ?>">Sektor
+                                        <a class="dropdown-item" data-sektor="perdagangan" href="#">Sektor
                                             Perdagangan</a>
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/pertanian'); ?>">Sektor
+                                        <a class="dropdown-item" data-sektor="pertanian" href="#">Sektor
                                             Pertanian</a>
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/perkebunan'); ?>">Sektor
+                                        <a class="dropdown-item" data-sektor="perkebunan" href="#">Sektor
                                             Perkebunan</a>
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/perikanan'); ?>">Sektor
+                                        <a class="dropdown-item" data-sektor="perikanan" href="#">Sektor
                                             Perikanan</a>
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/peternakan'); ?>">Sektor
+                                        <a class="dropdown-item" data-sektor="peternakan" href="#">Sektor
                                             Peternakan</a>
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('admin/mitra/status/' . $this->uri->segment(4) . '/jasa'); ?>">Sektor
+                                        <a class="dropdown-item" data-sektor="jasa" href="#">Sektor
                                             Jasa</a>
-                                        <a class="dropdown-item" href="#">Sektor Lain-lain</a>
+                                        <a class="dropdown-item" data-sektor="" href="#">Sektor Lain-lain</a>
                                     </div>
                                 </div>
                                 <a class="btn btn-primary mb-3 " href="<?= base_url('admin/mitra/create') ?>">Tambah
