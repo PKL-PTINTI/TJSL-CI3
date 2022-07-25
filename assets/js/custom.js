@@ -29,6 +29,21 @@ function changeMenu(url) {
 	) {
 		$(".sektor-kolek").removeClass("d-none");
 		$(".mitra").addClass("d-none");
+
+		const listItems = document.querySelectorAll(".menu-kolek a");
+		const listArray = [...listItems];
+
+		listArray.forEach((item) => {
+			item.onclick = function () {
+				changeUrlMitra(
+					"http://localhost:3000/admin/mitra/get_data_mitra/koleksektor/" +
+						segment +
+						"/" +
+						item.dataset.sektor,
+					segment.toUpperCase() + " " + item.innerText
+				);
+			};
+		});
 	}
 
 	if (
@@ -38,6 +53,7 @@ function changeMenu(url) {
 		segment == "wo"
 	) {
 		$(".sektor-masalah").removeClass("d-none");
+		$(".sektor-kolek").addClass("d-none");
 	}
 }
 

@@ -65,8 +65,22 @@ class Jurnal extends CI_Controller {
 			$row[] = $data_jurnal->updated;
 			$row[] = $data_jurnal->tglUpdate;
 
-			$row[] =  '<a class="btn btn-success btn-sm"><i class="fa fa-edit"></i> </a>
-            <a class="btn btn-danger btn-sm "><i class="fa fa-trash"></i> </a>';
+			// $row[] =  '<a class="btn btn-success btn-sm"><i class="fa fa-edit"></i> </a>
+            // <a class="btn btn-danger btn-sm" href="' . base_url('admin/jurnal/destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i class="fa fa-trash"></i> </a>';
+            // $data[] = $row;
+
+			$row[] =  '
+				<div class="dropdown">
+					<a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false">
+						<i class="fas fa-ellipsis-v"></i>
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('admin/jurnal/destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i
+								class="fas fa-trash text-danger pr-2"></i> Delete </a>
+					</div>
+				</div>
+			';
             $data[] = $row;
         }
 
@@ -160,6 +174,7 @@ class Jurnal extends CI_Controller {
 			$row[] =  '<a class="btn btn-success btn-sm"><i class="fa fa-edit"></i> </a>
             <a class="btn btn-danger btn-sm "><i class="fa fa-trash"></i> </a>';
             $data[] = $row;
+
         }
 
 		$hasil = [
@@ -244,7 +259,7 @@ class Jurnal extends CI_Controller {
 
 		//pemasukan
 
-		if($korek == '0101010101' OR '0101010102'){
+		if($korek == '0101010101' OR $korek == '0101010102'){
 			$kaskecil = $this->jurnal_model->getKasKecil();
 			$saldo = ($kaskecil) ? $kaskecil['0']->saldokaskecil + $jumlah_pemasukan : 0;
 
@@ -291,16 +306,31 @@ class Jurnal extends CI_Controller {
 			]);	
 		}
 
+		$this->jurnal_model->insert([
+			'id_akun' => $korekPasangan,
+			'tanggal' => $tanggal_transaksi,
+			'pemasukan' => '0',
+			'pengeluaran' => $jumlah_pemasukan,
+			'deskripsi' => $deskripsiKorekPasangan,
+			'keterangan' => $keterangan,
+			'updated' => $this->session->userdata('username'),
+			'tglUpdate' => date('Y-m-d H:i:s'),
+			'nobukti' => $nomor_bukti,
+			'tot_pemasukan' => '0',
+			'tot_pengeluaran' => '0',
+			'tampil' => '0',
+		]);
+
 		// Pengeluaran
 
-		if($korek == '0101010101' OR '0101010102'){
+		if($korekPasangan == '0101010101' OR $korek == '0101010102'){
 			$kaskecil = $this->jurnal_model->getKasKecil();
-			$saldo = ($kaskecil) ? $kaskecil['0']->saldokaskecil - $jumlah_pengeluaran : 0;
+			$saldo = ($kaskecil) ? $kaskecil['0']->saldokaskecil - $jumlah_pemasukan : 0;
 
 			$this->jurnal_model->insertKasKecil([
-				'korek' => $korek,
+				'korek' => $korekPasangan,
 				'pemasukankaskecil' => '0',
-				'pengeluarankaskecil' => $jumlah_pengeluaran,
+				'pengeluarankaskecil' => $jumlah_pemasukan,
 				'tanggal' => $tanggal_transaksi,
 				'saldokaskecil' => $saldo,
 				'ketkaskecil' => $keterangan,
@@ -309,14 +339,14 @@ class Jurnal extends CI_Controller {
 			
 		}
 
-		if($korek == '0101010204'){
+		if($korekPasangan == '0101010204'){
 			$kasbri = $this->jurnal_model->getKasBri();
-			$saldo = ($kasbri) ? $kasbri['0']->saldobri - $jumlah_pengeluaran : 0;
+			$saldo = ($kasbri) ? $kasbri['0']->saldobri - $jumlah_pemasukan : 0;
 
 			$this->jurnal_model->insertKasBri([
 				'korek' => $korek,
 				'pemasukanbri' => '0',
-				'pengeluaranbri' => $jumlah_pengeluaran,
+				'pengeluaranbri' => $jumlah_pemasukan,
 				'tanggal' => $tanggal_transaksi,
 				'saldobri' => $saldo,
 				'ketbri' => $keterangan,
@@ -325,14 +355,14 @@ class Jurnal extends CI_Controller {
 			
 		}
 
-		if($korek == '0101010201'){
+		if($korekPasangan == '0101010201'){
 			$kasmandiri = $this->jurnal_model->getKasMandiri();
-			$saldo = ($kasmandiri) ? $kasmandiri['0']->saldomandiri - $jumlah_pengeluaran : 0;
+			$saldo = ($kasmandiri) ? $kasmandiri['0']->saldomandiri - $jumlah_pemasukan : 0;
 
 			$this->jurnal_model->insertKasMandiri([
 				'korek' => $korek,
 				'pemasukanmandiri' => '0',
-				'pengeluaranmandiri' => $jumlah_pengeluaran,
+				'pengeluaranmandiri' => $jumlah_pemasukan,
 				'tanggal' => $tanggal_transaksi,
 				'saldomandiri' => $saldo,
 				'ketmandiri' => $keterangan,
@@ -342,33 +372,38 @@ class Jurnal extends CI_Controller {
 
 
 	$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
-	redirect(base_url('admin/jurnal/'.$no_bukti));
-
+	redirect(base_url('admin/jurnal'));
 	}
 
-	
+	public function destroy($nobukti){
+		$base = str_replace('%', '/', $nobukti);
+		$this->jurnal_model->destroy($base);
+		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Dihapus\',position: \'bottomRight\'});</script>');
+		redirect(base_url('admin/jurnal'));
+	}
+
+	public function voucher(){
+		$data = [
+			'title' => 'Tambah Data Transaksi Voucher',
+			'header' => 'Tambah Data Transaksi Voucher',
+			'korek' => $this->jurnal_model->getKodeRekening(),
+		];
+
+		$this->template->load('jurnal/voucher', $data);
+	}
+
+	public function addVoucher(){
+		$nomor_bukti = $this->input->post('nomor_bukti');
+		$tanggal_transaksi = $this->input->post('tanggal_transaksi');
+		$korek = $this->input->post('korek');
+		$keterangan = $this->input->post('keterangan');
+		$jumlah_pemasukan = $this->input->post('jumlah_pemasukan');
+		$korekPasangan = $this->input->post('korekPasangan');
+
+		$deskripsi = $this->jurnal_model->getDeskripsiAkun($korek)->deskripsiAkun;
+	}
 }
 	
-	// 	public function voucher(){
-	// 	$data = [
-	// 		'title' => 'Tambah Data Transaksi Voucher',s
-	// 		'header' => 'Tambah Data Transaksi Voucher',
-	// 		'korek' => $this->jurnal_model->getKodeRekening(),
-	// 	];
 
-	// 	$this->template->load('jurnal/voucher', $data);
-	// }
-
-	// public function addVoucher(){
-	// 	$nomor_bukti = $this->input->post('nomor_bukti');
-	// 	$tanggal_transaksi = $this->input->post('tanggal_transaksi');
-	// 	$korek = $this->input->post('korek');
-	// 	$keterangan = $this->input->post('keterangan');
-	// 	$jumlah_pemasukan = $this->input->post('jumlah_pemasukan');
-	// 	$korekPasangan = $this->input->post('korekPasangan');
-
-	// 	$deskripsi = $this->jurnal_model->getDeskripsiAkun($korek)->deskripsiAkun;
-		
-	// }
 
 	

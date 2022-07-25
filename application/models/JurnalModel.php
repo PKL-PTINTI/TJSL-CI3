@@ -237,10 +237,11 @@ class JurnalModel extends CI_Model {
         $this->db->insert('kasmandiri', $data);
     }
 
-    public function destroy($id){
-		$this->db->where('id', $id);
-		$this->db->delete('jurnal');
+    public function destroy($no_bukti){
+		$this->db->query("DELETE FROM opex WHERE nobukti = '$no_bukti'");
 	}
+
+
 
 
 }

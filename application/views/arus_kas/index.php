@@ -55,6 +55,7 @@
                                         <td><?= $persentase_rka_sd_juni_2022 ?>%</td>
                                         <td>
                                             <a href="<?= base_url('laporan/arus_kas/cetak_arus_kas/') . $id_laporan ?>" class="btn btn-primary btn-sm"><i class="fas fa-print"></i></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

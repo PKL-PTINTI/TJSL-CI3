@@ -85,7 +85,22 @@ class Mitra extends CI_Controller {
             $row[] = $mitra->subSektor;
             $row[] = $mitra->tambahanDana;
 
-			$row[] =  '';
+			$row[] =  '
+				<div class="dropdown">
+					<a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false">
+						<i class="fas fa-ellipsis-v"></i>
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="' . base_url('admin/mitra/update/' . $mitra->id) . '"><i
+								class="fas fa-edit text-warning pr-2"></i> Update </a>
+						<a class="dropdown-item" href="' . base_url('admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i
+								class="fas fa-edit text-warning pr-2"></i> Cicilan </a>
+						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('admin/mitra/destroy/' . $mitra->id) . '"><i
+								class="fas fa-trash text-danger pr-2"></i> Delete </a>
+					</div>
+				</div>
+			';
             $data[] = $row;
         }
 

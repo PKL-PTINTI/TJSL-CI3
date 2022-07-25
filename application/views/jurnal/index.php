@@ -61,9 +61,9 @@
                                             href="<?= base_url('admin/jurnal/destroy/' . $row->nobukti) ?>"><i
                                             class="fa-solid fa-money-bill-transfer pr-2 text-primary"></i>Delete</a>
                                     </div>
-                                </div> --> 
+                                </div> -->
                             </table>
-                        </div>   
+                        </div>
                     </div>
                 </div>
             </div>
