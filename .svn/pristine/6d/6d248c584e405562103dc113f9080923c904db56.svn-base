@@ -1,0 +1,15 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class SaldoModel extends CI_Model {
+
+    public function getSaldo()
+    {
+        $this->db->select('*');
+        $this->db->from('saldokasbank');
+        $this->db->where('perioda', date("M Y", mktime(0, 0, 0, date('m'), 0, date('Y'))));
+        $query = $this->db->get();
+        return $query->result();
+    }
+}
+

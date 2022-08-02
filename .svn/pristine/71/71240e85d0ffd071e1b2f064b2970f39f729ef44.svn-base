@@ -1,0 +1,22 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Saldo extends CI_Controller {
+
+	public function __construct() {
+		parent::__construct();
+		$this->load->model('SaldoModel', 'saldo_model');
+	}
+
+	public function index()
+	{
+		$data = [
+			'title' => 'Data Saldo Kas Dan Bank',
+            'header' => 'Data Saldo',
+			'saldokasbank' => $this->saldo_model->getSaldo(),
+		];
+		
+		$this->template->load('saldo/index', $data);
+    }
+
+}

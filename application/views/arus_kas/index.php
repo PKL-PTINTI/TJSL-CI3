@@ -23,39 +23,20 @@
                                         <th class="text-center">No ID</th>
                                         <th>Keterangan</th>
                                         <th>Desember 2021</th>
-                                        <th>Sd Desember 20221</th>
+                                        <th>Sd Desember 2021</th>
                                         <th>Juni 2022</th>
                                         <th>Sd Juni 2022</th>
                                         <th>RKA Juni 2022(1)</th>
-                                        <th>RKA Sd Juni 2022(2)</th>
+                                        <th>RKA-Juni 2022(2)</th>
                                         <th>Realisasi Juni 2022(3)</th>
-                                        <th>realisasi Juni 2022(4)</th>
+                                        <th>Realisasi Juni 2022(4)</th>
                                         <th>RKA Juni 2021(5)</th>
-                                        <th>RKA Sd Juni 2021(6)</th>
+                                        <th>RKA-Juni 2021(6)</th>
                                         <th>(3:1)% RKA Juni 2022</th>
-                                        <th>(4:2)% RKA Sd Juni 2022</th>
+                                        <th>(4:2)% RKA-Juni 2022</th>
                                         <th></th>
-                                    </tr>
+                                        </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td>Pendapatan</td>
-                                        <td>Rp. <?= number_format($pendapatan_desember_2021, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($pendapatan_sd_desember_2021, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($pendapatan_juni_2022, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($pendapatan_sd_juni_2022, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($rka_juni_2022, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($rka_sd_juni_2022, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($realisasi_juni_2022, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($realisasi_juni_2022_2, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($rka_juni_2021, 0, ',', '.') ?></td>
-                                        <td>Rp. <?= number_format($rka_sd_juni_2021, 0, ',', '.') ?></td>
-                                        <td><?= $persentase_rka_juni_2022 ?>%</td>
-                                        <td><?= $persentase_rka_sd_juni_2022 ?>%</td>
-                                        <td>
-                                            <a href="<?= base_url('laporan/arus_kas/cetak_arus_kas/') . $id_laporan ?>" class="btn btn-primary btn-sm"><i class="fas fa-print"></i></a>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -65,6 +46,3 @@
             </div>
         </div>
     </div>
-
-
-</section>
