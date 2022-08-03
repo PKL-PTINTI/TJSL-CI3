@@ -425,30 +425,30 @@ class Jurnal extends CI_Controller {
 		$keterangan3 = $this->input->post('keterangan3');
 		$jumlah_pengeluaran3 = str_replace('.', '', $this->input->post('jumlah_pengeluaran3'));
 
-		$korekPasangan4 = $this->input->post('korekPasangan4');
-		$keterangan4 = $this->input->post('keterangan4');
-		$jumlah_pengeluaran4 = str_replace('.', '', $this->input->post('jumlah_pengeluaran4'));
+		// $korekPasangan4 = $this->input->post('korekPasangan4');
+		// $keterangan4 = $this->input->post('keterangan4');
+		// $jumlah_pengeluaran4 = str_replace('.', '', $this->input->post('jumlah_pengeluaran4'));
 
-		$korekPasangan5 = $this->input->post('korekPasangan5');
-		$keterangan5 = $this->input->post('keterangan5');
-		$jumlah_pengeluaran5 = str_replace('.', '', $this->input->post('jumlah_pengeluaran5'));
+		// $korekPasangan5 = $this->input->post('korekPasangan5');
+		// $keterangan5 = $this->input->post('keterangan5');
+		// $jumlah_pengeluaran5 = str_replace('.', '', $this->input->post('jumlah_pengeluaran5'));
 
-		$korekPasangan6 = $this->input->post('korekPasangan6');
-		$keterangan6 = $this->input->post('keterangan6');
-		$jumlah_pengeluaran6 = str_replace('.', '', $this->input->post('jumlah_pengeluaran6'));
+		// $korekPasangan6 = $this->input->post('korekPasangan6');
+		// $keterangan6 = $this->input->post('keterangan6');
+		// $jumlah_pengeluaran6 = str_replace('.', '', $this->input->post('jumlah_pengeluaran6'));
 
-		$korekPasangan7 = $this->input->post('korekPasangan7');
-		$keterangan7 = $this->input->post('keterangan7');
-		$jumlah_pengeluaran7 = str_replace('.', '', $this->input->post('jumlah_pengeluaran7'));
+		// $korekPasangan7 = $this->input->post('korekPasangan7');
+		// $keterangan7 = $this->input->post('keterangan7');
+		// $jumlah_pengeluaran7 = str_replace('.', '', $this->input->post('jumlah_pengeluaran7'));
 
 		$deskripsiAkun = $this->jurnal_model->getDeskripsiAkun($korek)['0']->deskripsiAkun;
 		$deskripsiAkun1 = $this->jurnal_model->getDeskripsiAkun($korekPasangan1)['0']->deskripsiAkun;
 		$deskripsiAkun2 = $this->jurnal_model->getDeskripsiAkun($korekPasangan2)['0']->deskripsiAkun ?? '';
 		$deskripsiAkun3 = $this->jurnal_model->getDeskripsiAkun($korekPasangan3)['0']->deskripsiAkun ?? '';
-		$deskripsiAkun4 = $this->jurnal_model->getDeskripsiAkun($korekPasangan4)['0']->deskripsiAkun ?? '';
-		$deskripsiAkun5 = $this->jurnal_model->getDeskripsiAkun($korekPasangan5)['0']->deskripsiAkun ?? '';
-		$deskripsiAkun6 = $this->jurnal_model->getDeskripsiAkun($korekPasangan6)['0']->deskripsiAkun ?? '';
-		$deskripsiAkun7 = $this->jurnal_model->getDeskripsiAkun($korekPasangan7)['0']->deskripsiAkun ?? '';
+		// $deskripsiAkun4 = $this->jurnal_model->getDeskripsiAkun($korekPasangan4)['0']->deskripsiAkun ?? '';
+		// $deskripsiAkun5 = $this->jurnal_model->getDeskripsiAkun($korekPasangan5)['0']->deskripsiAkun ?? '';
+		// $deskripsiAkun6 = $this->jurnal_model->getDeskripsiAkun($korekPasangan6)['0']->deskripsiAkun ?? '';
+		// $deskripsiAkun7 = $this->jurnal_model->getDeskripsiAkun($korekPasangan7)['0']->deskripsiAkun ?? '';
 		
 		if($nomor_bukti=='') {
 			$nomor_bukti = $tanggal_transaksi.'/'.time().'/'.'klr';		

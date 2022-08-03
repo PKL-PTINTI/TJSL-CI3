@@ -111,7 +111,7 @@
                             </div>
                             
                             
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Kode Rekening Pasangan 4</label>
                                 <select class="form-control select2" name="korekPasangan4">
                                     <option>Pilih Kode Rekening</option>
@@ -194,7 +194,7 @@
                             <div class="form-group">
                                 <label>Keterangan 7</label>
                                 <input type="text" class="form-control" placeholder="Keterangan" name="keterangan7">
-                            </div>
+                            </div> -->
                             
                             
                             <button type="submit" class="btn btn-primary">Simpan</button>

@@ -253,10 +253,10 @@
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-magnifying-glass-chart"></i>
                                 <span>Laporan Keuangan</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="forms-advanced-form.html">Posisi Keuangan</a></li>
-                                <li><a class="nav-link" href="forms-editor.html">Arus Kas</a></li>
-                                <li><a class="nav-link" href="forms-validation.html">Kinerja</a></li>
-                                <li><a class="nav-link" href="forms-validation.html">Catatan</a></li>
+                                <li><a class="nav-link" href="<?= base_url('admin/laporan/posisikeuangan') ?>">Posisi Keuangan</a></li>
+                                <li><a class="nav-link" href="<?= base_url('admin/laporan/aruskas') ?>">Arus Kas</a></li>
+                                <li><a class="nav-link" href="<?= base_url('admin/laporan/kinerja') ?>">Kinerja</a></li>
+                                <li><a class="nav-link" href="<?= base_url('admin/laporan/catatan') ?>">Catatan</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'coa') { echo 'active'; } ?>">
@@ -264,9 +264,9 @@
                                 <span>Lainnya</span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="<?= base_url('admin/coa') ?>">COA</a></li>
-                                <li><a href="gmaps-draggable-marker.html">Aging Rate</a></li>
-                                <li><a href="gmaps-geocoding.html">RKA</a></li>
-                                <li><a href="gmaps-geolocation.html">Neraca Saldo</a></li>
+                                <li><a href="<?= base_url('admin/agingrate') ?>">Aging Rate</a></li>
+                                <li><a href="<?= base_url('admin') ?>">RKA</a></li>
+                                <li><a href="<?= base_url('admin') ?>">Neraca Saldo</a></li>
                             </ul>
                         </li>
                 </aside>
