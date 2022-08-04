@@ -13,23 +13,144 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4><?= $header; ?></h4>
+                        <h4>1. TINGKAT PENGEMBALIAN PINJAMAN MITRA BINAAN</h4>
                     </div>
                     <div class="card-body">
-                        <h6>1. TINGKAT PENGEMBALIAN PINJAMAN MITRA BINAAN</h6>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-center">NO</th>
-                                        <th>Kode Rekening</th>
-                                        <th>Deskripsi Akun</th>
-                                        <th></th>
+                                        <th>Sektor</th>
+                                        <th><?= $bulan ?> (Rp.)</th>
+                                        <th>Prosen (%)</th>
+                                        <th>Timbang (Rp) </th>
+                                        <th>RKA <?= $bulan ?> (1)</th>
+                                        <th>RKA SD <?= $bulan ?> (2)</th>
+                                        <th>Realisasi <?= $bulan ?> (3)</th>
+                                        <th>Realisasi SD <?= $bulan ?> (4)</th>
+                                        <th>RKA <?= $bulan ?> (5)</th>
+                                        <th>RKA SD <?= $bulan ?> (6)</th>
+                                        <th>(3:1) % RKA <?= $bulan ?></th>
+                                        <th>(4:2) % RKA SD <?= $bulan ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                    $no = 1;
+                                    foreach ($dataRow as $value) {
+                                        ?>
+                                        <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
+                                            <td><?= $value['sektor'] ?></td>
+                                            <td><?= number_format($value['perioda'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['prosen'], 2, ',', '.') ?></td>
+                                            <td><?= number_format($value['timbang'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkajan22'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkasdjan22'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['totsaldo'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['totsaldo2'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkajan21'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkasdjan21'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['prosen1'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['prosensd'], 0, ',', '.') ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
+
+                            <div class="pb-3">
+                            <th>Kolektibilitas   </th>
+                                <th> = </th>
+                            <th><?php echo number_format( $timbang);?></th>
+                                <th> / </th>
+                                <th> <?php echo number_format( $totsaldo);?> </th>
+                                <th>  = </th>
+                                <th> <?php echo number_format( $kolex);?></th>
+                                <th>%</th> 
+                                
+                                <font color="blue">
+                                <th> SKOR  </th>
+                                <th> =  </th>
+                                <th><?php echo number_format( $skor);?></th>
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>2. EFFEKTIVITAS PENYALURAN DANA</h4>
+                    </div>
+                    <div class="card-body">
+                        <h6>2.1 DANA YANG DISALURKAN </h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">NO</th>
+                                        <th>Sektor</th>
+                                        <th><?= $bulan ?> (Rp.)</th>
+                                        <th>Prosen (%)</th>
+                                        <th>Timbang (Rp) </th>
+                                        <th>RKA <?= $bulan ?> (1)</th>
+                                        <th>RKA SD <?= $bulan ?> (2)</th>
+                                        <th>Realisasi <?= $bulan ?> (3)</th>
+                                        <th>Realisasi SD <?= $bulan ?> (4)</th>
+                                        <th>RKA <?= $bulan ?> (5)</th>
+                                        <th>RKA SD <?= $bulan ?> (6)</th>
+                                        <th>(3:1) % RKA <?= $bulan ?></th>
+                                        <th>(4:2) % RKA SD <?= $bulan ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 1;
+                                    foreach ($dataRow as $value) {
+                                        ?>
+                                        <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
+                                            <td><?= $value['sektor'] ?></td>
+                                            <td><?= number_format($value['perioda'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['prosen'], 2, ',', '.') ?></td>
+                                            <td><?= number_format($value['timbang'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkajan22'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkasdjan22'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['totsaldo'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['totsaldo2'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkajan21'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['rkasdjan21'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['prosen1'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value['prosensd'], 0, ',', '.') ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+
+                            <div class="pb-3">
+                            <th>Kolektibilitas   </th>
+                                <th> = </th>
+                            <th><?php echo number_format( $timbang);?></th>
+                                <th> / </th>
+                                <th> <?php echo number_format( $totsaldo);?> </th>
+                                <th>  = </th>
+                                <th> <?php echo number_format( $kolex);?></th>
+                                <th>%</th> 
+                                
+                                <font color="blue">
+                                <th> SKOR  </th>
+                                <th> =  </th>
+                                <th><?php echo number_format( $skor);?></th>
+                                </font>
+                            </div>
                         </div>
                     </div>
                 </div>
