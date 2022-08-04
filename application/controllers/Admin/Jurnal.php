@@ -417,38 +417,7 @@ class Jurnal extends CI_Controller {
 		$keterangan1 = $this->input->post('keterangan1');
 		$jumlah_pengeluaran1 = str_replace('.', '', $this->input->post('jumlah_pengeluaran1'));
 
-		$korekPasangan2 = $this->input->post('korekPasangan2');
-		$keterangan2 = $this->input->post('keterangan2');
-		$jumlah_pengeluaran2 = str_replace('.', '', $this->input->post('jumlah_pengeluaran2'));
-
-		$korekPasangan3 = $this->input->post('korekPasangan3');
-		$keterangan3 = $this->input->post('keterangan3');
-		$jumlah_pengeluaran3 = str_replace('.', '', $this->input->post('jumlah_pengeluaran3'));
-
-		// $korekPasangan4 = $this->input->post('korekPasangan4');
-		// $keterangan4 = $this->input->post('keterangan4');
-		// $jumlah_pengeluaran4 = str_replace('.', '', $this->input->post('jumlah_pengeluaran4'));
-
-		// $korekPasangan5 = $this->input->post('korekPasangan5');
-		// $keterangan5 = $this->input->post('keterangan5');
-		// $jumlah_pengeluaran5 = str_replace('.', '', $this->input->post('jumlah_pengeluaran5'));
-
-		// $korekPasangan6 = $this->input->post('korekPasangan6');
-		// $keterangan6 = $this->input->post('keterangan6');
-		// $jumlah_pengeluaran6 = str_replace('.', '', $this->input->post('jumlah_pengeluaran6'));
-
-		// $korekPasangan7 = $this->input->post('korekPasangan7');
-		// $keterangan7 = $this->input->post('keterangan7');
-		// $jumlah_pengeluaran7 = str_replace('.', '', $this->input->post('jumlah_pengeluaran7'));
-
 		$deskripsiAkun = $this->jurnal_model->getDeskripsiAkun($korek)['0']->deskripsiAkun;
-		$deskripsiAkun1 = $this->jurnal_model->getDeskripsiAkun($korekPasangan1)['0']->deskripsiAkun;
-		$deskripsiAkun2 = $this->jurnal_model->getDeskripsiAkun($korekPasangan2)['0']->deskripsiAkun ?? '';
-		$deskripsiAkun3 = $this->jurnal_model->getDeskripsiAkun($korekPasangan3)['0']->deskripsiAkun ?? '';
-		// $deskripsiAkun4 = $this->jurnal_model->getDeskripsiAkun($korekPasangan4)['0']->deskripsiAkun ?? '';
-		// $deskripsiAkun5 = $this->jurnal_model->getDeskripsiAkun($korekPasangan5)['0']->deskripsiAkun ?? '';
-		// $deskripsiAkun6 = $this->jurnal_model->getDeskripsiAkun($korekPasangan6)['0']->deskripsiAkun ?? '';
-		// $deskripsiAkun7 = $this->jurnal_model->getDeskripsiAkun($korekPasangan7)['0']->deskripsiAkun ?? '';
 		
 		if($nomor_bukti=='') {
 			$nomor_bukti = $tanggal_transaksi.'/'.time().'/'.'klr';		
@@ -533,108 +502,6 @@ class Jurnal extends CI_Controller {
 			'tot_pengeluaran' => '0',
 			'tampil' => '0',
 		]);
-
-		if($keterangan2 != '') {
-			$this->jurnal_model->insert([
-				'id_akun' => $korekPasangan2,
-				'tanggal' => $tanggal_transaksi,
-				'pemasukan' => '0',
-				'pengeluaran' => $jumlah_pengeluaran2,
-				'deskripsi' => $deskripsiAkun2,
-				'keterangan' => $keterangan2,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nomor_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-		}
-
-		if($keterangan3 != '') {
-			$this->jurnal_model->insert([
-				'id_akun' => $korekPasangan3,
-				'tanggal' => $tanggal_transaksi,
-				'pemasukan' => '0',
-				'pengeluaran' => $jumlah_pengeluaran3,
-				'deskripsi' => $deskripsiAkun3,
-				'keterangan' => $keterangan3,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nomor_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-		}
-
-		if($keterangan4 != '') {
-			$this->jurnal_model->insert([
-				'id_akun' => $korekPasangan4,
-				'tanggal' => $tanggal_transaksi,
-				'pemasukan' => '0',
-				'pengeluaran' => $jumlah_pengeluaran4,
-				'deskripsi' => $deskripsiAkun4,
-				'keterangan' => $keterangan4,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nomor_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-		}
-
-		if($keterangan5 != '') {
-			$this->jurnal_model->insert([
-				'id_akun' => $korekPasangan5,
-				'tanggal' => $tanggal_transaksi,
-				'pemasukan' => '0',
-				'pengeluaran' => $jumlah_pengeluaran5,
-				'deskripsi' => $deskripsiAkun5,
-				'keterangan' => $keterangan5,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nomor_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-		}
-
-		if($keterangan6 != '') {
-			$this->jurnal_model->insert([
-				'id_akun' => $korekPasangan6,
-				'tanggal' => $tanggal_transaksi,
-				'pemasukan' => '0',
-				'pengeluaran' => $jumlah_pengeluaran6,
-				'deskripsi' => $deskripsiAkun6,
-				'keterangan' => $keterangan6,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nomor_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-		}
-
-		if($keterangan7 != '') {
-			$this->jurnal_model->insert([
-				'id_akun' => $korekPasangan7,
-				'tanggal' => $tanggal_transaksi,
-				'pemasukan' => '0',
-				'pengeluaran' => $jumlah_pengeluaran7,
-				'deskripsi' => $deskripsiAkun7,
-				'keterangan' => $keterangan7,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nomor_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-		}
 
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Voucher Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
 		redirect(base_url('admin/jurnal'));	

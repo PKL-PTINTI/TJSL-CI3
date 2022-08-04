@@ -28,8 +28,6 @@
                                     <a class="btn btn-primary mb-3 "
                                         href="<?= base_url('admin/jurnal/periodaopex') ?>">Perioda</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/jurnal/bank') ?>">Kartu Perkiraan</a>
-                                    <a class="btn btn-primary mb-3 "
                                         href="<?= base_url('admin/jurnal/createExcel') ?>">Export Excel</a>
                                 </div>
                             </div>
