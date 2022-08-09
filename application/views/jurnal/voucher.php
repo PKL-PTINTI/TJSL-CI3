@@ -16,18 +16,18 @@
                         <h4>Data Transaksi Voucher</h4>
                     </div>
                     <div class="card-body">
-                        <form action="<?= base_url('admin/jurnal/addVoucher') ?>" method="post">
+                        <form action="<?= base_url('admin/jurnal/addVoucher') ?>" method="post" class="repeater">
                             <div class="form-group">
                                 <label>Nomor Bukti</label>
-                                <input type="text" class="form-control" placeholder="Nomor Bukti" name="nomor_bukti">
+                                <input type="text" class="form-control" placeholder="Nomor Bukti" name="nomor_bukti" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label>Tanggal Transaksi</label>
-                                <input type="text" class="form-control datepicker" name="tanggal_transaksi">
+                                <input type="text" class="form-control datepicker" name="tanggal_transaksi" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label>Kode Rekening</label>
-                                <select class="form-control select2" name="korek">
+                                <select class="form-control select2" name="korek" autocomplete="off">
                                     <option>Pilih Kode Rekening</option>
                                     <?php foreach ($korek as $row): ?>
                                     <option value="<?php echo $row->korek ?>">
@@ -38,17 +38,16 @@
                             </div>
                             <div class=" form-group">
                                 <label>Jumlah Pemasukan/Debet (Rp)</label>
-                                <input type="text" class="form-control amount" placeholder="Jumlah Pemasukan"
-                                    name="jumlah_pemasukan">
+                                <input type="text" class="form-control amount" placeholder="Jumlah Pemasukan" name="jumlah_pemasukan" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label>Keterangan</label>
-                                <input type="text" class="form-control" placeholder="Keterangan" name="keterangan">
+                                <input type="text" class="form-control" placeholder="Keterangan" name="keterangan" autocomplete="off">
                             </div>
 
                             <div class="form-group">
-                                <label>Kode Rekening Pasangan 1</label>
-                                <select class="form-control select2" name="korekPasangan1">
+                                <label>Kode Rekening Pasangan <span class="index_loop"></span></label>
+                                <select class="form-control select2" name="korekPasangan" autocomplete="off">
                                     <option>Pilih Kode Rekening</option>
                                     <?php foreach ($korek as $row): ?>
                                     <option value="<?php echo $row->korek ?>">
@@ -58,18 +57,13 @@
                                 </select>
                             </div>
                             <div class=" form-group">
-                                <label>Jumlah Pengeluaran/Kredit 1 (Rp)</label>
-                                <input type="text" class="form-control amount" placeholder="Jumlah Pengeluaran"
-                                    name="jumlah_pengeluaran1">
+                                <label>Jumlah Pengeluaran/Kredit (Rp) <span class="index_loop"></span></label>
+                                <input type="text" class="form-control amount" placeholder="Jumlah Pengeluaran" name="jumlah_pengeluaran" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label>Keterangan 1</label>
-                                <input type="text" class="form-control" placeholder="Keterangan" name="keterangan1">
+                                <label>Keterangan <span class="index_loop"></span></label>
+                                <input type="text" class="form-control" placeholder="Keterangan" name="keteranganPasangan" autocomplete="off">
                             </div>
-                            
-                            <button type="submit" class="btn btn-primary">Add More</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                            
                         </form>
                     </div>
                 </div>

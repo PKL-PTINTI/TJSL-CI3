@@ -21,17 +21,17 @@ $("#table-jurnal-bank").dataTable({
 
 let table_perioda = $("#table-jurnal-perioda").dataTable({
 	columns: [
-		{ data: 'no' },
-		{ data: 'id_opex' },
-		{ data: 'id_akun' },
-		{ data: 'tanggal' },
-		{ data: 'pemasukan' },
-		{ data: 'pengeluaran' },
-		{ data: 'saldo' },
-		{ data: 'deskripsi' },
-		{ data: 'keterangan' },
-		{ data: 'nobukti' },
-		{ data: 'action' },
+		{ data: "no" },
+		{ data: "id_opex" },
+		{ data: "id_akun" },
+		{ data: "tanggal" },
+		{ data: "pemasukan" },
+		{ data: "pengeluaran" },
+		{ data: "saldo" },
+		{ data: "deskripsi" },
+		{ data: "keterangan" },
+		{ data: "nobukti" },
+		{ data: "action" },
 	],
 });
 
@@ -48,7 +48,7 @@ $("#form-perioda").on("submit", function (e) {
 		success: function (response) {
 			table_perioda.fnClearTable();
 			table_perioda.fnAddData(response.data);
-		}
+		},
 	});
 });
 
@@ -58,11 +58,14 @@ $("#button_delete_perioda").on("click", function (e) {
 		type: "GET",
 		url: url,
 		success: function (response) {
-			iziToast.success({title: 'Success',message: 'Data Jurnal Berhasil Dihapus',position: 'bottomRight'});
-		}
+			iziToast.success({
+				title: "Success",
+				message: "Data Jurnal Berhasil Dihapus",
+				position: "bottomRight",
+			});
+		},
 	});
 });
-
 
 // let table_kartu = $("#table-jurnal-kartu").dataTable({
 // 	columns: [
@@ -105,7 +108,8 @@ function changeMenu(url) {
 		listArray.forEach((item) => {
 			item.onclick = function () {
 				changeUrlMitra(
-					window.location.origin + "/admin/mitra/get_data_mitra/koleksektor/" +
+					window.location.origin +
+						"/admin/mitra/get_data_mitra/koleksektor/" +
 						segment +
 						"/" +
 						item.dataset.sektor,
@@ -130,7 +134,8 @@ function changeMenu(url) {
 		listArray.forEach((item) => {
 			item.onclick = function () {
 				changeUrlMitra(
-					window.location.origin + "/admin/mitra/get_data_mitra/masalahsektor/" +
+					window.location.origin +
+						"/admin/mitra/get_data_mitra/masalahsektor/" +
 						segment +
 						"/" +
 						item.dataset.sektor,
@@ -175,9 +180,32 @@ function changeUrlJurnal(url, title) {
 	$("#header").text(title);
 }
 
-$('.amount').priceFormat({
+$(".amount").priceFormat({
 	prefix: "",
 	centsLimit: 0,
 	thousandsSeparator: ".",
 });
 
+// $("#add_more").click(function(){
+// 	var html = $(".elementpasangan").html();
+// 	$(".elementpasangan").after(html);
+// });
+
+let count = 0;
+
+$("#add_more").on("click", function (e) {
+	let html = $("#elementpasangan").html();
+	$("#elementpasangan").after(html);
+	++count;
+});
+
+$(".repeater, .repeater-default").repeater({
+	show: function () {
+		$(this).slideDown(),
+			feather && feather.replace({ width: 14, height: 14 });
+	},
+	hide: function (e) {
+		confirm("Are you sure you want to delete this element?") &&
+			$(this).slideUp(e);
+	},
+});

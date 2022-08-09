@@ -8,7 +8,8 @@ class PosisiKeuanganModel extends CI_Model {
         $this->db->select('*');
         $this->db->from('neraca');
         $query = $this->db->get();
-        return $query->result();
+        return $query->result_array();
     }
+
 }
 

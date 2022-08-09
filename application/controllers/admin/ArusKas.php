@@ -76,6 +76,7 @@ class ArusKas extends CI_Controller {
 		$this->aruskas_model->updateArusKas($data);
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil diubah</div>');
 		redirect('admin/arus_kas');
+
 	}
 
 }

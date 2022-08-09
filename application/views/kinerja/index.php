@@ -1,4 +1,9 @@
 <?= $this->session->flashdata('message'); ?>
+<?php
+    if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
+        $bulanTahun =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y") - 1));
+    }
+?>
 <section class="section">
     <div class="section-header">
         <h1>Management Data Laporan</h1>
@@ -29,8 +34,8 @@
                                         <th>RKA SD <?= $bulan ?> (2)</th>
                                         <th>Realisasi <?= $bulan ?> (3)</th>
                                         <th>Realisasi SD <?= $bulan ?> (4)</th>
-                                        <th>RKA <?= $bulan ?> (5)</th>
-                                        <th>RKA SD <?= $bulan ?> (6)</th>
+                                        <th>RKA <?= $bulanTahun ?> (5)</th>
+                                        <th>RKA SD <?= $bulanTahun ?> (6)</th>
                                         <th>(3:1) % RKA <?= $bulan ?></th>
                                         <th>(4:2) % RKA SD <?= $bulan ?></th>
                                     </tr>
@@ -95,16 +100,14 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">NO</th>
-                                        <th>Sektor</th>
+                                        <th>Keterangan</th>
                                         <th><?= $bulan ?> (Rp.)</th>
-                                        <th>Prosen (%)</th>
-                                        <th>Timbang (Rp) </th>
                                         <th>RKA <?= $bulan ?> (1)</th>
                                         <th>RKA SD <?= $bulan ?> (2)</th>
                                         <th>Realisasi <?= $bulan ?> (3)</th>
                                         <th>Realisasi SD <?= $bulan ?> (4)</th>
-                                        <th>RKA <?= $bulan ?> (5)</th>
-                                        <th>RKA SD <?= $bulan ?> (6)</th>
+                                        <th>RKA <?= $bulanTahun ?> (5)</th>
+                                        <th>RKA SD <?= $bulanTahun ?> (6)</th>
                                         <th>(3:1) % RKA <?= $bulan ?></th>
                                         <th>(4:2) % RKA SD <?= $bulan ?></th>
                                     </tr>
@@ -112,44 +115,72 @@
                                 <tbody>
                                     <?php
                                     $no = 1;
-                                    foreach ($dataRow as $value) {
+                                    foreach ($dana as $value) {
                                         ?>
                                         <tr>
                                             <td class="text-center"><?= $no++ ?></td>
-                                            <td><?= $value['sektor'] ?></td>
-                                            <td><?= number_format($value['perioda'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['prosen'], 2, ',', '.') ?></td>
-                                            <td><?= number_format($value['timbang'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['rkajan22'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['rkasdjan22'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['totsaldo'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['totsaldo2'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['rkajan21'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['rkasdjan21'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['prosen1'], 0, ',', '.') ?></td>
-                                            <td><?= number_format($value['prosensd'], 0, ',', '.') ?></td>
+                                            <td><?= $value[0] ?></td>
+                                            <td><?= number_format($value[1], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[2], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[3], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[4], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[5], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[6], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[7], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[8], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[9], 0, ',', '.') ?></td>
                                         </tr>
                                         <?php
                                     }
                                     ?>
                                 </tbody>
                             </table>
-
+                        </div>
+                        <h6 class="pt-5">2.1 DANA YANG DISALURKAN </h6>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">NO</th>
+                                        <th>Keterangan</th>
+                                        <th><?= $bulan ?> (Rp.)</th>
+                                        <th>RKA <?= $bulan ?> (1)</th>
+                                        <th>RKA SD <?= $bulan ?> (2)</th>
+                                        <th>Realisasi <?= $bulan ?> (3)</th>
+                                        <th>Realisasi SD <?= $bulan ?> (4)</th>
+                                        <th>RKA <?= $bulanTahun ?> (5)</th>
+                                        <th>RKA SD <?= $bulanTahun ?> (6)</th>
+                                        <th>(3:1) % RKA <?= $bulan ?></th>
+                                        <th>(4:2) % RKA SD <?= $bulan ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 1;
+                                    foreach ($danatersedia as $value) {
+                                        ?>
+                                        <tr>
+                                            <td class="text-center"><?= $no++ ?></td>
+                                            <td><?= $value[0] ?></td>
+                                            <td><?= number_format($value[1], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[2], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[3], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[4], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[5], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[6], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[7], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[8], 0, ',', '.') ?></td>
+                                            <td><?= number_format($value[9], 0, ',', '.') ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
                             <div class="pb-3">
-                            <th>Kolektibilitas   </th>
-                                <th> = </th>
-                            <th><?php echo number_format( $timbang);?></th>
-                                <th> / </th>
-                                <th> <?php echo number_format( $totsaldo);?> </th>
-                                <th>  = </th>
-                                <th> <?php echo number_format( $kolex);?></th>
-                                <th>%</th> 
-                                
-                                <font color="blue">
-                                <th> SKOR  </th>
-                                <th> =  </th>
-                                <th><?php echo number_format( $skor);?></th>
-                                </font>
+                            <th>Prosentase Efektivitas Penyaluran Dana = Jumlah Dana Yg Disalurkan / Jumlah Dana tersedia = 
+<?php  echo number_format($JumlahDanaYgDisalurkan); ?> / <?php echo number_format($jumlahDanaTersedia); ?> = <?php  echo number_format($prosenDanaDisalurkan); ?> % 
+</th>
                             </div>
                         </div>
                     </div>

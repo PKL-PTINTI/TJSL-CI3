@@ -413,9 +413,30 @@ class Jurnal extends CI_Controller {
 		$keterangan = $this->input->post('keterangan');
 		$jumlah_pemasukan = str_replace(',', '', $this->input->post('jumlah_pemasukan'));
 
-		$korekPasangan1 = $this->input->post('korekPasangan1');
-		$keterangan1 = $this->input->post('keterangan1');
-		$jumlah_pengeluaran1 = str_replace('.', '', $this->input->post('jumlah_pengeluaran1'));
+		$korekPasangan = $this->input->post('korekPasangan');
+		$keteranganPasangan = $this->input->post('keteranganPasangan');
+		$jumlah_pengeluaran = str_replace('.', '', $this->input->post('jumlah_pengeluaran'));
+
+		echo "<pre>";
+		var_dump($this->input->post());
+		// foreach ($this->input->post() as $data) {
+		// 	var_dump($data);
+		// }
+		die;
+
+		// $this->jurnal_model->insert([
+		// 	'korek' => $korekPasangan[$i],
+		// 	'pemasukan' => '0',
+		// 	'pengeluaran' => $jumlah_pengeluaran[$i],
+		// 	'deskripsi' => $this->jurnal_model->getDeskripsiAkun($korekPasangan)['0']->deskripsiAkun,
+		// 	'keterangan' => $keteranganPasangan[$i],
+		// 	'updated' => $this->session->userdata('username'),
+		// 	'tglUpdate' => date('Y-m-d H:i:s'),
+		// 	'nobukti' => $nomor_bukti,
+		// 	'tot_pemasukan' => '0',
+		// 	'tot_pengeluaran' => '0',
+		// 	'tampil' => '0',
+		// ]);
 
 		$deskripsiAkun = $this->jurnal_model->getDeskripsiAkun($korek)['0']->deskripsiAkun;
 		

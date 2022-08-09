@@ -45,6 +45,7 @@ class Mitra extends CI_Controller {
             $row[] = $mitra->lokasiUsaha;
             $row[] = $mitra->startcicil;
             $row[] = $mitra->kolektibilitas;
+
             $row[] = number_format($mitra->pinjpokok);
             $row[] = number_format($mitra->pinjjasa);
 			$row[] = number_format($mitra->pinjpokok + $mitra->pinjjasa);
@@ -54,36 +55,15 @@ class Mitra extends CI_Controller {
             $row[] = number_format($mitra->saldopokok);
             $row[] = number_format($mitra->saldojasa);
             $row[] = number_format($mitra->saldojumlah);
+
             $row[] = $mitra->namaPerusahaan;
-            $row[] = $mitra->provinsi;
             $row[] = $mitra->lokasiUsaha;
-            $row[] = $mitra->sektorUsaha;
-            $row[] = $mitra->skalaUsaha;
+            $row[] = $mitra->sektorUsaha;	
             $row[] = $mitra->ktp;
-            $row[] = $mitra->pelaksanaanProgram;
-            $row[] = $mitra->sumberDana;
-            $row[] = number_format($mitra->nilaiAset);
-            $row[] = number_format($mitra->nilaiOmset);
-            $row[] = $mitra->rekondisi;
-            $row[] = $mitra->tgl_rekondisi;
-            $row[] = $mitra->selisihHari;
-            $row[] = $mitra->kelebihanAngsuran;
             $row[] = $mitra->tglkontrak;
             $row[] = $mitra->tgljatuhtempo;
-            $row[] = number_format($mitra->pinjpokok);
-            $row[] = number_format($mitra->saldopokok);
-            $row[] = number_format($mitra->saldojasa);
-            $row[] = number_format($mitra->angpokok);
-            $row[] = number_format($mitra->angjasa);
             $row[] = $mitra->tglcicilanterakhir;
             $row[] = $mitra->tdkbermasalah;
-            $row[] = $mitra->kondisiPinjaman;
-            $row[] = $mitra->jenisPembayaran;
-            $row[] = $mitra->bankAccount;
-            $row[] = $mitra->jumlahSDM;
-            $row[] = $mitra->kelebihanAngsuran;
-            $row[] = $mitra->subSektor;
-            $row[] = $mitra->tambahanDana;
 
 			$row[] =  '
 				<div class="dropdown">
@@ -92,6 +72,7 @@ class Mitra extends CI_Controller {
 						<i class="fas fa-ellipsis-v"></i>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="' . base_url('admin/mitra/detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
 						<a class="dropdown-item" href="' . base_url('admin/mitra/update/' . $mitra->id) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
 						<a class="dropdown-item" href="' . base_url('admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fa-solid fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
 						<a class="dropdown-item" href="' . base_url('admin/mitra/destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
@@ -112,9 +93,7 @@ class Mitra extends CI_Controller {
 			number_format($total['saldopokok']),
 			number_format($total['saldojasa']),
 			number_format($total['saldojumlah']),
-			'', '', '', '', '', '', '', '', '', '',
-			'', '', '', '', '', '', '', '', '', '',
-			'', '', '', '', '', '', '', '', '', '', '',
+			'', '', '', '', '', '', '', '', ''
 		];
 
 		$data[] = $hasil;
@@ -835,6 +814,8 @@ class Mitra extends CI_Controller {
 			$tampil = 0;
 		}
 
+		// TODO: insert ke tabel cicilan
+
 		// var_dump($rekening,$no_bukti);
 		// die;
 
@@ -1120,4 +1101,14 @@ class Mitra extends CI_Controller {
 
 		redirect(base_url('admin/mitra/cicilan/'.$no_kontrak));
 	}
+
+	public function detail($no_kontrak){
+		$mitra = $this->mitra_model->getMitraKontrak($no_kontrak);
+
+		$this->template->load('mitra/detail',[
+			'title' => 'Detail Mitra',
+			'mitra' => $mitra,
+		]);
+	}
+
 }

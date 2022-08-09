@@ -9,5 +9,19 @@ class KinerjaModel extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+
+    public function getDanaYangDisalurkan(){
+        $this->db->select('*');
+        $this->db->from('danayangdisalurkan');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function getDanaTersedia(){
+        $this->db->select('*');
+        $this->db->from('danatersedia');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }
 
