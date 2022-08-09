@@ -125,6 +125,7 @@
                                         <th>Lokasi Usaha</th>
                                         <th>Mulai Cicil</th>
                                         <th>Kolektibilitas</th>
+
                                         <th>Pinjaman Pokok</th>
                                         <th>Pinjaman Jasa</th>
                                         <th>Pinjaman Jumlah</th>
@@ -134,36 +135,15 @@
                                         <th>Saldo Pokok</th>
                                         <th>Saldo Jasa</th>
                                         <th>Saldo Jumlah</th>
+
                                         <th>Nama Perusahaan</th>
-                                        <th>Provinsi</th>
                                         <th>Kota</th>
                                         <th>Sektor Usaha</th>
-                                        <th>Skala Usaha</th>
                                         <th>No Identitas</th>
-                                        <th>Pelaksanaan Program</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Nilai Aset (Rp)</th>
-                                        <th>Nilai Omset (Rp)</th>
-                                        <th>Rekondisi</th>
-                                        <th>Tanggal Rekondisi</th>
-                                        <th>Selisih Hari</th>
-                                        <th>Kelebihan Angsuran</th>
                                         <th>Tanggal Awal Pendanaan</th>
                                         <th>Tanggal Jatuh Tempo</th>
-                                        <th>Nominal Pendanaan</th>
-                                        <th>Saldo Pokok Pendanaan</th>
-                                        <th>Saldo Jasa Admin Pendanaan</th>
-                                        <th>Penerimaan Pokok</th>
-                                        <th>Penerimaan Jasa</th>
                                         <th>Tanggal Penerimaan Terakhir</th>
-                                        <th>Status</th>
-                                        <th>Kondisi Pinjaman</th>
-                                        <th>Jenis Pembayaran</th>
-                                        <th>Bank Account</th>
-                                        <th>SDM di MB</th>
-                                        <th>Kelebihan Angs</th>
-                                        <th>SubSektor</th>
-                                        <th>Tambahan Pendanaan</th>
+                                        <th>Status</th> 
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
