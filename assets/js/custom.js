@@ -196,16 +196,69 @@ let count = 0;
 $("#add_more").on("click", function (e) {
 	let html = $("#elementpasangan").html();
 	$("#elementpasangan").after(html);
+	// TODO
 	++count;
 });
 
 $(".repeater, .repeater-default").repeater({
 	show: function () {
-		$(this).slideDown(),
-			feather && feather.replace({ width: 14, height: 14 });
+		$(this).slideDown();
+		$('.select2-container').remove();
+		$('.select2').select2({
+			placeholder: "Pilih Kode Rekening",
+			allowClear: true
+		});
+		$('.select2-container').css('width','100%');
+		$(".amount").priceFormat({
+			prefix: "",
+			centsLimit: 0,
+			thousandsSeparator: ".",
+		});
 	},
 	hide: function (e) {
 		confirm("Are you sure you want to delete this element?") &&
 			$(this).slideUp(e);
 	},
 });
+
+
+// var statistics_chart = document.getElementById("myChart2").getContext('2d');
+
+// var myChart = new Chart(statistics_chart, {
+// 	type: 'line',
+// 	data: {
+// 		labels: ["1","2","3","4","5","6","7","8"],
+// 		datasets: [{
+// 		label: 'Statistics',
+// 		data: [268047679,410375127,681945896,216738467,229448758,653627299,409544552,16717281],
+// 		borderWidth: 5,
+// 		borderColor: '#6777ef',
+// 		backgroundColor: 'transparent',
+// 		pointBackgroundColor: '#fff',
+// 		pointBorderColor: '#6777ef',
+// 		pointRadius: 4
+// 		}]
+// 	},
+// 	options: {
+// 		legend: {
+// 		display: false
+// 		},
+// 		scales: {
+// 		yAxes: [{
+// 			gridLines: {
+// 			display: false,
+// 			drawBorder: false,
+// 			},
+// 			ticks: {
+// 			stepSize: 150
+// 			}
+// 		}],
+// 		xAxes: [{
+// 			gridLines: {
+// 			color: '#fbfbfb',
+// 			lineWidth: 2
+// 			}
+// 		}]
+// 		},
+// 	}
+// });

@@ -161,6 +161,7 @@
                                         <th>No Bukti</th>
                                         <th>ID OPEX</th>
                                         <th>Updated By</th>
+                                        <th>Tampil</th>
                                         <th>Tanggal Update</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -181,6 +182,7 @@
                                         <td><?= $c['nobukti'] ?></td>
                                         <td><?= $c['id_opex'] ?></td>
                                         <td><?= $c['updated'] ?></td>
+                                        <td><?= $c['tampil'] ?></td>
                                         <td><?= $c['tglUpdate'] ?></td>
                                         <td>
                                         <div class="dropdown">

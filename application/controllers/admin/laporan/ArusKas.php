@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class ArusKas extends CI_Controller {
 
 	public function __construct() {
@@ -15,223 +18,104 @@ class ArusKas extends CI_Controller {
             'header' => 'Data Arus Kas',
             'aruskas' => $this->aruskas_model->getArusKas(),
 		];
+
+		$data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));	
+
 		$this->template->load('arus_kas/index', $data);
     }
 
-    public function add(
-		$id = null
-	   ) {
-		$data = [
-			'title' => 'tambah data arus kas',
-			'header' => 'tambah data arus kas',
-			'arus kas' => $this->aruskas_model->getArusKas($id),
-		];
-		$this->template->load('arus_kas/add', $data);
-	}
+	public function createExcel() {
+		$fileName = 'aruskas-keuangan-' . date('Y') .'.xlsx';  
 
-	public function edit($id)
-	{
-		$data = [
-			' title'  => ' edit data arus kas',
-			'header' => ' edit data arus kas',
-			'arus kas' => $this->aruskas_model->getAruskas($id),
+		$aruskas = $this->aruskas_model->getArusKas();
+		$spreadsheet = new Spreadsheet();
+		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m"), date("d"), date("Y"))));
 
-		];
-	}
+        $sheet = $spreadsheet->getActiveSheet();
+		$sheet->getColumnDimension('A')->setWidth(42);
+		$sheet->getColumnDimension('B')->setWidth(25);
+		$sheet->getColumnDimension('C')->setWidth(25);
+		$sheet->getColumnDimension('D')->setWidth(25);
+		$sheet->getColumnDimension('E')->setWidth(25);
 
-	public function delete($id)
-	{
-		$this->aruskas_model->deleteArusKas($id);
-		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil dihapus</div>');
-		redirect('admin/arus_kas');
-	}
+       	$sheet->setCellValue('A3', 'KETERANGAN');
+        $sheet->setCellValue('B3', 'DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
+        $sheet->setCellValue('C3', 'SD DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
+        $sheet->setCellValue('D3', $bulan);
+        $sheet->setCellValue('E3', 'SD ' . $bulan);
 
-	public function save()
-	{
-		$data = [
-			'id_arus_kas' => $this->input->post('id_arus_kas'),
-			'id_kas' => $this->input->post('id_kas'),
-			'id_akun' => $this->input->post('id_akun'),
-			'tanggal' => $this->input->post('tanggal'),
-			'keterangan' => $this->input->post('keterangan'),
-			'nominal' => $this->input->post('nominal'),
-			'id_user' => $this->input->post('id_user'),
-		];
-		$this->aruskas_model->saveArusKas($data);
-		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil ditambah</div>');
-		redirect('admin/arus_kas');
-	}
+		$sheet->setCellValue('A4', 'I. AKTIVITAS OPERASI');
+		$sheet->setCellValue('A5', 'KAS DITERIMA DARI ');
+		$sheet->setCellValue('A6', '1. Pengembalian Pinjaman Mitra Binaan');
+		$sheet->setCellValue('A7', '2. Angsuran Belum Teridentifikasi');
+		$sheet->setCellValue('A8', '3. Pendapatan Jasa Administrasi Pinjaman');
+		$sheet->setCellValue('A9', '4. Pendapatan Jasa Giro/Bunga Deposito');
+		$sheet->setCellValue('A10', '5. Pendapatan lain-lain');
+		$sheet->setCellValue('A11', 'KAS DIKELUARKAN UNTUK ');
+		$sheet->setCellValue('A12', '1. Penyaluran Pinjaman Kemitraan');
+		$sheet->setCellValue('A13', '2. Dana Pembinaan Kemitraan');
+		$sheet->setCellValue('A14', '3. Dana Bina Lingkungan');
+		$sheet->setCellValue('A15', '4. Beban Pembinaan');
+		$sheet->setCellValue('A16', '5. Beban Upah Tenaga Harian');
+		$sheet->setCellValue('A17', '6. Beban Administrasi dan Umum');
+		$sheet->setCellValue('A18', '7. Pembayaran Beban Pemeliharaan');
+		$sheet->setCellValue('A19', '8. Pembayaran Kelebihan Angsuran');
+		$sheet->setCellValue('A20', 'KAS NETTO DITERIMA(DIGUNAKAN) UNTUK AKTIVITAS OPERASI');
+		$sheet->setCellValue('A21', 'II. AKTIVITAS INVESTASI ');
+		$sheet->setCellValue('A22', 'KAS DIKELUARKAN UNTUK ');
+		$sheet->setCellValue('A23', '1. Pembelian Aktiva Tetap');
+		$sheet->setCellValue('A24', 'KAS NETTO DITERIMA (DIGUNAKAN) UNTUK AKTIVITAS INVESTASI');
+		$sheet->setCellValue('A25', 'KENAIKAN (PENURUNAN) NETTO DALAM KAS/SETARA KAS');
+		$sheet->setCellValue('A26', 'KAS DAN SETARA KAS PADA AWAL TAHUN');
+		$sheet->setCellValue('A27', 'KAS DAN SETARA KAS PADA AKHIR TAHUN');
 
-	public function update()
-	{
-		$data = [
-			'id_arus_kas' => $this->input->post('id_arus_kas'),
-			'id_kas' => $this->input->post('id_kas'),
-			'id_akun' => $this->input->post('id_akun'),
-			'tanggal' => $this->input->post('tanggal'),
-			'keterangan' => $this->input->post('keterangan'),
-			'nominal' => $this->input->post('nominal'),
-			'id_user' => $this->input->post('id_user'),
-		];
-		$this->aruskas_model->updateArusKas($data);
-		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil diubah</div>');
-		redirect('admin/arus_kas');
-	}
-
-	public function get_data_arus_kas()
-	{
-		$list = $this->aruskas_model->get_datatables();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $field) {
-			$no++;
-			$row = array();
-			$row[] = $no;
-			$row[] = $field->id_arus_kas;
-			$row[] = $field->id_kas;
-			$row[] = $field->id_akun;
-			$row[] = $field->tanggal;
-			$row[] = $field->keterangan;
-			$row[] = $field->nominal;
-			$row[] = $field->id_user;
-			$row[] = '<a href="' . base_url('admin/arus_kas/edit/' . $field->id_arus_kas) . '" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-					  <a href="' . base_url('admin/arus_kas/delete/' . $field->id_arus_kas) . '" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>';
-			$data[] = $row;
+		$row = 6;
+        foreach ($aruskas as $val){
+			$row = ($row == 11) ? $row += 1 : $row;
+			$row = ($row == 21) ? $row += 2 : $row;
+			$sheet->setCellValue('B' . $row, $val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
+			$sheet->setCellValue('C' . $row, $val['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
+			$sheet->setCellValue('D' . $row, $val[$perioda]);
+			$sheet->setCellValue('E' . $row, $val['sd' . $perioda]);
+			$row++;
 		}
-		$output = array(
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->aruskas_model->count_all(),
-			"recordsFiltered" => $this->aruskas_model->count_filtered(),
-			"data" => $data,
+
+		$writer = new Xlsx($spreadsheet);
+		$writer->save("storage/".$fileName);
+		header("Content-Type: application/vnd.ms-excel");
+        redirect(base_url()."/storage/".$fileName);         
+    }
+
+	public function cetak(){
+		$data = [
+			'aruskas' => $this->aruskas_model->getArusKas(),
+		];
+
+		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+
+		$this->load->view('arus_kas/cetak', $data);
+	}
+
+	private function _tanggal($tanggal){
+		$bulan = array (
+			1 =>   'jan',
+			'feb',
+			'mar',
+			'apr',
+			'mei',
+			'jun',
+			'jul',
+			'ags',
+			'sep',
+			'okt',
+			'nov',
+			'des'
 		);
-		echo json_encode($output);
+		$pecahkan = explode('-', $tanggal);
+	 
+		return $bulan[(int)$pecahkan[1]] . $pecahkan[0];
 	}
-
-	public function get_data_arus_kas_by_id($id)
-	{
-		$data = $this->aruskas_model->getArusKas($id);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_id_kas($id)
-	{
-		$data = $this->aruskas_model->getArusKasByKas($id);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_id_akun($id)
-	{
-		$data = $this->aruskas_model->getArusKasByAkun($id);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_id_user($id)
-	{
-		$data = $this->aruskas_model->getArusKasByUser($id);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal($tanggal)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggal($tanggal);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas($tanggal, $id_kas)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKas($tanggal, $id_kas);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_akun($tanggal, $id_akun)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalAkun($tanggal, $id_akun);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_user($tanggal, $id_user)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalUser($tanggal, $id_user);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun($tanggal, $id_kas, $id_akun)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkun($tanggal, $id_kas, $id_akun);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_user($tanggal, $id_kas, $id_user)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasUser($tanggal, $id_kas, $id_user);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_akun_user($tanggal, $id_akun, $id_user)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalAkunUser($tanggal, $id_akun, $id_user);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user($tanggal, $id_kas, $id_akun, $id_user)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUser($tanggal, $id_kas, $id_akun, $id_user);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan($tanggal, $id_kas, $id_akun, $id_user, $keterangan)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeterangan($tanggal, $id_kas, $id_akun, $id_user, $keterangan);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominal($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal_id($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominalId($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal_id_status($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominalIdStatus($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal_id_status_keterangan($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominalIdStatusKeterangan($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal_id_status_keterangan_nominal($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominalIdStatusKeteranganNominal($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal_id_status_keterangan_nominal_id($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status, $id_status)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominalIdStatusKeteranganNominalId($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status, $id_status);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal_id_status_keterangan_nominal_id_status($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status, $id_status, $status_status)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominalIdStatusKeteranganNominalIdStatus($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status, $id_status, $status_status);
-		echo json_encode($data);
-	}
-
-	public function get_data_arus_kas_by_tanggal_kas_akun_user_keterangan_nominal_id_status_keterangan_nominal_id_status_keterangan($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status, $id_status, $status_status, $keterangan_status_status)
-	{
-		$data = $this->aruskas_model->getArusKasByTanggalKasAkunUserKeteranganNominalIdStatusKeteranganNominalIdStatusKeterangan($tanggal, $id_kas, $id_akun, $id_user, $keterangan, $nominal, $id, $status, $keterangan_status, $nominal_status, $id_status, $status_status, $keterangan_status_status);
-		echo json_encode($data);
-	}
-
 
 }

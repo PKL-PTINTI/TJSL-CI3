@@ -318,5 +318,69 @@
 
     <script src="<?= base_url() ?>assets/js/page/index.js"></script>
     <script src="<?= base_url() ?>assets/js/page/modules-datatables.js"></script>
+
+    <script>
+        <?php
+            function _tanggal($tanggal){
+                $bulan = array (
+                    1 =>   'Januari',
+                    'Ferbuari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
+                );
+             
+                return $bulan[(int)$tanggal];
+            }
+        ?>
+
+        var statistics_chart = document.getElementById("myChart2").getContext('2d');
+
+        var myChart = new Chart(statistics_chart, {
+        type: 'line',
+        data: {
+            labels: [<?php foreach($data_chart_opex as $value) { echo '"'._tanggal($value->month).'",'; } ?>],
+            datasets: [{
+            label: 'Pemasukan',
+            data: [<?php foreach($data_chart_opex as $value) { echo $value->pemasukan.','; } ?>],
+            borderWidth: 5,
+            borderColor: '#6777ef',
+            backgroundColor: 'transparent',
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#6777ef',
+            pointRadius: 4
+            }]
+        },
+        options: {
+            legend: {
+            display: false
+            },
+            scales: {
+            yAxes: [{
+                gridLines: {
+                display: false,
+                drawBorder: false,
+                },
+                ticks: {
+                stepSize: 100000000
+                }
+            }],
+            xAxes: [{
+                gridLines: {
+                color: '#fbfbfb',
+                lineWidth: 2
+                }
+            }]
+            },
+        }
+        });
+    </script>
 </body>
 </html>

@@ -6,14 +6,9 @@ class ArusKasModel extends CI_Model {
     public function getArusKas()
     {
         $this->db->select('*');
-        $this->db->from('transposeagingrate');
+        $this->db->from('aktivitasoperasikasditerima');
         $query = $this->db->get();
-        return $query->result();
+        return $query->result_array();
     }
-
-	public function storeArus($table, $data)
-	{
-		$this->db->insert($table, $data);
-	}
 	
 }

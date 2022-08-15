@@ -1,4 +1,9 @@
 <?= $this->session->flashdata('message'); ?>
+<?php
+    if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
+        $bulanTahun =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y") - 1));
+    }
+?>
 <section class="section">
     <div class="section-header">
         <h1>Laporan Posisi Keuangan</h1>
@@ -22,30 +27,41 @@
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/laporan') ?>">Import Data</a>
+                                        href="<?= base_url('admin/laporan/posisikeuangan/createExcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/aporan') ?>">Cetak Laporan</a>
+                                        href="<?= base_url('admin/laporan/posisikeuangan/cetak') ?>">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-striped" id="table-laporan">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-center">NO</th>
                                         <th>Nama</th>
-                                        <th>DES 2021</th>
-                                        <th>JUL 2022</th>
-                                        <th>RKA JAN 2022 (1)</th>
-                                        <th>RKA SD JAN 2022 (2)</th>
-                                        <th>Realisasi JUL 2022 (3)</th>
-                                        <th>Realisasi SD JUL 2022 (4)</th>
-                                        <th>RKA JAN 2021 (5)</th>
-                                        <th>RKA SD JAN 2021 (6)</th>
-                                        <th>(3:1) % RKA JAN 2022</th>
-                                        <th>(4:2) % RKA SD JAN 2022</th>
+                                        <th><?= 'Des' . date('Y', mktime(0, 0, 0, 0,0 , date("Y")))?></th>
+                                        <th><?= $bulan ?></th>
+                                        <th>RKA <?= $bulan ?> (1)</th>
+                                        <th>RKA SD <?= $bulan ?> (2)</th>
+                                        <th>Realisasi <?= $bulan ?> (3)</th>
+                                        <th>Realisasi SD <?= $bulan ?> (4)</th>
+                                        <th>RKA <?= $bulanTahun ?> (5)</th>
+                                        <th>RKA SD <?= $bulanTahun ?> (6)</th>
+                                        <th>(3:1) % RKA <?= $bulan ?></th>
+                                        <th>(4:2) % RKA SD <?= $bulan ?></th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    <?php $no = 1; ?>
+                                    <?php foreach($neraca as $d): ?>
+                                    <tr>
+                                        <td class="text-center"><?= $no++ ?></td>
+                                        <td><?= $d['nama_akun'] ?></td>
+                                        <td><?= number_format($d['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                        <td><?= number_format($d[$perioda]) ?></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
                             </table>
                         </div>
                     </div>

@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Jurnal extends CI_Controller {
 
@@ -62,8 +62,8 @@ class Jurnal extends CI_Controller {
 			$row[] = $data_jurnal->deskripsi;
 			$row[] = $data_jurnal->keterangan;
 			$row[] = $data_jurnal->nobukti;
-			$row[] = number_format($data_jurnal->tot_pemasukan);
-			$row[] = number_format($data_jurnal->tot_pengeluaran);
+			$row[] = number_format($tot_pemasukan);
+			$row[] = number_format($tot_pengeluaran);
 			$row[] = $data_jurnal->tampil;
 			$row[] = $data_jurnal->updated;
 			$row[] = $data_jurnal->tglUpdate;
@@ -405,6 +405,16 @@ class Jurnal extends CI_Controller {
 		$this->template->load('jurnal/voucher', $data);
 	}
 
+	public function vouchers(){
+		$data = [
+			'title' => 'Tambah Data Transaksi Voucher',
+			'header' => 'Tambah Data Transaksi Voucher',
+			'korek' => $this->jurnal_model->getKodeRekening(),
+		];
+
+		$this->template->load('jurnal/vouchers', $data);
+	}
+
 	public function addVoucher(){
 		$nomor_bukti = $this->input->post('nomor_bukti');
 		$tanggal_transaksi = $this->input->post('tanggal_transaksi');
@@ -413,30 +423,7 @@ class Jurnal extends CI_Controller {
 		$keterangan = $this->input->post('keterangan');
 		$jumlah_pemasukan = str_replace(',', '', $this->input->post('jumlah_pemasukan'));
 
-		$korekPasangan = $this->input->post('korekPasangan');
-		$keteranganPasangan = $this->input->post('keteranganPasangan');
-		$jumlah_pengeluaran = str_replace('.', '', $this->input->post('jumlah_pengeluaran'));
-
-		echo "<pre>";
-		var_dump($this->input->post());
-		// foreach ($this->input->post() as $data) {
-		// 	var_dump($data);
-		// }
-		die;
-
-		// $this->jurnal_model->insert([
-		// 	'korek' => $korekPasangan[$i],
-		// 	'pemasukan' => '0',
-		// 	'pengeluaran' => $jumlah_pengeluaran[$i],
-		// 	'deskripsi' => $this->jurnal_model->getDeskripsiAkun($korekPasangan)['0']->deskripsiAkun,
-		// 	'keterangan' => $keteranganPasangan[$i],
-		// 	'updated' => $this->session->userdata('username'),
-		// 	'tglUpdate' => date('Y-m-d H:i:s'),
-		// 	'nobukti' => $nomor_bukti,
-		// 	'tot_pemasukan' => '0',
-		// 	'tot_pengeluaran' => '0',
-		// 	'tampil' => '0',
-		// ]);
+		$vouchers = array_slice($this->input->post('vouchers'), 0, -1);
 
 		$deskripsiAkun = $this->jurnal_model->getDeskripsiAkun($korek)['0']->deskripsiAkun;
 		
@@ -506,23 +493,23 @@ class Jurnal extends CI_Controller {
 					'nobukti' => $nomor_bukti,
 				]);
 				break;
-
 		}
 
-		$this->jurnal_model->insert([
-			'id_akun' => $korekPasangan1,
-			'tanggal' => $tanggal_transaksi,
-			'pemasukan' => '0',
-			'pengeluaran' => $jumlah_pengeluaran1,
-			'deskripsi' => $deskripsiAkun1,
-			'keterangan' => $keterangan1,
-			'updated' => $this->session->userdata('username'),
-			'tglUpdate' => date('Y-m-d H:i:s'),
-			'nobukti' => $nomor_bukti,
-			'tot_pemasukan' => '0',
-			'tot_pengeluaran' => '0',
-			'tampil' => '0',
-		]);
+		foreach ($vouchers as $vo) {
+			$this->jurnal_model->insert([
+				'id_akun' => $vo['korek_pasangan'],
+				'pemasukan' => '0',
+				'pengeluaran' => $vo['jumlah_pengeluaran'],
+				'deskripsi' => $this->jurnal_model->getDeskripsiAkun($vo['korek_pasangan'])['0']->deskripsiAkun,
+				'keterangan' => $vo['keterangan_pasangan'],
+				'updated' => $this->session->userdata('username'),
+				'tglUpdate' => date('Y-m-d H:i:s'),
+				'nobukti' => $nomor_bukti,
+				'tot_pemasukan' => '0',
+				'tot_pengeluaran' => '0',
+				'tampil' => '0',
+			]);
+		}
 
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Voucher Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
 		redirect(base_url('admin/jurnal'));	

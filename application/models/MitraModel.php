@@ -223,8 +223,7 @@ class MitraModel extends CI_Model {
 	public function getOpexCicilan(){
 		$this->db->select('*');
 		$this->db->from('opex');
-		$this->db->where('id_akun', '403010100');
-		$this->db->or_where('id_akun', '101060201');
+		$this->db->where('id_akun', '101060201');
 		$this->db->or_where('id_akun', '101060202');
 		$this->db->or_where('id_akun', '101060203');
 		$this->db->or_where('id_akun', '101060204');
@@ -232,6 +231,7 @@ class MitraModel extends CI_Model {
 		$this->db->or_where('id_akun', '101060206');
 		$this->db->or_where('id_akun', '101060207');
 		$this->db->or_where('id_akun', '101060208');
+		$this->db->or_where('id_akun', '403010100');
 		$this->db->order_by('tanggal', 'ASC');
 		$query = $this->db->get();
 		

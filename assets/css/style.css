@@ -1044,6 +1044,14 @@ select.form-control:not([size]):not([multiple]) {
   font-size: 20px;
   font-weight: 700;
 }
+
+.card .card-stats .card-stats-item .card-stats-item-count-number {
+  line-height: 1;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
 .card.card-large-icons {
   display: flex;
   flex-direction: row;

@@ -17,27 +17,53 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped" id="table-1">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-center">No ID</th>
                                         <th>Keterangan</th>
-                                        <th>Desember 2021</th>
-                                        <th>Sd Desember 2021</th>
-                                        <th>Juni 2022</th>
-                                        <th>Sd Juni 2022</th>
-                                        <th>RKA Juni 2022(1)</th>
-                                        <th>RKA-Juni 2022(2)</th>
-                                        <th>Realisasi Juni 2022(3)</th>
-                                        <th>Realisasi Juni 2022(4)</th>
+                                        <th><?= 'DES ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
+                                        <th>SD <?= 'DES ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
+                                        <th><?= $bulan ?></th>
+                                        <th>SD <?= $bulan ?></th>
+                                        <th>RKA <?= $bulan ?>(1)</th>
+                                        <th>RKA-<?= $bulan ?>(2)</th>
+                                        <th>Realisasi <?= $bulan ?>(3)</th>
+                                        <th>Realisasi <?= $bulan ?>(4)</th>
                                         <th>RKA Juni 2021(5)</th>
                                         <th>RKA-Juni 2021(6)</th>
-                                        <th>(3:1)% RKA Juni 2022</th>
-                                        <th>(4:2)% RKA-Juni 2022</th>
-                                        <th></th>
-                                        </tr>
-                                </thead>
+                                        <th>(3:1)% RKA <?= $bulan ?></th>
+                                        <th>(4:2)% RKA-<?= $bulan ?></th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $no = 1;
+                                    foreach ($aruskas as $ak) : ?>
+                                        <tr>
+                                            <?php
+                                                if($no == 1){
+                                                    echo '<td colspan="14">I. AKTIVITAS OPERASI <br class="pt-1"> KAS DITERIMA DARI</td>';
+                                                }
+                                                if($no == 15){
+                                                    echo '<td colspan="14">	II. AKTIVITAS INVESTASI <br class="pt-1"> KAS DIKELUARKAN UNTUK</td>';
+                                                }
+                                            ?>
+                                            <td class="text-center"><?= $ak['id'] ?></td>
+                                            <td><?= $ak['keterangan'] ?></td>
+                                            <td><?= $ak['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
+                                            <td><?= $ak['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
+                                            <td><?= $ak[$perioda] ?></td>
+                                            <td><?= $ak['sd' . $perioda] ?></td>
+                                            <td><?= $ak['rkajan' . date('y')] ?></td>
+                                            <td><?= $ak['rkasdjan' . date('y')] ?></td>
+                                            <td><?= $ak[$perioda] ?></td>
+                                            <td><?= $ak['sd' . $perioda] ?></td>
+                                            <td><?= $ak['rkajan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
+                                            <td><?= $ak['rkasdjan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
+                                            <td><?= $ak['prosen' . $perioda] ?></td>
+                                            <td><?= $ak['prosensd' . $perioda] ?></td>
+                                        </tr>
+                                    <?php  $no++; endforeach; ?>
                                 </tbody>
                             </table>
                         </div>

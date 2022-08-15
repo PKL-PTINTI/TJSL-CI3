@@ -44,7 +44,14 @@ class Mitra extends CI_Controller {
             $row[] = $mitra->nokontrak;
             $row[] = $mitra->lokasiUsaha;
             $row[] = $mitra->startcicil;
-            $row[] = $mitra->kolektibilitas;
+            $row[] = ($mitra->kolektibilitas == 'lancar' OR $mitra->kolektibilitas == 'Lancar' OR $mitra->kolektibilitas == 'LANCAR') 
+					? '<div class="badge badge-primary">Lancar</div>' : 
+					(($mitra->kolektibilitas == 'kurang lancar' OR $mitra->kolektibilitas == 'Kurang Lancar' OR $mitra->kolektibilitas == 'KURANG LANCAR') 
+					? '<div class="badge badge-success">Kurang Lancar</div>' : 
+					(($mitra->kolektibilitas == 'macet' OR $mitra->kolektibilitas == 'Macet' OR $mitra->kolektibilitas == 'MACET') 
+					? '<div class="badge badge-danger">Macet</div>' : 
+					(($mitra->kolektibilitas == 'diragukan' OR $mitra->kolektibilitas == 'Diragukan' OR $mitra->kolektibilitas == 'DIRAGUKAN') 
+					? '<div class="badge badge-warning">Diragukan</div>' : '<div class="badge badge-secondary">Tidak Ada</div>')));
 
             $row[] = number_format($mitra->pinjpokok);
             $row[] = number_format($mitra->pinjjasa);
@@ -63,7 +70,14 @@ class Mitra extends CI_Controller {
             $row[] = $mitra->tglkontrak;
             $row[] = $mitra->tgljatuhtempo;
             $row[] = $mitra->tglcicilanterakhir;
-            $row[] = $mitra->tdkbermasalah;
+            $row[] = ($mitra->tdkbermasalah == 'normal' OR $mitra->tdkbermasalah == 'Normal' OR $mitra->tdkbermasalah == 'NORMAL') 
+					? '<div class="badge badge-primary">Normal</div>' : 
+					(($mitra->tdkbermasalah == 'bermasalah' OR $mitra->tdkbermasalah == 'Bermasalah' OR $mitra->tdkbermasalah == 'BERMASALAH') 
+					? '<div class="badge badge-success">Bermasalah</div>' : 
+					(($mitra->tdkbermasalah == 'khusus' OR $mitra->tdkbermasalah == 'Khusus' OR $mitra->tdkbermasalah == 'KHUSUS') 
+					? '<div class="badge badge-danger">Khusus</div>' : 
+					(($mitra->tdkbermasalah == 'wo' OR $mitra->tdkbermasalah == 'Wo' OR $mitra->tdkbermasalah == 'WO') 
+					? '<div class="badge badge-warning">WO</div>' : '<div class="badge badge-secondary">Tidak Ada</div>')));
 
 			$row[] =  '
 				<div class="dropdown">
@@ -560,7 +574,7 @@ class Mitra extends CI_Controller {
 					$cicil_jasa = $cicilanOpex->pengeluaran;
 				}
 
-				if($cicilanOpex->id_akun == '101060201' OR $cicilanOpex->id_akun == '101060202' OR $cicilanOpex->id_akun == '101060203' OR $cicilanOpex->id_akun == '101060204' OR $cicilanOpex->id_akun == '101060205' OR $cicilanOpex->id_akun == '101060206' OR $cicilanOpex->id_akun == '101060207' OR $cicilanOpex->id_akun == '101060208'){
+				if(($cicilanOpex->id_akun == '101060201' OR $cicilanOpex->id_akun == '101060202' OR $cicilanOpex->id_akun == '101060203' OR $cicilanOpex->id_akun == '101060204' OR $cicilanOpex->id_akun == '101060205' OR $cicilanOpex->id_akun == '101060206' OR $cicilanOpex->id_akun == '101060207' OR $cicilanOpex->id_akun == '101060208') AND $cicilanOpex->tampil = '1'){
 					$cicil_pokok = $cicilanOpex->pengeluaran;
 					$jumlah = $cicil_pokok + $cicil_jasa;
 
@@ -579,7 +593,7 @@ class Mitra extends CI_Controller {
 						if($data['mitra']->tgl_rekondisi < $cicilanOpex->tanggal){
 							$tanggal_terakhir_cicil  = strtotime($cicilanOpex->tanggal);
 						}
-					} else {
+					} else {	
 						$tanggal_terakhir_cicil  = strtotime($cicilanOpex->tanggal);
 					}
 
@@ -720,11 +734,12 @@ class Mitra extends CI_Controller {
 				$row['nobukti'] = $cicilanOpex->nobukti;
 				$row['id_opex'] = $cicilanOpex->id_opex;
 				$row['updated'] = $cicilanOpex->updated;
+				$row['tampil'] = $cicilanOpex->tampil;
 				$row['tglUpdate'] = $cicilanOpex->tglUpdate;
 				$dataOpex[] = $row;
 
 				$pokok += $cicil_pokok;
-				$jasa += $cicil_jasa;
+				$jasa += $cicil_jasa;	
 				$total += $jumlah;
 
 				}
@@ -761,94 +776,9 @@ class Mitra extends CI_Controller {
 
 		$totalcicilan = $cicilan_pokok + $cicilan_jasa;
 		$timeStamp = time();
-		$no_bukti = '';
-
-		if($rekening == 101010101){
-			$no_bukti = $tanggal_cicilan.'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
-		} elseif ($rekening == 101010201) {
-			$no_bukti = $tanggal_cicilan.'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
-		} elseif ($rekening == 101010204) {
-			$no_bukti = $tanggal_cicilan.'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
-		}
 
 		$mitra = $this->mitra_model->getMitraKontrak($no_kontrak);
 
-		if($mitra->tdkbermasalah == 'masalah' || $mitra->tdkbermasalah == 'Masalah' || $mitra->tdkbermasalah == 'MASALAH' ){
-			$tampil = 1;
-			$nobukti = `{$tanggal_cicilan}/{$timeStamp}/{$no_kontrak}/tjsl`;
-			$akun = $this->mitra_model->getAkunKorek($no_kontrak);
-			$deskripsi = $akun->deskripsiAkun;
-
-			$this->mitra_model->insertOpex([
-				'id_akun' => $rekening,
-				'tanggal' => $tanggal_cicilan,
-				'pemasukan' => $totalcicilan,
-				'pengeluaran' => '0',
-				'deskripsi' => $deskripsi,
-				'keterangan' => $keterangan,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nobukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-
-			$deskripsi = 'Pendapatan/Pendapatan Lain-lain/Piutang Hapus Buku';
-			$ket = $mitra->nama_peminjam.'/'.$keterangan;
-
-			$this->mitra_model->insertOpex([
-				'id_akun' => '403030100',
-				'pemasukan' => '0',
-				'pengeluaran' => $totalcicilan,
-				'deskripsi' => $deskripsi,
-				'keterangan' => $ket,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $nobukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => '0',
-			]);
-		} else {
-			$tampil = 0;
-		}
-
-		// TODO: insert ke tabel cicilan
-
-		// var_dump($rekening,$no_bukti);
-		// die;
-
-		$this->mitra_model->insertOpex([
-				'id_akun' => $rekening,
-				'tanggal' => $tanggal_cicilan,
-				'pemasukan' => strval($totalcicilan),
-				'pengeluaran' => '0',
-				'deskripsi' => $keterangan,
-				'keterangan' => $mitra->nama_peminjam,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $no_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => $tampil,
-		]);
-
-		$this->mitra_model->insertOpex([
-				'id_akun' => '403010100',
-				'tanggal' => $tanggal_cicilan,
-				'pemasukan' => '0',
-				'pengeluaran' => $cicilan_jasa,
-				'deskripsi' => $keterangan,
-				'keterangan' => $mitra->nama_peminjam,
-				'updated' => $this->session->userdata('username'),
-				'tglUpdate' => date('Y-m-d H:i:s'),
-				'nobukti' => $no_bukti,
-				'tot_pemasukan' => '0',
-				'tot_pengeluaran' => '0',
-				'tampil' => $tampil,
-		]);
-		
 		$koderekening = '';
 		switch ($mitra->sektorUsaha) {
 			// 0101060201 Aktiva Lancar/Piutang Mitra Binaan/Angsuran/Sektor Industri 
@@ -895,6 +825,161 @@ class Mitra extends CI_Controller {
 				$koderekening = '';
 				break;
 		}
+
+		if($rekening == 101010101){
+			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
+		} elseif ($rekening == 101010201) {
+			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
+		} elseif ($rekening == 101010204) {
+			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
+		}
+
+		if ($mitra->tdkbermasalah == 'masalah' || $mitra->tdkbermasalah == 'Masalah' || $mitra->tdkbermasalah == 'MASALAH') {
+			echo 'MITRA MASALAH';
+			$tampil = 1;
+			$akun = $this->mitra_model->getAkunKorek($rekening);
+			$deskripsi = $akun[0]->deskripsiAkun;
+			$ket = $mitra->nama_peminjam.'/'.$keterangan;
+
+			switch ($mitra->sektorUsaha) {
+				// 0101060201 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Sektor Industri 
+				case 'Sektor Industri':
+					$koderekeningmasalah = '103040201';
+					break;
+				
+				// 0101060202 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Sektor Perdagangan
+				case 'Sektor Perdagangan':
+					$koderekeningmasalah = '103040202';
+					break;
+	
+				// 0101060203 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Sektor Pertanian
+				case 'Sektor Pertanian':
+					$koderekeningmasalah = '103040203';
+					break;
+	
+				// 0101060204 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Sektor Perkebunan
+				case 'Sektor Perkebunan':
+					$koderekeningmasalah = '103040204';
+					break;
+	
+				// 0101060205 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Sektor Perikanan
+				case 'Sektor Perikanan':
+					$koderekeningmasalah = '103040205';
+					break;
+	
+				// 0101060206 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Sektor Peternakan
+				case 'Sektor Peternakan':
+					$koderekeningmasalah = '103040206';
+					break;
+	
+				// 0101060207 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Sektor Jasa
+				case 'Sektor Jasa':
+					$koderekeningmasalah = '103040207';
+					break;
+	
+				// 0101060208 Aktiva Lancar/Piutang Mitra Masalah/Angsuran/Lain-lain
+				case 'Sektor Lain-lain':
+					$koderekeningmasalah = '103040208';
+					break;
+			}
+
+			$this->mitra_model->insertOpex([
+				'id_akun' => $rekening,
+				'tanggal' => $tanggal_cicilan,
+				'pemasukan' => strval($totalcicilan),
+				'pengeluaran' => '0',
+				'deskripsi' => $deskripsi,
+				'keterangan' => $ket,
+				'updated' => $this->session->userdata('username'),
+				'tglUpdate' => date('Y-m-d H:i:s'),
+				'nobukti' => $no_bukti,
+				'tot_pemasukan' => '0',
+				'tot_pengeluaran' => '0',
+				'tampil' => '0',
+			]);
+
+			$this->mitra_model->insertOpex([
+				'id_akun' => $koderekeningmasalah,
+				'tanggal' => $tanggal_cicilan,
+				'pemasukan' => '0',
+				'pengeluaran' => strval($totalcicilan),
+				'deskripsi' => $this->mitra_model->getAkunKorek($koderekeningmasalah)[0]->deskripsiAkun,
+				'keterangan' => $ket,
+				'updated' => $this->session->userdata('username'),
+				'tglUpdate' => date('Y-m-d H:i:s'),
+				'nobukti' => $no_bukti,
+				'tot_pemasukan' => '0',
+				'tot_pengeluaran' => '0',
+				'tampil' => '0',
+			]);
+		} elseif($mitra->tdkbermasalah == 'wo' || $mitra->tdkbermasalah == 'Wo' || $mitra->tdkbermasalah == 'WO'){
+			echo 'MITRA WO';
+			$tampil = 1;
+			$akun = $this->mitra_model->getAkunKorek($rekening);
+			$deskripsi = $akun[0]->deskripsiAkun;
+			$ket = $mitra->nama_peminjam.'/'.$keterangan;
+
+			$this->mitra_model->insertOpex([
+				'id_akun' => $rekening,
+				'tanggal' => $tanggal_cicilan,
+				'pemasukan' => strval($totalcicilan),
+				'pengeluaran' => '0',
+				'deskripsi' => $deskripsi,
+				'keterangan' => $ket,
+				'updated' => $this->session->userdata('username'),
+				'tglUpdate' => date('Y-m-d H:i:s'),
+				'nobukti' => $no_bukti,
+				'tot_pemasukan' => '0',
+				'tot_pengeluaran' => '0',
+				'tampil' => '0',
+			]);
+			$this->mitra_model->insertOpex([
+				'id_akun' => '403030100',
+				'tanggal' => $tanggal_cicilan,
+				'pemasukan' => '0',
+				'pengeluaran' => strval($totalcicilan),
+				'deskripsi' => 'Pendapatan/Pendapatan Lain-lain/Piutang Hapus Buku',
+				'keterangan' => $ket,
+				'updated' => $this->session->userdata('username'),
+				'tglUpdate' => date('Y-m-d H:i:s'),
+				'nobukti' => $no_bukti,
+				'tot_pemasukan' => '0',
+				'tot_pengeluaran' => '0',
+				'tampil' => '0',
+			]);
+		} else {
+			$tampil = 0;
+		}
+
+		$this->mitra_model->insertOpex([
+				'id_akun' => $rekening,
+				'tanggal' => $tanggal_cicilan,
+				'pemasukan' => strval($totalcicilan),
+				'pengeluaran' => '0',
+				'deskripsi' => $keterangan,
+				'keterangan' => $mitra->nama_peminjam,
+				'updated' => $this->session->userdata('username'),
+				'tglUpdate' => date('Y-m-d H:i:s'),
+				'nobukti' => $no_bukti,
+				'tot_pemasukan' => '0',
+				'tot_pengeluaran' => '0',
+				'tampil' => $tampil,
+		]);
+
+		$this->mitra_model->insertOpex([
+				'id_akun' => '403010100',
+				'tanggal' => $tanggal_cicilan,
+				'pemasukan' => '0',
+				'pengeluaran' => $cicilan_jasa,
+				'deskripsi' => $keterangan,
+				'keterangan' => $mitra->nama_peminjam,
+				'updated' => $this->session->userdata('username'),
+				'tglUpdate' => date('Y-m-d H:i:s'),
+				'nobukti' => $no_bukti,
+				'tot_pemasukan' => '0',
+				'tot_pengeluaran' => '0',
+				'tampil' => $tampil,
+		]);
 
 		$this->mitra_model->insertOpex([
 				'id_akun' => $koderekening,

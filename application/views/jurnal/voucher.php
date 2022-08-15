@@ -64,6 +64,10 @@
                                 <label>Keterangan <span class="index_loop"></span></label>
                                 <input type="text" class="form-control" placeholder="Keterangan" name="keteranganPasangan" autocomplete="off">
                             </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
                         </form>
                     </div>
                 </div>
