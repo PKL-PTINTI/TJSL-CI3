@@ -21,6 +21,18 @@
                         <h4>1. TINGKAT PENGEMBALIAN PINJAMAN MITRA BINAAN</h4>
                     </div>
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col d-flex justify-content-between">
+                                <?php if(uri_string() == 'admin/laporan/Kinerja'): ?>
+                                <?php endif; ?>
+                                <div>
+                                    <a class="btn btn-primary mb-3" 
+                                        href="<?= base_url('admin/laporan/kinerja/createExcel') ?>">Export Data</a>
+                                    <a class="btn btn-primary mb-3 "
+                                        href="<?= base_url('admin/laporan/kinerja/cetak') ?>">Cetak Laporan</a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>

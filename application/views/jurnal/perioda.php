@@ -1,10 +1,10 @@
-<?= $this->session->flashdata('message'); ?>
+<?= $this->session->flashdata('message');?>
 <section class="section">
     <div class="section-header">
         <h1>Management Data Jurnal</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item">Perioda</div>
+            <div class="breadcrumb-item"><?= $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda' ?></div>
         </div>
     </div>
 
@@ -13,7 +13,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Perioda Tanggal Jurnal</h4>
+                        <h4><?= $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda' ?> Tanggal Jurnal</h4>
                     </div>
                     <div class="card-body">
                         <form id="form-perioda" action="<?= base_url('admin/jurnal/perioda_data') ?>" method="post">
@@ -47,11 +47,17 @@
                                 <?php endif; ?>
                             </div>
                             <div class="form-group">
-                                <?= ($id_akun == '' AND $type == '') ? '<label>Isi \'0\' untuk \'Semua Korek/Akun ID\', \'1\' = KAS, \'2\' = Mandiri, \'3\' = BRI atau Isi Korek/Akun tertentu :</label>' : null ?>
-                                <input type="text" class="form-control" <?= ($id_akun == '' AND $type == '') ? '' : 'disabled' ?> value="<?= ($id_akun == '' AND $type == '') ? null : $id_akun ?>" placeholder="Korek" name="korek">
+                                <?= ($type != 'perkiraan') ? '<label>Isi \'0\' untuk \'Semua Korek/Akun ID\', \'1\' = KAS, \'2\' = Mandiri, \'3\' = BRI atau Isi Korek/Akun tertentu :</label>' : null ?>
+                                <?php
+                                    if($type == 'perkiraan'){
+                                        echo '<input type="text" class="form-control d-none" value="'.trim($id_akun).'" name="korek">';
+                                    } else {
+                                        echo '<input type="text" class="form-control" placeholder="Korek" name="korek">';
+                                    }
+                                ?>
                             </div>
                             <button type="submit" class="btn btn-primary">Cari</button>
-                        </form>
+                        </form> 
                     </div>
                 </div>
             </div>

@@ -254,9 +254,10 @@
                                 <span>Laporan Keuangan</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="<?= base_url('admin/laporan/posisikeuangan') ?>">Posisi Keuangan</a></li>
+                                <li><a class="nav-link" href="<?= base_url('admin/laporan/aktivitas') ?>">Aktivitas</a></li>
                                 <li><a class="nav-link" href="<?= base_url('admin/laporan/aruskas') ?>">Arus Kas</a></li>
                                 <li><a class="nav-link" href="<?= base_url('admin/laporan/kinerja') ?>">Kinerja</a></li>
-                                <li><a class="nav-link" href="<?= base_url('admin/laporan/catatan') ?>">Catatan</a></li>
+                                <li><a class="nav-link" href="<?= base_url('admin/laporan/catatan') ?>">Catatan </a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'coa') { echo 'active'; } ?>">
@@ -342,45 +343,46 @@
         ?>
 
         var statistics_chart = document.getElementById("myChart2").getContext('2d');
-
-        var myChart = new Chart(statistics_chart, {
-        type: 'line',
-        data: {
-            labels: [<?php foreach($data_chart_opex as $value) { echo '"'._tanggal($value->month).'",'; } ?>],
-            datasets: [{
-            label: 'Pemasukan',
-            data: [<?php foreach($data_chart_opex as $value) { echo $value->pemasukan.','; } ?>],
-            borderWidth: 5,
-            borderColor: '#6777ef',
-            backgroundColor: 'transparent',
-            pointBackgroundColor: '#fff',
-            pointBorderColor: '#6777ef',
-            pointRadius: 4
-            }]
-        },
-        options: {
-            legend: {
-            display: false
+        if(statistics_chart){
+            var myChart = new Chart(statistics_chart, {
+            type: 'line',
+            data: {
+                labels: [<?php foreach($data_chart_opex as $value) { echo '"'._tanggal($value->month).'",'; } ?>],
+                datasets: [{
+                label: 'Pemasukan',
+                data: [<?php foreach($data_chart_opex as $value) { echo $value->pemasukan.','; } ?>],
+                borderWidth: 5,
+                borderColor: '#6777ef',
+                backgroundColor: 'transparent',
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#6777ef',
+                pointRadius: 4
+                }]
             },
-            scales: {
-            yAxes: [{
-                gridLines: {
-                display: false,
-                drawBorder: false,
+            options: {
+                legend: {
+                display: false
                 },
-                ticks: {
-                stepSize: 100000000
-                }
-            }],
-            xAxes: [{
-                gridLines: {
-                color: '#fbfbfb',
-                lineWidth: 2
-                }
-            }]
-            },
+                scales: {
+                yAxes: [{
+                    gridLines: {
+                    display: false,
+                    drawBorder: false,
+                    },
+                    ticks: {
+                    stepSize: 100000000
+                    }
+                }],
+                xAxes: [{
+                    gridLines: {
+                    color: '#fbfbfb',
+                    lineWidth: 2
+                    }
+                }]
+                },
+            }
+            });
         }
-        });
     </script>
 </body>
 </html>

@@ -54,6 +54,9 @@ class Dashboard extends CI_Controller {
 
 		// $perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 
+		var_dump($this->perhitungan_model->getSaldoPokokBermasalah());
+		die;
+
 		// $totnilsaldopokok_bermasalah = $this->perhitungan_model->getSaldoPokokBermasalah();
 		// $totsektorindustribermasalah = $this->perhitungan_model->getSaldoPokokBermasalah('Sektor Industri');
 		// $totsektorperdaganganbermasalah = $this->perhitungan_model->getSaldoPokokBermasalah('Sektor Perdagangan');

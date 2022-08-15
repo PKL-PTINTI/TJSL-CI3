@@ -7,14 +7,22 @@ class PerhitunganModel extends CI_Model {
         $this->db->select_sum('saldopokok');
         $this->db->from('mitra');
         $this->db->where('saldopokok >', '0');
-        if ($sektor) {
-            $this->db->where('sektorUsaha', $sektor);
-        }
         $this->db->where('tdkbermasalah', 'masalah');
         $this->db->where('tdkbermasalah', 'Masalah');
         $this->db->where('tdkbermasalah', 'MASALAH');
+
         $query = $this->db->get();
-        return $query->result()[0]->saldopokok;
+
+        $saldopokok = [];
+        foreach ($query->result_array() as $key => $value) {
+            $row = ['jumlahsaldo' => 0, 'saldoindustri' => 0];
+            $row['jumlahsaldo'] += $value['saldopokok'];
+            $row['saldoindustri'] = 
+
+            $saldopokok = $row;
+        }
+
+        return $saldopokok;
     }
 
     public function getSaldoPokokTdkBermasalah($kolektibilitas = '') {

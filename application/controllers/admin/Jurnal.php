@@ -572,8 +572,8 @@ class Jurnal extends CI_Controller {
 		$type = $this->input->get('type') ?? '';
 
 		$this->template->load('jurnal/perioda', [
-			'title' => 'Perioda Opex',
-			'header' => 'Perioda Opex',
+			'title' => $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex',
+			'header' => $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex',
 			'id_akun' => $id_akun,
 			'type' => $type,
 		]);
@@ -637,6 +637,7 @@ class Jurnal extends CI_Controller {
 					$totpengeluaran += $value->pengeluaran;
 					$totpemasukan += $value->pemasukan;
 					$saldo_akhir = $value->pemasukan + $value->pengeluaran;
+					$selisih = $totpemasukan - $totpengeluaran;
 					$nomor++;
 				} else {
 					if($value->id_akun == $id_akun){
@@ -669,6 +670,7 @@ class Jurnal extends CI_Controller {
 						$totpengeluaran += $value->pengeluaran;
 						$totpemasukan += $value->pemasukan;
 						$saldo_akhir = $value->pemasukan + $value->pengeluaran;
+						$selisih = $totpemasukan - $totpengeluaran;
 						$nomor++;
 					}
 				}
@@ -677,7 +679,7 @@ class Jurnal extends CI_Controller {
 				
 		$this->output
 			->set_content_type('application/json')
-			->set_output(json_encode(array('data' => $data, 'totpengeluaran' => $totpengeluaran, 'totpemasukan' => $totpemasukan, 'saldo_akhir' => $saldo_akhir)));
+			->set_output(json_encode(array('data' => $data, 'totpengeluaran' => $totpengeluaran, 'totpemasukan' => $totpemasukan, 'saldo_akhir' => $saldo_akhir, 'selisih' => $selisih)));
 	}
 	
 	public function bank($akun){

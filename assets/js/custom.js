@@ -46,8 +46,16 @@ $("#form-perioda").on("submit", function (e) {
 		data: data,
 		dataType: "JSON",
 		success: function (response) {
-			table_perioda.fnClearTable();
-			table_perioda.fnAddData(response.data);
+			if(response.data){
+				table_perioda.fnClearTable();
+				table_perioda.fnAddData(response.data);
+			} else {
+				iziToast.success({
+					title: "Heyyyy",
+					message: "Datanya tidak ada lohhhh",
+					position: "bottomRight",
+				});
+			}
 		},
 	});
 });
@@ -191,14 +199,6 @@ $(".amount").priceFormat({
 // 	$(".elementpasangan").after(html);
 // });
 
-let count = 0;
-
-$("#add_more").on("click", function (e) {
-	let html = $("#elementpasangan").html();
-	$("#elementpasangan").after(html);
-	// TODO
-	++count;
-});
 
 $(".repeater, .repeater-default").repeater({
 	show: function () {

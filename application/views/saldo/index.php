@@ -33,14 +33,6 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center">2</td>
-                                        <td>Mandiri Jurnal</td>
-                                        <td><?= number_format($saldokasbank[0]->mandiri) ?></td>
-                                        <td>
-                                            <a class="btn btn-primary" href="<?= base_url('admin/saldo/update/mandiri') ?>">Update Saldo Mandiri</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td class="text-center">3</td>
                                         <td>Kas BRI Jurnal</td>
                                         <td><?= number_format($saldokasbank[0]->bri) ?></td>
@@ -48,6 +40,15 @@
                                             <a class="btn btn-primary" href="<?= base_url('admin/saldo/update/bri') ?>">Update Saldo BRI</a>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td class="text-center">2</td>
+                                        <td>Mandiri Jurnal</td>
+                                        <td><?= number_format($saldokasbank[0]->mandiri) ?></td>
+                                        <td>
+                                            <a class="btn btn-primary" href="<?= base_url('admin/saldo/update/mandiri') ?>">Update Saldo Mandiri</a>
+                                        </td>
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>

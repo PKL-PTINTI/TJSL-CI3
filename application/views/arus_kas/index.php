@@ -16,6 +16,18 @@
                         <h4><?= $header; ?></h4>
                     </div>
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col d-flex justify-content-between">
+                                <?php if(uri_string() == 'admin/coa/'): ?>
+                                <?php endif; ?>
+                                <div>
+                                    <a class="btn btn-primary mb-3" 
+                                        href="<?= base_url('admin/laporan/aruskas/createExcel') ?>">Export Data</a>
+                                    <a class="btn btn-primary mb-3" 
+                                        href="<?= base_url('admin/laporan/aruskas/cetak') ?>">Cetak Laporan</a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
