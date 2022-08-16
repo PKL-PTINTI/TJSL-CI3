@@ -22,13 +22,13 @@
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/jurnal/create') ?>">Tambah Data Jurnal</a>
+                                        href="<?= base_url('Admin/Jurnal/Create') ?>">Tambah Data Jurnal</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/jurnal/voucher') ?>">Tambah Data Voucher</a>
+                                        href="<?= base_url('Admin/Jurnal/Voucher') ?>">Tambah Data Voucher</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/jurnal/periodaopex') ?>">Perioda</a>
+                                        href="<?= base_url('Admin/Jurnal/Periodaopex') ?>">Perioda</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/jurnal/createExcel') ?>">Export Excel</a>
+                                        href="<?= base_url('Admin/Jurnal/CreateExcel') ?>">Export Excel</a>
                                 </div>
                             </div>
                         </div>

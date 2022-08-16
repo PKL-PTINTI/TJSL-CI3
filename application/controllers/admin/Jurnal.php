@@ -75,7 +75,7 @@ class Jurnal extends CI_Controller {
 						<i class="fas fa-ellipsis-v"></i>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('admin/jurnal/destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i
+						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i
 								class="fas fa-trash text-danger pr-2"></i> Delete </a>
 					</div>
 				</div>
@@ -177,7 +177,7 @@ class Jurnal extends CI_Controller {
 						<i class="fas fa-ellipsis-v"></i>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('admin/jurnal/destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i
+						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i
 							class="fas fa-trash text-danger pr-2"></i> Delete </a>
 					</div>
 			</div>
@@ -380,14 +380,14 @@ class Jurnal extends CI_Controller {
 	//End Pengeluaran
 
 	$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
-	redirect(base_url('admin/jurnal'));
+	redirect(base_url('Admin/Jurnal'));
 	}
 
 	public function destroy($nobukti){
 		$base = str_replace('%', '/', $nobukti);
 		$this->jurnal_model->destroy($base);
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Dihapus\',position: \'bottomRight\'});</script>');
-		// redirect(base_url('admin/jurnal'));
+		// redirect(base_url('Admin/Jurnal'));
 		// $referred_from = $this->session->userdata('referred_from');
 		// redirect($referred_from, 'refresh');
 		redirect($_SERVER['HTTP_REFERER']);
@@ -512,7 +512,7 @@ class Jurnal extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Voucher Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
-		redirect(base_url('admin/jurnal'));	
+		redirect(base_url('Admin/Jurnal'));	
 	}
 
 	public function createExcel() {
@@ -626,7 +626,7 @@ class Jurnal extends CI_Controller {
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item btndelete" id="button_delete_perioda" href="' . base_url('admin/jurnal/destroy/' . str_replace('/', '%', $value->nobukti)) . '"><i
+									<a class="dropdown-item btndelete" id="button_delete_perioda" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $value->nobukti)) . '"><i
 										class="fas fa-trash text-danger pr-2"></i> Delete </a>
 								</div>
 							</div>
@@ -659,7 +659,7 @@ class Jurnal extends CI_Controller {
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item btndelete" id="button_delete_perioda" href="' . base_url('admin/jurnal/destroy/' . str_replace('/', '%', $value->nobukti)) . '"><i
+									<a class="dropdown-item btndelete" id="button_delete_perioda" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $value->nobukti)) . '"><i
 										class="fas fa-trash text-danger pr-2"></i> Delete </a>
 								</div>
 							</div>

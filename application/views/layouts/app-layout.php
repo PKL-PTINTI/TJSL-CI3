@@ -177,7 +177,7 @@
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="<?= base_url('auth/logout'); ?>" class="dropdown-item has-icon text-danger">
+                            <a href="<?= base_url('Auth/Logout'); ?>" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </div>
@@ -187,16 +187,16 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="<?= base_url('/admin/dashboard') ?>">TJSL</a>
+                        <a href="<?= base_url('/Admin/Dashboard') ?>">TJSL</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="<?= base_url('/admin/dashboard') ?>">INTI</a>
+                        <a href="<?= base_url('/Admin/Dashboard') ?>">INTI</a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">
                             Dashboard</li>
                         <li class="nav-item <?php if($this->uri->segment(2) == 'dashboard') { echo 'active'; } ?>">
-                            <a href="<?= base_url('/admin/dashboard') ?>" class="nav-link"><i
+                            <a href="<?= base_url('/Admin/Dashboard') ?>" class="nav-link"><i
                                     class="fa-solid fa-house-chimney"></i><span>Dashboard</span></a>
                         </li>
                         <li class="menu-header">Management Data</li>
@@ -204,27 +204,27 @@
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fa-solid fa-people-roof"></i> <span>Mitra Binaan</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="<?= base_url('/admin/mitra') ?>">Semua Mitra</a></li>
+                                <li><a class="nav-link" href="<?= base_url('/Admin/Mitra') ?>">Semua Mitra</a></li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/lancar', 'Lancar'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Lancar', 'Lancar'
                                         )">Lancar</a>
                                 </li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/kuranglancar', 'Kurang Lancar'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Kuranglancar', 'Kurang Lancar'
                                         )">Kurang
                                         Lancar</a></li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/diragukan', 'Diragukan'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Diragukan', 'Diragukan'
                                         )">Diragukan</a>
                                 </li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/kolektibilitas/macet', 'Macet'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Macet', 'Macet'
                                         )">Macet</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="<?php if($this->uri->segment(2) == 'saldo') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/admin/saldo') ?>"><i class="fa-solid fa-building-columns"></i>
+                            <a class="nav-link" href="<?= base_url('/Admin/Saldo') ?>"><i class="fa-solid fa-building-columns"></i>
                                 <span>Saldo Kas dan Bank</span>
                             </a>
                         </li>
@@ -233,41 +233,37 @@
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-book-open"></i>
                                 <span>Jurnal</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="<?= base_url('/admin/jurnal') ?>">Transaksi Jurnal</a>
+                                <li><a class="nav-link" href="<?= base_url('/Admin/Jurnal') ?>">Transaksi Jurnal</a>
                                 </li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/kas', 'Transaksi Kas')">Transaksi
-                                        Kas</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/kas', 'Transaksi Kas')">Transaksi Kas</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bri', 'Transaksi BRI')">Transaksi
-                                        BRI</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bri', 'Transaksi BRI')">Transaksi BRI</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/mandiri', 'Transaksi Mandiri')">Transaksi
-                                        Mandiri</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/mandiri', 'Transaksi Mandiri')">Transaksi Mandiri</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bank', 'Transaksi Bank')">Transaksi
-                                        Bank</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bank', 'Transaksi Bank')">Transaksi Bank</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-magnifying-glass-chart"></i>
                                 <span>Laporan Keuangan</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="<?= base_url('admin/laporan/posisikeuangan') ?>">Posisi Keuangan</a></li>
-                                <li><a class="nav-link" href="<?= base_url('admin/laporan/aktivitas') ?>">Aktivitas</a></li>
-                                <li><a class="nav-link" href="<?= base_url('admin/laporan/aruskas') ?>">Arus Kas</a></li>
-                                <li><a class="nav-link" href="<?= base_url('admin/laporan/kinerja') ?>">Kinerja</a></li>
-                                <li><a class="nav-link" href="<?= base_url('admin/laporan/catatan') ?>">Catatan </a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Posisikeuangan') ?>">Posisi Keuangan</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Aktivitas') ?>">Aktivitas</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Aruskas') ?>">Arus Kas</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Kinerja') ?>">Kinerja</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Catatan') ?>">Catatan </a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'coa') { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-bars"></i>
                                 <span>Lainnya</span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?= base_url('admin/coa') ?>">COA</a></li>
-                                <li><a href="<?= base_url('admin/agingrate') ?>">Aging Rate</a></li>
-                                <li><a href="<?= base_url('admin') ?>">RKA</a></li>
-                                <li><a href="<?= base_url('admin') ?>">Neraca Saldo</a></li>
+                                <li><a href="<?= base_url('Admin/Coa') ?>">COA</a></li>
+                                <li><a href="<?= base_url('Admin/Agingrate') ?>">Aging Rate</a></li>
+                                <li><a href="<?= base_url('Admin/Rka') ?>">RKA</a></li>
+                                <li><a href="<?= base_url('Admin/Neracasaldo') ?>">Neraca Saldo</a></li>
                             </ul>
                         </li>
                 </aside>

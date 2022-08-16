@@ -112,7 +112,7 @@
                                         <a class="dropdown-item" data-sektor="" href="#">Sektor Lain-lain</a>
                                     </div>
                                 </div>
-                                <a class="btn btn-primary mb-3 " href="<?= base_url('admin/mitra/create') ?>">Tambah Data Mitra</a>
+                                <a class="btn btn-primary mb-3 " href="<?= base_url('Admin/Mitra/Create') ?>">Tambah Data Mitra</a>
                             </div>
                         </div>
                         <div class="table-responsive">

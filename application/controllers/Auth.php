@@ -12,14 +12,14 @@ class Auth extends CI_Controller
     public function index()
     {
         if ($this->session->userdata('username')) {
-            redirect(base_url('admin/dashboard'));
+            redirect(base_url('Admin/Dashboard'));
         }
 
         $this->form_validation->set_rules('username', 'Username', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         if ($this->form_validation->run() == false) {
-            $this->load->view('auth/login');
+            $this->load->view('auth/Login');
         } else {
             $this->_login();
         }
@@ -30,7 +30,7 @@ class Auth extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-        $user = $this->db->get_where('admin', ['username' => $username])->row_array();
+        $user = $this->db->get_where('Admin', ['username' => $username])->row_array();
 
         // jika usernya ada
         if ($user) {
@@ -42,7 +42,11 @@ class Auth extends CI_Controller
 					'loggedin' => date('Y-m-d H:i:s')
                 ];
                 $this->session->set_userdata($data);
-                redirect(base_url('admin/dashboard'));
+                if($user['id_admin'] == 1){
+                    redirect(base_url('Admin/Dashboard'));
+                }else{
+                    redirect(base_url('Admin/Dashboard'));
+                }
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password!</div>');
                 redirect(base_url('auth'));

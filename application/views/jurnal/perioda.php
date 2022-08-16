@@ -16,7 +16,7 @@
                         <h4><?= $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda' ?> Tanggal Jurnal</h4>
                     </div>
                     <div class="card-body">
-                        <form id="form-perioda" action="<?= base_url('admin/jurnal/perioda_data') ?>" method="post">
+                        <form id="form-perioda" action="<?= base_url('Admin/jurnal/Perioda_data') ?>" method="post">
                             <div class="row">
                                 <?php if($id_akun == '' AND $type == ''): ?>
                                     <div class="col-6">

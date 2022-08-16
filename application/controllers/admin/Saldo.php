@@ -48,7 +48,7 @@ class Saldo extends CI_Controller {
 			$this->db->update('saldokasbank');
 		}
 
-		redirect(base_url('admin/saldo'));
+		redirect(base_url('Admin/saldo'));
 	}
 
 }

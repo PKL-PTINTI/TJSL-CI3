@@ -18,13 +18,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/coa/'): ?>
+                                <?php if(uri_string() == 'admin/laporan/ArusKas'): ?>
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/laporan/aruskas/createExcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/Laporan/Aruskas/CreateExcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/laporan/aruskas/cetak') ?>">Cetak Laporan</a>
+                                        href="<?= base_url('Admin/Laporan/Aruskas/Cetak') ?>">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>
@@ -32,10 +32,10 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">No ID</th>
+                                        <th class="text-center">No</th>
                                         <th>Keterangan</th>
-                                        <th><?= 'DES ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
-                                        <th>SD <?= 'DES ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
+                                        <th><?= 'Des ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
+                                        <th>SD <?= 'Des ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
                                         <th><?= $bulan ?></th>
                                         <th>SD <?= $bulan ?></th>
                                         <th>RKA <?= $bulan ?>(1)</th>

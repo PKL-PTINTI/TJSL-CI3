@@ -184,8 +184,16 @@ let table = $("#table-jurnal").DataTable({
 });
 
 function changeUrlJurnal(url, title) {
-	table.ajax.url(url).load();
-	$("#header").text(title);
+	if(window.location.pathname == "/Admin/Jurnal"){
+		table.ajax.url(url).load();
+		$("#header").text(title);
+	} else {
+		window.location.href = window.location.origin + "/Admin/Jurnal";
+		document.on('ready', function () {
+			table.ajax.url(url).load();
+			$("#header").text(title);
+		});
+	}
 }
 
 $(".amount").priceFormat({

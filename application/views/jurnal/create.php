@@ -2,8 +2,8 @@
     <div class="section-header">
         <h1>Tambah Data Transaksi Jurnal</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('admin/jurnal') ?>">Jurnal</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('Admin/jurnal') ?>">Jurnal</a></div>
             <div class="breadcrumb-item">Tambah Data Transaksi Jurnal</div>
         </div>
     </div>
@@ -16,7 +16,7 @@
                         <h4>Data Transaksi Jurnal</h4>
                     </div>
                     <div class="card-body">
-                        <form action="<?= base_url('admin/jurnal/store') ?>" method="post">
+                        <form action="<?= base_url('Admin/jurnal/Store') ?>" method="post">
                             <div class="form-group">
                                 <label>Nomor Bukti</label>
                                 <input type="text" class="form-control" placeholder="Nomor Bukti" name="nomor_bukti">

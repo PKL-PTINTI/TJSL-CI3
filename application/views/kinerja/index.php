@@ -27,9 +27,9 @@
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/laporan/kinerja/createExcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/Laporan/Kinerja/CreateExcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/laporan/kinerja/cetak') ?>">Cetak Laporan</a>
+                                        href="<?= base_url('Admin/Laporan/Kinerja/Cetak') ?>">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>

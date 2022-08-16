@@ -23,13 +23,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/laporan/PosisiKeuangan'): ?>
+                                <?php if(uri_string() == 'Admin/Laporan/PosisiKeuangan'): ?>
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/laporan/posisikeuangan/createExcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/Laporan/Posisikeuangan/CreateExcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/laporan/posisikeuangan/cetak') ?>">Cetak Laporan</a>
+                                        href="<?= base_url('Admin/Laporan/Posisikeuangan/Cetak') ?>">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>

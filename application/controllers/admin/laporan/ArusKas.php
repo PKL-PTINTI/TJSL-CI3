@@ -14,8 +14,8 @@ class ArusKas extends CI_Controller {
 	public function index()
 	{
 		$data = [
-			'title' => 'Data Arus Kas',
-            'header' => 'Data Arus Kas',
+			'title' => 'Laporan Arus Kas',
+            'header' => 'Management Laporan Arus Kas',
             'aruskas' => $this->aruskas_model->getArusKas(),
 		];
 
