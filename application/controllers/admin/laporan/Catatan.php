@@ -32,7 +32,7 @@ class Catatan extends CI_Controller {
     }
 
 	public function createExcel() {
-		$fileName = 'aruskas-keuangan-' . date('Y') .'.xlsx';  
+		$fileName = 'catatan-atas-laporan-keuangan-' . date('Y') .'.xlsx';  
 
 		$catatan = $this->catatan_model->getData();
 		$spreadsheet = new Spreadsheet();

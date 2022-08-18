@@ -53,8 +53,12 @@ class PosisiKeuangan extends CI_Controller {
 		$sheet->getStyle('A4')->applyFromArray($styleArray);
 
 		$sheet->mergeCells('A3:B3');
+		$sheet->mergeCells('A2:D2');
 		$sheet->getStyle('A3:B3')->getFont()->setBold(true);
 		$sheet->getStyle('A3:B3')->getAlignment()->setHorizontal('center');
+		$sheet->getStyle('A2:D2')->getAlignment()->setHorizontal('center');
+
+		$sheet->setCellValue('A2', 'LAPORAN POSISI KEUANGAN');
 
        	$sheet->setCellValue('A3', 'U R A I A N');
         $sheet->setCellValue('C3', 'DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));

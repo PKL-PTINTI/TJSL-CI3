@@ -1,4 +1,7 @@
 <?php
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Kinerja extends CI_Controller {
@@ -135,6 +138,86 @@ class Kinerja extends CI_Controller {
 		$data['prosenDanaDisalurkan'] = $prosenDanaDisalurkan;
 
 		$this->template->load('kinerja/index', $data);
+    }
+
+	public function createExcel() {
+		$fileName = 'laporan-kinerja' . date('Y') .'.xlsx';  
+
+		$kinerja = $this->kinerja_model->getData();
+		$spreadsheet = new Spreadsheet();
+		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+
+        $sheet = $spreadsheet->getActiveSheet();
+		$sheet->getColumnDimension('A')->setWidth(5);
+		$sheet->getColumnDimension('B')->setWidth(28);
+		$sheet->getColumnDimension('C')->setWidth(25);
+		$sheet->getColumnDimension('D')->setWidth(25);
+
+		$sheet->setCellValue('A5', '1. TINGKAT PENGEMBALIAN PINJAMAN MITRA BINAAN');
+		$sheet->setCellValue('A6', 'Skor : 100-70=>3, 70-40=>2, 40-10=>1, 10-0=>0');
+		$sheet->setCellValue('A9', 'No');
+		$sheet->setCellValue('A10', '1');
+		$sheet->setCellValue('A11', '2');
+		$sheet->setCellValue('A12', '3');
+		$sheet->setCellValue('A13', '4');
+		$sheet->setCellValue('A14', '5');
+		$sheet->setCellValue('B9', 'Kolektibilitas');
+		$sheet->setCellValue('B10', 'Lancar');
+		$sheet->setCellValue('B11', 'Kurang Lancar');
+		$sheet->setCellValue('B12', 'Diragukan');
+		$sheet->setCellValue('B13', 'Macet');
+		$sheet->setCellValue('B14', 'TOTAL');
+		$sheet->setCellValue('C9', 'Jul 2022 (Rp)');
+		$sheet->setCellValue('D9', 'Prosen (%)');
+		$sheet->setCellValue('E9', 'Timbang (Rp)');
+		$sheet->setCellValue('A16', '2. EFFEKTIVITAS PENYALURAN DANA');
+		$sheet->setCellValue('A17', '2.1 DANA YANG DISALURKAN ');
+		$sheet->setCellValue('A22', 'No');
+		$sheet->setCellValue('A23', '1');
+		$sheet->setCellValue('A24', '2');
+		$sheet->setCellValue('A25', '3');
+		$sheet->setCellValue('B22', 'Keterangan');
+		$sheet->setCellValue('B23', 'Penyaluran Pinjaman');
+		$sheet->setCellValue('B24', 'Dana Pembinaan Kemitraan');
+		$sheet->setCellValue('B25', 'JUMLAH DANA YG DISALURKAN');
+		$sheet->setCellValue('C22', 'Ags 2022');
+		$sheet->setCellValue('A27', 'Skor : 100-90 => 3 , 90-85 => 2, 85-80 => 1 ');
+		$sheet->setCellValue('A29', 'No');
+		$sheet->setCellValue('A30', '1');
+		$sheet->setCellValue('A31', '2');
+		$sheet->setCellValue('A32', '3');
+		$sheet->setCellValue('A33', '4');
+		$sheet->setCellValue('A34', '5');
+		$sheet->setCellValue('A35', '6');
+		$sheet->setCellValue('B29', 'Keterangan');
+		$sheet->setCellValue('B30', 'Saldo Awal');
+		$sheet->setCellValue('B31', 'Jasa Administrasi Pinjaman');
+		$sheet->setCellValue('B32', 'Jasa Giro');
+		$sheet->setCellValue('B33', 'Pendapatan Lain');
+		$sheet->setCellValue('B34', 'Pengembalian Pinjaman Pokok');
+		$sheet->setCellValue('B35', 'JUMLAH DANA TERSEDIA ');
+		$sheet->setCellValue('C29', 'Jul 2022');
+		
+
+		// $row = 6;
+        // foreach ($neraca as $val){
+		// 	if($row == 11 || $row == 15 || $row == 25 || $row == 28){
+		// 		$row += 1;
+		// 	}
+		// 	if($row == 20){
+		// 		$row += 3;
+		// 	}
+		// 	$sheet->setCellValue('C' . $row, $val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
+		// 	$sheet->setCellValue('D' . $row, $val[$perioda]);
+		// 	$row++;			
+		// }
+
+		// die;
+		$writer = new Xlsx($spreadsheet);
+		$writer->save("storage/".$fileName);
+		header("Content-Type: application/vnd.ms-excel");
+        redirect(base_url()."/storage/".$fileName);         
     }
 
 	private function _tanggal($tanggal){

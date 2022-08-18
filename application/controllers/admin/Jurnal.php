@@ -405,16 +405,6 @@ class Jurnal extends CI_Controller {
 		$this->template->load('jurnal/voucher', $data);
 	}
 
-	public function vouchers(){
-		$data = [
-			'title' => 'Tambah Data Transaksi Voucher',
-			'header' => 'Tambah Data Transaksi Voucher',
-			'korek' => $this->jurnal_model->getKodeRekening(),
-		];
-
-		$this->template->load('jurnal/vouchers', $data);
-	}
-
 	public function addVoucher(){
 		$nomor_bukti = $this->input->post('nomor_bukti');
 		$tanggal_transaksi = $this->input->post('tanggal_transaksi');
@@ -423,7 +413,7 @@ class Jurnal extends CI_Controller {
 		$keterangan = $this->input->post('keterangan');
 		$jumlah_pemasukan = str_replace(',', '', $this->input->post('jumlah_pemasukan'));
 
-		$vouchers = array_slice($this->input->post('vouchers'), 0, -1);
+		$voucher = array_slice($this->input->post('voucher'), 0, -1);
 
 		$deskripsiAkun = $this->jurnal_model->getDeskripsiAkun($korek)['0']->deskripsiAkun;
 		
@@ -495,7 +485,7 @@ class Jurnal extends CI_Controller {
 				break;
 		}
 
-		foreach ($vouchers as $vo) {
+		foreach ($voucher as $vo) {
 			$this->jurnal_model->insert([
 				'id_akun' => $vo['korek_pasangan'],
 				'pemasukan' => '0',

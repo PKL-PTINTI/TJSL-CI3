@@ -236,13 +236,13 @@
                                 <li><a class="nav-link" href="<?= base_url('/Admin/Jurnal') ?>">Transaksi Jurnal</a>
                                 </li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/kas', 'Transaksi Kas')">Transaksi Kas</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/kas', 'Transaksi Kas')">Transaksi Kas</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bri', 'Transaksi BRI')">Transaksi BRI</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/bri', 'Transaksi BRI')">Transaksi BRI</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/mandiri', 'Transaksi Mandiri')">Transaksi Mandiri</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/mandiri', 'Transaksi Mandiri')">Transaksi Mandiri</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/admin/jurnal/transaksi/bank', 'Transaksi Bank')">Transaksi Bank</a></li>
+                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/bank', 'Transaksi Bank')">Transaksi Bank</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">

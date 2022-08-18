@@ -13,21 +13,21 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Data Transaksi Voucher</h4>
+                        <h4 class="card-title">Data Transaksi Voucher</h4>
                     </div>
                     <div class="card-body">
-                        <form action="<?= base_url('Admin/jurnal/AddVoucher') ?>" method="post" class="repeater">
-                            <div class="form-group">
-                                <label>Nomor Bukti</label>
-                                <input type="text" class="form-control" placeholder="Nomor Bukti" name="nomor_bukti" autocomplete="off">
-                            </div>
+                    <form action="<?= base_url('Admin/jurnal/AddVoucher') ?>" method="post" class="repeater">
+                        <div class="form-group">
+                            <label>Nomor Bukti</label>
+                            <input type="text" class="form-control" placeholder="Nomor Bukti" name="nomor_bukti">
+                        </div>
                             <div class="form-group">
                                 <label>Tanggal Transaksi</label>
-                                <input type="text" class="form-control datepicker" name="tanggal_transaksi" autocomplete="off">
+                                <input type="text" class="form-control datepicker" name="tanggal_transaksi">
                             </div>
                             <div class="form-group">
                                 <label>Kode Rekening</label>
-                                <select class="form-control select2" name="korek" autocomplete="off">
+                                <select class="form-control select2" name="korek">
                                     <option>Pilih Kode Rekening</option>
                                     <?php foreach ($korek as $row): ?>
                                     <option value="<?php echo $row->korek ?>">
@@ -38,16 +38,22 @@
                             </div>
                             <div class=" form-group">
                                 <label>Jumlah Pemasukan/Debet (Rp)</label>
-                                <input type="text" class="form-control amount" placeholder="Jumlah Pemasukan" name="jumlah_pemasukan" autocomplete="off">
+                                <input type="text" class="form-control amount" placeholder="Jumlah Pemasukan" name="jumlah_pemasukan">
                             </div>
                             <div class="form-group">
                                 <label>Keterangan</label>
-                                <input type="text" class="form-control" placeholder="Keterangan" name="keterangan" autocomplete="off">
+                                <input type="text" class="form-control" placeholder="Keterangan" name="keterangan">
                             </div>
 
-                            <div class="form-group">
-                                <label>Kode Rekening Pasangan <span class="index_loop"></span></label>
-                                <select class="form-control select2" name="korekPasangan" autocomplete="off">
+                            
+                        <div data-repeater-list="voucher">
+                        <div data-repeater-item>
+                            <div class="row d-flex align-items-end">
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                <label class="form-grup">Kode Rekening Pasangan</label>
+                                <select class="form-control select2" name="korek_pasangan">
                                     <option>Pilih Kode Rekening</option>
                                     <?php foreach ($korek as $row): ?>
                                     <option value="<?php echo $row->korek ?>">
@@ -55,23 +61,56 @@
                                     </option>
                                     <?php endforeach; ?>
                                 </select>
-                            </div>
-                            <div class=" form-group">
-                                <label>Jumlah Pengeluaran/Kredit (Rp) <span class="index_loop"></span></label>
-                                <input type="text" class="form-control amount" placeholder="Jumlah Pengeluaran" name="jumlah_pengeluaran" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label>Keterangan <span class="index_loop"></span></label>
-                                <input type="text" class="form-control" placeholder="Keterangan" name="keteranganPasangan" autocomplete="off">
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                <label class="form-grup">Jumlah Pengeluaran/Kredit (Rp)</label>
+                                <input
+                                    type="text"
+                                    class="form-control amount"
+                                    name="jumlah_pengeluaran"
+                                    placeholder="Jumlah pengeluaran"
+                                />
+                                </div>
                             </div>
-                        </form>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                <label class="form-grup">Keterangan</label>
+                                <input
+                                    type="text"
+                                    class="form-control" 
+                                    name="keterangan_pasangan"
+                                    placeholder="Keterangan"
+                                />
+                                </div>
+                            </div>
+
+                            <div class="col-md-1 col-12">
+                                <button class="btn btn-outline-danger text-nowrap mb-2" data-repeater-delete type="button">
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                            </div>
+                            <hr />
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                            <i data-feather="plus" class="me-25"></i>
+                            <span>Add New</span>
+                            </button>
+                            <button class="btn btn-icon btn-primary" type="submit">
+                            <i data-feather="plus" class="me-25"></i>
+                            <span>Submit</span>
+                            </button>
+                        </div>
+                        </div>
+                    </form>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+                </div>
+    

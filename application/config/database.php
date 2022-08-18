@@ -76,6 +76,7 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
+	// 'port' => '53608',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'tjsl-ptinti',
