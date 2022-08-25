@@ -195,12 +195,12 @@
                     <ul class="sidebar-menu">
                         <li class="menu-header">
                             Dashboard</li>
-                        <li class="nav-item <?php if($this->uri->segment(2) == 'dashboard') { echo 'active'; } ?>">
+                        <li class="nav-item <?php if($this->uri->segment(2) == 'Dashboard') { echo 'active'; } ?>">
                             <a href="<?= base_url('/Admin/Dashboard') ?>" class="nav-link"><i
                                     class="fa-solid fa-house-chimney"></i><span>Dashboard</span></a>
                         </li>
                         <li class="menu-header">Management Data</li>
-                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'mitra') { echo 'active'; } ?>">
+                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Mitra') { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                                     class="fa-solid fa-people-roof"></i> <span>Mitra Binaan</span></a>
                             <ul class="dropdown-menu">
@@ -223,13 +223,13 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="<?php if($this->uri->segment(2) == 'saldo') { echo 'active'; } ?>">
+                        <li class="<?php if($this->uri->segment(2) == 'Saldo') { echo 'active'; } ?>">
                             <a class="nav-link" href="<?= base_url('/Admin/Saldo') ?>"><i class="fa-solid fa-building-columns"></i>
                                 <span>Saldo Kas dan Bank</span>
                             </a>
                         </li>
                         <li class="menu-header">Laporan</li>
-                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'jurnal') { echo 'active'; } ?>">
+                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Jurnal') { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-book-open"></i>
                                 <span>Jurnal</span></a>
                             <ul class="dropdown-menu">
@@ -245,7 +245,7 @@
                                         onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/bank', 'Transaksi Bank')">Transaksi Bank</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Laporan') { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-magnifying-glass-chart"></i>
                                 <span>Laporan Keuangan</span></a>
                             <ul class="dropdown-menu">
@@ -256,7 +256,7 @@
                                 <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Catatan') ?>">Catatan </a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'coa') { echo 'active'; } ?>">
+                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Lainnya') { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-bars"></i>
                                 <span>Lainnya</span></a>
                             <ul class="dropdown-menu">

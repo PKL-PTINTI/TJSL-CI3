@@ -31,7 +31,7 @@ class Aktivitas extends CI_Controller {
     }
 
 	public function createExcel() {
-		$fileName = 'laporan-aktivitas' . date('Y') .'.xlsx';
+		$fileName = 'laporan-aktivitas-' . date('Y') .'.xlsx';
 		$aktivitas = $this->aktivitas_model->getAktivitas();
 		$spreadsheet = new Spreadsheet();
 		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
@@ -44,7 +44,28 @@ class Aktivitas extends CI_Controller {
 		$sheet->getColumnDimension('D')->setWidth(20);
 		$sheet->getColumnDimension('E')->setWidth(20);
 
-       	$sheet->setCellValue('A3', 'URAIAN');
+		$styleArray = array(
+			'font'  => array(
+				'bold'  => true,
+				'color' => array('rgb' => 'be123c')
+			)
+		);
+
+		$sheet->getStyle('A4')->applyFromArray($styleArray);
+		$sheet->getStyle('A5')->applyFromArray($styleArray);
+		$sheet->getStyle('A10')->applyFromArray($styleArray);
+		$sheet->getStyle('A16')->applyFromArray($styleArray);
+		$sheet->getStyle('A26')->applyFromArray($styleArray);
+		$sheet->getStyle('A30')->applyFromArray($styleArray);
+
+		$sheet->mergeCells('A2:E2');
+		$sheet->getStyle('A2:E2')->getFont()->setBold(true);
+		$sheet->getStyle('A3:E3')->getFont()->setBold(true);
+		$sheet->getStyle('A2:E2')->getAlignment()->setHorizontal('center');
+
+		$sheet->setCellValue('A2', 'LAPORAN AKTIVITAS');	
+
+       	$sheet->setCellValue('A3', 'U R A I A N');
         $sheet->setCellValue('B3', 'DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
         $sheet->setCellValue('C3', 'SD DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
         $sheet->setCellValue('D3', $bulan);
@@ -89,10 +110,10 @@ class Aktivitas extends CI_Controller {
 			$row = ($row == 16) ? $row += 1 : $row;
 			$row = ($row == 26) ? $row += 1 : $row;
 			$row = ($row == 30) ? $row += 1 : $row;
-			$sheet->setCellValue('B' . $row, $val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
-			$sheet->setCellValue('C' . $row, $val['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
-			$sheet->setCellValue('D' . $row, $val[$perioda]);
-			$sheet->setCellValue('E' . $row, $val['sd' . $perioda]);
+			$sheet->setCellValue('B' . $row, number_format($val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]));
+			$sheet->setCellValue('C' . $row, number_format($val['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]));
+			$sheet->setCellValue('D' . $row, number_format($val[$perioda]));
+			$sheet->setCellValue('E' . $row, number_format($val['sd' . $perioda]));
 			$row++;
 		}
 
@@ -101,6 +122,16 @@ class Aktivitas extends CI_Controller {
 		header("Content-Type: application/vnd.ms-excel");
         redirect(base_url()."/storage/".$fileName);         
     }
+
+	public function cetak(){
+		$data = [
+			'aktivitas' => $this->aktivitas_model->getAktivitas(),
+		];
+
+		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+
+		$this->load->view('aktivitas/cetak', $data);
+	}
 
     private function _tanggal($tanggal){
 		$bulan = array (

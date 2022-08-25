@@ -41,120 +41,21 @@ class AgingRate extends CI_Controller {
 		$totmitrabermasalahlainlain = $this->db->query("SELECT SUM(saldopokok) AS total FROM mitra WHERE  tdkbermasalah IN ('masalah','Masalah','MASALAH') AND saldopokok > 0 AND sektorUsaha='Sektor Lain-lain' ")->row()->total;
 		
 		$mitra = $this->mitra_model->getMitra();
+		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 		$ldate = date('Y-m-d');
 		$no = 1;
 		$nomor = 0;
 
 		foreach($mitra as $m){
-			if ($m->saldopokok > '0' AND ($m->tdkbermasalah == 'normal' OR $m->tdkbermasalah == 'Normal' OR $m->tdkbermasalah == 'NORMAL')) {
+			if($m->saldopokok > '0' AND ($m->tdkbermasalah == 'normal' OR $m->tdkbermasalah == 'Normal' OR $m->tdkbermasalah == 'NORMAL')){
 				$nomor++;
-				if($ldate>='2022-02-01' AND $ldate<'2022-03-01'){
-					$piutangtdkbermasalah='piutangtdkbermasalahjan22';
-				}
-				if($ldate>='2022-03-01' AND $ldate<'2022-04-01'){
-					$piutangtdkbermasalah='piutangtdkbermasalahfeb22';
-				}
-				if($ldate>='2022-04-01' AND $ldate<'2022-05-01'){
-					$piutangtdkbermasalah='piutangtdkbermasalahmar22';
-				}
-         		if($ldate>='2022-05-01' AND $ldate<'2022-06-01'){
-                	$piutangtdkbermasalah='piutangtdkbermasalahapr22';
-            	}
-         		if($ldate>='2022-06-01' AND $ldate<'2022-07-01'){
-              		$piutangtdkbermasalah='piutangtdkbermasalahmei22';  
-            	}
-         		if($ldate>='2022-07-01' AND $ldate<'2022-08-01'){
-					echo $no; echo '-'; echo $m->nokontrak;echo $m->nama_peminjam; echo $m->tdkbermasalah; echo $m->saldopokok;
-             echo 'test home.php simpan data mitra tdk bermasalah jun22'; echo nl2br("\n");
-                 	$piutangtdkbermasalah='piutangtdkbermasalahjun22';
-            	}
-         		if($ldate>='2022-08-01' AND $ldate<'2022-09-01'){
-					echo $no; echo '-'; echo $m->nokontrak;echo $m->nama_peminjam; echo $m->tdkbermasalah; echo $m->saldopokok;
-             echo 'test home.php simpan data mitra tdk bermasalah jul22'; echo nl2br("\n");
-                    $piutangtdkbermasalah='piutangtdkbermasalahjul22';
-            	}
-         		if($ldate>='2022-09-01' AND $ldate<'2022-10-01'){
-                    $piutangtdkbermasalah='piutangtdkbermasalahags22';
-            	}
-         		if($ldate>='2022-10-01' AND $ldate<'2022-11-01'){
-             		$piutangtdkbermasalah='piutangtdkbermasalahsep22';
-            	}
-         		if($ldate>='2022-11-01' AND $ldate<'2022-12-01'){
-                	$piutangtdkbermasalah='piutangtdkbermasalahokt22'; 
-            	}
-         		if($ldate>='2022-12-01' AND $ldate<'2023-01-01'){
-                	$piutangtdkbermasalah='piutangtdkbermasalahnop22';
-            	}
-         		if($ldate>='2023-01-01' AND $ldate<'2023-02-01'){
-                	$piutangtdkbermasalah='piutangtdkbermasalahdes22';
-            	}
-             	if($ldate>='2023-02-01' AND $ldate<'2023-03-01'){
-                	$piutangtdkbermasalah='piutangtdkbermasalahjan23';
-            	}
-
-				$data = [
-					'id' => $no,
-					'nokontrak' => $m->nokontrak,
-					'sisapinjaman' => $m->saldopokok,
-					'status' => $m->kolektibilitas,
-					'tgl' => $ldate,
-					'alokasisisih' => '0',
-					'sektor' => $m->sektorUsaha,
-				];
-				// $this->agingrate_model->storeAging($piutangtdkbermasalah, $data);
+				// $this->db->query("INSERT INTO `piutangtdkbermasalah$perioda`(`id`, `nokontrak`, `sisapinjaman`, `status`, `tgl`, `alokasisisih`, `sektor`)  VALUES ('$no','$m->nokontrak','$m->saldopokok','$m->kolektibilitas','$ldate', '0','$m->sektorUsaha')");
 				$no++;
 			}
 
 			if($m->saldopokok > '0' AND ($m->tdkbermasalah == 'masalah' OR $m->tdkbermasalah == 'Masalah' OR $m->tdkbermasalah == 'MASALAH')){
 				$nomor++;
-				if($ldate>='2022-02-01' AND $ldate<'2022-03-01'){
-                	$piutangbermasalah='piutangbermasalahjan22';
-            	}
-				if($ldate>='2022-03-01' AND $ldate<'2022-04-01'){
-					$piutangbermasalah='piutangbermasalahfeb22';
-				}
-				if($ldate>='2022-04-01' AND $ldate<'2022-05-01'){
-					$piutangbermasalah='piutangbermasalahmar22';
-				}
-				if($ldate>='2022-05-01' AND $ldate<'2022-06-01'){
-					$piutangbermasalah='piutangbermasalahapr22';
-				}
-				if($ldate>='2022-06-01' AND $ldate<'2022-07-01'){
-					$piutangbermasalah='piutangbermasalahmei22';
-				}
-				if($ldate>='2022-07-01' AND $ldate<'2022-08-01'){
-					$piutangbermasalah='piutangbermasalahjun22';
-				}
-				if($ldate>='2022-08-01' AND $ldate<'2022-09-01'){
-					$piutangbermasalah='piutangbermasalahjul22';
-				}
-				if($ldate>='2022-09-01' AND $ldate<'2022-10-01'){
-					$piutangbermasalah='piutangbermasalahags22';
-				}
-				if($ldate>='2022-10-01' AND $ldate<'2022-11-01'){
-					$piutangbermasalah='piutangbermasalahsep22';
-				}
-				if($ldate>='2022-11-01' AND $ldate<'2022-12-01'){
-					$piutangbermasalah='piutangbermasalahokt22';
-				}
-				if($ldate>='2022-12-01' AND $ldate<'2023-01-01'){
-					$piutangbermasalah='piutangbermasalahnop22';
-				}
-				if($ldate>='2023-01-01' AND $ldate<'2023-02-01'){
-					$piutangbermasalah='piutangbermasalahdes22';
-				}
-				if($ldate>='2023-02-01' AND $ldate<'2023-03-01'){
-					$piutangbermasalah='piutangbermasalahjan23';
-				}
-
-				$data =  [
-					'id' => $no,	
-					'nokontrak' => $m->nokontrak,
-					'sisapinjaman' => $m->saldopokok,
-					'status' => $m->kolektibilitas,
-					'tgl' => $ldate,
-				];
-				// $this->agingrate_model->storeAging($piutangbermasalah, $data);
+				$this->db->query("INSERT INTO `piutangbermasalah$perioda`(`id`, `nokontrak`, `sisapinjaman`, `status`,tgl) VALUES ('$no','$m->nokontrak','$m->saldopokok','$m->kolektibilitas','$ldate')");
 				$no++;
 			}
 		}
@@ -169,12 +70,27 @@ class AgingRate extends CI_Controller {
 		echo '$total MB    ='; echo number_format($totalMB) ; echo nl2br("\n");
 
 		$transpose = $this->agingrate_model->getTransposeAgingRate();
-		$maxID = $transpose[0]->id;
+		$maxID = $transpose[0]->id;        
+	}
 
-		if ($ldate >= '2022-02-01' AND $ldate < '2022-03-01') {
-			# code...
-		}
-        
+	private function _tanggal($tanggal){
+		$bulan = array (
+			1 =>   'jan',
+			'feb',
+			'mar',
+			'apr',
+			'mei',
+			'jun',
+			'jul',
+			'ags',
+			'sep',
+			'okt',
+			'nov',
+			'des'
+		);
+		$pecahkan = explode('-', $tanggal);
+	 
+		return $bulan[(int)$pecahkan[1]] . $pecahkan[0];
 	}
 }
 

@@ -5,39 +5,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class PosisiKeuangan extends CI_Controller {
+class RKA extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
-		$this->load->model('PosisiKeuanganModel', 'posisikeuangan_model');
+		$this->load->model('RKAModel', 'rka_model');
 	}
 
 	public function index()
 	{
 		$data = [
-			'title' => 'Data Laporan Posisi Keuangan',
-            'header' => 'Management Data Laporan Posisi Keuangan'
+			'title' => 'Data Laporan RKA',
+            'header' => 'Management Data Laporan RKA'
 		];
 
 		$data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 
 		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 
-		$data['neraca'] = $this->posisikeuangan_model->getData();
+		$data['neraca'] = $this->rka_model->getData();
 		
-		$this->template->load('posisi_keuangan/index', $data);
+		$this->template->load('rka/index', $data);
 	}
 
 	public function createExcel() {
-		$fileName = 'laporan-posisi-keuangan-' . date('Y') .'.xlsx';  
+		$fileName = 'laporan-posisi-keuangan-rka' . date('Y') .'.xlsx';  
 
-		$neraca = $this->posisikeuangan_model->getData();
+		$neraca = $this->rka_model->getData();
 		$spreadsheet = new Spreadsheet();
 		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 
         $sheet = $spreadsheet->getActiveSheet();
-		$sheet->getColumnDimension('A')->setWidth(25);
+		$sheet->getColumnDimension('A')->setWidth(22);
 		$sheet->getColumnDimension('B')->setWidth(40);
 		$sheet->getColumnDimension('C')->setWidth(25);
 		$sheet->getColumnDimension('D')->setWidth(25);
@@ -58,7 +58,7 @@ class PosisiKeuangan extends CI_Controller {
 		$sheet->getStyle('A3:B3')->getAlignment()->setHorizontal('center');
 		$sheet->getStyle('A2:D2')->getAlignment()->setHorizontal('center');
 
-		$sheet->setCellValue('A2', 'LAPORAN POSISI KEUANGAN');
+		$sheet->setCellValue('A2', 'LAPORAN RKA');
 
        	$sheet->setCellValue('A3', 'U R A I A N');
         $sheet->setCellValue('C3', 'DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
@@ -111,11 +111,12 @@ class PosisiKeuangan extends CI_Controller {
 			if($row == 20){
 				$row += 3;
 			}
-			$sheet->setCellValue('C' . $row, number_format($val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]));
-			$sheet->setCellValue('D' . $row, number_format($val[$perioda]));
+			$sheet->setCellValue('C' . $row, $val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
+			$sheet->setCellValue('D' . $row, $val[$perioda]);
 			$row++;			
 		}
 
+		// die;
 		$writer = new Xlsx($spreadsheet);
 		$writer->save("storage/".$fileName);
 		header("Content-Type: application/vnd.ms-excel");
@@ -123,7 +124,7 @@ class PosisiKeuangan extends CI_Controller {
     }
 
 	public function cetak(){
-		$neraca = $this->posisikeuangan_model->getData();
+		$neraca = $this->rka_model->getData();
 
 		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
@@ -134,7 +135,7 @@ class PosisiKeuangan extends CI_Controller {
 			'perioda' => $perioda
 		);
 
-		$this->load->view('posisi_keuangan/cetak', $data);
+		$this->load->view('rka/cetak', $data);
 	}
 
 	private function _tanggal($tanggal){

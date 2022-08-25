@@ -40,6 +40,26 @@ class ArusKas extends CI_Controller {
 		$sheet->getColumnDimension('D')->setWidth(25);
 		$sheet->getColumnDimension('E')->setWidth(25);
 
+		$styleArray = array(
+			'font'  => array(
+				'bold'  => true,
+				'color' => array('rgb' => 'be123c')
+			)
+		);
+
+		$sheet->getStyle('A4')->applyFromArray($styleArray);
+		$sheet->getStyle('A5')->applyFromArray($styleArray);
+		$sheet->getStyle('A11')->applyFromArray($styleArray);
+		$sheet->getStyle('A21')->applyFromArray($styleArray);
+		$sheet->getStyle('A22')->applyFromArray($styleArray);
+
+		$sheet->mergeCells('A2:E2');
+		$sheet->getStyle('A2:E2')->getFont()->setBold(true);
+		$sheet->getStyle('A3:E3')->getFont()->setBold(true);
+		$sheet->getStyle('A2:E2')->getAlignment()->setHorizontal('center');
+
+		$sheet->setCellValue('A2', 'LAPORAN ARUS KAS');
+
        	$sheet->setCellValue('A3', 'KETERANGAN');
         $sheet->setCellValue('B3', 'DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
         $sheet->setCellValue('C3', 'SD DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
@@ -75,10 +95,10 @@ class ArusKas extends CI_Controller {
         foreach ($aruskas as $val){
 			$row = ($row == 11) ? $row += 1 : $row;
 			$row = ($row == 21) ? $row += 2 : $row;
-			$sheet->setCellValue('B' . $row, $val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
-			$sheet->setCellValue('C' . $row, $val['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
-			$sheet->setCellValue('D' . $row, $val[$perioda]);
-			$sheet->setCellValue('E' . $row, $val['sd' . $perioda]);
+			$sheet->setCellValue('B' . $row, number_format($val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]));
+			$sheet->setCellValue('C' . $row, number_format($val['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]));
+			$sheet->setCellValue('D' . $row, number_format($val[$perioda]));
+			$sheet->setCellValue('E' . $row, number_format($val['sd' . $perioda]));
 			$row++;
 		}
 

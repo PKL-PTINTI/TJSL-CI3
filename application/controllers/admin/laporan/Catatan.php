@@ -126,8 +126,8 @@ class Catatan extends CI_Controller {
         foreach ($catatan as $val){
 			$row = ($row == 1) ? $row += 1 : $row;
 			$row = ($row == 2) ? $row += 1 : $row;
-			$sheet->setCellValue('B' . $row, $val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]);
-			$sheet->setCellValue('C' . $row, $val[$perioda]);
+			$sheet->setCellValue('B' . $row, number_format($val['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]));
+			$sheet->setCellValue('C' . $row, number_format($val[$perioda]));
 			$row++;
 		}
 
@@ -136,6 +136,24 @@ class Catatan extends CI_Controller {
 		header("Content-Type: application/vnd.ms-excel");
         redirect(base_url()."/storage/".$fileName);         
     }
+
+	public function cetak(){
+		$data = [
+			'catatan' => $this->catatan_model->getData(),
+		];
+
+		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+
+		// foreach ($data['catatan'] as $key => $value) {
+		// 	echo $key;
+		// 	var_dump($value);
+		// 	echo '<br><hr>';
+		// }
+
+		// die;
+
+		$this->load->view('catatan/cetak', $data);
+	}
 
 	private function _tanggal($tanggal){
 		$bulan = array (

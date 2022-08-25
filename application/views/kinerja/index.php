@@ -148,7 +148,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <h6 class="pt-5">2.1 DANA YANG DISALURKAN </h6>
+                        <h6 class="pt-5">2.2 DANA TERSEDIA </h6>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>

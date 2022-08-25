@@ -18,8 +18,6 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/laporan/ArusKas'): ?>
-                                <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/Laporan/Aruskas/CreateExcel') ?>">Export Data</a>
@@ -54,10 +52,10 @@
                                         <tr>
                                             <?php
                                                 if($no == 1){
-                                                    echo '<td colspan="14">I. AKTIVITAS OPERASI <br class="pt-1"> KAS DITERIMA DARI</td>';
+                                                    echo '<td colspan="14">I. AKTIVITAS OPERASI <br class="pt-1"> KAS DITERIMA DARI</td></tr>';
                                                 }
                                                 if($no == 15){
-                                                    echo '<td colspan="14">	II. AKTIVITAS INVESTASI <br class="pt-1"> KAS DIKELUARKAN UNTUK</td>';
+                                                    echo '<td colspan="14">	II. AKTIVITAS INVESTASI <br class="pt-1"> KAS DIKELUARKAN UNTUK</td></tr>';
                                                 }
                                             ?>
                                             <td class="text-center"><?= $ak['id'] ?></td>

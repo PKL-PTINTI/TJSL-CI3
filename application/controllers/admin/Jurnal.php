@@ -510,6 +510,23 @@ class Jurnal extends CI_Controller {
 		$opex = $this->jurnal_model->get_jurnal();
 		$spreadsheet = new Spreadsheet();
 
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->getColumnDimension('A')->setWidth(7);
+		$sheet->getColumnDimension('B')->setWidth(15);
+		$sheet->getColumnDimension('C')->setWidth(15);
+		$sheet->getColumnDimension('D')->setWidth(15);
+		$sheet->getColumnDimension('E')->setWidth(15);
+		$sheet->getColumnDimension('F')->setWidth(15);
+		$sheet->getColumnDimension('G')->setWidth(15);
+		$sheet->getColumnDimension('H')->setWidth(70);
+		$sheet->getColumnDimension('I')->setWidth(55);
+		$sheet->getColumnDimension('J')->setWidth(25);
+		$sheet->getColumnDimension('K')->setWidth(17);
+		$sheet->getColumnDimension('L')->setWidth(17);
+		$sheet->getColumnDimension('M')->setWidth(15);
+		$sheet->getColumnDimension('N')->setWidth(15);
+		$sheet->getColumnDimension('O')->setWidth(13);
+
         $sheet = $spreadsheet->getActiveSheet();
        	$sheet->setCellValue('A1', 'No ID');
         $sheet->setCellValue('B1', 'No Akun');

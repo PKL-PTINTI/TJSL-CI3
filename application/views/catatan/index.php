@@ -29,7 +29,7 @@
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/Laporan/Catatan/CreateExcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/Laporan') ?>">Cetak Laporan</a>
+                                        href="<?= base_url('Admin/Laporan/Catatan/Cetak') ?>">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>
