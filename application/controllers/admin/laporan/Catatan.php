@@ -1,8 +1,9 @@
 <?php
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-defined('BASEPATH') OR exit('No direct script access allowed');
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+	use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+	defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Catatan extends CI_Controller {
 
@@ -39,10 +40,18 @@ class Catatan extends CI_Controller {
 		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m"), date("d"), date("Y"))));
 
-        $sheet = $spreadsheet->getActiveSheet();
-		// $sheet->getColumnDimension('A')->setWidth(42);
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->getColumnDimension('A')->setWidth(50);
+		$sheet->getColumnDimension('B')->setWidth(20);
+		$sheet->getColumnDimension('C')->setWidth(20);
 
-       	$sheet->setCellValue('A3', 'U R A I A N');
+		$sheet->mergeCells('A2:C2');
+		$sheet->getStyle('A2:C2')->getFont()->setBold(true);
+		$sheet->getStyle('A2:C2')->getAlignment()->setHorizontal('center');
+
+		$sheet->setCellValue('A2', 'CATATAN ATAS LAPORAN KEUANGAN');
+
+       	$sheet->setCellValue('A3', 'URAIAN');
         $sheet->setCellValue('B3', 'DES ' . date('Y', mktime(0, 0, 0, 0,0 , date("Y"))));
         $sheet->setCellValue('C3', 'BULAN ' . $bulan);
 

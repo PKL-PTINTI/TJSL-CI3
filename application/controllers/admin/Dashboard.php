@@ -1220,7 +1220,88 @@ class Dashboard extends CI_Controller {
 
 		$AsetNetoAkhirTahunsd=$AsetNetoAwalTahunsd+$KenaikanPenurunanAsetNetosd;
         $this->db->query("UPDATE perubahanasetnetotidakterikat SET sd$perioda='$AsetNetoAkhirTahunsd'  WHERE id='30'");
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda=$pengembalianPinjamanMB  WHERE id='2'");
         
+		$pengembalianPinjamanMBsd = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='2'")->result_array()[0][$periodabln] + $pengembalianPinjamanMB;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$pengembalianPinjamanMBsd'  WHERE id='2'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda=$AngsuranBelumTeridentifikasi  WHERE id='3'");
+
+		$AngsuranBelumTeridentifikasisd = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='3'")->result_array()[0][$periodabln] + $AngsuranBelumTeridentifikasi;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$AngsuranBelumTeridentifikasisd'  WHERE id='3'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda=$PendapatanJasaAdministrasiPinjamanProgramKemitraan  WHERE id='4'");
+		$PendapatanJasaAdministrasiPinjamanProgramKemitraansd = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='3'")->result_array()[0][$periodabln] + $PendapatanJasaAdministrasiPinjamanProgramKemitraan;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$PendapatanJasaAdministrasiPinjamanProgramKemitraansd'  WHERE id='4'");
+		
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$PendapatanJasaGiro'  WHERE id='5'");//Jasa Giro
+		$PendapatanJasaGirosd = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='5'")->result_array()[0][$periodabln] + $PendapatanJasaGiro;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$PendapatanJasaGirosd'  WHERE id='5'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$PendapatanLainlain'  WHERE id='6'");
+		$PendapatanLainlainsd = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='6'")->result_array()[0][$periodabln] + $PendapatanLainlain;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$PendapatanLainlainsd'  WHERE id='6'");
+
+		$PendapatanLainPiutangHapusBuku = $PendapatanLainlainsd;
+		$this->db->query("UPDATE catatanataslapkeu SET  $perioda='$PendapatanLainPiutangHapusBuku'  WHERE id='59'"); //
+
+		$Pendapatan=$PendapatanLainlainsd+$PendapatanLainPenyisihanPiutang+$PendapatanBungasd+$PendapatanJasaAdministrasiPinjamanProgramKemitraansd;
+    	$this->db->query("UPDATE catatanataslapkeu SET  $perioda='$Pendapatan'  WHERE id='56'");  //pendapatan
+
+
+		$PiutangMitraBinaanPinjamansd = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='9'")->result_array()[0][$periodabln] + $PiutangMitraBinaanPinjaman;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$PiutangMitraBinaanPinjamansd' WHERE id='9'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$DanaPembinaanKemitraan'  WHERE id='10'");
+		$DanaPembinaanKemitraansd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='10'")->result_array()[0]['sd'.$periodabln] + $DanaPembinaanKemitraan;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$DanaPembinaanKemitraansd' WHERE id='10'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$DanaBinaLingkungan'  WHERE id='11'");
+		$DanaBinaLingkungansd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='11'")->result_array()[0]['sd'.$periodabln] + $DanaBinaLingkungan;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$DanaBinaLingkungansd' WHERE id='11'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$BebanPembinaan'  WHERE id='12'");
+		$BebanPembinaansd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='12'")->result_array()[0]['sd'.$periodabln] + $BebanPembinaan;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$BebanPembinaansd' WHERE id='12'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$BebanUpahTenagakerja'  WHERE id='13'");
+		$BebanUpahTenagakerjasd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='13'")->result_array()[0]['sd'.$periodabln] + $BebanUpahTenagakerja;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$BebanUpahTenagakerjasd' WHERE id='13'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$BebanAdmDanUmum'  WHERE id='14'");
+		$BebanAdmDanUmumsd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='14'")->result_array()[0]['sd'.$periodabln] + $BebanAdmDanUmum;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$BebanAdmDanUmumsd' WHERE id='14'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$BebanPemeliharaanProgramKemitraan'  WHERE id='15'");
+		$BebanPemeliharaanProgramKemitraansd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='15'")->result_array()[0]['sd'.$periodabln] + $BebanPemeliharaanProgramKemitraan;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$BebanPemeliharaanProgramKemitraansd' WHERE id='15'");
+
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$PengembalianKelebihanAngsuran'  WHERE id='16'");
+		$PengembalianKelebihanAngsuransd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='16'")->result_array()[0]['sd'.$periodabln] + $PengembalianKelebihanAngsuran;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$PengembalianKelebihanAngsuransd' WHERE id='16'");
+
+		$kasNetoDiterimaDigunakanUtkAktivitasOps=$PengembalianKelebihanAngsuran+$BebanPemeliharaanProgramKemitraan+$BebanAdmDanUmum+$BebanUpahTenagakerja+$DanaPembinaanKemitraan+$BebanPembinaan+$DanaBinaLingkungan+$pengembalianPinjamanMB+$AngsuranBelumTeridentifikasi+$PendapatanJasaAdministrasiPinjamanProgramKemitraan+$PendapatanJasaGiro+$PendapatanLainlain+$PiutangMitraBinaanPinjaman+$DanaPembinaanKemitraan;
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$kasNetoDiterimaDigunakanUtkAktivitasOps'  WHERE id='17'");
+
+		$kasNetoDiterimaDigunakanUtkAktivitasOpssd=$pengembalianPinjamanMBsd+$AngsuranBelumTeridentifikasisd+$PendapatanJasaAdministrasiPinjamanProgramKemitraansd+$PendapatanJasaGirosd+$PendapatanLainlainsd+$PiutangMitraBinaanPinjamansd+$DanaPembinaanKemitraansd+$DanaBinaLingkungansd+$BebanPembinaansd+$BebanUpahTenagakerjasd+$BebanAdmdanUmumsd+$BebanPemeliharaanProgramKemitraansd+$PengembalianKelebihanAngsuransd;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda=
+			'$kasNetoDiterimaDigunakanUtkAktivitasOpssd' WHERE id='17'");
+            
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$AktivaTetapHargaPerolehan'  WHERE id='20'");
+		$AktivaTetapHargaPerolehansd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='20'")->result_array()[0]['sd'.$periodabln] + $AktivaTetapHargaPerolehan;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$AktivaTetapHargaPerolehansd' WHERE id='20'");
+
+		$KasNetoDiterimaDigunakanUntukAktivitasInvestasi=$AktivaTetapHargaPerolehan;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$KasNetoDiterimaDigunakanUntukAktivitasInvestasi'  WHERE id='21'");
+		$KasNetoDiterimaDigunakanUntukAktivitasInvestasisd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='21'")->result_array()[0]['sd'.$periodabln] + $KasNetoDiterimaDigunakanUntukAktivitasInvestasi;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$KasNetoDiterimaDigunakanUntukAktivitasInvestasisd' WHERE id='21'");
+
+		$KenaikanPenurunanAsetNetoDalamKas=$KasNetoDiterimaDigunakanUntukAktivitasInvestasi+$kasNetoDiterimaDigunakanUtkAktivitasOps;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$KenaikanPenurunanAsetNetoDalamKas'  WHERE id='22'");
+
+		$KenaikanPenurunanAsetNetoDalamKassd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='22'")->result_array()[0]['sd'.$periodabln] + $KenaikanPenurunanAsetNetoDalamKas;
+
+		// 2731
 	}
 
 	private function _updateSaldo($akun){

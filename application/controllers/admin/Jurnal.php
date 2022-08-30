@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-	use PhpOffice\PhpSpreadsheet\Spreadsheet;
-	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Jurnal extends CI_Controller {
 
@@ -10,6 +10,7 @@ class Jurnal extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('JurnalModel', 'jurnal_model');
+	    $this->load->model('SaldoModel', 'saldo_model');
 
 		if(!$this->session->userdata('username')){
 			redirect(base_url('auth'));
@@ -123,21 +124,21 @@ class Jurnal extends CI_Controller {
 
 		if($bank == 'kas'){
 			$id_akun = '101010101';
+			$saldoawal= 4687041;
 		} elseif ($bank == 'bri') {
 			$id_akun = '101010204';
+			$saldoawal = 108631624;
 		} elseif ($bank == 'mandiri') {
 			$id_akun = '101010201';
+			$saldoawal = 213381864.81;
 		} elseif ($bank == 'bank') {
 			$id_akun = "101010201' AND '101010204";
 		}
 
-		if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
-			$tahun = date('Y') . '-01-01';
-		}
+		$tahun = date('Y') . '-01-01';
 		$jurnal = $this->db->query("SELECT SUM(pemasukan) AS pemasukan, 
 									SUM(pengeluaran) AS pengeluaran 
 									FROM opex WHERE id_akun = '$id_akun' AND tanggal >= '$tahun' 
-									AND tanggal <= '".date('Y-m-d H:i:s', time())."' 
 									AND tampil = '0'")->result();
 
 		$total_pemasukan = $jurnal['0']->pemasukan;
@@ -145,10 +146,14 @@ class Jurnal extends CI_Controller {
 
 		$tot_pengeluaran = 0;
 		$tot_pemasukan = 0;
+		$saldo = 0;
+
+		$opex = $this->saldo_model->getJurnalByAkun($id_akun);
+		$saldosum = $opex[0]->saldo + $saldoawal;
 		
         foreach ($list as $data_jurnal) {
             $no++;
-			$saldo = number_format($data_jurnal->pemasukan - $data_jurnal->pengeluaran, 2);
+			$saldo += $data_jurnal->pemasukan - $data_jurnal->pengeluaran;
 			$tot_pengeluaran += $data_jurnal->pengeluaran;
 			$tot_pemasukan += $data_jurnal->pemasukan;
 			
@@ -193,7 +198,7 @@ class Jurnal extends CI_Controller {
 			'',
 			number_format($total_pemasukan),
 			number_format($total_pengeluaran),
-			'',
+			number_format(($total_pemasukan - $total_pengeluaran) + $saldoawal),
 			'',
 			'',
 			'',

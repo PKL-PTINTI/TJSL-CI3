@@ -25,4 +25,14 @@ class AgingRateModel extends CI_Model {
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	public function getMitraKontrak($no_kontrak){
+		$this->db->select('*');
+		$this->db->from('piutangmitra');
+		$this->db->where('nokontrak', $no_kontrak);
+		$this->db->order_by('id', 'desc');
+		
+		$query = $this->db->get();
+		return $query->result();
+	}
 }

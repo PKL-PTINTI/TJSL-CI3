@@ -17,19 +17,35 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between">
                         <h4><?= $header; ?> <span id="header"></span></h4>
+                        <div class="dropdown d-inline">
+                            <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month" aria-expanded="false">August</a>
+                            <ul class="dropdown-menu dropdown-menu-sm" x-placement="bootom-end" style="position: absolute; transform: translate3d(0px, -86px, 0px); top: 0px; right: 0px; will-change: transform;">
+                                <li class="dropdown-title">Select Month</li>
+                                <li><a href="#" class="dropdown-item">January</a></li>
+                                <li><a href="#" class="dropdown-item">February</a></li>
+                                <li><a href="#" class="dropdown-item">March</a></li>
+                                <li><a href="#" class="dropdown-item">April</a></li>
+                                <li><a href="#" class="dropdown-item">May</a></li>
+                                <li><a href="#" class="dropdown-item">June</a></li>
+                                <li><a href="#" class="dropdown-item">July</a></li>
+                                <li><a href="#" class="dropdown-item active">August</a></li>
+                                <li><a href="#" class="dropdown-item">September</a></li>
+                                <li><a href="#" class="dropdown-item">October</a></li>
+                                <li><a href="#" class="dropdown-item">November</a></li>
+                                <li><a href="#" class="dropdown-item">December</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/laporan/Catatan'): ?>
-                                <?php endif; ?>
-                                <div>
-                                    <a class="btn btn-primary mb-3" 
+                                <div class="d-flex">
+                                    <a class="btn btn-primary mb-3 mr-2" 
                                         href="<?= base_url('Admin/Laporan/Catatan/CreateExcel') ?>">Export Data</a>
-                                    <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/Laporan/Catatan/Cetak') ?>">Cetak Laporan</a>
+                                    <a class="btn btn-primary mb-3 mr-3"
+                                        href="<?= base_url('Admin/Laporan/Catatan/Cetak') ?>" target="_blank">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>
