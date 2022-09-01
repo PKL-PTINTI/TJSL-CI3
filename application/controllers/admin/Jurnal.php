@@ -65,7 +65,6 @@ class Jurnal extends CI_Controller {
 			$row[] = $data_jurnal->nobukti;
 			$row[] = number_format($tot_pemasukan);
 			$row[] = number_format($tot_pengeluaran);
-			$row[] = $data_jurnal->tampil;
 			$row[] = $data_jurnal->updated;
 			$row[] = $data_jurnal->tglUpdate;
 

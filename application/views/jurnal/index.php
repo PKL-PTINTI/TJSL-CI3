@@ -49,7 +49,6 @@
                                         <th>No bukti</th>
                                         <th>Total Pemasukan</th>
                                         <th>Total Pengeluaran</th>
-                                        <th>Tampil</th>
                                         <th>Updated</th>
                                         <th>Tanggal Updated</th>
                                         <th>Aksi</th>

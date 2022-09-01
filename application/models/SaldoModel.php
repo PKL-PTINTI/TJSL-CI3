@@ -21,5 +21,63 @@ class SaldoModel extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function getKas()
+    {
+        $this->db->select('*');
+        $this->db->from('opex');
+        if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+
+		$this->db->where('tanggal >=', $tahun);
+		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
+        $this->db->where('id_akun', '101010101');
+        $this->db->where('tampil', '0');    
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getMandiri()
+    {
+        $this->db->select('*');
+        $this->db->from('opex');
+        if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+
+		$this->db->where('tanggal >=', $tahun);
+		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
+        $this->db->where('id_akun', '101010201');
+        $this->db->where('tampil', '0');
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getBri()
+    {
+        $this->db->select('*');
+        $this->db->from('opex');
+        if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
+			$tahun = date('Y') . '-01-01';
+		}
+
+		$this->db->where('tanggal >=', $tahun);
+		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
+        $this->db->where('id_akun', '101010204');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getKartuPerkiraan(){
+        $this->db->select('*');
+        $this->db->from('opex');
+        $this->db->order_by('id_opex', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        
+        return $query->result(); 
+    }
 }
 

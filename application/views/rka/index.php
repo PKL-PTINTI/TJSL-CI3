@@ -26,8 +26,6 @@
                                 <div>
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/Laporan/RKA/CreateExcel') ?>">Export Data</a>
-                                    <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/Laporan/RKA/Cetak') ?>">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>

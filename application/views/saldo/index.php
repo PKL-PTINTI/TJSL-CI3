@@ -29,7 +29,7 @@
                                         <td>Kas Kecil Jurnal</td>
                                         <td><?= number_format($saldokasbank[0]->kaskecil) ?></td>
                                         <td>
-                                            <a class="btn btn-danger" href="<?= base_url('Admin/saldo/update/kas') ?>">Update Saldo Kas</a>
+                                            <a class="btn btn-danger" href="<?= base_url('Admin/Saldo/Update/kas') ?>">Update Saldo Kas</a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -37,7 +37,7 @@
                                         <td>Kas BRI Jurnal</td>
                                         <td><?= number_format($saldokasbank[0]->bri) ?></td>
                                         <td>
-                                            <a class="btn btn-primary" href="<?= base_url('Admin/saldo/update/bri') ?>">Update Saldo BRI</a>
+                                            <a class="btn btn-primary" href="<?= base_url('Admin/Saldo/Update/bri') ?>">Update Saldo BRI</a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -45,7 +45,7 @@
                                         <td>Mandiri Jurnal</td>
                                         <td><?= number_format($saldokasbank[0]->mandiri) ?></td>
                                         <td>
-                                            <a class="btn btn-primary" href="<?= base_url('Admin/saldo/update/mandiri') ?>">Update Saldo Mandiri</a>
+                                            <a class="btn btn-primary" href="<?= base_url('Admin/Saldo/Update/mandiri') ?>">Update Saldo Mandiri</a>
                                         </td>
                                     </tr>
                                     

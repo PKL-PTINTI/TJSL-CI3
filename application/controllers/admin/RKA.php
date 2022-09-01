@@ -123,21 +123,6 @@ class RKA extends CI_Controller {
         redirect(base_url()."/storage/".$fileName);         
     }
 
-	public function cetak(){
-		$neraca = $this->rka_model->getData();
-
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-
-		$data = array(
-			'neraca' => $neraca,
-			'bulan' => $bulan,
-			'perioda' => $perioda
-		);
-
-		$this->load->view('rka/cetak', $data);
-	}
-
 	private function _tanggal($tanggal){
 		$bulan = array (
 			1 =>   'jan',

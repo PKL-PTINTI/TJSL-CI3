@@ -259,16 +259,6 @@ class JurnalModel extends CI_Model {
         return $query->result(); 
     }
 
-    public function getKartuPerkiraan(){
-        $this->db->select('*');
-        $this->db->from('opex');
-        $this->db->order_by('id_opex', 'DESC');
-        $this->db->limit(1);
-        $query = $this->db->get();
-        
-        return $query->result(); 
-    }
-
     public function destroy($no_bukti){
 		$this->db->query("DELETE FROM opex WHERE nobukti = '$no_bukti'");
 	}

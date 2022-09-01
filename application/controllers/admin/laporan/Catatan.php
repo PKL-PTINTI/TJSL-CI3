@@ -153,14 +153,6 @@ class Catatan extends CI_Controller {
 
 		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 
-		// foreach ($data['catatan'] as $key => $value) {
-		// 	echo $key;
-		// 	var_dump($value);
-		// 	echo '<br><hr>';
-		// }
-
-		// die;
-
 		$this->load->view('catatan/cetak', $data);
 	}
 

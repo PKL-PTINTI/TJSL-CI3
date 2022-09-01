@@ -262,7 +262,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="<?= base_url('Admin/Coa') ?>">COA</a></li>
                                 <li><a href="<?= base_url('Admin/Agingrate') ?>">Aging Rate</a></li>
-                                <li><a href="<?= base_url('Admin/Rka') ?>">RKA</a></li>
+                                <li><a href="<?= base_url('Admin/RKA') ?>">RKA</a></li>
                                 <li><a href="<?= base_url('Admin/NeracaSaldo') ?>">Neraca Saldo</a></li>
                             </ul>
                         </li>
