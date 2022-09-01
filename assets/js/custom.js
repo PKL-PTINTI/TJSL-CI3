@@ -270,3 +270,44 @@ $(".repeater, .repeater-default").repeater({
 // 		},
 // 	}
 // });
+
+let table_perkiraan = $("#table-jurnal-perkiraan").dataTable({
+	columns: [
+		{ data: "no" },
+		{ data: "id_opex" },
+		{ data: "id_akun" },
+		{ data: "tanggal" },
+		{ data: "pemasukan" },
+		{ data: "pengeluaran" },
+		{ data: "saldo" },
+		{ data: "deskripsi" },
+		{ data: "keterangan" },
+		{ data: "nobukti" },
+		{ data: "action" },
+	],
+});
+
+$("#form-perkiraan").on("submit", function (e) {
+	e.preventDefault();
+	var form = $(this);
+	var url = window.location.origin + "/admin/saldo/kartu_perkiraan_data";
+	var data = form.serialize();
+	$.ajax({
+		type: "POST",
+		url: url,
+		data: data,
+		dataType: "JSON",
+		success: function (response) {
+			if(response.data){
+				table_perkiraan.fnClearTable();
+				table_perkiraan.fnAddData(response.data);
+			} else {
+				iziToast.success({
+					title: "Heyyyy",
+					message: "Datanya tidak ada lohhhh",
+					position: "bottomRight",
+				});
+			}
+		},
+	});
+});
