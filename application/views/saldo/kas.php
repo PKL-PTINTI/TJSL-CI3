@@ -23,8 +23,6 @@
                                 <div>
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/Saldo/KartuPerkiraan?id_akun=' . $id_akun) ?>">Kartu Perkiraan</a>
-                                    <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/Saldo/CreateExcel') ?>">Export Data</a>
                                 </div>
                             </div>
                         </div>
