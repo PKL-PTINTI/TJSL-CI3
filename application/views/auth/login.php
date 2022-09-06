@@ -43,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
 
             <div class="card card-primary">
-              <div class="card-header"><h4>Login Dulu Tshayy </h4></div>
+              <div class="card-header"><h4>Login Dulu Yaaa.. </h4></div>
 
               <div class="card-body">
               <?= isset($failed) && !empty($failed) ? "<p class='err'>{$failed}</p>" : ""; ?>
@@ -68,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
                       <input type="checkbox" name="remember" value="remember-me" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">Remember Me</label>
+                      <label class="custom-control-label" for="remember-me">Ingat saya</label>
                     </div>
                   </div>
                   <div class="form-group">

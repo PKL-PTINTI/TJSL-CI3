@@ -206,19 +206,19 @@
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="<?= base_url('/Admin/Mitra') ?>">Semua Mitra</a></li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Lancar', 'Lancar'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/lancar', 'Lancar'
                                         )">Lancar</a>
                                 </li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Kuranglancar', 'Kurang Lancar'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/kuranglancar', 'Kurang Lancar'
                                         )">Kurang
                                         Lancar</a></li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Diragukan', 'Diragukan'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/diragukan', 'Diragukan'
                                         )">Diragukan</a>
                                 </li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/Macet', 'Macet'
+                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/macet', 'Macet'
                                         )">Macet</a>
                                 </li>
                             </ul>

@@ -97,7 +97,7 @@ $("#button_delete_perioda").on("click", function (e) {
 
 // table-mitra
 
-let url_mitra = window.location.origin + "/admin/mitra/get_data_mitra";
+let url_mitra = window.location.origin + "/Admin/Mitra/Get_data_mitra";
 
 function changeMenu(url) {
 	let segment = url.substring(url.lastIndexOf("/") + 1);
@@ -117,7 +117,7 @@ function changeMenu(url) {
 			item.onclick = function () {
 				changeUrlMitra(
 					window.location.origin +
-						"/admin/mitra/get_data_mitra/koleksektor/" +
+						"/Admin/Mitra/Get_data_mitra/Koleksektor/" +
 						segment +
 						"/" +
 						item.dataset.sektor,
@@ -143,7 +143,7 @@ function changeMenu(url) {
 			item.onclick = function () {
 				changeUrlMitra(
 					window.location.origin +
-						"/admin/mitra/get_data_mitra/masalahsektor/" +
+						"/Admin/Mitra/Get_data_mitra/Masalahsektor/" +
 						segment +
 						"/" +
 						item.dataset.sektor,

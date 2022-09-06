@@ -27,9 +27,6 @@
                                         href="<?= base_url('Admin/Jurnal/Periodaopex') ?>">Perioda</a>
                                     <a class="btn btn-primary mb-3 "
                                         href="<?= base_url('Admin/Jurnal/CreateExcel') ?>">Export Excel</a>
-                                    <a class="btn btn-primary mb-3 btndeletejurnal"
-                                        href="#">TEST SWALL</a>
-
                                 </div>
                             </div>
                         </div>

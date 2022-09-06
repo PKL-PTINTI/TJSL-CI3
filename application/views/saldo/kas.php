@@ -18,8 +18,6 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/saldo'): ?>
-                                <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/Saldo/KartuPerkiraan?id_akun=' . $id_akun) ?>">Kartu Perkiraan</a>
@@ -60,8 +58,8 @@
                                         <td><?= number_format($saldo + $saldoawal) ?></td>
                                         <td><?= $j->keterangan ?></td>
                                         <td><?= $j->nobukti ?></td>
-                                        <td><?= $j->tot_pemasukan ?></td>
-                                        <td><?= $j->tot_pengeluaran ?></td>
+                                        <td><?= number_format($j->tot_pemasukan) ?></td>
+                                        <td><?= number_format($j->tot_pengeluaran) ?></td>
                                         <td><?= $j->updated ?></td>
                                         <td><?= $j->tglUpdate ?></td>
                                         <td>

@@ -170,7 +170,6 @@ class Jurnal extends CI_Controller {
 			$row[] = $data_jurnal->nobukti;
 			$row[] = $data_jurnal->tot_pemasukan;
 			$row[] = $data_jurnal->tot_pengeluaran;
-			$row[] = $data_jurnal->tampil;
 			$row[] = $data_jurnal->updated;
 			$row[] = $data_jurnal->tglUpdate;
 
@@ -236,7 +235,7 @@ class Jurnal extends CI_Controller {
 		$nomor_bukti = $this->input->post('nomor_bukti');
 		$tanggal_transaksi = $this->input->post('tanggal_transaksi');
 		$korek = $this->input->post('korek');
-		$jumlah_pemasukan = str_replace(',', '', $this->input->post('jumlah_pemasukan'));
+		$jumlah_pemasukan = str_replace('.', '', $this->input->post('jumlah_pemasukan'));
 		$keterangan = $this->input->post('keterangan');
 		$korekPasangan = $this->input->post('korekPasangan');
 
@@ -416,7 +415,7 @@ class Jurnal extends CI_Controller {
 
 		$korek = $this->input->post('korek');
 		$keterangan = $this->input->post('keterangan');
-		$jumlah_pemasukan = str_replace(',', '', $this->input->post('jumlah_pemasukan'));
+		$jumlah_pemasukan = str_replace('.', '', $this->input->post('jumlah_pemasukan'));
 
 		$voucher = array_slice($this->input->post('voucher'), 0, -1);
 

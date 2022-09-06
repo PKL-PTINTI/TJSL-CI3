@@ -9,15 +9,15 @@ class Mitra extends CI_Controller {
 		$this->load->model('MitraModel', 'mitra_model');
 		date_default_timezone_set("Asia/Jakarta");
 
-		$id_admin = $this->db->get_where('Admin', ['username' => $this->session->userdata('username')])->row_array()['id_admin'];
+		// $id_admin = $this->db->get_where('Admin', ['username' => $this->session->userdata('username')])->row_array()['id_admin'];
 
 		if(!$this->session->userdata('username')){
 			redirect(base_url('auth'));
 		}
 
-		if(!isset($id_admin)){
-			redirect(base_url('auth/blocked'));
-		}
+		// if(!isset($id_admin)){
+		// 	redirect(base_url('auth/blocked'));
+		// }
 	}
 
 	public function index(){

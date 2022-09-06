@@ -153,7 +153,7 @@
 
                             <div class="form-group">
                                 <label>Jasa (%) Per Tahun</label>
-                                <input type="number" class="form-control" placeholder="Jasa (%) Per Tahun" name="jasa">
+                                <input type="text" class="form-control amount" placeholder="Jasa (%) Per Tahun" name="jasa">
                             </div>
 
                             <div class="form-group">
