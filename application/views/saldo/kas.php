@@ -65,10 +65,14 @@
                                         <td><?= $j->updated ?></td>
                                         <td><?= $j->tglUpdate ?></td>
                                         <td>
-                                            <a href="<?= base_url('Admin/Saldo/Edit/'.$j->id_opex) ?>" 
-                                                class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="<?= base_url('Admin/Saldo/Delete/'.$j->id_opex) ?>" 
-                                                class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
+                                            <div class="dropdown">
+					                            <a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						                            <i class="fas fa-ellipsis-v"></i>
+					                            </a>
+					                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						                        <a class="dropdown-item btndelete" id="button_delete" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '">
+                                                    <i class="fas fa-trash text-danger pr-2"></i> Delete </a>
+					                        </div>
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>

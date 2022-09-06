@@ -82,6 +82,5 @@ $route['Admin/Mitra/Cicilan/Create/(:any)'] = 'Admin/Mitra/CretaeCicilan/$1';
 // TASK: Jurnal Management System
 
 $route['Admin/Jurnal/Transaksi/(:any)'] = 'Admin/Jurnal/JurnalBank/$1';
-$route['Admin/Jurnal/Destroy/(:any)'] = 'Admin/Jurnal/Destroy/$1';
 
 // ENDTASK: Jurnal Management System

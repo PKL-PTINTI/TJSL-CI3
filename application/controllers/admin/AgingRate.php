@@ -180,34 +180,27 @@ class AgingRate extends CI_Controller {
 		echo '$tpdiragukan = '; echo $tpdiragukan; echo nl2br("\n");
 		echo '$tpmacet = '; echo $tpmacet; echo nl2br("\n");
 
-		$this->db->query("UPDATE transposeagingrate SET lankekrglan='$avaregelancarkekuranglancar' WHERE id=$idkosong - 1");     
-		$this->db->query("UPDATE transposeagingrate SET krglankediragu='$avaregekuranglancarkediragukan' WHERE id=$idkosong - 1");
-		$this->db->query("UPDATE transposeagingrate SET diragukemacet='$avaregediragukankemacet' WHERE id=$idkosong - 1");
+		$this->db->query("UPDATE transposeagingrate SET lankekrglan='$avaregelancarkekuranglancar' WHERE id=$idkosong");     
+		$this->db->query("UPDATE transposeagingrate SET krglankediragu='$avaregekuranglancarkediragukan' WHERE id=$idkosong");
+		$this->db->query("UPDATE transposeagingrate SET diragukemacet='$avaregediragukankemacet' WHERE id=$idkosong");
 
-		$this->db->query("UPDATE transposeagingrate SET prodeflancar='$pdllancar' WHERE id=$idkosong - 1");//
-		$this->db->query("UPDATE transposeagingrate SET prodefkuranglancar='$pdkuranglancar' WHERE id=$idkosong - 1");
-		$this->db->query("UPDATE transposeagingrate SET prodefdiragukan='$pddiragukan' WHERE id=$idkosong - 1");
+		$this->db->query("UPDATE transposeagingrate SET prodeflancar='$pdllancar' WHERE id=$idkosong");//
+		$this->db->query("UPDATE transposeagingrate SET prodefkuranglancar='$pdkuranglancar' WHERE id=$idkosong");
+		$this->db->query("UPDATE transposeagingrate SET prodefdiragukan='$pddiragukan' WHERE id=$idkosong");
 	}
 
-	public function createExcel() {
+	public function CreateExcel() {
 		$fileName = 'aging-rate-' . date('Y') .'.xlsx';  
 
 		$agingrate = $this->agingrate_model->getAgingRate();
-		$spreadsheet = new Spreadsheet();
 		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+		
+		$inputFileType = 'Xlsx';
+		$inputFileName = 'storage\AgingRate.xlsx';
 
-        $sheet = $spreadsheet->getActiveSheet();
-		$sheet->getColumnDimension('A')->setWidth(25);
-
-		$sheet->mergeCells('A2:Z2');
-		$sheet->getStyle('A2:Z2')->getFont()->setBold(true);
-		$sheet->getStyle('A2:Z2')->getAlignment()->setHorizontal('center');
-
-		$sheet->setCellValue('A2', 'AGING RATE');
-
-		$sheet->setCellValue('B3', 'STEP #1');
-		$sheet->setCellValue('C3', 'Isi Angka Kualitas AR Dari Bulan Jan 2020 - Sep 2021');
+		$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+		$spreadsheet = $reader->load($inputFileName);
 
 		$writer = new Xlsx($spreadsheet);
 		$writer->save("storage/".$fileName);

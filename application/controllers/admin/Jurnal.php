@@ -75,12 +75,12 @@ class Jurnal extends CI_Controller {
 						<i class="fas fa-ellipsis-v"></i>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i
+						<a class="dropdown-item" onclick="delete_jurnal(this.dataset.opex)" data-opex="'. $data_jurnal->nobukti .'" href="#"><i
 								class="fas fa-trash text-danger pr-2"></i> Delete </a>
 					</div>
 				</div>
 			';
-            $data[] = $row;
+            $data[] = $row;	
         }
 
 		$hasil = [
@@ -387,10 +387,11 @@ class Jurnal extends CI_Controller {
 	redirect(base_url('Admin/Jurnal'));
 	}
 
-	public function destroy($nobukti){
-		$base = str_replace('%', '/', $nobukti);
-		$this->jurnal_model->destroy($base);
-		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Dihapus\',position: \'bottomRight\'});</script>');
+	public function destroy(){
+		// $base = str_replace('%', '/', $nobukti);
+		$nobukti = $this->input->post('opex');
+		$this->jurnal_model->destroy($nobukti);
+		// $this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Dihapus\',position: \'bottomRight\'});</script>');
 		// redirect(base_url('Admin/Jurnal'));
 		// $referred_from = $this->session->userdata('referred_from');
 		// redirect($referred_from, 'refresh');

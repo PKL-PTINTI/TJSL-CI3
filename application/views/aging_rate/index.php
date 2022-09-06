@@ -22,7 +22,9 @@
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/CreateExcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/AgingRate/CreateExcel') ?>">Export Data</a>
+                                    <a class="btn btn-primary mb-3" 
+                                        href="<?= base_url('Admin/AgingRate/hitungAgingRate') ?>">Hitung Aging Rate</a>
                                 </div>
                             </div>
                         </div>

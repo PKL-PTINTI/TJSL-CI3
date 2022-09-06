@@ -18,8 +18,6 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/jurnal'): ?>
-                                <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/Jurnal/Create') ?>">Tambah Data Jurnal</a>
@@ -29,6 +27,9 @@
                                         href="<?= base_url('Admin/Jurnal/Periodaopex') ?>">Perioda</a>
                                     <a class="btn btn-primary mb-3 "
                                         href="<?= base_url('Admin/Jurnal/CreateExcel') ?>">Export Excel</a>
+                                    <a class="btn btn-primary mb-3 btndeletejurnal"
+                                        href="#">TEST SWALL</a>
+
                                 </div>
                             </div>
                         </div>

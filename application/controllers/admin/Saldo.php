@@ -94,7 +94,38 @@ class Saldo extends CI_Controller {
 		$tanggal_akhir = $this->input->post('tanggal_akhir');
 		$id_akun = $this->input->post('korek');
 
-		$this->db->query("SELECT SUM(pemasukan) as pemasukan, SUM(pengeluaran) as pengeluaran, `tanggal`, `id_akun`, SUM(pemasukan - pengeluaran) as saldo FROM opex WHERE tanggal >= '2022-07-01' AND tanggal < '2022-07-31' AND id_akun = '101010101' GROUP BY DATE_FORMAT(`tanggal`, '%Y-%m-%d') ORDER BY tanggal ASC");
-		
+		$opex = $this->db->query("SELECT SUM(pemasukan) as pemasukan, SUM(pengeluaran) as pengeluaran, `tanggal`, `id_akun`, `id_opex`, SUM(pemasukan - pengeluaran) as saldo FROM opex WHERE tanggal >= '" . $tanggal_awal . "' AND tanggal < '" . $tanggal_akhir . "' AND id_akun = '" . $id_akun . "'  GROUP BY DATE_FORMAT(`tanggal`, '%Y-%m-%d') ORDER BY tanggal ASC")->result();
+		$json = [];
+		$no = 1;
+		$pemasukan = 0;
+		$pengeluaran = 0;
+		$saldo = 0;
+		foreach($opex as $key => $value){
+			$no++;
+			$data = [];
+			$data['no'] = $no;
+			$data['id_opex'] = $value->id_opex;
+			$data['tanggal'] = $value->tanggal;
+			$data['pemasukan'] = $value->pemasukan;
+			$data['pengeluaran'] = $value->pengeluaran;
+			$data['saldo'] = $value->saldo;
+			$data['keterangan'] = ($no == 1) ? "DATA AWAL PERIODA" : "DATA PERKIRAAN";
+			$json[] = $data;
+			$pemasukan += $value->pemasukan;
+			$pengeluaran += $value->pengeluaran;
+			$saldo += $value->saldo;
+		}
+
+		$json['pengeluaran'] = $pengeluaran;
+		$json['pemasukan'] = $pemasukan;
+		$json['saldo'] = $saldo;
+
+		$result = [
+			'data' => $json,
+		];
+
+		return $this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($result));
 	}
 }

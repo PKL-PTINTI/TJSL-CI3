@@ -173,7 +173,7 @@ function changeUrlMitra(url, title) {
 // init datatable serverside
 let url = window.location.origin + "/admin/jurnal/get_jurnal";
 
-let table = $("#table-jurnal").DataTable({
+let table_jurnal = $("#table-jurnal").DataTable({
 	processing: true,
 	serverSide: true,
 	order: [],
@@ -185,12 +185,12 @@ let table = $("#table-jurnal").DataTable({
 
 function changeUrlJurnal(url, title) {
 	if(window.location.pathname == "/Admin/Jurnal"){
-		table.ajax.url(url).load();
+		table_jurnal.ajax.url(url).load();
 		$("#header").text(title);
 	} else {
 		window.location.href = window.location.origin + "/Admin/Jurnal";
 		document.on('ready', function () {
-			table.ajax.url(url).load();
+			table_jurnal.ajax.url(url).load();
 			$("#header").text(title);
 		});
 	}
@@ -311,3 +311,33 @@ $("#form-perkiraan").on("submit", function (e) {
 		},
 	});
 });
+
+function delete_jurnal(opex){
+	var url = window.location.origin + "/Admin/Jurnal/Destroy";
+
+	// $("#swal-6").click(function() {
+		swal({
+			title: 'Kamu Serius?',
+			text: 'Saolnya data ini bakal dihapus lhooo..',
+			icon: 'warning',
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					type: "POST",
+					url: url,
+					data: {opex: opex},
+					dataType: "JSON",
+				});
+				swal('Berhasil', 'Yeayy! Datanya sudah berhasil dihapus.', {
+				icon: 'success',
+				});
+				table_jurnal.ajax.reload(null, false);
+			} else {
+				swal('Gak Jadi Di Hapus', 'Datanya aman kok!', 'info');
+			}
+		  });
+	//   });
+}
