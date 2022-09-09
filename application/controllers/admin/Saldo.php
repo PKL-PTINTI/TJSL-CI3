@@ -7,17 +7,52 @@ class Saldo extends CI_Controller {
 		parent::__construct();
 		$this->load->model('SaldoModel', 'saldo_model');
 		$this->load->model('JurnalModel', 'jurnal_model');
+
+		$this->load->library('tank_auth');
+
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$this->data['dataUser'] = $this->session->userdata('data_ldap');
+
+			$this->data['user_id'] = $this->tank_auth->get_user_id();
+			$this->data['username'] = $this->tank_auth->get_username();
+			$this->data['email'] = $this->tank_auth->get_email();
+
+			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
+
+			$this->data['profile_name'] = $profile['name'];
+			$this->data['profile_foto'] = $profile['foto'];
+
+			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
+				$this->data['role_id'] = $val['role_id'];
+				$this->data['role'] = $val['role'];
+				$this->data['full_name_role'] = $val['full'];
+			}
+
+			$this->data['link_active'] = 'Dashboard';
+
+			//buat permission
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
+
+			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
+
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
+
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
+		}
 	}
 
 	public function index()
 	{
-		$data = [
-			'title' => 'Data Saldo Kas Dan Bank',
-            'header' => 'Data Saldo',
-			'saldokasbank' => $this->saldo_model->getSaldo(),
-		];
+		$this->data['title'] = 'Data Saldo Kas Dan Bank';
+		$this->data['header'] = 'Data Saldo';
+		$this->data['saldokasbank'] = $this->saldo_model->getSaldo();
 		
-		$this->template->load('saldo/index', $data);
+		$this->template->load('saldo/index', $this->data);
     }
 
 	public function update($akun){
@@ -57,36 +92,32 @@ class Saldo extends CI_Controller {
 	
 	public function jurnal($bank)
 	{
-		$data = [
-			'title' => 'Data Saldo Kas',
-			'header' => 'Data Saldo ' . ucfirst($bank), 
-		];
+		$this->data['title'] = 'Data Saldo Kas';
+		$this->data['header'] = 'Data Saldo ' . ucfirst($bank);
 
 		if ($bank == 'kas') {	
-			$data['jurnal'] = $this->saldo_model->getKas();
-			$data['saldoawal'] = 4687041;
-			$data['id_akun'] = '101010101';	
+			$this->data['jurnal'] = $this->saldo_model->getKas();
+			$this->data['saldoawal'] = 4687041;
+			$this->data['id_akun'] = '101010101';	
 		} elseif ($bank == 'mandiri') {
-			$data['jurnal'] = $this->saldo_model->getMandiri();
-			$data['saldoawal'] = 213381864.81;
-			$data['id_akun'] = '101010201';
+			$this->data['jurnal'] = $this->saldo_model->getMandiri();
+			$this->data['saldoawal'] = 213381864.81;
+			$this->data['id_akun'] = '101010201';
 		} elseif ($bank == 'bri') {
-			$data['jurnal'] = $this->saldo_model->getBri();
-			$data['saldoawal'] = 108631624;
-			$data['id_akun'] = '101010204';
+			$this->data['jurnal'] = $this->saldo_model->getBri();
+			$this->data['saldoawal'] = 108631624;
+			$this->data['id_akun'] = '101010204';
 		}
 
-		$this->template->load('saldo/kas', $data);
+		$this->template->load('saldo/kas', $this->data);
 	}
 
 	public function KartuPerkiraan(){
 		$id_akun = $this->input->get('id_akun') ?? '';
-		
-		$this->template->load('saldo/kartu_perkiraan', [
-			'title' => 'Kartu Perkiraan',
-			'header' => 'Kartu Perkiraan',
-			'id_akun' => $id_akun,
-		]);
+		$this->data['title'] = 'Kartu Perkiraan';
+		$this->data['header'] = 'Kartu Perkiraan';
+		$this->data['id_akun'] = $id_akun;
+		$this->template->load('saldo/kartu_perkiraan', $this->data);
 	}
 
 	public function kartu_perkiraan_data(){

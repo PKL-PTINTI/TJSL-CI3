@@ -1,10 +1,44 @@
 <?php
-/**
- * Login View
- *
- * @author       Firoz Ahmad Likhon <likh.deshi@gmail.com>
- */
-defined('BASEPATH') OR exit('No direct script access allowed');
+$login = array(
+	'name' => 'login',
+	'id' => 'user',
+	'value' => set_value('login'),
+	'placeholder' => 'Username',
+	'class' => 'form-control',
+	'autocomplete' => 'off'
+);
+if ($login_by_username and $login_by_email) {
+	$login_label = 'Email or username';
+} else if ($login_by_username) {
+	$login_label = 'Login';
+} else {
+	$login_label = 'Email';
+}
+$password = array(
+	'name' => 'password',
+	'id' => 'pass',
+	'data-type' => 'password',
+	'value' => set_value('password'),
+	'class' => 'form-control',
+	'placeholder' => 'Password',
+	'autocomplete' => 'off'
+);
+$remember = array(
+	'name' => 'remember',
+	'id' => 'monthly',
+	'class' => 'custom-control-input',
+	'value' => 1,
+	'checked' => set_value('remember'),
+	'autocomplete' => 'off',
+);
+$captcha = array(
+	'name' => 'captcha',
+	'id' => 'captcha',
+	'class' => 'form-control',
+	'placeholder' => 'Captcha',
+	'autocomplete' => 'off'
+);
+$label_captcha = "Confirmation Code";
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <!-- Template CSS -->
   <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css">
   <link rel="stylesheet" href="<?= base_url() ?>assets/css/components.css">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     .err {
             color: red;
@@ -43,32 +78,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
 
             <div class="card card-primary">
-              <div class="card-header"><h4>Login Dulu Yaaa.. </h4></div>
+              <div class="card-header"><h4>Login </h4></div>
 
               <div class="card-body">
-              <?= isset($failed) && !empty($failed) ? "<p class='err'>{$failed}</p>" : ""; ?>
-              <?= $this->session->flashdata('success'); ?>
-                <form method="POST" action="<?= site_url('login') ?>" class="needs-validation">
-                <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>"
-           value="<?= $this->security->get_csrf_hash(); ?>">
+					    <?php echo form_open($this->uri->uri_string(), array('class' => 'form w-100', 'novalidate' => 'novalidate', 'id' => 'kt_sign_in_form')); ?>
                   <div class="form-group">
                     <label for="email">Username</label>
-                    <input type="text" id="inputEmail" class="form-control" placeholder="Username" value="<?= set_value('username'); ?>" name="username" autofocus>
-                    <?= form_error('username', '<div class="err">', '</div>'); ?>
+                    <?php echo form_input($login, array('class' => 'form-control form-control-lg form-control-solid', 'autocomplete' => 'off')); ?>
+                    <span style="color: #f43f5e;">
+                      <?php echo form_error($login['name']); ?>
+                      <?php echo isset($errors[$login['name']]) ? $errors[$login['name']] : ''; ?>
+                    </span>
                   </div>
                   <div class="form-group">
-                    <div class="d-block">
                     	<label for="password" class="control-label">Password</label>
-                      <div class="float-right">
-                      </div>
-                    </div>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" value="<?= set_value('password'); ?>" name="password">
-                    <?= form_error('password', '<div class="err">', '</div>'); ?>
+                      <?php echo form_password($password, array('class' => 'form-control form-control-lg form-control-solid', 'autocomplete' => 'off')); ?>
+                      <span style="color: #f43f5e;">
+                        <?php echo form_error($password['name']); ?>
+                        <?php echo isset($errors[$password['name']]) ? $errors[$password['name']] : ''; ?>
+                      </span>
                   </div>
+                  <?php
+                    if ($show_captcha) {
+                      if ($use_recaptcha) {
+                    ?>
+                        <div class="fv-row mb-3">
+                          <center>
+                            <div class="captcha_wrapper">
+                              <div class="g-recaptcha" data-sitekey="6Le4OOEhAAAAAOZxVGIcU1NP5WXLO4UDOeOtHBX4"></div>
+                              <span style="color: #f43f5e;">
+                                <?php echo $this->session->flashdata('flashError'); ?>
+                              </span>
+                            </div>
+                          </center>
+                        </div>
+                      <?php
+                      }
+                      if (!$use_recaptcha) {
+                      ?>
+                        <div class="fv-row mb-3">
+                          <center for="user" class="label">
+                            <img src="<?php echo base_url('Auth/captcha'); ?>" />
+                            <label for="captcha" class="label"><?php echo $label_captcha; ?></label>
+                            <div class="mws-form-item large">
+                              <?php echo form_input($captcha); ?>
+                            </div>
+                            <span style="color: #f43f5e;"><?php echo form_error($captcha['name']); ?></span>
+                          </center>
+                        </div>
+                    <?php
+                      }
+                    }
+                    ?>
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" value="remember-me" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">Ingat saya</label>
+                    <?php echo form_checkbox($remember, array('class' => 'custom-control-input', 'id' => 'flexCheckDefault')); ?>
+                    <label class="custom-control-label" for="monthly">Ingat saya</label>
                     </div>
                   </div>
                   <div class="form-group">
@@ -76,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       Login
                     </button>
                   </div>
-                </form>
+                  <?php echo form_close(); ?>
               </div>
             </div>
           </div>

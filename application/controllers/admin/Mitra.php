@@ -9,24 +9,49 @@ class Mitra extends CI_Controller {
 		$this->load->model('MitraModel', 'mitra_model');
 		date_default_timezone_set("Asia/Jakarta");
 
-		// $id_admin = $this->db->get_where('Admin', ['username' => $this->session->userdata('username')])->row_array()['id_admin'];
+		$this->load->library('tank_auth');
 
-		if(!$this->session->userdata('username')){
-			redirect(base_url('auth'));
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$this->data['dataUser'] = $this->session->userdata('data_ldap');
+
+			$this->data['user_id'] = $this->tank_auth->get_user_id();
+			$this->data['username'] = $this->tank_auth->get_username();
+			$this->data['email'] = $this->tank_auth->get_email();
+
+			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
+
+			$this->data['profile_name'] = $profile['name'];
+			$this->data['profile_foto'] = $profile['foto'];
+
+			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
+				$this->data['role_id'] = $val['role_id'];
+				$this->data['role'] = $val['role'];
+				$this->data['full_name_role'] = $val['full'];
+			}
+
+			$this->data['link_active'] = 'Dashboard';
+
+			//buat permission
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
+
+			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
+
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
+
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 		}
-
-		// if(!isset($id_admin)){
-		// 	redirect(base_url('auth/blocked'));
-		// }
 	}
 
 	public function index(){
-		$data = [
-			'title' => 'Management Data Mitra',
-			'header' => 'Data Mitra'
-		];
+		$this->data['title'] = 'Management Data Mitra';
+		$this->data['header'] =	 'Data Mitra';
 
-		$this->template->load('mitra/index', $data);
+		$this->template->load('mitra/index', $this->data);
 	}
 
 	public function get_data_mitra($param1 = NULL, $param2 = NULL){
@@ -200,22 +225,20 @@ class Mitra extends CI_Controller {
 	}	
 
 	public function create(){
-		$data = [
-			'title' => 'Tambah Data Mitra',
-			'header' => 'Tambah Data Mitra',
-			'lokasi' => $this->mitra_model->getLokasi(),
-			'statusmitra' => $this->mitra_model->getStatusMitra(),
-			'sektor' => $this->mitra_model->getSektorUsaha(),
-			'kodebank' => $this->mitra_model->getKodeBank(),
-			'hasilevaluasi' => $this->mitra_model->getHasilEvaluasi(),
-			'kasbrimandiri' => $this->mitra_model->getKasBank(),
-			'pelaksanaanprogram' => $this->mitra_model->getPelaksanaanProgram(),
-			'kondisipinjaman' => $this->mitra_model->getKondisiPinjaman(),
-			'jenispembayaran' => $this->mitra_model->getJenisPembayaran(),
-			'skalausaha' => $this->mitra_model->getSkalaUsaha(),
-		];
+		$this->data['title'] = 'Tambah Data Mitra';
+		$this->data['header'] = 'Tambah Data Mitra';
+		$this->data['lokasi'] = $this->mitra_model->getLokasi();
+		$this->data['statusmitra'] = $this->mitra_model->getStatusMitra();
+		$this->data['sektor'] = $this->mitra_model->getSektorUsaha();
+		$this->data['kodebank'] = $this->mitra_model->getKodeBank();
+		$this->data['hasilevaluasi'] = $this->mitra_model->getHasilEvaluasi();
+		$this->data['kasbrimandiri'] = $this->mitra_model->getKasBank();
+		$this->data['pelaksanaanprogram'] = $this->mitra_model->getPelaksanaanProgram();
+		$this->data['kondisipinjaman'] = $this->mitra_model->getKondisiPinjaman();
+		$this->data['jenispembayaran'] = $this->mitra_model->getJenisPembayaran();
+		$this->data['skalausaha'] = $this->mitra_model->getSkalaUsaha();
 
-		$this->template->load('mitra/create', $data);
+		$this->template->load('mitra/create', $this->data);
 	}
 
 	public function store(){
@@ -493,22 +516,20 @@ class Mitra extends CI_Controller {
 	}
 
 	public function update($id){
-		$data = [
-			'title' => 'Update Data Mitra',
-			'mitra' => $this->mitra_model->getMitra($id),
-			'lokasi' => $this->mitra_model->getLokasi(),
-			'statusmitra' => $this->mitra_model->getStatusMitra(),
-			'sektor' => $this->mitra_model->getSektorUsaha(),
-			'kodebank' => $this->mitra_model->getKodeBank(),
-			'hasilevaluasi' => $this->mitra_model->getHasilEvaluasi(),
-			'kasbrimandiri' => $this->mitra_model->getKasBank(),
-			'pelaksanaanprogram' => $this->mitra_model->getPelaksanaanProgram(),
-			'kondisipinjaman' => $this->mitra_model->getKondisiPinjaman(),
-			'jenispembayaran' => $this->mitra_model->getJenisPembayaran(),
-			'skalausaha' => $this->mitra_model->getSkalaUsaha(),
-		];
+		$this->data['title'] = 'Update Data Mitra';
+		$this->data['mitra'] = $this->mitra_model->getMitra($id);
+		$this->data['lokasi'] = $this->mitra_model->getLokasi();
+		$this->data['statusmitra'] = $this->mitra_model->getStatusMitra();
+		$this->data['sektor'] = $this->mitra_model->getSektorUsaha();
+		$this->data['kodebank'] = $this->mitra_model->getKodeBank();
+		$this->data['hasilevaluasi'] = $this->mitra_model->getHasilEvaluasi();
+		$this->data['kasbrimandiri'] = $this->mitra_model->getKasBank();
+		$this->data['pelaksanaanprogram'] = $this->mitra_model->getPelaksanaanProgram();
+		$this->data['kondisipinjaman'] = $this->mitra_model->getKondisiPinjaman();
+		$this->data['jenispembayaran'] = $this->mitra_model->getJenisPembayaran();
+		$this->data['skalausaha'] = $this->mitra_model->getSkalaUsaha();
 
-		$this->template->load('mitra/update', $data);
+		$this->template->load('mitra/update', $this->data);
 	}
 
 	public function destroy($id){
@@ -518,14 +539,12 @@ class Mitra extends CI_Controller {
 	}
 
 	public function rincianCicilan($no_kontrak){
-		$data = [
-			'title' => 'Rincian Cicilan',
-			'header' => 'Rincian Cicilan No Kontrak '.$no_kontrak,
-			'mitra' => $this->mitra_model->getMitraKontrak($no_kontrak),
-			'cicilan' => $this->mitra_model->getMitraCicilan($no_kontrak),
-		];
+		$this->data['title'] = 'Rincian Cicilan';
+		$this->data['header'] = 'Rincian Cicilan No Kontrak '.$no_kontrak;
+		$this->data['mitra'] = $this->mitra_model->getMitraKontrak($no_kontrak);
+		$this->data['cicilan'] = $this->mitra_model->getMitraCicilan($no_kontrak);
 
-		$totPinjamanJumlah = $data['mitra']->pinjpokok + $data['mitra']->pinjjasa;
+		$totPinjamanJumlah = $this->data['mitra']->pinjpokok + $this->data['mitra']->pinjjasa;
 		$counter = 1;
 		$angsuranjumlah = 0;
 		$saldo = 0;
@@ -545,7 +564,7 @@ class Mitra extends CI_Controller {
 		$totcicilanrekondisi = 0;
 		$koleks = '';
 
-        if($data['mitra']->pinjjumlah == '0')
+        if($this->data['mitra']->pinjjumlah == '0')
         {
 		  	$this->mitra_model->updatePinjamanJumlah($no_kontrak, $totPinjamanJumlah);
         }
@@ -588,9 +607,9 @@ class Mitra extends CI_Controller {
 					$counter++;
 
 
-					if($data['mitra']->rekondisi == '1'){
-						$tanggal_terakhir_cicil  = strtotime($data['mitra']->tgl_rekondisi);
-						if($data['mitra']->tgl_rekondisi < $cicilanOpex->tanggal){
+					if($this->data['mitra']->rekondisi == '1'){
+						$tanggal_terakhir_cicil  = strtotime($this->data['mitra']->tgl_rekondisi);
+						if($this->data['mitra']->tgl_rekondisi < $cicilanOpex->tanggal){
 							$tanggal_terakhir_cicil  = strtotime($cicilanOpex->tanggal);
 						}
 					} else {	
@@ -612,22 +631,22 @@ class Mitra extends CI_Controller {
 
 					$kolektibilitas = $kolektibilitasawal;
 					
-					if($data['mitra']->rekondisi == '1'){
-						$tanggalkontrak = strtotime($data['mitra']->tgl_rekondisi);
+					if($this->data['mitra']->rekondisi == '1'){
+						$tanggalkontrak = strtotime($this->data['mitra']->tgl_rekondisi);
 						$tgl_pertama = strtotime(date('Y-m-01', strtotime(date('Y-m-d'))));
 
 						$selisihHari = floor(($tgl_pertama - $tanggalkontrak) / (60 * 60 * 24));
 						$selisihBulan = floor(($selisihHari / 30) - 1);
 
-						$jumlahuangseharusnya = $selisihBulan * $data['mitra']->cicilanperbln;
+						$jumlahuangseharusnya = $selisihBulan * $this->data['mitra']->cicilanperbln;
 
-						if($cicilanOpex->tanggal >= $data['mitra']->tgl_rekondisi){
+						if($cicilanOpex->tanggal >= $this->data['mitra']->tgl_rekondisi){
 							$totcicilanrekondisi += $cicilanOpex->pengeluaran;
 							$angsuranjumlahpaskaRekondisi = $totcicilanrekondisi;
 						}
 
 						if($angsuranjumlahpaskaRekondisi < $jumlahuangseharusnya){
-							$selisihbrpkalicicilan = floor(($jumlahuangseharusnya-$angsuranjumlahpaskaRekondisi) / $data['mitra']->cicilanperbln);
+							$selisihbrpkalicicilan = floor(($jumlahuangseharusnya-$angsuranjumlahpaskaRekondisi) / $this->data['mitra']->cicilanperbln);
 
 							if($selisihbrpkalicicilan > 0 AND $selisihbrpkalicicilan <= 6){
 								if($kolektibilitasawal=='lancar')
@@ -669,16 +688,16 @@ class Mitra extends CI_Controller {
 						$this->mitra_model->updateKolektibilitas($no_kontrak, $kolektibilitas);
 					} else {
 						$tgl_pertama = strtotime(date('Y-m-01', strtotime(date('Y-m-d'))));
-						$tanggalkontraks = strtotime($data['mitra']->tglkontrak);
+						$tanggalkontraks = strtotime($this->data['mitra']->tglkontrak);
 						$selisihHari = floor(($tgl_pertama - $tanggalkontraks) / (60 * 60 * 24));
 
 						$jumlahbulan = floor(($selisihHari/30) - 1);
-						$jumlahuangseharusnya = $jumlahbulan * $data['mitra']->cicilanperbln;
+						$jumlahuangseharusnya = $jumlahbulan * $this->data['mitra']->cicilanperbln;
 
 						$angsuranjumlahX += $cicilanOpex->pengeluaran;
 						if($angsuranjumlah < $jumlahuangseharusnya){
 							$selisihcicilan = ($jumlahuangseharusnya - $angsuranjumlah);
-							$selisihbrpkalicicilan = floor( $selisihcicilan / $data['mitra']->cicilanperbln);
+							$selisihbrpkalicicilan = floor( $selisihcicilan / $this->data['mitra']->cicilanperbln);
 
 							if($selisihbrpkalicicilan >= 0 AND $selisihbrpkalicicilan <= 6){
 								if($kolektibilitasawal=='lancar')
@@ -746,23 +765,21 @@ class Mitra extends CI_Controller {
 			}
 		}	
 
-		$data['pokok'] = $pokok;
-		$data['jasa'] = $jasa;
-		$data['total'] = $total;
+		$this->data['pokok'] = $pokok;
+		$this->data['jasa'] = $jasa;
+		$this->data['total'] = $total;
 
-		$data['dataOpex'] = $dataOpex;
+		$this->data['dataOpex'] = $dataOpex;
 
-		$this->template->load('mitra/rincian_cicilan', $data);
+		$this->template->load('mitra/rincian_cicilan', $this->data);
 	}
 
 	public function cretaeCicilan($no_kontrak){
-		$data = [
-			'title' => 'Buat Cicilan',
-			'mitra' => $this->mitra_model->getMitraKontrak($no_kontrak),
-			'kasbrimandiri' => $this->mitra_model->getKasBankCicilan(),
-		];
+		$this->data['title'] = 'Buat Cicilan';
+		$this->data['mitra'] = $this->mitra_model->getMitraKontrak($no_kontrak);
+		$this->data['kasbrimandiri'] = $this->mitra_model->getKasBankCicilan();
 
-		$this->template->load('mitra/create_cicilan', $data);
+		$this->template->load('mitra/create_cicilan', $this->data);
 	}
 
 	public function tambahCicilan(){
@@ -829,9 +846,9 @@ class Mitra extends CI_Controller {
 		if($rekening == 101010101){
 			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
 		} elseif ($rekening == 101010201) {
-			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
+			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M02'.'PK'.$no_kontrak;
 		} elseif ($rekening == 101010204) {
-			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M01'.'PK'.$no_kontrak;
+			$no_bukti = $tanggal_cicilan . '/' . $mitra->tdkbermasalah .'/'.$timeStamp.'/'.'M03'.'PK'.$no_kontrak;
 		}
 
 		if ($mitra->tdkbermasalah == 'masalah' || $mitra->tdkbermasalah == 'Masalah' || $mitra->tdkbermasalah == 'MASALAH') {
@@ -1190,10 +1207,10 @@ class Mitra extends CI_Controller {
 	public function detail($no_kontrak){
 		$mitra = $this->mitra_model->getMitraKontrak($no_kontrak);
 
-		$this->template->load('mitra/detail',[
-			'title' => 'Detail Mitra',
-			'mitra' => $mitra,
-		]);
+		$this->data['title'] = 'Detail Mitra';
+		$this->data['mitra'] = $mitra;
+
+		$this->template->load('mitra/detail', $this->data);
 	}
 
 }

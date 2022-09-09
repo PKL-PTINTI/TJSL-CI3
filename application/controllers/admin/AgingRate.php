@@ -12,17 +12,52 @@ class AgingRate extends CI_Controller {
 		parent::__construct();
 		$this->load->model('AgingRateModel', 'agingrate_model');
 		$this->load->model('MitraModel', 'mitra_model');
+
+		$this->load->library('tank_auth');
+
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$this->data['dataUser'] = $this->session->userdata('data_ldap');
+
+			$this->data['user_id'] = $this->tank_auth->get_user_id();
+			$this->data['username'] = $this->tank_auth->get_username();
+			$this->data['email'] = $this->tank_auth->get_email();
+
+			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
+
+			$this->data['profile_name'] = $profile['name'];
+			$this->data['profile_foto'] = $profile['foto'];
+
+			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
+				$this->data['role_id'] = $val['role_id'];
+				$this->data['role'] = $val['role'];
+				$this->data['full_name_role'] = $val['full'];
+			}
+
+			$this->data['link_active'] = 'Dashboard';
+
+			//buat permission
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
+
+			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
+
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
+
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
+		}
 	}
 
 	public function index()
 	{
-		$data = [
-			'title' => 'Data Aging Rate',
-            'header' => 'Aging Rate',
-			'agingrate' => $this->agingrate_model->getAgingRate(),
-		];
+		$this->data['title'] = 'Data Aging Rate';
+		$this->data['header'] = 'Aging Rate';
+		$this->data['agingrate'] = $this->agingrate_model->getAgingRate();
 		
-		$this->template->load('aging_rate/index', $data);
+		$this->template->load('aging_rate/index', $this->data);
     }
 
 	public function hitungAgingRate(){
@@ -193,6 +228,7 @@ class AgingRate extends CI_Controller {
 		$fileName = 'aging-rate-' . date('Y') .'.xlsx';  
 
 		$agingrate = $this->agingrate_model->getAgingRate();
+		
 		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 		
@@ -201,6 +237,62 @@ class AgingRate extends CI_Controller {
 
 		$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
 		$spreadsheet = $reader->load($inputFileName);
+		$sheet = $spreadsheet->getActiveSheet();
+
+		$stylebold = array(
+			'font'  => array(
+				'bold'  => true,
+				'size'  => 11,
+			));
+
+		// for alpabet A-Z
+		$alphabet = range('A', 'Z');
+		$alphabet = array_merge($alphabet, range('A', 'Z'));
+		
+		$_back = strval(date('Y') - 1);
+		$_now = date('M Y', mktime(0, 0, 0, date("m"), 0, date("Y")));
+		$sheet->setCellValue('B2', "STEP #1 isi angka kualitas AR dari bulan Januari $_back  -  $_now");
+		$sheet->getStyle('B2')->applyFromArray($stylebold);
+
+		$month = array();
+		$bulan = array (
+			1 =>   'jan',
+			'feb',
+			'mar',
+			'apr',
+			'mei',
+			'jun',
+			'jul',
+			'ags',
+			'sep',
+			'okt',
+			'nov',
+			'des'
+		);
+		for ($i=1; $i <= 12; $i++) { 
+			$month[] = ucfirst($bulan[$i]) . ' ' . date('y', mktime(0, 0, 0, date("m"), date("d"), date("Y")- 1));
+		}
+		for ($i=1; $i <= 12; $i++) { 
+			$month[] = ucfirst($bulan[$i]) . ' ' . date('y', mktime(0, 0, 0, date("m"), date("d"), date("Y")));
+		}
+		
+		$averagelnkekrglan = 0;
+
+		foreach ($agingrate as $key => $value) {
+			$sheet->setCellValue($alphabet[$key + 2].'3', $month[$key]);
+			$sheet->setCellValue($alphabet[$key + 2].'4', $agingrate[$key]->lancar);
+			$sheet->setCellValue($alphabet[$key + 2].'5', $agingrate[$key]->kuranglancar);
+			$sheet->setCellValue($alphabet[$key + 2].'6', $agingrate[$key]->diragukan);
+			$sheet->setCellValue($alphabet[$key + 2].'7', $agingrate[$key]->macet);
+			$sheet->setCellValue($alphabet[$key + 3].'8', $agingrate[$key + 1]->selisih);
+			$sheet->setCellValue($alphabet[$key + 2].'9', $agingrate[$key]->jumlah);
+
+			$sheet->setCellValue($alphabet[$key + 2].'13', $agingrate[$key]->lankekrglan);
+			$sheet->setCellValue($alphabet[$key + 2].'14', $agingrate[$key]->krglankediragu);
+			$sheet->setCellValue($alphabet[$key + 2].'15', $agingrate[$key]->diragukemacet);
+
+			// $averagelnkekrglan += $agingrate[$key]->lankekrglan / 24;
+		}
 
 		$writer = new Xlsx($spreadsheet);
 		$writer->save("storage/".$fileName);

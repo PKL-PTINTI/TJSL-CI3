@@ -10,28 +10,59 @@ class NeracaSaldo extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('NeracaSaldoModel', 'neracasaldo_model');
+
+		$this->load->library('tank_auth');
+
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$this->data['dataUser'] = $this->session->userdata('data_ldap');
+
+			$this->data['user_id'] = $this->tank_auth->get_user_id();
+			$this->data['username'] = $this->tank_auth->get_username();
+			$this->data['email'] = $this->tank_auth->get_email();
+
+			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
+
+			$this->data['profile_name'] = $profile['name'];
+			$this->data['profile_foto'] = $profile['foto'];
+
+			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
+				$this->data['role_id'] = $val['role_id'];
+				$this->data['role'] = $val['role'];
+				$this->data['full_name_role'] = $val['full'];
+			}
+
+			$this->data['link_active'] = 'Dashboard';
+
+			//buat permission
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
+
+			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
+
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
+
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
+		}
 	}
 
 	public function index()
 	{
-		$data = [
-			'title' => 'Data Neraca Saldo',
-            'header' => 'Management Data Neraca Saldo',
-			'neracasaldo' => $this->neracasaldo_model->getNeracaSaldo(),
-		];
+		$this->data['title'] = 'Data Neraca Saldo';
+		$this->data['header'] = 'Management Data Neraca Saldo';
+		$this->data['neracasaldo'] = $this->neracasaldo_model->getNeracaSaldo();
 
-        if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		}
+		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 
-		if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-		}
+		$this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 		
-		$this->template->load('neraca_saldo/index', $data);
+		$this->template->load('neraca_saldo/index', $this->data);
     }
 
-    public function createExcel() {
+    public function CreateExcel() {
 		$fileName = 'neraca-saldo-' . date('Y') .'.xlsx';  
 
 		$neracasaldo = $this->neracasaldo_model->getNeracaSaldo();

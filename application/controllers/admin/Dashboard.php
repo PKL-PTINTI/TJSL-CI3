@@ -14,40 +14,71 @@ class Dashboard extends CI_Controller {
 		$this->load->model('MitraModel', 'mitra_model');
 		$this->load->model('JurnalModel', 'jurnal_model');
 
-		if(!$this->session->userdata('username')){
-			redirect(base_url('auth'));
+		$this->load->library('tank_auth');
+
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$this->data['dataUser'] = $this->session->userdata('data_ldap');
+
+			$this->data['user_id'] = $this->tank_auth->get_user_id();
+			$this->data['username'] = $this->tank_auth->get_username();
+			$this->data['email'] = $this->tank_auth->get_email();
+
+			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
+
+			$this->data['profile_name'] = $profile['name'];
+			$this->data['profile_foto'] = $profile['foto'];
+
+			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
+				$this->data['role_id'] = $val['role_id'];
+				$this->data['role'] = $val['role'];
+				$this->data['full_name_role'] = $val['full'];
+			}
+
+			$this->data['link_active'] = 'Dashboard';
+
+			//buat permission
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
+
+			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
+
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
+
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 		}
 	}
 
 
 	public function index()
 	{
-		$data = [
-			'title' => 'Dashboard',
-			'countMitra' => $this->db->count_all('mitra'),
-			'countMitraNormal' => $this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL')->count_all_results('mitra'),
-			'countMitraBermasalah' => $this->db->where('tdkbermasalah', 'masalah', 'Masalah', 'MASALAH')->count_all_results('mitra'),
-			'countMitraKhusus' => $this->db->where('tdkbermasalah', 'khusus', 'Khusus', 'KHUSUS')->count_all_results('mitra'),
-			'countMitraWo' => $this->db->where('tdkbermasalah', 'wo', 'Wo', 'WO')->count_all_results('mitra'),
-			'saldokasbank' => $this->saldo_model->getSaldo(),
-			'data_chart_opex' => $this->db->query("SELECT SUM(pengeluaran) as pengeluaran, SUM(pemasukan) as pemasukan, Month(tanggal) as month, `tanggal` FROM opex GROUP BY DATE_FORMAT(`tanggal`, '%Y-%m') ORDER BY tanggal ASC")->result(),
-			'pemasukan_bulanan' => 0,
-			'pengeluaran_bulanan' => 0,
-		];
+		$this->data['title'] = 'Dashboard';
+		$this->data['countMitra'] = $this->db->count_all('mitra');
+		$this->data['countMitraNormal'] = $this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL')->count_all_results('mitra');
+		$this->data['countMitraBermasalah'] = $this->db->where('tdkbermasalah', 'masalah', 'Masalah', 'MASALAH')->count_all_results('mitra');
+		$this->data['countMitraKhusus'] = $this->db->where('tdkbermasalah', 'khusus', 'Khusus', 'KHUSUS')->count_all_results('mitra');
+		$this->data['countMitraWo'] = $this->db->where('tdkbermasalah', 'wo', 'Wo', 'WO')->count_all_results('mitra');
+		$this->data['saldokasbank'] = $this->saldo_model->getSaldo();
+		$this->data['data_chart_opex'] = $this->db->query("SELECT SUM(pengeluaran) as pengeluaran, SUM(pemasukan) as pemasukan, Month(tanggal) as month, `tanggal` FROM opex GROUP BY DATE_FORMAT(`tanggal`, '%Y-%m') ORDER BY tanggal ASC")->result();
+		$this->data['pemasukan_bulanan'] = 0;
+		$this->data['pengeluaran_bulanan'] = 0;
 
-		foreach ($data['data_chart_opex'] as $key => $value) {
-			preg_match('/(\d{1,4}\d{1})/', $data['data_chart_opex'][$key]->tanggal, $output_array);
+		foreach ($this->data['data_chart_opex'] as $key => $value) {
+			preg_match('/(\d{1,4}\d{1})/', $this->data['data_chart_opex'][$key]->tanggal, $output_array);
 			if ($output_array[0] == date('Y')) {
-				$data['data_chart_opex'][$key]->pengeluaran = intval($value->pengeluaran);
-				$data['data_chart_opex'][$key]->pemasukan = intval($value->pemasukan);
-				$data['pemasukan_bulanan'] += $value->pemasukan;
-				$data['pengeluaran_bulanan'] += $value->pengeluaran;
+				$this->data['data_chart_opex'][$key]->pengeluaran = intval($value->pengeluaran);
+				$this->data['data_chart_opex'][$key]->pemasukan = intval($value->pemasukan);
+				$this->data['pemasukan_bulanan'] += $value->pemasukan;
+				$this->data['pengeluaran_bulanan'] += $value->pengeluaran;
 			} else {
-				unset($data['data_chart_opex'][$key]);
+				unset($this->data['data_chart_opex'][$key]);
 			}
 		}
 		
-		$this->template->load('dashboard/index', $data);
+		$this->template->load('dashboard/index', $this->data);
 	}
 
 	public function HitungLaporanData(){

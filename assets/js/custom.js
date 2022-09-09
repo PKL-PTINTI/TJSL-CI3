@@ -7,19 +7,28 @@
 
 "use strict";
 
-$("#table-cicilan-1").dataTable({
+var cicilan = $("#table-cicilan-1").dataTable({
 	columnDefs: [{ sortable: false, targets: [2, 3] }],
+	scrollX: true,
 });
 
 $("#table-cicilan-2").dataTable({
 	columnDefs: [{ sortable: false, targets: [2, 3] }],
+	scrollX: true,
 });
 
 $("#table-jurnal-bank").dataTable({
 	columnDefs: [{ sortable: false, targets: [2, 3] }],
+	scrollX: true,
+});
+
+$("#table-agingrate").dataTable({
+	columnDefs: [{ sortable: false, targets: [2, 3] }],
+	scrollX: true,
 });
 
 let table_perioda = $("#table-jurnal-perioda").dataTable({
+	scrollX: true,
 	columns: [
 		{ data: "no" },
 		{ data: "id_opex" },
@@ -158,6 +167,7 @@ let table_mitra = $("#table-mitra").DataTable({
 	processing: true,
 	serverSide: true,
 	order: [],
+	scrollX: true,
 	ajax: {
 		url: url_mitra,
 		method: "POST",
@@ -176,6 +186,7 @@ let url = window.location.origin + "/admin/jurnal/get_jurnal";
 let table_jurnal = $("#table-jurnal").DataTable({
 	processing: true,
 	serverSide: true,
+	scrollX: true,
 	order: [],
 	ajax: {
 		url: url,
@@ -272,6 +283,7 @@ $(".repeater, .repeater-default").repeater({
 // });
 
 let table_perkiraan = $("#table-jurnal-perkiraan").dataTable({
+	scrollX: true,
 	columns: [
 		{ data: "no" },
 		{ data: "id_opex" },

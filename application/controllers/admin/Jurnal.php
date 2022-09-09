@@ -12,19 +12,50 @@ class Jurnal extends CI_Controller {
 		$this->load->model('JurnalModel', 'jurnal_model');
 	    $this->load->model('SaldoModel', 'saldo_model');
 
-		if(!$this->session->userdata('username')){
-			redirect(base_url('auth'));
+		$this->load->library('tank_auth');
+
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$this->data['dataUser'] = $this->session->userdata('data_ldap');
+
+			$this->data['user_id'] = $this->tank_auth->get_user_id();
+			$this->data['username'] = $this->tank_auth->get_username();
+			$this->data['email'] = $this->tank_auth->get_email();
+
+			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
+
+			$this->data['profile_name'] = $profile['name'];
+			$this->data['profile_foto'] = $profile['foto'];
+
+			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
+				$this->data['role_id'] = $val['role_id'];
+				$this->data['role'] = $val['role'];
+				$this->data['full_name_role'] = $val['full'];
+			}
+
+			$this->data['link_active'] = 'Dashboard';
+
+			//buat permission
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
+
+			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
+
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
+
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 		}
 	}
 
 	public function index()
 	{
-		$data = [
-			'title' => 'Management Data Jurnal',
-			'header' => 'Data Jurnal',
-		];
+		$this->data['title'] = 'Management Data Jurnal';
+		$this->data['header'] = 'Data Jurnal';
 
-		$this->template->load('jurnal/index', $data);
+		$this->template->load('jurnal/index', $this->data);
 	}
 
 	public function get_jurnal(){
@@ -222,11 +253,9 @@ class Jurnal extends CI_Controller {
 	}
 
 	public function create(){
-		$data = [
-			'title' => 'Tambah Data Transaksi Jurnal',
-			'header' => 'Tambah Data Transaksi Jurnal',
-			'korek' => $this->jurnal_model->getKodeRekening(),
-		];
+		$this->data['title'] = 'Tambah Data Transaksi Jurnal';
+		$this->data['header'] = 'Tambah Data Transaksi Jurnal';
+		$this->data['korek'] = $this->jurnal_model->getKodeRekening();
 
 		$this->template->load('jurnal/create', $data);
 	}
@@ -400,13 +429,11 @@ class Jurnal extends CI_Controller {
 	//Voucher 
 
 	public function voucher(){
-		$data = [
-			'title' => 'Tambah Data Transaksi Voucher',
-			'header' => 'Tambah Data Transaksi Voucher',
-			'korek' => $this->jurnal_model->getKodeRekening(),
-		];
+		$this->data['title'] = 'Tambah Data Transaksi Voucher';
+		$this->data['header'] = 'Tambah Data Transaksi Voucher';
+		$this->data['korek'] = $this->jurnal_model->getKodeRekening();
 
-		$this->template->load('jurnal/voucher', $data);
+		$this->template->load('jurnal/voucher', $this->data);
 	}
 
 	public function addVoucher(){
@@ -708,13 +735,13 @@ class Jurnal extends CI_Controller {
 
 		$opex = $this->jurnal_model->getJurnalByAkun($id_akun);
 
-		$this->template->load('jurnal/bank', [
-			'title' => 'Jurnal Opex ' . ucfirst($akun),
-			'header' => 'Jurnal Opex Bank ' . ucfirst($akun),
-			'saldoawal' => $saldoawal,
-			'opex' => $opex,
-			'id_akun' => $id_akun,	
-		]);
+		$this->data['title'] = 'Jurnal Opex ' . ucfirst($akun);
+		$this->data['header'] = 'Jurnal Opex Bank ' . ucfirst($akun);
+		$this->data['saldoawal'] = $saldoawal;
+		$this->data['opex'] = $opex;
+		$this->data['id_akun'] = $id_akun;
+
+		$this->template->load('jurnal/bank', $this->data);
 	}
 
 }

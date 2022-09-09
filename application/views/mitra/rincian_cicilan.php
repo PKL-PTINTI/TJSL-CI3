@@ -191,7 +191,7 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item btndelete" id="button_delete" href="<?= base_url('Admin/jurnal/Destroy/' . str_replace('/', '%', $c['nobukti'])) ?>"><i
+                                                <a class="dropdown-item btndelete" onclick="delete_jurnal(this.dataset.opex)" data-opex="<?= $c['nobukti'] ?>"><i
                                                     class="fas fa-trash text-danger pr-2"></i> Delete </a>
                                             </div>
                                         </div>

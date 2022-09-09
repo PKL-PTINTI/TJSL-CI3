@@ -31,7 +31,8 @@ $("[data-checkboxes]").each(function() {
 $("#table-1").dataTable({
   "columnDefs": [
     { "sortable": false, "targets": [2,3] }
-  ]
+  ],
+  screenX: true,
 });
 $("#table-2").dataTable({
   "columnDefs": [

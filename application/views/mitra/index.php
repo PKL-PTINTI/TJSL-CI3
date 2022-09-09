@@ -29,19 +29,19 @@
 
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/masalah/normal', 'Normal'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/normal', 'Normal'
                                         )" href="#">Mitra Normal</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/masalah/masalah', 'Bermasalah'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/masalah', 'Bermasalah'
                                         )" href="#">Mitra Bermasalah</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/masalah/khusus', 'Khusus'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/khusus', 'Khusus'
                                         )" href="#">Mitra Khusus</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://localhost:3000/admin/mitra/get_data_mitra/masalah/wo', 'Wipe Out'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/wo', 'Wipe Out'
                                         )" href="#">Mitra WO</a>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                                 <a class="btn btn-primary mb-3 " href="<?= base_url('Admin/Mitra/Create') ?>">Tambah Data Mitra</a>
                             </div>
                         </div>
-                        <div class="table-responsive">
+                        <div>
                             <table class="table table-striped" id="table-mitra">
                                 <thead>
                                     <tr>

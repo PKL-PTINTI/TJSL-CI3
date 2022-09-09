@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/85cafb174a.js" crossorigin="anonymous"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="<?= base_url() ?>assets/vendor/jqvmap/dist/jqvmap.min.css">
@@ -158,10 +159,13 @@
                     </li>
                     <li class="dropdown"><a href="#" data-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png"
+                            <?php
+                                $images="https://source.boringavatars.com/beam/120/" . urlencode($profile_name) . "?square&colors=FAD089,FF9C5B,F5634A,ED303C,3B8183";
+                            ?>
+                            <img alt="image" src="<?php echo ($profile_foto != 'no_image.jpg') ? base_url('/assets/media/profiles/') . $profile_foto : $images ; ?>"
                                 class="rounded-circle mr-1">
                             <div class="d-sm-none d-lg-inline-block">Hi,
-                                <?= $this->session->userdata('name'); ?></div>
+                                <?= $profile_name; ?></div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">Logged in
@@ -177,7 +181,7 @@
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="<?= site_url('Login/Logout')?>" class="dropdown-item has-icon text-danger">
+                            <a href="<?= site_url('Auth/logout'); ?>" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </div>
@@ -206,19 +210,19 @@
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="<?= base_url('/Admin/Mitra') ?>">Semua Mitra</a></li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/lancar', 'Lancar'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Kolektibilitas/lancar', 'Lancar'
                                         )">Lancar</a>
                                 </li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/kuranglancar', 'Kurang Lancar'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Kolektibilitas/kuranglancar', 'Kurang Lancar'
                                         )">Kurang
                                         Lancar</a></li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/diragukan', 'Diragukan'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Kolektibilitas/diragukan', 'Diragukan'
                                         )">Diragukan</a>
                                 </li>
                                 <li><a class="nav-link" onclick="
-                                        changeUrlMitra('http://localhost:3000/Admin/Mitra/Get_data_mitra/Kolektibilitas/macet', 'Macet'
+                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Kolektibilitas/macet', 'Macet'
                                         )">Macet</a>
                                 </li>
                             </ul>
@@ -236,13 +240,13 @@
                                 <li><a class="nav-link" href="<?= base_url('/Admin/Jurnal') ?>">Transaksi Jurnal</a>
                                 </li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/kas', 'Transaksi Kas')">Transaksi Kas</a></li>
+                                        onclick="changeUrlJurnal('http://tjslptinti.test/Admin/Jurnal/Transaksi/kas', 'Transaksi Kas')">Transaksi Kas</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/bri', 'Transaksi BRI')">Transaksi BRI</a></li>
+                                        onclick="changeUrlJurnal('http://tjslptinti.test/Admin/Jurnal/Transaksi/bri', 'Transaksi BRI')">Transaksi BRI</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/mandiri', 'Transaksi Mandiri')">Transaksi Mandiri</a></li>
+                                        onclick="changeUrlJurnal('http://tjslptinti.test/Admin/Jurnal/Transaksi/mandiri', 'Transaksi Mandiri')">Transaksi Mandiri</a></li>
                                 <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('http://localhost:3000/Admin/Jurnal/Transaksi/bank', 'Transaksi Bank')">Transaksi Bank</a></li>
+                                        onclick="changeUrlJurnal('http://tjslptinti.test/Admin/Jurnal/Transaksi/bank', 'Transaksi Bank')">Transaksi Bank</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Laporan') { echo 'active'; } ?>">
@@ -339,6 +343,31 @@
             }
         ?>
 
+        function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+            number = (number + '').replace(',', '').replace(' ', '');
+            var n = !isFinite(+number) ? 0 : +number,
+                    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                    s = '',
+                    toFixedFix = function (n, prec) {
+                        var k = Math.pow(10, prec);
+                        return '' + Math.round(n * k) / k;
+                    };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }
+
         var statistics_chart = document.getElementById("myChart2").getContext('2d');
         if(statistics_chart){
             var myChart = new Chart(statistics_chart, {
@@ -361,21 +390,32 @@
                 display: false
                 },
                 scales: {
-                yAxes: [{
-                    gridLines: {
-                    display: false,
-                    drawBorder: false,
-                    },
-                    ticks: {
-                    stepSize: 100000000
+                    yAxes: [{
+                        gridLines: {
+                        display: false,
+                        drawBorder: false,
+                        },
+                        ticks: {
+                            beginAtZero:true,
+                            callback: function(value, index, values) {
+                                return 'RP. ' + number_format(value);
+                            }
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                        color: '#fbfbfb',
+                        lineWidth: 2
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, chart){
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': RP. ' + number_format(tooltipItem.yLabel, 2);
+                        }
                     }
-                }],
-                xAxes: [{
-                    gridLines: {
-                    color: '#fbfbfb',
-                    lineWidth: 2
-                    }
-                }]
                 },
             }
             });

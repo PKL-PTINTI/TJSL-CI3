@@ -9,17 +9,52 @@ class Kinerja extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('KinerjaModel', 'kinerja_model');
+
+		$this->load->library('tank_auth');
+
+		if (!$this->tank_auth->is_logged_in()) {
+			redirect('/auth/login/');
+		} else {
+			$this->data['dataUser'] = $this->session->userdata('data_ldap');
+
+			$this->data['user_id'] = $this->tank_auth->get_user_id();
+			$this->data['username'] = $this->tank_auth->get_username();
+			$this->data['email'] = $this->tank_auth->get_email();
+
+			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
+
+			$this->data['profile_name'] = $profile['name'];
+			$this->data['profile_foto'] = $profile['foto'];
+
+			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
+				$this->data['role_id'] = $val['role_id'];
+				$this->data['role'] = $val['role'];
+				$this->data['full_name_role'] = $val['full'];
+			}
+
+			$this->data['link_active'] = 'Dashboard';
+
+			//buat permission
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
+
+			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
+
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
+
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
+		}
 	}
 
 	public function index()
 	{
-		$data = [
-			'title' => 'Data Laporan Kinerja',
-            'header' => 'Management Data Laporan Kinerja'
-		];
+		$this->data['title'] = 'Data Laporan Kinerja';
+		$this->data['header'] = 'Management Data Laporan Kinerja';
 
         if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+			$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		}
 
 		if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
@@ -65,11 +100,11 @@ class Kinerja extends CI_Controller {
 			}
 		}
 
-		$data['dataRow'] = $dataRow;
-		$data['timbang'] = $timbang;
-		$data['totsaldo'] = $totsaldo;
-		$data['kolex'] = $kolex;
-		$data['skor'] = $skor;
+		$this->data['dataRow'] = $dataRow;
+		$this->data['timbang'] = $timbang;
+		$this->data['totsaldo'] = $totsaldo;
+		$this->data['kolex'] = $kolex;
+		$this->data['skor'] = $skor;
 
 		$danaYangDisalurkan = $this->kinerja_model->getDanaYangDisalurkan();
 
@@ -95,7 +130,7 @@ class Kinerja extends CI_Controller {
 			$dana[] = $rowData;
 		}
 
-		$data['dana'] = $dana;
+		$this->data['dana'] = $dana;
 
 		$danatersedia = $this->kinerja_model->getDanaTersedia();
 
@@ -132,12 +167,12 @@ class Kinerja extends CI_Controller {
 			}
 		}
 
-		$data['danatersedia'] = $danatersediaRow;
-		$data['JumlahDanaYgDisalurkan'] = $JumlahDanaYgDisalurkan;
-		$data['jumlahDanaTersedia'] = $jumlahDanaTersedia;
-		$data['prosenDanaDisalurkan'] = $prosenDanaDisalurkan;
+		$this->data['danatersedia'] = $danatersediaRow;
+		$this->data['JumlahDanaYgDisalurkan'] = $JumlahDanaYgDisalurkan;
+		$this->data['jumlahDanaTersedia'] = $jumlahDanaTersedia;
+		$this->data['prosenDanaDisalurkan'] = $prosenDanaDisalurkan;
 
-		$this->template->load('kinerja/index', $data);
+		$this->template->load('kinerja/index', $this->data);
     }
 
 	public function createExcel() {
