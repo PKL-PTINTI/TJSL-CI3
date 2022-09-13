@@ -175,6 +175,7 @@ let table_mitra = $("#table-mitra").DataTable({
 });
 
 function changeUrlMitra(url, title) {
+	url = window.location.origin +  '/' + url;
 	table_mitra.ajax.url(url).load();
 	$("#header").text(title);
 	changeMenu(url);
@@ -195,6 +196,7 @@ let table_jurnal = $("#table-jurnal").DataTable({
 });
 
 function changeUrlJurnal(url, title) {
+	url = window.location.origin +  '/' + url;
 	if(window.location.pathname == "/Admin/Jurnal"){
 		table_jurnal.ajax.url(url).load();
 		$("#header").text(title);
@@ -348,7 +350,7 @@ function delete_jurnal(opex){
 				});
 				table_jurnal.ajax.reload(null, false);
 			} else {
-				swal('Gak Jadi Di Hapus', 'Datanya aman kok!', 'info');
+				swal('Gak Jadi Di H	apus', 'Datanya aman kok!', 'info');
 			}
 		  });
 	//   });

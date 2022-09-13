@@ -63,8 +63,8 @@ class RKA extends CI_Controller {
 		$this->template->load('rka/index', $this->data);
 	}
 
-	public function createExcel() {
-		$fileName = 'laporan-posisi-keuangan-rka' . date('Y') .'.xlsx';  
+	public function CreateExcel() {
+		$fileName = 'laporan-rka' . date('Y') .'.xlsx';  
 
 		$neraca = $this->rka_model->getData();
 		$spreadsheet = new Spreadsheet();

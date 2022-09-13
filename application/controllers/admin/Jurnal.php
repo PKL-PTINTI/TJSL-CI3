@@ -14,6 +14,8 @@ class Jurnal extends CI_Controller {
 
 		$this->load->library('tank_auth');
 
+		
+
 		if (!$this->tank_auth->is_logged_in()) {
 			redirect('/auth/login/');
 		} else {
@@ -106,7 +108,8 @@ class Jurnal extends CI_Controller {
 						<i class="fas fa-ellipsis-v"></i>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" onclick="delete_jurnal(this.dataset.opex)" data-opex="'. $data_jurnal->nobukti .'" href="#"><i
+						<a class="dropdown-item" 
+						 href="#"><i
 								class="fas fa-trash text-danger pr-2"></i> Delete </a>
 					</div>
 				</div>
@@ -163,6 +166,7 @@ class Jurnal extends CI_Controller {
 			$saldoawal = 213381864.81;
 		} elseif ($bank == 'bank') {
 			$id_akun = "101010201' AND '101010204";
+			$saldoawal = 108631624 + 213381864.81;
 		}
 
 		$tahun = date('Y') . '-01-01';
@@ -257,7 +261,7 @@ class Jurnal extends CI_Controller {
 		$this->data['header'] = 'Tambah Data Transaksi Jurnal';
 		$this->data['korek'] = $this->jurnal_model->getKodeRekening();
 
-		$this->template->load('jurnal/create', $data);
+		$this->template->load('jurnal/create', $this->data);
 	}
 
 	public function store(){
@@ -609,12 +613,11 @@ class Jurnal extends CI_Controller {
 		$id_akun = $this->input->get('id_akun') ?? '';	
 		$type = $this->input->get('type') ?? '';
 
-		$this->template->load('jurnal/perioda', [
-			'title' => $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex',
-			'header' => $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex',
-			'id_akun' => $id_akun,
-			'type' => $type,
-		]);
+			$this->data['title'] = $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex';
+			$this->data['header'] = $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex';
+			$this->data['id_akun'] = $id_akun;
+			$this->data['type'] = $type;
+		$this->template->load('jurnal/perioda', $this->data);
 	}
 
 	public function perioda_data(){

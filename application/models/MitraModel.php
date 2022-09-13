@@ -34,6 +34,9 @@ class MitraModel extends CI_Model {
 		// Kolektibilitas
 		if($param1 == 'lancar' || $param1 == 'diragukan' || $param1 == 'macet'){
 			$this->db->where('kolektibilitas', $param1, ucfirst($param1), strtoupper($param1));
+			if($param1 == 'lancar'){
+				$this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL');
+			}
 			if ($param2) {
 				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
 			}

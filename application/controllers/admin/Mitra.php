@@ -515,6 +515,27 @@ class Mitra extends CI_Controller {
 		redirect(base_url('Admin/Mitra'));
 	}
 
+	public function storeUpdate(){
+		$nokontrak = $this->input->post('nokontrak');
+		$nama_peminjam = $this->input->post('nama_peminjam');
+		$sektorUsaha = $this->input->post('sektorUsaha');
+		$pinjpokok = $this->input->post('pinjpokok');
+		$pinjjasa = $this->input->post('pinjjasa');
+		$hp = $this->input->post('hp');
+		$ktp = $this->input->post('ktp');
+		$noRekBank = $this->input->post('noRekBank');
+		$tdkbermasalah = $this->input->post('tdkbermasalah');
+		$namaPerusahaan = $this->input->post('namaPerusahaan');
+		$rekondisi = $this->input->post('rekondisi');
+		$tgl_rekondisi = $this->input->post('tgl_rekondisi');
+		$prodJasa = $this->input->post('prodJasa');
+		$prodUnggul = $this->input->post('prodUnggul');
+
+		$this->db->query("UPDATE `mitra` SET `nokontrak`='$nokontrak',`nama_peminjam`='$nama_peminjam',`sektorUsaha`='$sektorUsaha',`pinjpokok`='$pinjpokok',`pinjjasa`='$pinjjasa',`hp`='$hp',`ktp`='$ktp',`noRekBank`='$noRekBank',`tdkbermasalah`='$tdkbermasalah',`namaPerusahaan`='$namaPerusahaan', `rekondisi`='$rekondisi', `tgl_rekondisi`='$tgl_rekondisi', `prodJasa`='$prodJasa', `googlemaps`='$prodUnggul' WHERE nokontrak='$nokontrak'");
+
+		return redirect(base_url('Admin/Mitra'));
+	}
+
 	public function update($id){
 		$this->data['title'] = 'Update Data Mitra';
 		$this->data['mitra'] = $this->mitra_model->getMitra($id);
