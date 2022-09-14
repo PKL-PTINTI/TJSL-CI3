@@ -326,8 +326,10 @@ $("#form-perkiraan").on("submit", function (e) {
 	});
 });
 
-function delete_jurnal(opex){
+function delete_jurnal(element){
 	var url = window.location.origin + "/Admin/Jurnal/Destroy";
+
+	var opex = element.dataset.opex;
 
 	// $("#swal-6").click(function() {
 		swal({

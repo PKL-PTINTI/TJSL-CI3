@@ -114,7 +114,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Top Countries</h4>
+                    <h4>Sebaran Mitra</h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -126,7 +126,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
@@ -253,6 +253,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
 

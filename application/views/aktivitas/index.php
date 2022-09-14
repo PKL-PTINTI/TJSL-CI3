@@ -53,10 +53,15 @@
                                 </thead>
                                 <tbody>
                                     <?php $no = 1; ?>
-                                    <tr>
-                                        <td colspan="14">PERUBAHAN ASET NETO TIDAK TERIKAT <br> PENDAPATAN</td>
-                                    </tr>
                                     <?php foreach($aktivitas as $a): ?>
+                                    <?php
+                                        echo $no == 1 ? '<tr><td colspan="14">PERUBAHAN ASET NETO TIDAK TERIKAT</td></tr>' : '';
+                                        echo $no == 1 ? '<tr><td colspan="14">PENDAPATAN</td></tr>' : '';
+                                        echo $no == 4 ? '<tr><td colspan="14">ALOKASI BUMN PEDULI DAN ASET NETO YANG BERAKHIR</td></tr>' : '';
+                                        echo $no == 10 ? '<tr><td colspan="14">BEBAN</td></tr>' : '';
+                                        echo $no == 19 ? '<tr><td colspan="14">PERUBAHAN ASET NETO TERIKAT TEMPORER</td></tr>' : '';
+                                        echo $no == 22 ? '<tr><td colspan="14">PERUBAHAN ASET NETO TERIKAT PERMANEN</td></tr>' : '';
+                                    ?>
                                     <tr>
                                         <td class="text-center"><?= $no++ ?></td>
                                         <td><?= $a['keterangan'] ?></td>

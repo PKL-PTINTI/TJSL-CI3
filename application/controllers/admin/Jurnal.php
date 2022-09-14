@@ -108,9 +108,7 @@ class Jurnal extends CI_Controller {
 						<i class="fas fa-ellipsis-v"></i>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" 
-						 href="#"><i
-								class="fas fa-trash text-danger pr-2"></i> Delete </a>
+						<a class="dropdown-item" onclick="delete_jurnal(this)" data-opex="' .$data_jurnal->nobukti . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
 					</div>
 				</div>
 			';
@@ -215,7 +213,7 @@ class Jurnal extends CI_Controller {
 						<i class="fas fa-ellipsis-v"></i>
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item btndelete" id="button_delete" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '"><i
+						<a class="dropdown-item btndelete" onclick="delete_jurnal(this)" data-opex="' .$data_jurnal->nobukti . '"><i
 							class="fas fa-trash text-danger pr-2"></i> Delete </a>
 					</div>
 			</div>
@@ -427,7 +425,6 @@ class Jurnal extends CI_Controller {
 		// redirect(base_url('Admin/Jurnal'));
 		// $referred_from = $this->session->userdata('referred_from');
 		// redirect($referred_from, 'refresh');
-		redirect($_SERVER['HTTP_REFERER']);
 	}
 
 	//Voucher 
@@ -667,7 +664,7 @@ class Jurnal extends CI_Controller {
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item btndelete" id="button_delete_perioda" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $value->nobukti)) . '"><i
+									<a class="dropdown-item btndelete" onclick="delete_jurnal(this)" data-opex="' .$value->nobukti . '"><i
 										class="fas fa-trash text-danger pr-2"></i> Delete </a>
 								</div>
 							</div>
@@ -700,7 +697,7 @@ class Jurnal extends CI_Controller {
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item btndelete" id="button_delete_perioda" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $value->nobukti)) . '"><i
+									<a class="dropdown-item btndelete" onclick="delete_jurnal(this)" data-opex="' .$value->nobukti . '"><i
 										class="fas fa-trash text-danger pr-2"></i> Delete </a>
 								</div>
 							</div>

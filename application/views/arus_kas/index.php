@@ -51,12 +51,11 @@
                                     foreach ($aruskas as $ak) : ?>
                                         <tr>
                                             <?php
-                                                if($no == 1){
-                                                    echo '<td colspan="14">I. AKTIVITAS OPERASI <br class="pt-1"> KAS DITERIMA DARI</td></tr>';
-                                                }
-                                                if($no == 15){
-                                                    echo '<td colspan="14">	II. AKTIVITAS INVESTASI <br class="pt-1"> KAS DIKELUARKAN UNTUK</td></tr>';
-                                                }
+                                                echo $no == 1 ? '<td colspan="14"> I. AKTIVITAS OPERASI <br class="pt-1"></td></tr>' : '';
+                                                echo $no == 1 ? '<td colspan="14"> KAS DITERIMA DARI <br class="pt-1"></td></tr>' : '';
+                                                echo $no == 7 ? '<td colspan="14"> KAS DIKELUARKAN UNTUK <br class="pt-1"></td></tr>' : '';
+                                                echo $no == 15 ? '<td colspan="14"> II. AKTIVITAS INVESTASI <br class="pt-1"></td></tr>' : '';
+                                                echo $no == 15 ? '<td colspan="14"> KAS DIKELUARKAN UNTUK <br class="pt-1"></td></tr>' : '';  
                                             ?>
                                             <td class="text-center"><?= $ak['id'] ?></td>
                                             <td><?= $ak['keterangan'] ?></td>
