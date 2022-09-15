@@ -610,10 +610,10 @@ class Jurnal extends CI_Controller {
 		$id_akun = $this->input->get('id_akun') ?? '';	
 		$type = $this->input->get('type') ?? '';
 
-			$this->data['title'] = $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex';
-			$this->data['header'] = $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex';
-			$this->data['id_akun'] = $id_akun;
-			$this->data['type'] = $type;
+		$this->data['title'] = $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex';
+		$this->data['header'] = $type == 'perkiraan' ? 'Kartu Perkiraan' : 'Perioda Opex';
+		$this->data['id_akun'] = $id_akun;
+		$this->data['type'] = $type;
 		$this->template->load('jurnal/perioda', $this->data);
 	}
 
@@ -714,6 +714,22 @@ class Jurnal extends CI_Controller {
 				}
 			}
 		}
+
+		$end = [
+			'no' => '',
+			'id_opex' => '',
+			'id_akun' => '',
+			'tanggal' => '',
+			'pemasukan' => number_format($totpengeluaran),
+			'pengeluaran' => number_format($totpemasukan),
+			'saldo' => number_format($selisih),
+			'deskripsi' => number_format($saldo_akhir),
+			'keterangan' => '',
+			'nobukti' => '',
+			'action' => '',
+		];
+
+		$data[] = $end;
 				
 		$this->output
 			->set_content_type('application/json')

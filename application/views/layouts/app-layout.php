@@ -36,9 +36,11 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/components.css">
+    <link href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" rel="stylesheet" />
+    <script src="<?= base_url() ?>assets/js/atlas.min.js"></script>
 </head>
 
-<body data-base_url="<?= base_url() ?>">
+<body data-base_url="<?= base_url() ?>" onload="GetMap()">
     <div id="app">
         <div class="main-wrapper">
             <div class="navbar-bg"></div>
@@ -324,42 +326,6 @@
     <script src="<?= base_url() ?>assets/js/page/index.js"></script>
     <script src="<?= base_url() ?>assets/js/page/modules-datatables.js"></script>
 
-    <script type='text/javascript'>
-     google.charts.load('current', {
-       'packages': ['geochart'],
-       // Note: Because markers require geocoding, you'll need a mapsApiKey.
-       // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-       'mapsApiKey': 'AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao'
-     });
-     google.charts.setOnLoadCallback(drawMarkersMap);
-
-      function drawMarkersMap() {
-      var data = google.visualization.arrayToDataTable([
-        ['City',   'Population', 'Area'],
-        ['Rome',      2761477,    1285.31],
-        ['Milan',     1324110,    181.76],
-        ['Naples',    959574,     117.27],
-        ['Turin',     907563,     130.17],
-        ['Palermo',   655875,     158.9],
-        ['Genoa',     607906,     243.60],
-        ['Bologna',   380181,     140.7],
-        ['Florence',  371282,     102.41],
-        ['Fiumicino', 67370,      213.44],
-        ['Anzio',     52192,      43.43],
-        ['Ciampino',  38262,      11]
-      ]);
-
-      var options = {
-        region: 'IT',
-        displayMode: 'markers',
-        colorAxis: {colors: ['green', 'blue']}
-      };
-
-      var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    };
-    </script>
-
     <script>
         <?php
             function _tanggal($tanggal){
@@ -380,6 +346,7 @@
              
                 return $bulan[(int)$tanggal];
             }
+            
         ?>
 
         function number_format(number, decimals, dec_point, thousands_sep) {
