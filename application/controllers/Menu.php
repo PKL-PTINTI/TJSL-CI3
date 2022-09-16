@@ -29,9 +29,9 @@ class Menu extends CI_Controller
 			$this->data['link_active'] = 'Menu';
 
 			//buat permission
-			if (!$this->tank_auth->permit($this->data['link_active'])) {
-				redirect('Home');
-			}
+			// if (!$this->tank_auth->permit($this->data['link_active'])) {
+			// 	redirect('Home');
+			// }
 
 			$this->load->model("ShowmenuModel", 'Showmenu_model');
 			$this->data['ShowMenu'] = $this->Showmenu_model->getShowMenu();

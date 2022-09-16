@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+			google.load("visualization", "1", { packages: ["geochart"] });
+			google.setOnLoadCallback(drawRegionsMap);
+
+			function drawRegionsMap() {
+				var data = new google.visualization.DataTable();
+				data.addColumn("string", "Country");
+				data.addColumn("number", "Popularity");
+				data.addRows([
+					[{ f: "Aceh", v: "ID-AC" }, 5],
+					[{ f: "Bali", v: "ID-BA" }, 7],
+					[{ f: "Bangka Belitung", v: "ID-BB" }, 2],
+					[{ f: "Banten", v: "ID-BT" }, 6],
+					[{ f: "Bengkulu", v: "ID-BE" }, 2],
+					[{ f: "Gorontalo", v: "ID-GO" }, 8],
+					[{ f: "Jambi", v: "ID-JA" }, 1],
+					[{ f: "Jawa Barat", v: "ID-JB" }, 5],
+					[{ f: "Jawa Tengah", v: "ID-JT" }, 5],
+					[{ f: "Jawa Timur", v: "ID-JI" }, 3],
+					[{ f: "Kalimantan Barat", v: "ID-KB" }, 2],
+					[{ f: "Kalimantan Selatan", v: "ID-KS" }, 4],
+					[{ f: "Kalimantan Tengah", v: "ID-KT" }, 4],
+					[{ f: "Kalimantan Timur", v: "ID-KI" }, 10],
+					[{ f: "Kalimantan Utara", v: "ID-KU" }, 1],
+					[{ f: "Kepulauan Riau", v: "ID-KR" }, 5],
+					[{ f: "Lampung", v: "ID-LA" }, 8],
+					[{ f: "Maluku", v: "ID-MA" }, 7],
+					[{ f: "Maluku Utara", v: "ID-MU" }, 3],
+					[{ f: "Nusa Tenggara Barat", v: "ID-NB" }, 4],
+					[{ f: "Nusa Tenggara Timur", v: "ID-NT" }, 8],
+					[{ f: "Papua", v: "ID-PA" }, 6],
+					[{ f: "Papua Barat", v: "ID-PB" }, 5],
+					[{ f: "Riau", v: "ID-RI" }, 3],
+					[{ f: "Sulawesi Barat", v: "ID-SR" }, 5],
+					[{ f: "Sulawesi Selatan", v: "ID-SN" }, 4],
+					[{ f: "Sulawesi Tengah", v: "ID-ST" }, 8],
+					[{ f: "Sulawesi Tenggara", v: "ID-SG" }, 1],
+					[{ f: "Sulawesi Utara", v: "ID-SA" }, 10],
+					[{ f: "Sumatera Barat", v: "ID-SB" }, 3],
+					[{ f: "Sumatera Selatan", v: "ID-SS" }, 10],
+					[{ f: "Sumatera Utara", v: "ID-SU" }, 9],
+					[{ f: "Jakarta Raya", v: "ID-JK" }, 10],
+					[{ f: "Yogyakarta", v: "ID-YO" }, 2],
+				]);
+
+				var options = {
+					title: "Map",
+					width: 900,
+					height: 500,
+					region: "ID",
+					resolution: "provinces",
+				};
+
+				var container = document.getElementById("regions_div");
+				var geochart = new google.visualization.GeoChart(container);
+				geochart.draw(data, options);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="regions_div" style="width: 900px; height: 500px"></div>
+	</body>
+</html>

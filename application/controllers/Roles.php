@@ -28,54 +28,28 @@ class Roles extends CI_Controller
 
 			$this->data['link_active'] = 'Roles';
 
-			if (!$this->tank_auth->permit($this->data['link_active'])) {
-				redirect('Home');
-			}
+			// if (!$this->tank_auth->permit($this->data['link_active'])) {
+			// 	redirect('Home');
+			// }
 
-			$this->load->model("Showmenu_model");
-			$this->data['ShowMenu'] = $this->Showmenu_model->getShowMenu();
+			$this->load->model("ShowmenuModel", "showmenu_model");	
+			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
 
-			$OpenShowMenu = $this->Showmenu_model->getOpenShowMenu($this->data);
+			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
 
-			$this->data['openMenu'] = $this->Showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
+			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 
-			$this->load->model("Roles_model");
+			$this->load->model("RolesModel", "roles_model");	
 		}
 	}
 
 	function index()
 	{
 		$this->data['title'] = "Pengaturan Hak Akses";
+		$this->data['header'] = "Pengaturan Hak Akses";
 
-		$this->data['breadcrumbs'] = [];
-
-		$this->data['breadcrumbs'][] = [
-			'active' => FALSE,
-			'text' => 'Pengaturan',
-			'class' => 'breadcrumb-item pe-3 text-white',
-			'href' => ''
-		];
-
-		$this->data['breadcrumbs'][] = [
-			'active' => FALSE,
-			'text' => 'Pengaturan Penguna',
-			'class' => 'breadcrumb-item pe-3 text-white',
-			'href' => ''
-		];
-
-		$this->data['breadcrumbs'][] = [
-			'active' => TRUE,
-			'text' => 'Pengaturan Hak Akses',
-			'class' => 'breadcrumb-item pe-3 text-gray-400',
-			'href' => site_url('Roles')
-		];
-
-		$this->data['listRoles'] = $this->Roles_model->getAllRoles();
-
-		$this->load->view('component/header', $this->data);
-		$this->load->view('component/sidebar', $this->data);
-		$this->load->view('roles/views', $this->data);
-		$this->load->view('component/footer');
+		$this->data['listRoles'] = $this->roles_model->getAllRoles();
+		$this->template->load('roles/index', $this->data);
 	}
 
 	function add()
@@ -89,7 +63,7 @@ class Roles extends CI_Controller
 				'full' => $this->input->post('full')
 			);
 
-			$this->Roles_model->addRole($data);
+			$this->roles_model->addRole($data);
 			redirect('Roles');
 		} else {
 			$this->data['role'] = $this->input->post('role');
@@ -99,34 +73,9 @@ class Roles extends CI_Controller
 			$this->data['action'] = site_url('Roles/add');
 			$this->data['url'] = site_url('Roles');
 			$this->data['title'] = "Pengaturan Hak Akses";
+			$this->data['header'] = "Pengaturan Hak Akses";
 
-			$this->data['breadcrumbs'] = [];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => FALSE,
-				'text' => 'Pengaturan',
-				'class' => 'breadcrumb-item pe-3 text-white',
-				'href' => ''
-			];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => FALSE,
-				'text' => 'Pengaturan Penguna',
-				'class' => 'breadcrumb-item pe-3 text-white',
-				'href' => ''
-			];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => TRUE,
-				'text' => 'Pengaturan Hak Akses',
-				'class' => 'breadcrumb-item pe-3 text-gray-400',
-				'href' => site_url('Roles')
-			];
-
-			$this->load->view('component/header', $this->data);
-			$this->load->view('component/sidebar', $this->data);
-			$this->load->view('roles/form', $this->data);
-			$this->load->view('component/footer');
+			$this->template->load('roles/create', $this->data);
 		}
 	}
 
@@ -142,10 +91,10 @@ class Roles extends CI_Controller
 				'full' => $this->input->post('full')
 			);
 			$condition['role_id'] = $id;
-			$this->Roles_model->updateRole($data, $condition);
+			$this->roles_model->updateRole($data, $condition);
 			redirect('Roles');
 		} else {
-			$roles = $this->Roles_model->getRole($id);
+			$roles = $this->roles_model->getRole($id);
 
 			$this->data['role'] = $roles->role;
 			$this->data['full'] = $roles->full;
@@ -159,41 +108,16 @@ class Roles extends CI_Controller
 			$this->data['action'] = site_url('Roles/update/' . $id);
 			$this->data['url'] = site_url('Roles');
 			$this->data['title'] = "Pengaturan Hak Akses";
+			$this->data['header'] = "Pengaturan Hak Akses";
 
-			$this->data['breadcrumbs'] = [];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => FALSE,
-				'text' => 'Pengaturan',
-				'class' => 'breadcrumb-item pe-3 text-white',
-				'href' => ''
-			];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => FALSE,
-				'text' => 'Pengaturan Penguna',
-				'class' => 'breadcrumb-item pe-3 text-white',
-				'href' => ''
-			];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => TRUE,
-				'text' => 'Pengaturan Hak Akses',
-				'class' => 'breadcrumb-item pe-3 text-gray-400',
-				'href' => site_url('Roles')
-			];
-
-			$this->load->view('component/header', $this->data);
-			$this->load->view('component/sidebar', $this->data);
-			$this->load->view('roles/form', $this->data);
-			$this->load->view('component/footer');
+			$this->template->load('roles/create', $this->data);
 		}
 	}
 
 	function delete($id)
 	{
 		$condition['role_id'] = $id;
-		$this->Roles_model->deleteRole($condition);
+		$this->roles_model->deleteRole($condition);
 		redirect('Roles');
 	}
 
@@ -203,13 +127,13 @@ class Roles extends CI_Controller
 		$data = array(
 			'default' => '0'
 		);
-		$this->Roles_model->updateRole($data, $condition);
+		$this->roles_model->updateRole($data, $condition);
 
 		$condition2['role_id'] = $id;
 		$data = array(
 			'default' => '1'
 		);
-		$this->Roles_model->updateRole($data, $condition2);
+		$this->roles_model->updateRole($data, $condition2);
 		redirect('Roles');
 	}
 
@@ -220,7 +144,7 @@ class Roles extends CI_Controller
 		if ($this->input->post()) {
 			$condition['role_id'] = $id;
 
-			$this->Roles_model->deleteRolePermission($condition);
+			$this->roles_model->deleteRolePermission($condition);
 
 			$permission_id = $_POST['permission_id'];
 
@@ -230,46 +154,21 @@ class Roles extends CI_Controller
 					'permission_id' => $permission_id[$x]
 				);
 
-				$this->Roles_model->addRolePermission($data);
+				$this->roles_model->addRolePermission($data);
 			}
 
 			redirect('Roles');
 		} else {
-			$this->data['listPermission'] = $this->Roles_model->getAllPermission();
-			$this->data['listPermissionByRoles'] = $this->Roles_model->getAllPermissionByRoles($id);
+			$this->data['listPermission'] = $this->roles_model->getAllPermission();
+			$this->data['listPermissionByRoles'] = $this->roles_model->getAllPermissionByRoles($id);
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			$this->data['action'] = site_url('Roles/role_permission/' . $id);
 			$this->data['url'] = site_url('Roles');
 			$this->data['title'] = "Pengaturan Hak Akses";
+			$this->data['header'] = "Pengaturan Hak Akses";
 
-			$this->data['breadcrumbs'] = [];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => FALSE,
-				'text' => 'Pengaturan',
-				'class' => 'breadcrumb-item pe-3 text-white',
-				'href' => ''
-			];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => FALSE,
-				'text' => 'Pengaturan Penguna',
-				'class' => 'breadcrumb-item pe-3 text-white',
-				'href' => ''
-			];
-
-			$this->data['breadcrumbs'][] = [
-				'active' => TRUE,
-				'text' => 'Pengaturan Hak Akses',
-				'class' => 'breadcrumb-item pe-3 text-gray-400',
-				'href' => site_url('Roles')
-			];
-
-			$this->load->view('component/header', $this->data);
-			$this->load->view('component/sidebar', $this->data);
-			$this->load->view('roles/form_permission', $this->data);
-			$this->load->view('component/footer');
+			$this->template->load('roles/permission', $this->data);
 		}
 	}
 }

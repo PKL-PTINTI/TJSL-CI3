@@ -268,24 +268,30 @@
 </section>
 
 <script>
-        var map, datasource, popup, maxValue = 500;
+        var map, datasource;
 
-        var defaultColor = '#FFEDA0';
+        var defaultColor = '#00ff80';
         var colorScale = [
-            10, '#FED976',
-            20, '#FEB24C',
-            50, '#FD8D3C',
-            100, '#FC4E2A',
-            200, '#E31A1C',
-            500, '#BD0026',
-            1000, '#800026'
+            10, '#09e076',
+            20, '#0bbf67',
+            50, '#f7e305',
+            100, '#f7c707',
+            200, '#f78205',
+            500, '#f75e05',
+            1000, '#f72505'
         ];
 
         function GetMap() {
             //Initialize a map instance.
             map = new atlas.Map('myMap', {
-                center: [113.921327, -0.789275],
-                zoom: 4,
+                // center: [-94.6, 39.1],
+                // center at indonesian
+                center: [111.2520315, -7.5070458],
+                zoom: 6,
+
+                //Pitch the map so that the extrusion of the polygons is visible.
+                pitch: 45,
+
                 view: 'Auto',
 
                 //Add authentication details for connecting to Azure Maps.
@@ -300,59 +306,39 @@
 
             //Wait until the map resources are ready.
             map.events.add('ready', function () {
-                //Create a popup but leave it closed so we can update it and display it later.
-                popup = new atlas.Popup({
-                    position: [0, 0]
-                });
-
-                //Create a data source and add it to the map.
+                //Create a data source to add your data to.
                 datasource = new atlas.source.DataSource();
                 map.sources.add(datasource);
 
-                //Create a stepped expression based on the color scale. 
+                //Load a dataset of polygons that have metadata we can style against.
+                datasource.importDataFromUrl('/data/geojson/US_States_Population_Density.json');
+
+                //Create a stepped expression based on the color scale.
                 var steppedExp = [
                     'step',
                     ['get', 'density'],
                     defaultColor
                 ];
-
                 steppedExp = steppedExp.concat(colorScale);
-                
-                //Create a layer to render the polygon data.
-                var polygonLayer = new atlas.layer.PolygonLayer(datasource, null, {
-                    fillColor: steppedExp
-                });
-                map.layers.add(polygonLayer, 'labels');
 
-                //Add a mouse move event to the polygon layer to show a popup with information.
-                map.events.add('mousemove', polygonLayer, function (e) {
-                    if (e.shapes && e.shapes.length > 0) {
-                        var properties = e.shapes[0].getProperties();
-
-                        //Update the content of the popup.
-                        popup.setOptions({
-                            content: '<div style="padding:10px"><b>' + properties.name + '</b><br/>Population Density: ' + properties.density + ' people/mi<sup>2</sup></div>',
-                            position: e.position
-                        });
-
-                        //Open the popup.
-                        popup.open(map);
-                    }
-                });
-
-                //Add a mouse leave event to the polygon layer to hide the popup.
-                map.events.add('mouseleave', polygonLayer, function (e) {
-                    popup.close();
-                });
-
-                //Download a GeoJSON feed and add the data to the data source.
-                datasource.importDataFromUrl('/data/geojson/US_States_Population_Density.json');
+                //Create and add a polygon extrusion layer to the map below the labels so that they are still readable.
+                map.layers.add(new atlas.layer.PolygonExtrusionLayer(datasource, null, {
+                    base: 100,
+                    fillColor: steppedExp,
+                    fillOpacity: 0.7,
+                    height: [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'density'],
+                        0, 100,
+                        1200, 960000
+                    ]
+                }), 'labels');
             });
         }
 
         function createLegend() {
             var html = [];
-
             html.push('<i style="background:', defaultColor, '"></i> 0-', colorScale[0], '<br/>');
 
             for (var i = 0; i < colorScale.length; i += 2) {
@@ -368,23 +354,23 @@
     <style>
         #legend {
             position: absolute;
-            top: 5px;
+            top: 1px;
             left: 5px;
             font-family: Arial;
             font-size: 12px;
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: 5px;
             padding: 5px;
-            line-height:18px;
+            line-height: 20px;
         }
 
-        #legend i {
-            width: 18px;
-            height: 18px;
-            float: left;
-            margin-right: 8px;
-            opacity: 0.7;
-        }
+            #legend i {
+                width: 18px;
+                height: 18px;
+                float: left;
+                margin-right: 8px;
+                opacity: 0.7;
+            }
     </style>
 
 <script type="text/javascript">
@@ -403,7 +389,7 @@
         ]);
 
         var options = {
-          title: 'My Daily Activities',
+          title: 'Mitra Binaan',
           is3D: true,
         };
 

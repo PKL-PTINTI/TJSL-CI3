@@ -284,20 +284,16 @@ $(".repeater, .repeater-default").repeater({
 // 	}
 // });
 
-let table_perkiraan = $("#table-jurnal-perkiraan").dataTable({
+let table_perkiraans = $("#table-jurnal-perkiraan").dataTable({
 	scrollX: true,
 	columns: [
 		{ data: "no" },
 		{ data: "id_opex" },
-		{ data: "id_akun" },
 		{ data: "tanggal" },
 		{ data: "pemasukan" },
 		{ data: "pengeluaran" },
 		{ data: "saldo" },
-		{ data: "deskripsi" },
 		{ data: "keterangan" },
-		{ data: "nobukti" },
-		{ data: "action" },
 	],
 });
 
@@ -313,8 +309,8 @@ $("#form-perkiraan").on("submit", function (e) {
 		dataType: "JSON",
 		success: function (response) {
 			if(response.data){
-				table_perkiraan.fnClearTable();
-				table_perkiraan.fnAddData(response.data);
+				table_perkiraans.fnClearTable();
+				table_perkiraans.fnAddData(response.data);
 			} else {
 				iziToast.success({
 					title: "Heyyyy",
@@ -347,7 +343,7 @@ function delete_jurnal(element){
 					data: {opex: opex},
 					dataType: "JSON",
 				});
-				swal('Berhasil', 'Yeayy! Datanya sudah berhasil dihapus.', {
+				swal('Berhasil', 'Yeayy! Datanya sudah berhasil dihapus.', 	{
 				icon: 'success',
 				});
 				table_jurnal.ajax.reload(null, false);
@@ -357,3 +353,11 @@ function delete_jurnal(element){
 		  });
 	//   });
 }
+
+$('.duallistbox').bootstrapDualListbox();
+
+$('#bootstrap-duallistbox-nonselected-list_permission_id').css({
+	'display': 'inline-block',
+	'background-color': '#fff',
+	'position': 'relative'
+});

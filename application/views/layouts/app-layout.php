@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/vendor/izitoast/dist/css/iziToast.min.css">
     <script src="<?= base_url() ?>assets/vendor/izitoast/dist/js/iziToast.min.js"></script>
     <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=visualization&callback=initMap"></script>
 
     <!-- Template CSS -->
@@ -207,6 +208,31 @@
                             <a href="<?= base_url('/Admin/Dashboard') ?>" class="nav-link"><i
                                     class="fa-solid fa-house-chimney"></i><span>Dashboard</span></a>
                         </li>
+
+                        
+                        <li class="menu-header">
+                            Settings</li>
+                        <li class="nav-item <?php if($this->uri->segment(1) == 'Usersmanagement') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Usersmanagement') ?>"><i class="fa-solid fa-users-viewfinder"></i>
+                                <span>Pengguna</span>
+                            </a>
+                        </li>
+                        <li class="nav-item <?php if($this->uri->segment(1) == 'Menu') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Menu') ?>"><i class="fa-solid fa-bars"></i>
+                                <span>Menu</span>
+                            </a>
+                        </li>
+                        <li class="nav-item <?php if($this->uri->segment(1) == 'Roles') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Roles') ?>"><i class="fa-solid fa-shield-halved"></i>
+                                <span>Hak Akses</span>
+                            </a>
+                        </li>
+                        <li class="nav-item <?php if($this->uri->segment(1) == 'Permission') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Permission') ?>"><i class="fa-solid fa-hands-holding-circle"></i>
+                                <span>Modul</span>
+                            </a>
+                        </li>
+
                         <li class="menu-header">Management Data</li>
                         <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Mitra') { echo 'active'; } ?>">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
@@ -265,15 +291,27 @@
                                 <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Catatan') ?>">Catatan </a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Lainnya') { echo 'active'; } ?>">
-                            <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-bars"></i>
-                                <span>Lainnya</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?= base_url('Admin/Coa') ?>">COA</a></li>
-                                <li><a href="<?= base_url('Admin/Agingrate') ?>">Aging Rate</a></li>
-                                <li><a href="<?= base_url('Admin/RKA') ?>">RKA</a></li>
-                                <li><a href="<?= base_url('Admin/NeracaSaldo') ?>">Neraca Saldo</a></li>
-                            </ul>
+                        <li class="menu-header">
+                            Laninnya</li>
+                        <li class="nav-item <?php if($this->uri->segment(2) == 'COA') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Admin/COA') ?>"><i class="fa-solid fa-file-invoice"></i>
+                                <span>Code Of Account</span>
+                            </a>
+                        </li>
+                        <li class="nav-item <?php if($this->uri->segment(2) == 'Agingrate') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Admin/Agingrate') ?>"><i class="fa-brands fa-uncharted"></i>
+                                <span>Aging Rate</span>
+                            </a>
+                        </li>
+                        <li class="nav-item <?php if($this->uri->segment(2) == 'RKA') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Admin/RKA') ?>"><i class="fa-solid fa-money-bill-wheat"></i>
+                                <span>RKA</span>
+                            </a>
+                        </li>
+                        <li class="nav-item <?php if($this->uri->segment(2) == 'Neracasaldo') { echo 'active'; } ?>">
+                            <a class="nav-link" href="<?= base_url('/Admin/Neracasaldo') ?>"><i class="fa-solid fa-scale-balanced"></i>
+                                <span>Neraca Saldo</span>
+                            </a>
                         </li>
                 </aside>
             </div>
@@ -318,6 +356,7 @@
     <script src="<?= base_url() ?>assets/vendor/select2/dist/js/select2.full.min.js"></script>
 
     <script src="<?= base_url() ?>assets/vendor/price-format-jquery/jquery.priceformat.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 
     <!-- Template JS File -->
     <script src="<?= base_url() ?>assets/js/scripts.js"></script>

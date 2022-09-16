@@ -147,12 +147,11 @@ class Saldo extends CI_Controller {
 			$saldo += $value->saldo;
 		}
 
-		$json['pengeluaran'] = $pengeluaran;
-		$json['pemasukan'] = $pemasukan;
-		$json['saldo'] = $saldo;
-
 		$result = [
 			'data' => $json,
+			'pengeluaran' => $pengeluaran,
+			'pemasukan' => $pemasukan,
+			'saldo' => $saldo,
 		];
 
 		return $this->output

@@ -50,20 +50,16 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped" id="table-1">
+                            <table class="table table-striped" id="table-jurnal-perkiraan" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th class="text-center">NO</th>
                                         <th>No ID</th>
-                                        <th>No Akun</th>
                                         <th>Tanggal</th>
                                         <th>Pemasukan</th>
                                         <th>Pengeluaran</th>
                                         <th>Saldo</th>
-                                        <th>Deskripsi</th>
                                         <th>Keterangan</th>
-                                        <th>No bukti</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                             </table>

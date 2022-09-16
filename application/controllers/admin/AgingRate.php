@@ -292,6 +292,7 @@ class AgingRate extends CI_Controller {
 			$sheet->setCellValue($alphabet[$key + 2].'15', $agingrate[$key]->diragukemacet);
 
 			// $averagelnkekrglan += $agingrate[$key]->lankekrglan / 24;
+			
 		}
 
 		$writer = new Xlsx($spreadsheet);
