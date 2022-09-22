@@ -17,7 +17,7 @@
       <!-- GOOGLE FONTS-->
       <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    </head>
-   <font size="2">
+   <font size="1">
       <div class="mx-auto" style="width: 750px;">
       <p class="fs-6">
       <div class="d-flex bd-highlight mb-5">

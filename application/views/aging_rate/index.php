@@ -52,12 +52,12 @@
                                     <tr>
                                         <td class="text-center"><?= $no++; ?></td>
                                         <td><?= $jurnal->bulan; ?></td>
-                                        <td><?= $jurnal->lancar; ?></td>
-                                        <td><?= $jurnal->kuranglancar; ?></td>
-                                        <td><?= $jurnal->diragukan; ?></td>
-                                        <td><?= $jurnal->macet; ?></td>
-                                        <td><?= $jurnal->selisih; ?></td>
-                                        <td><?= $jurnal->jumlah; ?></td>
+                                        <td><?= number_format($jurnal->lancar); ?></td>
+                                        <td><?= number_format($jurnal->kuranglancar); ?></td>
+                                        <td><?= number_format($jurnal->diragukan); ?></td>
+                                        <td><?= number_format($jurnal->macet); ?></td>
+                                        <td><?= number_format($jurnal->selisih); ?></td>
+                                        <td><?= number_format($jurnal->jumlah); ?></td>
                                         <td><?= $jurnal->lankekrglan; ?></td>
                                         <td><?= $jurnal->krglankediragu; ?></td>
                                         <td><?= $jurnal->diragukemacet; ?></td>

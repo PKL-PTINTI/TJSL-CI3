@@ -141,7 +141,9 @@
                         <h4><?= $header; ?> Jurnal</h4>
                         <div>
                             <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Cicilan/Create/' . $mitra->nokontrak) ?>">Tambah Cicilan</a>
-                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Copytojurnal/' . $mitra->nokontrak) ?>">Copy Cicilan Ke Jurnal</a>
+                            <a class="btn btn-primary d-none" href="<?= base_url('Admin/Mitra/Copytojurnal/' . $mitra->nokontrak) ?>">Copy Cicilan Ke Jurnal</a>
+                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Cetakcicilan/' . $mitra->nokontrak) ?>">Cetak Cicilan</a>
+                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Exportcicilan/' . $mitra->nokontrak) ?>">Export Cicilan</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -185,16 +187,17 @@
                                         <td><?= $c['tampil'] ?></td>
                                         <td><?= $c['tglUpdate'] ?></td>
                                         <td>
-                                        <div class="dropdown">
-                                            <a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item btndelete" onclick="delete_jurnal(this.dataset.opex)" data-opex="<?= $c['nobukti'] ?>"><i
-                                                    class="fas fa-trash text-danger pr-2"></i> Delete </a>
+                                            <div class="dropdown">
+                                                <a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item btndelete" onclick="delete_jurnal(this)" data-opex="<?= $c['nobukti'] ?>"><i
+                                                        class="fas fa-trash text-danger pr-2"></i> Delete </a>
+                                                    <a class="dropdown-item"><i class="fas fa-print text-sucess pr-2"></i> Cetak Bukti </a>
+                                                </div>
                                             </div>
-                                        </div>
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -208,7 +211,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="d-none 
+                card">
                     <div class="card-header">
                         <h4><?= $header; ?></h4>
                     </div>

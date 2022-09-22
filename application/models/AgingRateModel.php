@@ -53,4 +53,15 @@ class AgingRateModel extends CI_Model {
 		$query = $this->db->get();
 		return $query->result();
 	}
+	
+	public function getProdef(){
+		$this->db->select('prodeflancar');		
+		$this->db->select('prodefkuranglancar');
+		$this->db->select('prodefdiragukan');
+		$this->db->from('transposeagingrate');
+		$this->db->where('bulan', date('Y-m-d', strtotime("last day of -1 month")));
+		$this->db->limit(1);
+		$query = $this->db->get();
+		return $query->result();
+	}
 }

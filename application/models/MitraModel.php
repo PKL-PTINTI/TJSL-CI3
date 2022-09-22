@@ -30,6 +30,8 @@ class MitraModel extends CI_Model {
 	private function _get_data_mitra_query($param1, $param2){
 		$this->db->from($this->table);
 		$i = 0;
+		$this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL');
+		$this->db->where('saldopokok >', 0);
 		
 		// Kolektibilitas
 		if($param1 == 'lancar' || $param1 == 'diragukan' || $param1 == 'macet'){

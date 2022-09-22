@@ -6,7 +6,7 @@
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
       <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    </head>
-   <font size="2">
+   <font size="1">
       <?php
          $tanggal = date('t M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
          $akhirtahun = 'sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")));
@@ -61,19 +61,19 @@
                   </td>
                </tr>
                <tr>
-                  <td>1. Jasa Administrasi Pinjaman</td>
+                  <td style="padding-left: 25px;">1. Jasa Administrasi Pinjaman</td>
                   <td align="right"><?= number_format($aktivitas[0][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[0]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[0][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. Pendapatan Bunga</td>
+                  <td style="padding-left: 25px;">2. Pendapatan Bunga</td>
                   <td align="right"><?= number_format($aktivitas[1][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[1]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[1][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>3. Pendapatan Lain-lain</td>
+                  <td style="padding-left: 25px;">3. Pendapatan Lain-lain</td>
                   <td align="right"><?= number_format($aktivitas[2][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[2]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[2][$akhirtahun]) ?></td>
@@ -85,19 +85,19 @@
                   <td></td>
                </tr>
                <tr>
-                  <td>1. Alokasi Dana BUMN Peduli</td>
+                  <td style="padding-left: 25px;">1. Alokasi Dana BUMN Peduli</td>
                   <td align="right"><?= number_format($aktivitas[3][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[3]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[3][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. ANTT Berakhir Pemenuhan Program</td>
+                  <td style="padding-left: 25px;">2. ANTT Berakhir Pemenuhan Program</td>
                   <td align="right"><?= number_format($aktivitas[4][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[4]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[4][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>3. ANTT Berakhir Waktu</td>
+                  <td style="padding-left: 25px;">3. ANTT Berakhir Waktu</td>
                   <td align="right"><?= number_format($aktivitas[5][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[5]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[5][$akhirtahun]) ?></td>
@@ -121,43 +121,43 @@
                   <td></td>
                </tr>
                <tr>
-                  <td>1. Dana Pembinaan Kemitraan</td>
+                  <td style="padding-left: 25px;">1. Dana Pembinaan Kemitraan</td>
                   <td align="right"><?= number_format($aktivitas[8][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[8]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[8][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. Dana Bina Lingkungan</td>
+                  <td style="padding-left: 25px;">2. Dana Bina Lingkungan</td>
                   <td align="right"><?= number_format($aktivitas[9][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[9]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[9][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>3. Beban Administrasi dan Umum</td>
+                  <td style="padding-left: 25px;">3. Beban Administrasi dan Umum</td>
                   <td align="right"><?= number_format($aktivitas[10][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[10]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[10][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>4. Beban Penyusutan Aktiva Tetap</td>
+                  <td style="padding-left: 25px;">4. Beban Penyusutan Aktiva Tetap</td>
                   <td align="right"><?= number_format($aktivitas[11][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[11]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[11][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>5. Beban Pemeliharaan</td>
+                  <td style="padding-left: 25px;">5. Beban Pemeliharaan</td>
                   <td align="right"><?= number_format($aktivitas[12][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[12]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[12][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>6. Beban Penyisihan Piutang</td>
+                  <td style="padding-left: 25px;">6. Beban Penyisihan Piutang</td>
                   <td align="right"><?= number_format($aktivitas[13][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[13]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[13][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>7. Beban dan Pengeluaran lainnya</td>
+                  <td style="padding-left: 25px;">7. Beban dan Pengeluaran lainnya</td>
                   <td align="right"><?= number_format($aktivitas[14][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[14]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[14][$akhirtahun]) ?></td>
@@ -181,13 +181,13 @@
                   <td></td>
                </tr>
                <tr>
-                  <td>1. ANTT Terbebaskan</td>
+                  <td style="padding-left: 25px;">1. ANTT Terbebaskan</td>
                   <td align="right"><?= number_format($aktivitas[17][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[17]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[17][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. ANTT Penyisihan BUMN Peduli</td>
+                  <td style="padding-left: 25px;">2. ANTT Penyisihan BUMN Peduli</td>
                   <td align="right"><?= number_format($aktivitas[18][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[18]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[18][$akhirtahun]) ?></td>
@@ -204,7 +204,7 @@
                   <td></td>
                   <td></td>
                <tr>
-                  <td>1. Sumbangan Terikat</td>
+                  <td style="padding-left: 25px;">1. Sumbangan Terikat</td>
                   <td align="right"><?= number_format($aktivitas[20][$perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[20]['sd' . $perioda]) ?></td>
                   <td align="right"><?= number_format($aktivitas[20][$akhirtahun]) ?></td>

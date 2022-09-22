@@ -159,6 +159,9 @@ class Mitra extends CI_Controller {
 		$this->db->select('saldojumlah');
 		$this->db->from('mitra');
 
+		$this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL');
+		$this->db->where('saldopokok >', 0);
+
 		if($param1 == 'lancar' || $param1 == 'diragukan' || $param1 == 'macet'){
 			$this->db->where('kolektibilitas', $param1, ucfirst($param1), strtoupper($param1));
 			// $this->db->or_where('saldopokok > ', 0);
@@ -609,14 +612,25 @@ class Mitra extends CI_Controller {
 			}
 
 			if($no_pk == 'PK'.$no_kontrak){
+				echo nl2br("\n");   // echo 'getID='; echo $_GET[id];
+				echo ' $idOpex='; echo $cicilanOpex->id_opex;
+				echo ' noPK='; echo $no_pk;
+				echo ' $idAkun='; echo $cicilanOpex->id_akun;
+				echo ' $tgl='; echo $cicilanOpex->tanggal;
+
 				if($cicilanOpex->id_akun == '403010100')
 				{
 					$cicil_jasa = $cicilanOpex->pengeluaran;
+					echo ' $jasa='; echo number_format($cicil_jasa); echo ' noBukti='; echo $cicilanOpex->nobukti;
+        			echo ' tampil='; echo $cicilanOpex->tampil;
 				}
 
 				if(($cicilanOpex->id_akun == '101060201' OR $cicilanOpex->id_akun == '101060202' OR $cicilanOpex->id_akun == '101060203' OR $cicilanOpex->id_akun == '101060204' OR $cicilanOpex->id_akun == '101060205' OR $cicilanOpex->id_akun == '101060206' OR $cicilanOpex->id_akun == '101060207' OR $cicilanOpex->id_akun == '101060208') AND $cicilanOpex->tampil = '1'){
 					$cicil_pokok = $cicilanOpex->pengeluaran;
+					echo ' $pokok='; echo number_format($cicil_pokok); echo ' noBukti='; echo $cicilanOpex->nobukti;
+         			echo ' tampil='; echo $cicilanOpex->tampil;
 					$jumlah = $cicil_pokok + $cicil_jasa;
+					echo ' $jumlah='; echo number_format($jumlah);
 
 					if($counter==1){
 						$sisaPinjamanJumlah = $totPinjamanJumlah - $jumlah;
@@ -625,68 +639,112 @@ class Mitra extends CI_Controller {
 					}
 
 					$angsuranjumlah += $jumlah;
+					echo ' tot $angsJumlah=';echo number_format($angsuranjumlah);
 					$counter++;
 
+					$tglcicilanTerakhir=$cicilanOpex->tanggal;// simpan tgl cicilan terakhir di jurnal ke mitra
 
+					echo ' ASLI=>$tglCicilanTerakhir='; echo $tglcicilanTerakhir; echo nl2br("\n");
+
+					echo 'PROSES 1: ';
 					if($this->data['mitra']->rekondisi == '1'){
 						$tanggal_terakhir_cicil  = strtotime($this->data['mitra']->tgl_rekondisi);
+						echo '$tglRekond='; echo $this->data['mitra']->tgl_rekondisi;
+
 						if($this->data['mitra']->tgl_rekondisi < $cicilanOpex->tanggal){
 							$tanggal_terakhir_cicil  = strtotime($cicilanOpex->tanggal);
+							echo ' REKOND 2 * CHANGE'; echo 'tglCicilanTerakhir=>'; echo $tglcicilanTerakhir;
 						}
 					} else {	
 						$tanggal_terakhir_cicil  = strtotime($cicilanOpex->tanggal);
+						echo ' NO-REKOND 1 * ';
 					}
 
 					$awal_bulan= date('Y-m-01', strtotime(date('Y-m-d')));
 					$selisih_hari = floor((strtotime($awal_bulan) - $tanggal_terakhir_cicil) / (60 * 60 * 24));
 
-					if($selisih_hari <= 60){
-						$kolektibilitasawal = 'LANCAR';
-					} elseif($selisih_hari > 60 AND $selisih_hari <= 180) {
-						$kolektibilitasawal = 'KURANG LANCAR';
-					} elseif($selisih_hari > 180 AND $selisih_hari <= 270){
-						$kolektibilitasawal = 'DIRAGUKAN';
-					} elseif($selisih_hari > 270){
-						$kolektibilitasawal = 'MACET';
+					echo ' $selisihHari=';echo $selisih_hari; echo ' hari';
+
+					if($selisih_hari <= 61){
+						$kolektibilitasawal = 'lancar';
+						echo ' $kolektibilitasAwal='; echo $kolektibilitasawal;
+					} elseif($selisih_hari > 61 AND $selisih_hari <= 183) {
+						$kolektibilitasawal = 'kurang lancar';
+						echo ' $kolektibilitasAwal='; echo $kolektibilitasawal;
+					} elseif($selisih_hari > 183 AND $selisih_hari <= 274){
+						$kolektibilitasawal = 'diragukan';
+						echo ' $kolektibilitasAwal='; echo $kolektibilitasawal;
+					} elseif($selisih_hari > 274){
+						$kolektibilitasawal = 'macet';
+						echo ' $kolektibilitasAwal='; echo $kolektibilitasawal;
 					}
 
 					$kolektibilitas = $kolektibilitasawal;
+					echo 'endPROSES 1->$kolex1='; echo $kolektibilitas;
+
+					echo nl2br("\n");
+					echo ' PROSES 2: cek jumlah cicilan';
 					
 					if($this->data['mitra']->rekondisi == '1'){
+						echo ' REKOND2=' ;// echo $tanggalkontrak;
+        				echo '$TglKontrakRekond='; echo $this->data['mitra']->tgl_rekondisi;
 						$tanggalkontrak = strtotime($this->data['mitra']->tgl_rekondisi);
 						$tgl_pertama = strtotime(date('Y-m-01', strtotime(date('Y-m-d'))));
 
 						$selisihHari = floor(($tgl_pertama - $tanggalkontrak) / (60 * 60 * 24));
 						$selisihBulan = floor(($selisihHari / 30) - 1);
 
+						echo ' selisihHari='; echo number_format($selisihHari);
+						echo ' selisihBulan='; echo $selisihBulan; 
+       					echo ' cicilanPerBln='; echo number_format($this->data['mitra']->cicilanperbln);
+
 						$jumlahuangseharusnya = $selisihBulan * $this->data['mitra']->cicilanperbln;
 
+						echo ' ---699 ---BACA CICILAN REKOND PASCA TGL RECOND='; echo nl2br("\n");
+
 						if($cicilanOpex->tanggal >= $this->data['mitra']->tgl_rekondisi){
+							echo 'rekonCicilanTgl='; 
 							$totcicilanrekondisi += $cicilanOpex->pengeluaran;
 							$angsuranjumlahpaskaRekondisi = $totcicilanrekondisi;
+							echo ' $AngsJumlahPaskaRekond='; echo $angsuranjumlahpaskaRekondisi;
+                            echo nl2br("\n");
 						}
+
+  						echo ' $AngsJumlahPaskaRekondisi=>'; echo $angsuranjumlahpaskaRekondisi;
+						  echo ' $jumlahUangSeharusnya'; echo number_format($jumlahuangseharusnya); 
+						  echo '<-VS->';
+						  echo ' $AngsJumlah='; echo number_format($angsuranjumlahpaskaRekondisi);
 
 						if($angsuranjumlahpaskaRekondisi < $jumlahuangseharusnya){
 							$selisihbrpkalicicilan = floor(($jumlahuangseharusnya-$angsuranjumlahpaskaRekondisi) / $this->data['mitra']->cicilanperbln);
 
-							if($selisihbrpkalicicilan > 0 AND $selisihbrpkalicicilan <= 6){
+							echo ' selisihX_Cicilan='; echo number_format($selisihcicilan);
+							echo ' selisihBrpX_Cicilan='; echo $selisihbrpkalicicilan;
+							echo ' bln ->';
+
+							if($selisihbrpkalicicilan >= 2 AND $selisihbrpkalicicilan <= 6){
+								echo 'turun 1 kelas';                    echo nl2br("\n");
 								if($kolektibilitasawal=='lancar')
 								{
+									echo 'turun jadi kurang lancar';
 									$koleks='kurang lancar';
 								}
 
 								if($kolektibilitasawal=='kurang lancar')
 								{
+									echo 'turun jadi diragukan';
 									$koleks='diragukan';
 								}
 
 								if($kolektibilitasawal=='diragukan' OR $kolektibilitasawal=='macet')
 								{
+									echo 'turun jadi macet';
 									$koleks='macet';
 								}
 							}
 
 							if($selisihbrpkalicicilan > 6 AND $selisihbrpkalicicilan <= 9){
+								echo 'turun 2 kelas';            echo nl2br("\n");
 								if($kolektibilitasawal=='lancar')
 								{
 									$koleks='diragukan';
@@ -700,27 +758,49 @@ class Mitra extends CI_Controller {
 							}
 
 							if($selisihbrpkalicicilan>9 ){
+								echo 'turun 3 kelas';            echo nl2br("\n");
+
 								$koleks='macet';
 							}
 
 							$kolektibilitas = $koleks;
 						}
-
+						echo 'REKOND->$kolex2='; echo $kolektibilitas;
 						$this->mitra_model->updateKolektibilitas($no_kontrak, $kolektibilitas);
 					} else {
 						$tgl_pertama = strtotime(date('Y-m-01', strtotime(date('Y-m-d'))));
 						$tanggalkontraks = strtotime($this->data['mitra']->tglkontrak);
+						echo ' $tglPertama='; echo $tgl_pertama; 
+						echo ' $TglKontraks='; echo $tanggalkontraks; 
 						$selisihHari = floor(($tgl_pertama - $tanggalkontraks) / (60 * 60 * 24));
+						echo ' selisihHari='; echo number_format($selisihHari);
 
 						$jumlahbulan = floor(($selisihHari/30) - 1);
 						$jumlahuangseharusnya = $jumlahbulan * $this->data['mitra']->cicilanperbln;
 
+						echo ' SelisihBulan='; echo $jumlahbulan; 
+       					echo ' CicilanPerBln='; echo number_format($this->data['mitra']->cicilanperbln);
+
 						$angsuranjumlahX += $cicilanOpex->pengeluaran;
+
+						echo ' NO-REKOND=' ; //echo $tglkontrak; 
+        				echo '$TglKontrak='; echo $this->data['mitra']->tglkontrak;
+
+						echo ' $JumlahUangSeharusnya'; echo number_format($jumlahuangseharusnya); 
+						echo '<-VS->';
+						echo ' $AngsJumlahX='; echo number_format($angsuranjumlahX);
 						if($angsuranjumlah < $jumlahuangseharusnya){
+							$koleks = $kolektibilitasawal;
 							$selisihcicilan = ($jumlahuangseharusnya - $angsuranjumlah);
 							$selisihbrpkalicicilan = floor( $selisihcicilan / $this->data['mitra']->cicilanperbln);
 
-							if($selisihbrpkalicicilan >= 0 AND $selisihbrpkalicicilan <= 6){
+							echo ' selisihXXCicilan='; echo number_format($selisihcicilan);
+             				echo ' selisihBrpXXCicilan='; echo $selisihbrpkalicicilan;
+
+							if($selisihbrpkalicicilan >= 2 AND $selisihbrpkalicicilan <= 6){
+								echo ' turun 1 kelas line 796 => 	' . $kolektibilitasawal; 
+								echo nl2br("\n");
+
 								if($kolektibilitasawal=='lancar')
 								{
 									$koleks='kurang lancar';
@@ -738,6 +818,8 @@ class Mitra extends CI_Controller {
 							}
 
 							if($selisihbrpkalicicilan > 6 AND $selisihbrpkalicicilan <= 9){
+								echo ' turun 2 kelas';            echo nl2br("\n");
+
 								if($kolektibilitasawal=='lancar')
 								{
 									$koleks='diragukan';
@@ -751,14 +833,25 @@ class Mitra extends CI_Controller {
 
 							if($selisihbrpkalicicilan > 9 )
 							{
+								echo ' turun 3 kelas';            echo nl2br("\n");
+
 								$koleks='macet';
 							}
 
 							$kolektibilitas = $koleks;
+							echo ' $kolektibilitasZ='; echo $kolektibilitas;
+							echo nl2br("\n");
 
 							$this->mitra_model->updateKolektibilitas($no_kontrak, $kolektibilitas);
 						}
+
+						echo 'NO-REKOND->$kolex2='; echo $kolektibilitas;
+						echo nl2br("\n");
 					}
+
+					echo ' SIMPAN TOTAL CICILAN PASKA REKONDISI='; echo $angsuranjumlahpaskaRekondisi;
+					echo ' SELISIH BRP X CICILAN PASKA REKONDISI='; echo $selisihbrpkalicicilan;
+					echo nl2br("\n");
 
 				$no++;
 				$row = array();
@@ -785,6 +878,8 @@ class Mitra extends CI_Controller {
 				}
 			}
 		}	
+
+		// $this->mitra_model->updateKolektibilitas($no_kontrak, $kolektibilitas);
 
 		$this->data['pokok'] = $pokok;
 		$this->data['jasa'] = $jasa;
@@ -1232,6 +1327,10 @@ class Mitra extends CI_Controller {
 		$this->data['mitra'] = $mitra;
 
 		$this->template->load('mitra/detail', $this->data);
+	}
+
+	public function cetakcicilan($nokontrak){
+		$this->load->view('mitra/cetak_cicilan');
 	}
 
 }

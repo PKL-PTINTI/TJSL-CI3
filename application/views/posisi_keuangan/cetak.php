@@ -6,7 +6,7 @@
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
       <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
    </head>
-   <font size="2">
+   <font size="1">
       <?php
          $tanggal = date('t M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
          $akhirtahun = 'des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")));
@@ -60,29 +60,29 @@
                   </td>
                </tr>
                <tr>
-                  <td>1. Kas</td>
+                  <td style="padding-left: 25px;">1. Kas</td>
                   <td align="right"><?= number_format($neraca[0][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[0][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. Bank</td>
+                  <td style="padding-left: 25px;">2. Bank</td>
                   <td align="right"><?= number_format($neraca[1][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[1][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>3. Piutang Pinjaman Mitra Binaan</td>
+                  <td style="padding-left: 25px;">3. Piutang Pinjaman Mitra Binaan</td>
                   <td align="right"><?= number_format($neraca[2][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[2][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>4. Alokasi Penyisihan Piutang Pinjaman Mitra Binaan</td>
+                  <td style="padding-left: 25px;">4. Alokasi Penyisihan Piutang Pinjaman Mitra Binaan</td>
                   <td align="right"><?= number_format($neraca[3][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[3][$akhirtahun]) ?></td>
                </tr>
                <tr>
                   <td><b>JUMLAH ASET LANCAR</b></td>
-                  <td align="right"><?= number_format($neraca[4][$perioda]) ?></td>
-                  <td align="right"><?= number_format($neraca[4][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($neraca[4][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($neraca[4][$akhirtahun]) ?></b></td>
                </tr>
                <tr>
                   <td><b>ASET TETAP BERSIH</b></td>
@@ -91,19 +91,19 @@
                   <td></td>
                </tr>
                <tr>
-                  <td>1. Inventaris dan Peralatan</td>
+                  <td style="padding-left: 25px;">1. Inventaris dan Peralatan</td>
                   <td align="right"><?= number_format($neraca[5][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[5][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. Akumulasi Penyusutan Inventaris dan Peralatan</td>
+                  <td style="padding-left: 25px;">2. Akumulasi Penyusutan Inventaris dan Peralatan</td>
                   <td align="right"><?= number_format($neraca[6][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[6][$akhirtahun]) ?></td>
                </tr>
                <tr>
                   <td><b>JUMLAH ASET TETAP BERSIH</b></td>
-                  <td align="right"><?= number_format($neraca[7][$perioda]) ?></td>
-                  <td align="right"><?= number_format($neraca[7][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($neraca[7][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($neraca[7][$akhirtahun]) ?></b></td>
                </tr>    
                <tr>
                   <td><b>ASET LAIN LAIN</b></td>
@@ -111,24 +111,24 @@
                   <td></td>
                   <td></td>
                </tr>
-                  <td>1. Piutang Bermasalah</td>
+                  <td style="padding-left: 25px;">1. Piutang Bermasalah</td>
                   <td align="right"><?= number_format($neraca[8][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[8][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. Alokasi Penyisihan Piutang Bermasalah</td>
+                  <td style="padding-left: 25px;">2. Alokasi Penyisihan Piutang Bermasalah</td>
                   <td align="right"><?= number_format($neraca[9][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[9][$akhirtahun]) ?></td>
                </tr>
                <tr>
                   <td><b>JUMLAH ASET LAIN-LAIN</b></td>
-                  <td align="right"><?= number_format($neraca[10][$perioda]) ?></td>
-                  <td align="right"><?= number_format($neraca[10][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($neraca[10][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($neraca[10][$akhirtahun]) ?></b></td>
                </tr>
                <tr>
                   <td><b>JUMLAH ASET</b></td>
-                  <td align="right"><?= number_format($neraca[11][$perioda]) ?></td>
-                  <td align="right"><?= number_format($neraca[11][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($neraca[11][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($neraca[11][$akhirtahun]) ?></b></td>
                </tr>
                <tr>
                   <td><b>LIABILITAS DAN ASET NETO</b></td>
@@ -149,12 +149,12 @@
                   <td></td>
                </tr>
                <tr>
-                  <td>1. Kelebihan Pembayaran Angsuran</td>
+                  <td style="padding-left: 25px;">1. Kelebihan Pembayaran Angsuran</td>
                   <td align="right"><?= number_format($neraca[12][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[12][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. Angsuran Belum Teridentifikasi</td>
+                  <td style="padding-left: 25px;">2. Angsuran Belum Teridentifikasi</td>
                   <td align="right"><?= number_format($neraca[13][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[13][$akhirtahun]) ?></td>
                </tr>
@@ -165,14 +165,14 @@
                   <td></td>
                </tr>
                <tr>
-                  <td>1. Kewajiban Jangka Panjang</td>
+                  <td style="padding-left: 25px;">1. Kewajiban Jangka Panjang</td>
                   <td align="right"><?= number_format($neraca[14][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[14][$akhirtahun]) ?></td>
                </tr>
                <tr>
                   <td><b>JUMLAH LIABILITAS</b></td>
-                  <td align="right"><?= number_format($neraca[15][$perioda]) ?></td>
-                  <td align="right"><?= number_format($neraca[15][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($neraca[15][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($neraca[15][$akhirtahun]) ?></b></td>
                </tr>
                <tr>
                   <td><b>ASET NETO</b></td>
@@ -181,24 +181,24 @@
                   <td></td>
                </tr>
                <tr>
-                  <td>1. Aset Neto Terikat</td>
+                  <td style="padding-left: 25px;">1. Aset Neto Terikat</td>
                   <td align="right"><?= number_format($neraca[16][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[16][$akhirtahun]) ?></td>
                </tr>
                <tr>
-                  <td>2. Aset Neto Tidak Terikat</td>
+                  <td style="padding-left: 25px;">2. Aset Neto Tidak Terikat</td>
                   <td align="right"><?= number_format($neraca[17][$perioda]) ?></td>
                   <td align="right"><?= number_format($neraca[17][$akhirtahun]) ?></td>
                </tr>
                <tr>
                   <td><b>JUMLAH ASET NETO</b></td>
-                  <td align="right"><?= number_format($neraca[18][$perioda]) ?></td>
-                  <td align="right"><?= number_format($neraca[18][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($neraca[18][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($neraca[18][$akhirtahun]) ?></b></td>
                </tr>
                <tr>
                   <td><b>JUMLAH LIABILITAS DAN ASET NETO</b></td>
-                  <td align="right"><?= number_format($neraca[19][$perioda]) ?></td>
-                  <td align="right"><?= number_format($neraca[19][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($neraca[19][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($neraca[19][$akhirtahun]) ?></b></td>
                </tr>                      
             </tbody>
          </table>

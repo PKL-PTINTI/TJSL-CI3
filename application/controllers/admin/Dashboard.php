@@ -1332,8 +1332,13 @@ class Dashboard extends CI_Controller {
 		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$KenaikanPenurunanAsetNetoDalamKas'  WHERE id='22'");
 
 		$KenaikanPenurunanAsetNetoDalamKassd = $this->db->query("SELECT sd$periodabln FROM aktivitasoperasikasditerima WHERE id='22'")->result_array()[0]['sd'.$periodabln] + $KenaikanPenurunanAsetNetoDalamKas;
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$perioda='$KenaikanPenurunanAsetNetoDalamKassd' WHERE id='22'");
 
-		// 2731
+		$kasDanSetaraKasPadaAkhirTahun = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='24'")->result_array()[0][$periodabln];
+		$this->db->query("UPDATE aktivitasoperasikasditerima SET  $perioda='$kasDanSetaraKasPadaAkhirTahun'  WHERE id='23'");
+		// 2805
+
+		// $SaldoAwal = $this->db->query("SELECT $periodabln FROM aktivitasoperasikasditerima WHERE id='24'")->result_array()[0][$periodabln];
 	}
 
 	private function _updateSaldo($akun){
