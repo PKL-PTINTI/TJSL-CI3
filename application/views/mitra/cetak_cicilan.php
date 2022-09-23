@@ -46,9 +46,16 @@
     background-color: #AFAAAA   ; /* Modern Browsers */
 
 }
+.main-footer {
+    padding: 20px 30px 20px 186px;
+    margin-top: 40px;
+    color: #98a6ad;
+    border-top: 1px solid #e3eaef;
+    display: inline-block;
+    width: 100%;
+}
   </style>
 <!-- /END GA --></head>
-
 <body>
   <div id="app">
     <div class="main-wrapper main-wrapper-1">
@@ -84,13 +91,13 @@
                         </div>
                         <div class="col-md-3">
                             <detail>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
+                            <span class="pr-3">:</span><?= $mitra->nokontrak ?><br>
+                            <span class="pr-3">:</span><?= $mitra->namaPerusahaan ?><br>
+                            <span class="pr-3">:</span><?= $mitra->nama_peminjam ?><br>
+                            <span class="pr-3">:</span><?= $mitra->alamat_rumah ?><br>
+                            <span class="pr-3">:</span><?= $mitra->barulanjutan ?><br>
+                            <span class="pr-3">:</span><?= $mitra->hp ?><br>
+                            <span class="pr-3">:</span><?= $mitra->jaminan ?><br>
                             </detail>
                         </div>
 
@@ -106,12 +113,12 @@
                         </div>
                         <div class="col-md-3">
                         <detail>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
-                            :   data<br>
+                            <span class="pr-3">:</span><?= $mitra->tglkontrak ?><br>
+                            <span class="pr-3">:</span><?= $mitra->tgljatuhtempo ?><br>
+                            <span class="pr-3">:</span><?= number_format($mitra->cicilanperbln  ) ?><br>
+                            <span class="pr-3">:</span><?= number_format($mitra->pinjpokok) ?><br>
+                            <span class="pr-3">:</span><?= number_format($mitra->pinjjasa) ?><br>
+                            <span class="pr-3">:</span><?= number_format($mitra->pinjjumlah) ?><br>
                             </detail>
                         </div>
                     </div>
@@ -134,53 +141,28 @@
                           <th class="text-right">JUMLAH</th>
                           <th class="text-right">SALDO</th>
                         </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Mouse Wireless</td>
-                          <td class="text-center">$10.99</td>
-                          <td class="text-center">1</td>
-                          <td class="text-right">$10.99</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Keyboard Wireless</td>
-                          <td class="text-center">$20.00</td>
-                          <td class="text-center">3</td>
-                          <td class="text-right">$60.00</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>Headphone Blitz TDR-3000</td>
-                          <td class="text-center">$600.00</td>
-                          <td class="text-center">1</td>
-                          <td class="text-right">$600.00</td>
-                        </tr>
+                        <?php foreach ($angsuran['dataOpex'] as $key => $value): ?>
+                          <tr>
+                            <td><?= $value['no'] ?></td>
+                            <td><?= $value['tanggal'] ?></td>
+                            <td class="text-center"><?= $value['deskripsi'] ?></td>
+                            <td class="text-center"><?= number_format($value['cicil_pokok']) ?></td>
+                            <td class="text-right"><?= number_format($value['cicil_jasa']) ?></td>
+                            <td class="text-right"><?= number_format($value['jumlah']) ?></td>
+                            <td class="text-right"><?= number_format($value['sisaPinjamanJumlah']) ?></td>
+                          </tr>
+                        <?php endforeach; ?>
                       </table>
                     </div>
                     <div class="row mt-4">
                       <div class="col-lg-8">
-                        <div class="section-title">Payment Method</div>
+                        <div class="section-title">Total Sisa Cicilan</div>
                         <p class="section-lead">The payment method that we provide is to make it easier for you to pay invoices.</p>
-                        <div class="images">
-                          <img src="assets/img/visa.png" alt="visa">
-                          <img src="assets/img/jcb.png" alt="jcb">
-                          <img src="assets/img/mastercard.png" alt="mastercard">
-                          <img src="assets/img/paypal.png" alt="paypal">
-                        </div>
                       </div>
                       <div class="col-lg-4 text-right">
                         <div class="invoice-detail-item">
-                          <div class="invoice-detail-name">Subtotal</div>
-                          <div class="invoice-detail-value">$670.99</div>
-                        </div>
-                        <div class="invoice-detail-item">
-                          <div class="invoice-detail-name">Shipping</div>
-                          <div class="invoice-detail-value">$15</div>
-                        </div>
-                        <hr class="mt-2 mb-2">
-                        <div class="invoice-detail-item">
-                          <div class="invoice-detail-name">Total</div>
-                          <div class="invoice-detail-value invoice-detail-value-lg">$685.99</div>
+                          <div class="invoice-detail-name">SISA CICILAN</div>
+                          <div class="invoice-detail-value invoice-detail-value-lg"><?= number_format(array_pop($angsuran['dataOpex'])['sisaPinjamanJumlah']) ?></div>
                         </div>
                       </div>
                     </div>
@@ -190,41 +172,18 @@
               <hr>
               <div class="text-md-right">
                 <div class="float-lg-left mb-lg-0 mb-3">
-                  <button class="btn btn-primary btn-icon icon-left"><i class="fas fa-credit-card"></i> Process Payment</button>
                   <button class="btn btn-danger btn-icon icon-left"><i class="fas fa-times"></i> Cancel</button>
-                </div>
-                <button class="btn btn-warning btn-icon icon-left"><i class="fas fa-print"></i> Print</button>
+                  <button class="btn btn-warning btn-icon icon-left"><i class="fas fa-print"></i> Print</button>
+                </div> 
               </div>
             </div>
           </div>
         </section>
       </div>
       <footer class="main-footer">
-        <div class="footer-left">
           Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
-        </div>
-        <div class="footer-right">
-          
-        </div>
       </footer>
     </div>
   </div>
-
-  <!-- General JS Scripts -->
-  <!-- <script src="assets/modules/jquery.min.js"></script>
-  <script src="assets/modules/popper.js"></script>
-  <script src="assets/modules/tooltip.js"></script>
-  <script src="assets/modules/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-  <script src="assets/modules/moment.min.js"></script>
-  <script src="assets/js/stisla.js"></script> -->
-  
-  <!-- JS Libraies -->
-
-  <!-- Page Specific JS File -->
-  
-  <!-- Template JS File -->
-  <!-- <script src="assets/js/scripts.js"></script>
-  <script src="assets/js/custom.js"></script> -->
 </body>
 </html>
