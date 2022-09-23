@@ -29,19 +29,19 @@
 
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/normal', 'Normal'
+                                        changeUrlMitraMasalah('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/normal', 'Normal'
                                         )" href="#">Mitra Normal</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/masalah', 'Bermasalah'
+                                        changeUrlMitraMasalah('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/masalah', 'Bermasalah'
                                         )" href="#">Mitra Bermasalah</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/khusus', 'Khusus'
+                                        changeUrlMitraMasalah('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/khusus', 'Khusus'
                                         )" href="#">Mitra Khusus</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/wo', 'Wipe Out'
+                                        changeUrlMitraMasalah('http://tjslptinti.test/Admin/Mitra/Get_data_mitra/Masalah/wo', 'Wipe Out'
                                         )" href="#">Mitra WO</a>
                                     </div>
                                 </div>

@@ -95,3 +95,49 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+$db['inti'] = array(
+	'dsn'	=> '',
+	'hostname' => 'localhost',
+	// 'port' => '53608',
+	'username' => 'new-tjsl',
+	'password' => 'akunsaya1',
+	'database' => 'db_new-tjsl',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['azure'] = array(
+	'dsn'	=> '',
+	'hostname' => 'tjslptinti.mysql.database.azure.com',
+	// 'port' => '53608',
+	'username' => 'adminpklsmkn1ciamis',
+	'password' => 'Jajanan@#12',
+	'database' => 'tjsl-ptinti',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);

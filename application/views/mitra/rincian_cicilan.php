@@ -143,7 +143,7 @@
                             <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Cicilan/Create/' . $mitra->nokontrak) ?>">Tambah Cicilan</a>
                             <a class="btn btn-primary d-none" href="<?= base_url('Admin/Mitra/Copytojurnal/' . $mitra->nokontrak) ?>">Copy Cicilan Ke Jurnal</a>
                             <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Cetakcicilan/' . $mitra->nokontrak) ?>">Cetak Cicilan</a>
-                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Exportcicilan/' . $mitra->nokontrak) ?>">Export Cicilan</a>
+                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/CreateExcel/') ?>">Export Cicilan</a>
                         </div>
                     </div>
                     <div class="card-body">

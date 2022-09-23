@@ -150,7 +150,7 @@ function changeMenu(url) {
 
 		listArray.forEach((item) => {
 			item.onclick = function () {
-				changeUrlMitra(
+				changeUrlMitraMasalahSektor(
 					window.location.origin +
 						"/Admin/Mitra/Get_data_mitra/Masalahsektor/" +
 						segment +
@@ -173,6 +173,18 @@ let table_mitra = $("#table-mitra").DataTable({
 		method: "POST",
 	},
 });
+
+function changeUrlMitraMasalah(url, title) {
+	table_mitra.ajax.url(url).load();
+	$("#header").text(title);
+	changeMenu(url);
+}
+
+function changeUrlMitraMasalahSektor(url, title) {
+	table_mitra.ajax.url(url).load();
+	$("#header").text(title);
+	changeMenu(url);
+}
 
 function changeUrlMitra(url, title) {
 	url = window.location.origin +  '/' + url;

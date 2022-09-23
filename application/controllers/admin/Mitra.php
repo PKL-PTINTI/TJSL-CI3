@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Mitra extends CI_Controller {
 
 	public function __construct()
@@ -587,6 +590,7 @@ class Mitra extends CI_Controller {
 		$angsuranjumlahpaskaRekondisi = 0;
 		$totcicilanrekondisi = 0;
 		$koleks = '';
+		$selisihbrpkalicicilan = 0;
 
         if($this->data['mitra']->pinjjumlah == '0')
         {
@@ -1330,7 +1334,73 @@ class Mitra extends CI_Controller {
 	}
 
 	public function cetakcicilan($nokontrak){
-		$this->load->view('mitra/cetak_cicilan');
+		$mitra = $this->mitra_model->getMitraKontrak($nokontrak);
+		$angsuran = $this->mitra_model->getOpexCicilanMitra($nokontrak);
+		$this->load->view('mitra/cetak_cicilan', compact('mitra', 'angsuran'));
 	}
 
+	public function CreateExcel() {
+		$fileName = 'kartu-piutang-' . date('Y') .'.xlsx';  
+
+		$cicilanOpex = $this->mitra_model->getOpexCicilan();
+		$spreadsheet = new Spreadsheet();
+		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->getColumnDimension('A')->setWidth(5);
+		$sheet->getColumnDimension('B')->setWidth(15);
+		$sheet->getColumnDimension('C')->setWidth(15);
+		$sheet->getColumnDimension('D')->setWidth(15);
+		$sheet->getColumnDimension('E')->setWidth(15);
+		$sheet->getColumnDimension('F')->setWidth(15);
+
+		$sheet->mergeCells('A2:F2');
+		$sheet->getStyle('A2:F2')->getFont()->setBold(true);
+		$sheet->getStyle('A2:F2')->getAlignment()->setHorizontal('center');
+
+		$sheet->setCellValue('A2', 'KARTU PIUTANG');
+		$sheet->setCellValue('B3', 'Data Per '.$bulan);
+
+		$sheet->setCellValue('B5', 'No ID :');
+		$sheet->setCellValue('B6', 'Nama :');
+		$sheet->setCellValue('B7', 'Tanggal Kontrak :');
+		$sheet->setCellValue('B8', 'Cicilan/Bulan :');
+		$sheet->setCellValue('B9', 'Jumlah Pinjaman :');
+		$sheet->setCellValue('E5', 'Kolektibilitas :');
+		$sheet->setCellValue('E6', 'Jasa :');
+		$sheet->setCellValue('E7', 'Jatuh Tempo :');
+		$sheet->setCellValue('E8', 'Pinjaman Pokok :');
+		$sheet->setCellValue('E9', 'Pinjaman Jasa :');
+		$sheet->setCellValue('A11', 'No');
+		$sheet->setCellValue('B11', 'Taanggal');
+		$sheet->setCellValue('C11', 'Pokok');
+		$sheet->setCellValue('D11', 'Jasa');
+		$sheet->setCellValue('E11', 'Jumlah');
+		$sheet->setCellValue('F11', 'Saldo');
+
+		// foreach($this->mitra_model->getOpexCicilan() as $cicilanOpex){
+		// 	if($no_kontrak < 10){
+		// 		$no_bukti = $cicilanOpex->nobukti;
+		// 		$no_pk = substr($no_bukti, -3);
+		// 	}
+		// 	if($no_kontrak >= 10 AND $no_kontrak < 100){
+		// 		$no_bukti = $cicilanOpex->nobukti;
+		// 		$no_pk = substr($no_bukti, -4);
+		// 	}
+		// 	if($no_kontrak >= 100 AND $no_kontrak < 1000){
+		// 		$no_bukti = $cicilanOpex->nobukti;
+		// 		$no_pk = substr($no_bukti, -5);
+		// 	}
+		// 	if($no_kontrak >= 1000 AND $no_kontrak < 10000){
+		// 		$no_bukti = $cicilanOpex->nobukti;
+		// 		$no_pk = substr($no_bukti, -6);
+		// 	}
+
+		// }
+
+		$writer = new Xlsx($spreadsheet);
+		$writer->save("storage/".$fileName);
+		header("Content-Type: application/vnd.ms-excel");
+        redirect(base_url()."/storage/".$fileName);         
+    }
 }

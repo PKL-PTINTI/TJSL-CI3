@@ -428,6 +428,17 @@
                 pointBackgroundColor: '#fff',
                 pointBorderColor: '#6777ef',
                 pointRadius: 4
+                },{
+                label: 'Pengeluaran',
+                data: [<?php foreach($data_chart_opex as $value) { echo $value->pengeluaran.','; } ?>],
+                borderWidth: 2,
+                backgroundColor: 'transparent',
+                borderWidth: 5,
+                borderColor: '#6777ef',
+                pointBorderWidth: 0 ,
+                pointRadius: 3.5,
+                pointBackgroundColor: 'transparent',
+                pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
                 }]
             },
             options: {

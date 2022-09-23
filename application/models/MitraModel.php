@@ -53,7 +53,9 @@ class MitraModel extends CI_Model {
 
 		// TDK Bermasalah
 		if($param1 == 'normal' || $param1 == 'masalah' || $param1 == 'khusus' || $param1 == 'wo'){
-			$this->db->where('tdkbermasalah', $param1, ucfirst($param1), strtoupper($param1));
+			$this->db->where('tdkbermasalah', $param1);
+			$this->db->or_where('tdkbermasalah', ucfirst($param1));
+			$this->db->or_where('tdkbermasalah', strtoupper($param1));
 			if ($param2) {
 				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
 			}
@@ -241,6 +243,88 @@ class MitraModel extends CI_Model {
 		$query = $this->db->get();
 		
 		return $query->result();
+	}
+
+	public function getOpexCicilanMitra($nokontrak){
+		$dataOpex = [];
+		$jumlah = 0;
+		$angsuranjumlah = 0;
+		$counter = 1;
+		$pokok = 0;
+		$jasa = 0;
+		$total = 0;
+		$no = 0;
+		$cicil_pokok = 0;
+		$cicil_jasa = 0;
+		$jumlah = 0;
+		$sisaPinjamanJumlah = 0;
+
+		$mitra = $this->getMitraKontrak($nokontrak);
+		$totPinjamanJumlah = $mitra->pinjpokok + $mitra->pinjjasa;
+		// echo $totPinjamanJumlah;
+		// die;
+
+		foreach($this->getOpexCicilan() as $cicilanOpex){
+			if($nokontrak < 10){
+				$no_bukti = $cicilanOpex->nobukti;
+				$no_pk = substr($no_bukti, -3);
+			}
+			if($nokontrak >= 10 AND $nokontrak < 100){
+				$no_bukti = $cicilanOpex->nobukti;
+				$no_pk = substr($no_bukti, -4);
+			}
+			if($nokontrak >= 100 AND $nokontrak < 1000){
+				$no_bukti = $cicilanOpex->nobukti;
+				$no_pk = substr($no_bukti, -5);
+			}
+			if($nokontrak >= 1000 AND $nokontrak < 10000){
+				$no_bukti = $cicilanOpex->nobukti;
+				$no_pk = substr($no_bukti, -6);
+			}
+
+			if($no_pk == 'PK'.$nokontrak){
+				if($cicilanOpex->id_akun == '403010100')
+				{
+					$cicil_jasa = $cicilanOpex->pengeluaran;
+				}
+
+				if(($cicilanOpex->id_akun == '101060201' OR $cicilanOpex->id_akun == '101060202' OR $cicilanOpex->id_akun == '101060203' OR $cicilanOpex->id_akun == '101060204' OR $cicilanOpex->id_akun == '101060205' OR $cicilanOpex->id_akun == '101060206' OR $cicilanOpex->id_akun == '101060207' OR $cicilanOpex->id_akun == '101060208') AND $cicilanOpex->tampil = '1'){
+					$cicil_pokok = $cicilanOpex->pengeluaran;
+					$jumlah = $cicil_pokok + $cicil_jasa;
+
+					if($counter==1){
+						$sisaPinjamanJumlah = $totPinjamanJumlah - $jumlah;
+					} else {
+						$sisaPinjamanJumlah = $sisaPinjamanJumlah - $jumlah;
+					}
+
+					$counter++;
+
+					$no++;
+					$row = array();
+					$row['no'] = $no;
+					$row['tanggal'] = $cicilanOpex->tanggal;
+					$row['deskripsi'] = $cicilanOpex->deskripsi;
+					$row['cicil_pokok'] = $cicil_pokok;
+					$row['cicil_jasa'] = $cicil_jasa;
+					$row['jumlah'] = $jumlah;
+					$row['sisaPinjamanJumlah'] = $sisaPinjamanJumlah;
+					$row['nobukti'] = $cicilanOpex->nobukti;
+					$dataOpex[] = $row;
+
+					$pokok += $cicil_pokok;
+					$jasa += $cicil_jasa;	
+					$total += $jumlah;
+				}
+			}
+		}
+
+		return [
+			'dataOpex' => $dataOpex,
+			'pokok' => $pokok,
+			'jasa' => $jasa,
+			'total' => $total
+		];
 	}
 
 	public function getMitraMasalah($status){

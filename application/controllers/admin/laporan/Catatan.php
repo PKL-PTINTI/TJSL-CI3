@@ -91,7 +91,7 @@ class Catatan extends CI_Controller {
         $sheet->setCellValue('C3', 'BULAN ' . $bulan);
 
 		$sheet->setCellValue('A4', 'KAS');
-		$sheet->setCellValue('A5', '- Kas PKP');
+		$sheet->setCellValue('A5', '- Kas PK');
 		$sheet->setCellValue('A6', 'BANK');
 		$sheet->setCellValue('A7', '- Mandiri');
 		$sheet->setCellValue('A8', '- BRI');

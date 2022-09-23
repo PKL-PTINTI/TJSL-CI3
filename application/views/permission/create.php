@@ -3,7 +3,7 @@
         <h1>Modules Permission</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('Usersmanagement') ?>">Module</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('Usersmanagement') ?>">Modul</a></div>
             <div class="breadcrumb-item">Modules Permission</div>
         </div>
     </div>
@@ -13,7 +13,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Data Module</h4>
+                        <h4>Data Modul</h4>
                     </div>
                     <form class="form-horizontal" role="form" action="<?php echo $action; ?>" method="POST">
                     <div class="card-body">
