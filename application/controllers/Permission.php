@@ -26,11 +26,11 @@ class Permission extends CI_Controller
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Permission';
+			$this->data['link_active'] = 'Dashboard';
 
-			// if (!$this->tank_auth->permit($this->data['link_active'])) {
-			// 	redirect('Home');
-			// }
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
 
 			$this->load->model("ShowmenuModel", 'showmenu_model');
 			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
@@ -67,7 +67,7 @@ class Permission extends CI_Controller
 			);
 
 			$this->permission_model->addPermission($data);
-
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Permission Berhasil Di Tambahkan\',position: \'bottomRight\'});</script>');
 			redirect('Permission');
 		} else {
 			$this->data['description'] = $this->input->post('description');
@@ -98,6 +98,7 @@ class Permission extends CI_Controller
 			$condition['permission_id'] = $id;
 
 			$this->permission_model->updatePermission($data, $condition);
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Permission Berhasil Di Update\',position: \'bottomRight\'});</script>');
 
 			redirect('Permission');
 		} else {
@@ -125,6 +126,7 @@ class Permission extends CI_Controller
 		$condition['permission_id'] = $id;
 
 		$this->permission_model->deletePermission($condition);
+		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Permission Berhasil Di Hapus\',position: \'bottomRight\'});</script>');
 
 		redirect('Permission');
 	}

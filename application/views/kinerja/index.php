@@ -25,9 +25,9 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/Laporan/Kinerja/CreateExcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/laporan/Kinerja/CreateExcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/Laporan/Kinerja/Cetak') ?>" target="_blank">Cetak Laporan</a>
+                                        href="<?= base_url('Admin/laporan/Kinerja/Cetak') ?>" target="_blank">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>

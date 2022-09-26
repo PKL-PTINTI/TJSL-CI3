@@ -47,7 +47,7 @@ let table_perioda = $("#table-jurnal-perioda").dataTable({
 $("#form-perioda").on("submit", function (e) {
 	e.preventDefault();
 	var form = $(this);
-	var url = window.location.origin + "/admin/jurnal/perioda_data";
+	var url = window.location.origin + '' + "/Admin/jurnal/perioda_data";
 	var data = form.serialize();
 	$.ajax({
 		type: "POST",
@@ -106,7 +106,7 @@ $("#button_delete_perioda").on("click", function (e) {
 
 // table-mitra
 
-let url_mitra = window.location.origin + "/Admin/Mitra/Get_data_mitra";
+let url_mitra = window.location.origin + '' + "/Admin/Mitra/Get_data_mitra";
 
 function changeMenu(url) {
 	let segment = url.substring(url.lastIndexOf("/") + 1);
@@ -124,8 +124,8 @@ function changeMenu(url) {
 
 		listArray.forEach((item) => {
 			item.onclick = function () {
-				changeUrlMitra(
-					window.location.origin +
+				changeUrlMitraKoleksektor(
+					window.location.origin + '' +
 						"/Admin/Mitra/Get_data_mitra/Koleksektor/" +
 						segment +
 						"/" +
@@ -151,7 +151,7 @@ function changeMenu(url) {
 		listArray.forEach((item) => {
 			item.onclick = function () {
 				changeUrlMitraMasalahSektor(
-					window.location.origin +
+					window.location.origin + '' +
 						"/Admin/Mitra/Get_data_mitra/Masalahsektor/" +
 						segment +
 						"/" +
@@ -175,6 +175,7 @@ let table_mitra = $("#table-mitra").DataTable({
 });
 
 function changeUrlMitraMasalah(url, title) {
+	var url = window.location.origin + '/' + url;
 	table_mitra.ajax.url(url).load();
 	$("#header").text(title);
 	changeMenu(url);
@@ -187,14 +188,20 @@ function changeUrlMitraMasalahSektor(url, title) {
 }
 
 function changeUrlMitra(url, title) {
-	url = window.location.origin +  '/' + url;
+	url = window.location.origin + '' +  '/' + url;
+	table_mitra.ajax.url(url).load();
+	$("#header").text(title);
+	changeMenu(url);
+}
+
+function changeUrlMitraKoleksektor(url, title) {
 	table_mitra.ajax.url(url).load();
 	$("#header").text(title);
 	changeMenu(url);
 }
 
 // init datatable serverside
-let url = window.location.origin + "/admin/jurnal/get_jurnal";
+let url = window.location.origin + '' + "/Admin/jurnal/get_jurnal";
 
 let table_jurnal = $("#table-jurnal").DataTable({
 	processing: true,
@@ -208,12 +215,12 @@ let table_jurnal = $("#table-jurnal").DataTable({
 });
 
 function changeUrlJurnal(url, title) {
-	url = window.location.origin +  '/' + url;
+	url = window.location.origin + '' +  '/' + url;
 	if(window.location.pathname == "/Admin/Jurnal"){
 		table_jurnal.ajax.url(url).load();
 		$("#header").text(title);
 	} else {
-		window.location.href = window.location.origin + "/Admin/Jurnal";
+		window.location.href = window.location.origin + '' + "/Admin/Jurnal";
 		document.on('ready', function () {
 			table_jurnal.ajax.url(url).load();
 			$("#header").text(title);
@@ -312,7 +319,7 @@ let table_perkiraans = $("#table-jurnal-perkiraan").dataTable({
 $("#form-perkiraan").on("submit", function (e) {
 	e.preventDefault();
 	var form = $(this);
-	var url = window.location.origin + "/admin/saldo/kartu_perkiraan_data";
+	var url = window.location.origin + '' + "/Admin/saldo/kartu_perkiraan_data";
 	var data = form.serialize();
 	$.ajax({
 		type: "POST",
@@ -335,7 +342,7 @@ $("#form-perkiraan").on("submit", function (e) {
 });
 
 function delete_jurnal(element){
-	var url = window.location.origin + "/Admin/Jurnal/Destroy";
+	var url = window.location.origin + '' + "/Admin/Jurnal/Destroy";
 
 	var opex = element.dataset.opex;
 

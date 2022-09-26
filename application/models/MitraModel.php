@@ -45,6 +45,8 @@ class MitraModel extends CI_Model {
 		}
 
 		if($param1 == 'kuranglancar'){
+			$this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL');
+			$this->db->where('saldopokok >', 0);
 			$this->db->where('kolektibilitas', 'kurang lancar', 'Kurang Lancar', 'KURANG LANCAR');
 			if ($param2) {
 				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
@@ -59,6 +61,7 @@ class MitraModel extends CI_Model {
 			if ($param2) {
 				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
 			}
+			$this->db->where('saldopokok >', 0);
 		}
 
         foreach ($this->column_search as $item) // loop kolom 
@@ -239,7 +242,7 @@ class MitraModel extends CI_Model {
 		$this->db->or_where('id_akun', '101060207');
 		$this->db->or_where('id_akun', '101060208');
 		$this->db->or_where('id_akun', '403010100');
-		$this->db->order_by('tanggal', 'ASC');
+		$this->db->order_by('tanggal', 'DESC');
 		$query = $this->db->get();
 		
 		return $query->result();
@@ -474,6 +477,10 @@ class MitraModel extends CI_Model {
 		$this->db->set('kolektibilitas', $kolektibilitas);
 		$this->db->where('nokontrak', $no_kontrak);
 		$this->db->update('mitra');
+	}
+
+	public function sroreTriwulan($data){
+		$this->db->insert('updatetriwulanmitra', $data);
 	}
 	
 }

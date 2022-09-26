@@ -26,11 +26,11 @@ class Roles extends CI_Controller
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Roles';
+			$this->data['link_active'] = 'Dashboard';
 
-			// if (!$this->tank_auth->permit($this->data['link_active'])) {
-			// 	redirect('Home');
-			// }
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
 
 			$this->load->model("ShowmenuModel", "showmenu_model");	
 			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
@@ -64,6 +64,7 @@ class Roles extends CI_Controller
 			);
 
 			$this->roles_model->addRole($data);
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Role Baru Berhasil Di Tambahkan\',position: \'bottomRight\'});</script>');
 			redirect('Roles');
 		} else {
 			$this->data['role'] = $this->input->post('role');
@@ -92,6 +93,7 @@ class Roles extends CI_Controller
 			);
 			$condition['role_id'] = $id;
 			$this->roles_model->updateRole($data, $condition);
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Role Berhasil Di Update\',position: \'bottomRight\'});</script>');
 			redirect('Roles');
 		} else {
 			$roles = $this->roles_model->getRole($id);
@@ -118,6 +120,7 @@ class Roles extends CI_Controller
 	{
 		$condition['role_id'] = $id;
 		$this->roles_model->deleteRole($condition);
+		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Role Berhasil Di Hapus\',position: \'bottomRight\'});</script>');
 		redirect('Roles');
 	}
 
@@ -134,6 +137,7 @@ class Roles extends CI_Controller
 			'default' => '1'
 		);
 		$this->roles_model->updateRole($data, $condition2);
+		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Role Default Berhasil Di Update\',position: \'bottomRight\'});</script>');
 		redirect('Roles');
 	}
 
@@ -156,7 +160,7 @@ class Roles extends CI_Controller
 
 				$this->roles_model->addRolePermission($data);
 			}
-
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Permission Berhasil Di Assign\',position: \'bottomRight\'});</script>');
 			redirect('Roles');
 		} else {
 			$this->data['listPermission'] = $this->roles_model->getAllPermission();

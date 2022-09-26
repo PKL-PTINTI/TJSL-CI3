@@ -171,6 +171,7 @@ class Usersmanagement extends CI_Controller
 					unset($this->data['password']); // Clear password (just for any case)
 				}
 
+				$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data User Baru Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
 				redirect('Usersmanagement');
 			} else {
 				$errors = $this->tank_auth->get_error_message();
@@ -245,6 +246,8 @@ class Usersmanagement extends CI_Controller
 			$this->usersmanagement_model->updateUser($data, $condition);
 			$this->usersmanagement_model->updateUserProfile($custom, $condition);
 
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data User Baru Berhasil Diupdate\',position: \'bottomRight\'});</script>');
+
 			redirect('Usersmanagement');
 		} else {
 			$this->data['nama_lengkap'] = $this->input->post('nama_lengkap');
@@ -280,6 +283,8 @@ class Usersmanagement extends CI_Controller
 		);
 
 		$this->usersmanagement_model->updateUser($data, $condition);
+		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'User Baru Berhasil Dibanned\',position: \'bottomRight\'});</script>');
+
 		redirect('Usersmanagement');
 	}
 
@@ -292,6 +297,7 @@ class Usersmanagement extends CI_Controller
 		);
 
 		$this->usersmanagement_model->updateUser($data, $condition);
+		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'User Baru Berhasil Diunbanned\',position: \'bottomRight\'});</script>');
 		redirect('Usersmanagement');
 	}
 
@@ -299,9 +305,11 @@ class Usersmanagement extends CI_Controller
 	{
 		// Activate user
 		if ($this->tank_auth->activate_user_manual($user_id)) { // success
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'User Berhasil Di Aktivasi\',position: \'bottomRight\'});</script>');
 			redirect('Usersmanagement');
 		} else { // fail
 			redirect('Usersmanagement');
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Warning\',message: \'User Gagal Di Aktivasi\',position: \'bottomRight\'});</script>');
 		}
 	}
 
@@ -317,7 +325,7 @@ class Usersmanagement extends CI_Controller
 
 		if ($this->form_validation->run() == TRUE) {
 			$this->tank_auth->change_role(intval($id), intval($this->data['role_id_change']), intval($this->input->post('role_id')));
-
+			$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'User Berhasil Di Assign Role\',position: \'bottomRight\'});</script>');
 			redirect('Usersmanagement');
 		} else {
 

@@ -284,22 +284,22 @@
                             <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-magnifying-glass-chart"></i>
                                 <span>Laporan Keuangan</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Posisikeuangan') ?>">Posisi Keuangan</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Aktivitas') ?>">Aktivitas</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Aruskas') ?>">Arus Kas</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Kinerja') ?>">Kinerja</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/Laporan/Catatan') ?>">Catatan </a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/PosisiKeuangan') ?>">Posisi Keuangan</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/Aktivitas') ?>">Aktivitas</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/ArusKas') ?>">Arus Kas</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/Kinerja') ?>">Kinerja</a></li>
+                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/Catatan') ?>">Catatan </a></li>
                             </ul>
                         </li>
                         <li class="menu-header">
                             Laninnya</li>
                         <li class="nav-item <?php if($this->uri->segment(2) == 'COA') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/COA') ?>"><i class="fa-solid fa-file-invoice"></i>
+                            <a class="nav-link" href="<?= base_url('/Admin/coa') ?>"><i class="fa-solid fa-file-invoice"></i>
                                 <span>Code Of Account</span>
                             </a>
                         </li>
                         <li class="nav-item <?php if($this->uri->segment(2) == 'Agingrate') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/Agingrate') ?>"><i class="fa-brands fa-uncharted"></i>
+                            <a class="nav-link" href="<?= base_url('/Admin/AgingRate') ?>"><i class="fa-brands fa-uncharted"></i>
                                 <span>Aging Rate</span>
                             </a>
                         </li>
@@ -309,7 +309,7 @@
                             </a>
                         </li>
                         <li class="nav-item <?php if($this->uri->segment(2) == 'Neracasaldo') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/Neracasaldo') ?>"><i class="fa-solid fa-scale-balanced"></i>
+                            <a class="nav-link" href="<?= base_url('/Admin/NeracaSaldo') ?>"><i class="fa-solid fa-scale-balanced"></i>
                                 <span>Neraca Saldo</span>
                             </a>
                         </li>
@@ -387,6 +387,59 @@
             }
             
         ?>
+
+        var statistics_chart_mitra = document.getElementById("mitraMB").getContext('2d');
+        if(statistics_chart_mitra){
+            var myChart = new Chart(statistics_chart_mitra, {
+            type: 'line',
+            data: {
+                labels: ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'],
+                datasets: [{
+                label: 'Pemasukan',
+                data: [12, 19, 3, 5, 2, 3, 10, 12, 19, 3, 5, 2],
+                borderWidth: 5,
+                borderColor: '#6777ef',
+                backgroundColor: 'transparent',
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#6777ef',
+                pointRadius: 4
+                }]
+            },
+            options: {
+                legend: {
+                display: false
+                },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                        display: false,
+                        drawBorder: false,
+                        },
+                        ticks: {
+                            beginAtZero:true,
+                            callback: function(value, index, values) {
+                                return 'RP. ' + number_format(value);
+                            }
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                        color: '#fbfbfb',
+                        lineWidth: 2
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, chart){
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': RP. ' + number_format(tooltipItem.yLabel, 2);
+                        }
+                    }
+                },
+            }
+            });
+        }
 
         function number_format(number, decimals, dec_point, thousands_sep) {
         // *     example: number_format(1234.56, 2, ',', ' ');

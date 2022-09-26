@@ -54,7 +54,7 @@ class Coa extends CI_Controller {
 		$this->data['header'] = 'Management Data COA';
 		$this->data['coa'] = $this->coa_model->getCoa();
 		
-		$this->template->load('Coa/index', $this->data);
+		$this->template->load('coa/index', $this->data);
     }
 
 	public function createExcel() {

@@ -112,14 +112,12 @@ class AgingRate extends CI_Controller {
 		$totalMB=$totLancartdkbermasalah+$totKurangLancartdkbermasalah+$totDiragukantdkbermasalah+$totMacettdkbermasalah; 
 		$selisih = $totMacettdkbermasalah - $this->agingrate_model->getTotalMacetBulanLalu()[0]->macet;
 
-		echo ' CEK DATA :'; echo nl2br("\n");
-		echo 'totLancar   ='; echo number_format($totLancartdkbermasalah) ; echo nl2br("\n");
-		echo 'totKrgLancar='; echo number_format($totKurangLancartdkbermasalah) ; echo nl2br("\n");
-		echo 'totDiragukan='; echo number_format($totDiragukantdkbermasalah) ; echo nl2br("\n");
-		echo 'totMacet    ='; echo number_format($totMacettdkbermasalah) ; echo nl2br("\n");
-		echo 'Selisih    ='; echo number_format($selisih) ; echo nl2br("\n");
-		echo '$total MB    ='; echo number_format($totalMB) ; echo nl2br("\n");
-
+		$this->data['totLancartdkbermasalah'] = $totLancartdkbermasalah;
+		$this->data['totKurangLancartdkbermasalah'] = $totKurangLancartdkbermasalah;
+		$this->data['totDiragukantdkbermasalah'] = $totDiragukantdkbermasalah;
+		$this->data['totMacettdkbermasalah'] = $totMacettdkbermasalah;
+		$this->data['selisih'] = $selisih;
+		$this->data['totalMB'] = $totalMB;
 
 		$agingrate = $this->agingrate_model->getAgingRate();
 		$idkosong = 0;
@@ -127,16 +125,11 @@ class AgingRate extends CI_Controller {
 			if ($value->lancar == '0' AND $idkosong == '0'){
 				$idkosong = $value->id;
 				$bulankosong = $value->bulan;
-
-				echo '$idkosong='; echo $idkosong; 
-				echo'bulan kosong';   echo $bulankosong ;
-				echo nl2br("\n");
 			}
 		}
 
-		echo ' cek ulang?'; echo '$idkosong='; echo $idkosong;    
-		echo ' bulan di tabel =>';   echo $bulankosong ;
-		echo ' ldate =>';      echo $date;      echo nl2br("\n");
+		$this->data['idkosong'] = $idkosong; 
+		$this->data['bulankosong'] = $bulankosong ;
 
 		$selisih = 0 - $totMacettdkbermasalah;
 
@@ -152,7 +145,7 @@ class AgingRate extends CI_Controller {
 			if($agingrate[$i]['lancar'] != '0' AND $agingrate[$i]['kuranglancar'] != '0'){
 				$saldolancar = $agingrate[$i]['lancar'];
 				$saldokuranglancar = $agingrate[$i + 1]['kuranglancar'];
-				echo 'lancar ke kurang lancar => '; echo $saldolancar; echo ' / '; echo $saldokuranglancar; echo nl2br("\n");
+				// echo 'lancar ke kurang lancar => '; echo $saldolancar; echo ' / '; echo $saldokuranglancar; echo nl2br("\n");
 				$lancarkekuranglancar[] = ($saldokuranglancar / $saldolancar) * 100;
 			} else {
 				$lancarkekuranglancar[] = 100;
@@ -165,7 +158,7 @@ class AgingRate extends CI_Controller {
 				} else {
 					$saldodiragukan = $agingrate[$i + 5]['diragukan'];
 				}
-				echo 'kuranglancar ke diragukan => '; echo $saldokuranglancar; echo ' / '; echo $saldodiragukan; echo nl2br("\n");
+				// echo 'kuranglancar ke diragukan => '; echo $saldokuranglancar; echo ' / '; echo $saldodiragukan; echo nl2br("\n");
 				$kuranglancarkediragukan[] = ($saldodiragukan / $saldokuranglancar) * 100;
 			}
 		}
@@ -173,11 +166,10 @@ class AgingRate extends CI_Controller {
 		for ($i=0; $i < count($agingrate); $i++) { 
 			$saldodiragukan = $agingrate[$i]['diragukan'];
 			$saldoselisih = $i < 21 ? $agingrate[$i + 3]['selisih'] : 0.00;
-			echo 'Diragukan ke macet => '; echo $saldoselisih; echo ' / '; echo $saldodiragukan; echo nl2br("\n");
+			// echo 'Diragukan ke macet => '; echo $saldoselisih; echo ' / '; echo $saldodiragukan; echo nl2br("\n");
 			if ($saldodiragukan == 0) {
 				$diragukankemacet[] = ($saldoselisih) * 100;
 			} else {
-				// $diragukankemacet[] = (($saldoselisih / $saldodiragukan) * 100) < 0 ? 0 : (($saldoselisih / $saldodiragukan) * 100) > 100 ? 1 : ($saldoselisih / $saldodiragukan) * 100;
 				if(($saldoselisih / $saldodiragukan) * 100 < 0){
 					$diragukankemacet[] = 0;
 				} else if(($saldoselisih / $saldodiragukan) * 100 > 100){
@@ -196,7 +188,6 @@ class AgingRate extends CI_Controller {
 
 		array_pop($kuranglancarkediragukan);	
 		$avaregekuranglancarkediragukan = array_sum($kuranglancarkediragukan) / count($kuranglancarkediragukan);
-		// $avaregekuranglancarkediragukan = 34.7216741328;
 		$kuranglancarkediragukan[] = $avaregekuranglancarkediragukan;
 
 		array_pop($diragukankemacet);
@@ -204,57 +195,49 @@ class AgingRate extends CI_Controller {
 		array_pop($diragukankemacet);
 
 		$avaregediragukankemacet = array_sum($diragukankemacet) / count($diragukankemacet);
-		// var_dump(array_sum($diragukankemacet) / count($diragukankemacet));
-		// $avaregediragukankemacet = 11.0189692235;
 		$diragukankemacet[] = $avaregediragukankemacet;
 
-		foreach ($lancarkekuranglancar as $key => $value) {
-			echo '$lancarkekuranglancar = '; echo $value; echo nl2br("\n");
-		}
-		foreach ($kuranglancarkediragukan as $key => $value) {
-			echo '$kuranglancarkediragukan = '; echo $value; echo nl2br("\n");
-		}
-		foreach ($diragukankemacet as $key => $value) {
-			echo '$diragukankemacet = '; echo $value; echo nl2br("\n");
-		}
+		$this->data['lancarkekuranglancar'] = $lancarkekuranglancar;
+		$this->data['kuranglancarkediragukan'] = $kuranglancarkediragukan;
+		$this->data['diragukankemacet'] = $diragukankemacet;
 
 		$pdlancar = round(($avaregelancarkekuranglancar * $avaregekuranglancarkediragukan * $avaregediragukankemacet) / 10000, 8);
 		$pdkuranglancar = ($avaregekuranglancarkediragukan * $avaregediragukankemacet) / 100;
 		$pddiragukan = $avaregediragukankemacet;
 		$pdmacet = 100;
 
-		echo '$pdlancar = '; echo $pdlancar; echo nl2br("\n");
-		echo '$pdkuranglancar = '; echo $pdkuranglancar; echo nl2br("\n");
-		echo '$pddiragukan = '; echo $pddiragukan; echo nl2br("\n");
-		echo '$pdmacet = '; echo $pdmacet; echo nl2br("\n");
+		$this->data['pdlancar'] = $pdlancar;
+		$this->data['pdkuranglancar'] = $pdkuranglancar;
+		$this->data['pddiragukan'] = $pddiragukan;
+		$this->data['pdmacet'] = $pdmacet;
 
 		$tplancar = $pdlancar * 100;
 		$tpkuranglancar = $pdkuranglancar * 100;
 		$tpdiragukan = $pddiragukan * 100;
 		$tpmacet = $pdmacet * 100;
 
-		echo '$tplancar = '; echo $tplancar; echo nl2br("\n");
-		echo '$tpkuranglancar = '; echo $tpkuranglancar; echo nl2br("\n");
-		echo '$tpdiragukan = '; echo $tpdiragukan; echo nl2br("\n");
-		echo '$tpmacet = '; echo $tpmacet; echo nl2br("\n");
+		$this->data['tplancar'] = $tplancar;
+		$this->data['tpkuranglancar'] = $tpkuranglancar;
+		$this->data['tpdiragukan'] = $tpdiragukan;
+		$this->data['tpmacet'] = $tpmacet;
 
-		echo '$avaregelancarkekuranglancar = '; echo $avaregelancarkekuranglancar; echo nl2br("\n");
-		echo '$avaregekuranglancarkediragukan = '; echo $avaregekuranglancarkediragukan; echo nl2br("\n");
-		echo '$avaregediragukankemacet = '; echo $avaregediragukankemacet; echo nl2br("\n");
+		$this->data['avaregelancarkekuranglancar'] = $avaregelancarkekuranglancar;
+		$this->data['avaregekuranglancarkediragukan'] = $avaregekuranglancarkediragukan;
+		$this->data['avaregediragukankemacet'] = $avaregediragukankemacet;
 
 		$this->db->query("UPDATE transposeagingrate SET lankekrglan='$avaregelancarkekuranglancar' WHERE id=$idkosong");     
 		$this->db->query("UPDATE transposeagingrate SET krglankediragu='$avaregekuranglancarkediragukan' WHERE id=$idkosong");
 		$this->db->query("UPDATE transposeagingrate SET diragukemacet='$avaregediragukankemacet' WHERE id=$idkosong");
 
-		$aloklancar      =0-round($pdlancar      *$totLancartdkbermasalah /100);// kali 10 karena nilai % , dikalikan 1000 
+		$aloklancar      =0-round($pdlancar      *$totLancartdkbermasalah /100); 
 		$alokkuranglancar=0-round($pdkuranglancar*$totKurangLancartdkbermasalah/100);
 		$alokdiragukan   =0-round($pddiragukan   *$totDiragukantdkbermasalah/100);
 		$alokmacet       =0-$totMacettdkbermasalah;
 
-		echo '$aloklancar = '; echo $aloklancar; echo nl2br("\n");
-		echo '$alokkuranglancar = '; echo $alokkuranglancar; echo nl2br("\n");
-		echo '$alokdiragukan = '; echo $alokdiragukan; echo nl2br("\n");
-		echo '$alokmacet = '; echo $alokmacet; echo nl2br("\n");
+		$this->data['aloklancar'] = $aloklancar;
+		$this->data['alokkuranglancar'] = $alokkuranglancar;
+		$this->data['alokdiragukan'] = $alokdiragukan;
+		$this->data['alokmacet'] = $alokmacet;
 
 		$totalokindustri = 0;
 		$totalokperdagangan = 0;
@@ -300,18 +283,21 @@ class AgingRate extends CI_Controller {
 			{   $totaloklainlain-=$alokasisisih;               }
 		}
 
-		echo ' alok industri=';echo  number_format($totalokindustri); echo nl2br("\n");
-        echo ' perdagangan='; echo number_format($totalokperdagangan);echo nl2br("\n");
-		echo ' pertanian='; echo number_format($totalokpertanian);echo nl2br("\n");
-		echo ' perkebunan='; echo number_format($totalokperkebunan);echo nl2br("\n");
-		echo ' perikanan='; echo number_format($totalokperikanan);echo nl2br("\n");
-		echo ' peternakan='; echo number_format($totalokpeternakan);echo nl2br("\n");
-		echo ' jasa='; echo number_format($totalokjasa);echo nl2br("\n");
-		echo ' lainlain='; echo number_format($totaloklainlain); echo nl2br("\n");
+		$this->data['totalokindustri'] = $totalokindustri;
+        $this->data['totalokperdagangan'] = $totalokperdagangan;
+		$this->data['totalokpertanian'] = $totalokpertanian;
+		$this->data['totalokperkebunan'] = $totalokperkebunan;
+		$this->data['totalokperikanan'] = $totalokperikanan;
+		$this->data['totalokpeternakan'] = $totalokpeternakan;
+		$this->data['totalokjasa'] = $totalokjasa;
+		$this->data['totaloklainlain'] = $totaloklainlain;
 
 		$this->db->query("UPDATE transposeagingrate SET prodeflancar='$pdlancar' WHERE id=$idkosong");//
 		$this->db->query("UPDATE transposeagingrate SET prodefkuranglancar='$pdkuranglancar' WHERE id=$idkosong");
-		// $this->db->query("UPDATE transposeagingrate SET prodefdiragukan='$pddiragukan' WHERE id=$idkosong");
+
+		$this->data['title'] = 'Aging Rate';
+
+		$this->template->load('aging_rate/detail', $this->data);
 	}
 
 	public function CreateExcel() {
