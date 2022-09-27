@@ -46,6 +46,7 @@ class Tank_auth
 	 */
 	function login($login, $password, $remember, $login_by_username, $login_by_email)
 	{
+		$this->ci->load->model('MitraModel', 'mitra_model');
 		if ((strlen($login) > 0) and (strlen($password) > 0)) {
 
 			// Which function to use to login (based on config)
@@ -57,7 +58,23 @@ class Tank_auth
 				$get_user_func = 'get_user_by_email';
 			}
 
-			if (!is_null($user = $this->ci->users->$get_user_func($login))) {
+			if(is_numeric($login)){
+				$mitra = $this->ci->mitra_model->getMitra($login);
+				if ($password == $mitra->sektorUsaha) {
+					$this->ci->session->set_userdata(array(
+						'user_id' => $mitra->id,
+						'username' => $mitra->nama_peminjam,
+						'email' => '',
+						'kolektibilitas' => $mitra->kolektibilitas,
+						'status' => STATUS_ACTIVATED,
+						'roles' => 'mitra'
+					));
+					return TRUE;
+				} else {                                                        // fail - wrong password
+					$this->increase_login_attempt($login);
+					$this->error = array('password' => 'auth_incorrect_password');
+				}
+			}elseif (!is_null($user = $this->ci->users->$get_user_func($login))) {
 				// login ok
 				// Does password match hash in database?
 				$hasher = new PasswordHash(
@@ -935,6 +952,7 @@ class Tank_auth
 	 */
 	public function is_approved($user_id = NULL)
 	{
+		$this->ci->mitra_model->getMitra($this->ci->session->userdata('user_id'));
 		$user_id = is_null($user_id) ? $this->ci->session->userdata('user_id') : $user_id;
 		return $this->ci->users->is_approved($user_id);
 	}

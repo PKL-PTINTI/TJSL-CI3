@@ -1404,4 +1404,8 @@ class Mitra extends CI_Controller {
 		header("Content-Type: application/vnd.ms-excel");
         redirect(base_url()."/storage/".$fileName);         
     }
+
+	// public function createMitraAccount(){
+	// 	$mitra = $this->mitra_model->getMitra();
+	// }
 }

@@ -8,11 +8,13 @@ class MitraModel extends CI_Model {
     var $column_search = array('nama_peminjam', 'nokontrak', 'lokasiUsaha', 'startcicil', 'kolektibilitas', 'pinjpokok', 'pinjjasa', 'angpokok', 'angjasa', 'angjumlah', 'saldopokok', 'saldojasa', 'saldojumlah', 'namaPerusahaan', 'provinsi', 'lokasiUsaha', 'sektorUsaha', 'skalaUsaha', 'ktp', 'pelaksanaanProgram', 'sumberDana', 'nilaiAset', 'nilaiOmset', 'rekondisi', 'tgl_rekondisi', 'selisihHari', 'kelebihanAngsuran', 'tglkontrak', 'tgljatuhtempo', 'pinjpokok', 'saldopokok', 'saldojasa', 'angpokok', 'angjasa', 'tglcicilanterakhir', 'tdkbermasalah', 'kondisiPinjaman', 'jenisPembayaran', 'bankAccount', 'jumlahSDM', 'kelebihanAngsuran', 'subSektor', 'tambahanDana'); 
     var $order = array('startcicil' => 'desc');
 
-	public function getMitra($id = null)
+	public function getMitra($nokontrak = null)
 	{
-		if ($id === null) {
+		if ($nokontrak === null) {
 			$this->db->select('*');
 			$this->db->from('mitra');
+			$this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL');
+			$this->db->where('saldopokok >', 0);
 			$this->db->order_by('startcicil', 'DESC');
 			$query = $this->db->get();
 			
@@ -20,7 +22,7 @@ class MitraModel extends CI_Model {
 		} else {
 			$this->db->select('*');
 			$this->db->from('mitra');
-			$this->db->where('id', $id);
+			$this->db->where('nokontrak', $nokontrak);
 			$query = $this->db->get();
 			
 			return $query->row();

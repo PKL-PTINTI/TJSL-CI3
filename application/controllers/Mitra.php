@@ -37,6 +37,7 @@ class Mitra extends CI_Controller {
 			}
 
 			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->load->model('MitraModel', 'mitra_model');
 			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
 
 			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
@@ -47,7 +48,6 @@ class Mitra extends CI_Controller {
 
 	public function index(){
         $no_kontrak = 5080;
-        $this->load->model('MitraModel', 'mitra_model');
 		$this->data['title'] = 'Rincian Cicilan';
 		$this->data['header'] = 'Rincian Cicilan No Kontrak '.$no_kontrak;
 		$this->data['mitra'] = $this->mitra_model->getMitraKontrak($no_kontrak);
