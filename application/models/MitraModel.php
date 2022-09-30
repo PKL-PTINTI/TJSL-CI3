@@ -29,6 +29,20 @@ class MitraModel extends CI_Model {
 		}
 	}
 
+	public function get_data_triwulan(){
+		$triwulan = $this->db->query('SELECT tgl, laplabarugi, omset, hpp, labakotor, bebanpenjualan, bebanadmumum, totalbebanops, labaops, pendptanlain, bebanlain, labasblmpajak, pajak, lababersih FROM updatetriwulanmitra')->result_array();
+		$posisikeuangan = $this->db->query('SELECT laposkeu, asetlancar, kasdanbank, piutang, persediaan, uangmuka, asettetap, jumlahaset, liabilitasdanekuitas, liabilitas, hutangusaha, hutangbank, jumlahliabilitas, ekuitas, jumlahliabilitasdanekuitas FROM updatetriwulanmitra')->result_array();
+		$aruskas = $this->db->query('SELECT laparuskas, aruskasdariaktops, bertambahops, berkurangops, aruskasbersihaktops, aruskasbersihaktinvest, bertambahinvest, berkuranginvest, aruskasbersihaktinvest, aruskasdraktpendanaan, bertambahpendanaan, berkurangpendanaan, aruskasbersihdrpendanaan, totalaruskas, kasawalperioda, kasakhirperioda FROM updatetriwulanmitra')->result_array();
+		$masalah = $this->db->query('SELECT masalah, solusi, support, tglupdate FROM updatetriwulanmitra')->result_array();
+
+		return [
+			'triwulan' => $triwulan,
+			'posisikeuangan' => $posisikeuangan,
+			'aruskas' => $aruskas,
+			'masalah' => $masalah
+		];;
+	}
+
 	private function _get_data_mitra_query($param1, $param2){
 		$this->db->from($this->table);
 		$i = 0;

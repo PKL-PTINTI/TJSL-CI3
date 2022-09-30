@@ -28,9 +28,9 @@ class Usersmanagement extends CI_Controller
 
 			$this->data['link_active'] = 'Usersmanagement';
 
-			// if (!$this->tank_auth->permit($this->data['link_active'])) {
-			// 	redirect('Home');
-			// }
+			if (!$this->tank_auth->permit($this->data['link_active'])) {
+				redirect('Home');
+			}
 
 			$this->load->model("ShowmenuModel", 'showmenu_model');
 			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();

@@ -4,7 +4,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Coa extends CI_Controller {
+class COA extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
@@ -32,7 +32,7 @@ class Coa extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Dashboard';
+			$this->data['link_active'] = 'Admin/COA';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {

@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class PosisiKeuangan extends CI_Controller {
 
@@ -33,7 +35,7 @@ class PosisiKeuangan extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Dashboard';
+			$this->data['link_active'] = 'Admin/Laporan/PosisiKeuangan';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {

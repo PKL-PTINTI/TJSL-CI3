@@ -17,8 +17,35 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="colom col d-flex justify-content-between">
-                                <div class="mitra dropdown pr-4">
+                            <div class="colom col d-flex justify-content-right">
+                                <div class="sektor-kolek dropdown pr-2">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Kolektabilitas Mitra
+                                    </button>
+                                    <div class="dropdown-menu" x-placement="bottom-start"
+                                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);">
+
+                                        <a class="dropdown-item"
+                                        onclick="
+                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/lancar', 'Lancar'
+                                        )" href="#">Mitra Lancar</a>
+                                        <a class="dropdown-item"
+                                        onclick="
+                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/kuranglancar', 'Kurang Lancar'
+                                        )" href="#">Mitra Kurang Lancar</a>
+                                        <a class="dropdown-item"
+                                        onclick="
+                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/diragukan', 'Diragukan'
+                                        )" href="#">Mitra Diragukan</a>
+                                        <a class="dropdown-item"
+                                        onclick="
+                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/macet', 'Macet'
+                                        )" href="#">Mitra Macet</a>
+                                    </div>
+                                </div>
+                                <div class="mitra dropdown pr-2">
                                     <button class="btn btn-primary dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
@@ -45,7 +72,7 @@
                                         )" href="#">Mitra WO</a>
                                     </div>
                                 </div>
-                                <div class="sektor-masalah dropdown pr-4 d-none">
+                                <div class="sektor-masalah dropdown pr-2 d-none">
                                     <button class="btn btn-primary dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
@@ -87,7 +114,7 @@
                                             href="#">Sektor Lain-lain</a>
                                     </div>
                                 </div>
-                                <div class="sektor-kolek dropdown pr-4 d-none">
+                                <div class="sektor-kolek dropdown pr-2 d-none">
                                     <button class="btn btn-primary dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">

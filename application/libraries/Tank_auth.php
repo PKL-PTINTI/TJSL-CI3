@@ -62,7 +62,7 @@ class Tank_auth
 				$mitra = $this->ci->mitra_model->getMitra($login);
 				if ($password == $mitra->sektorUsaha) {
 					$this->ci->session->set_userdata(array(
-						'user_id' => $mitra->id,
+						'user_id' => $mitra->nokontrak,
 						'username' => $mitra->nama_peminjam,
 						'email' => '',
 						'kolektibilitas' => $mitra->kolektibilitas,
@@ -74,7 +74,8 @@ class Tank_auth
 					$this->increase_login_attempt($login);
 					$this->error = array('password' => 'auth_incorrect_password');
 				}
-			}elseif (!is_null($user = $this->ci->users->$get_user_func($login))) {
+			}
+			if (!is_null($user = $this->ci->users->$get_user_func($login))) {
 				// login ok
 				// Does password match hash in database?
 				$hasher = new PasswordHash(
@@ -952,7 +953,10 @@ class Tank_auth
 	 */
 	public function is_approved($user_id = NULL)
 	{
-		$this->ci->mitra_model->getMitra($this->ci->session->userdata('user_id'));
+		$mitra = $this->ci->mitra_model->getMitra($this->ci->session->userdata('user_id'));
+		if($mitra){
+			return true;
+		}
 		$user_id = is_null($user_id) ? $this->ci->session->userdata('user_id') : $user_id;
 		return $this->ci->users->is_approved($user_id);
 	}

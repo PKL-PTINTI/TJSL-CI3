@@ -34,7 +34,7 @@ class Mitra extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Dashboard';
+			$this->data['link_active'] = 'Admin/Mitra';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -107,20 +107,38 @@ class Mitra extends CI_Controller {
 					(($mitra->tdkbermasalah == 'wo' OR $mitra->tdkbermasalah == 'Wo' OR $mitra->tdkbermasalah == 'WO') 
 					? '<div class="badge badge-warning">WO</div>' : '<div class="badge badge-secondary">Tidak Ada</div>')));
 
-			$row[] =  '
-				<div class="dropdown">
-					<a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="false">
-						<i class="fas fa-ellipsis-v"></i>
-					</a>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="' . base_url('Admin/Mitra/Detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
-						<a class="dropdown-item" href="' . base_url('Admin/Mitra/Update/' . $mitra->id) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
-						<a class="dropdown-item" href="' . base_url('Admin/Mitra/Cicilan/' . $mitra->nokontrak) . '"><i class="fa-solid fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
-						<a class="dropdown-item" href="' . base_url('Admin/Mitra/Destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
+			if($mitra->kolektibilitas == 'macet' OR $mitra->kolektibilitas == 'Macet' OR $mitra->kolektibilitas == 'MACET'){
+				$row[] =  '
+					<div class="dropdown">
+						<a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">
+							<i class="fas fa-ellipsis-v"></i>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/cetak_surat/' . $mitra->nokontrak) . '"><i class="fas fa-print pr-2"></i></i> Cetak Surat peringatan </a>
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
+						</div>
 					</div>
-				</div>
-			';
+				';
+			} else {
+				$row[] =  '
+					<div class="dropdown">
+						<a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">
+							<i class="fas fa-ellipsis-v"></i>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
+							<a class="dropdown-item" href="' . base_url('Admin/Mitra/Destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
+						</div>
+					</div>
+				';
+			}
             $data[] = $row;
         }
 
@@ -265,14 +283,14 @@ class Mitra extends CI_Controller {
 		$tanggal_survey = $this->input->post('tanggal_survey');
 		$hasil_survey = $this->input->post('hasil_survey');
 		$jaminan = $this->input->post('jaminan');
-		$nilai_pinjaman = str_replace(',', '', $this->input->post('nilai_pinjaman'));
+		$nilai_pinjaman = str_replace('.', '', $this->input->post('nilai_pinjaman'));
 		$lama_pinjaman = $this->input->post('lama_pinjaman');
 		$jasa = $this->input->post('jasa');
 		$dana_dikeluarkan = $this->input->post('dana_dikeluarkan');
 		$no_va = $this->input->post('no_va');
 		$lokasi_google_maps = $this->input->post('lokasi_google_maps');
-		$nilai_aset = str_replace(',', '', $this->input->post('nilai_aset'));
-		$nilai_omset = str_replace(',', '', $this->input->post('nilai_omset'));
+		$nilai_aset = str_replace('.', '', $this->input->post('nilai_aset'));
+		$nilai_omset = str_replace('.', '', $this->input->post('nilai_omset'));
 		$pelaksana = $this->input->post('pelaksana');
 		$sumber_dana = $this->input->post('sumber_dana');
 		$kondisi = $this->input->post('kondisi');
@@ -537,15 +555,37 @@ class Mitra extends CI_Controller {
 		$prodJasa = $this->input->post('prodJasa');
 		$prodUnggul = $this->input->post('prodUnggul');
 
-		$this->db->query("UPDATE `mitra` SET `nokontrak`='$nokontrak',`nama_peminjam`='$nama_peminjam',`sektorUsaha`='$sektorUsaha',`pinjpokok`='$pinjpokok',`pinjjasa`='$pinjjasa',`hp`='$hp',`ktp`='$ktp',`noRekBank`='$noRekBank',`tdkbermasalah`='$tdkbermasalah',`namaPerusahaan`='$namaPerusahaan', `rekondisi`='$rekondisi', `tgl_rekondisi`='$tgl_rekondisi', `prodJasa`='$prodJasa', `googlemaps`='$prodUnggul' WHERE nokontrak='$nokontrak'");
+		var_dump($this->input->post());
+		die;
+
+		// $this->db->query("UPDATE `mitra` SET `nokontrak`='$nokontrak',`nama_peminjam`='$nama_peminjam',`sektorUsaha`=
+		// '$sektorUsaha',`pinjpokok`='$pinjpokok',`pinjjasa`='$pinjjasa',`hp`='$hp',`ktp`='$ktp',`noRekBank`='$noRekBank',
+		// `tdkbermasalah`='$tdkbermasalah',`namaPerusahaan`='$namaPerusahaan', `rekondisi`='$rekondisi', `tgl_rekondisi`='$tgl_rekondisi',
+		//  `prodJasa`='$prodJasa', `googlemaps`='$prodUnggul' WHERE nokontrak='$nokontrak'");
+		$this->db->update('mitra', [
+			'nokontrak' => $nokontrak,
+			'nama_peminjam' => $nama_peminjam,
+			'sektorUsaha' => $sektorUsaha,
+			'pinjpokok' => $pinjpokok,
+			'pinjjasa' => $pinjjasa,
+			'hp' => $hp,
+			'ktp' => $ktp,
+			'noRekBank' => $noRekBank,
+			'tdkbermasalah' => $tdkbermasalah,
+			'namaPerusahaan' => $namaPerusahaan,
+			'rekondisi' => $rekondisi,
+			'tgl_rekondisi' => $tgl_rekondisi,
+			'prodJasa' => $prodJasa,
+			// 'prodUnggul' => $prodUnggul,
+		], ['nokontrak' => $nokontrak]);
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Mitra Berhasil Di Update\',position: \'bottomRight\'});</script>');
 
 		return redirect(base_url('Admin/Mitra'));
 	}
 
-	public function update($id){
+	public function update($nokontrak){
 		$this->data['title'] = 'Update Data Mitra';
-		$this->data['mitra'] = $this->mitra_model->getMitra($id);
+		$this->data['mitra'] = $this->mitra_model->getMitra($nokontrak);
 		$this->data['lokasi'] = $this->mitra_model->getLokasi();
 		$this->data['statusmitra'] = $this->mitra_model->getStatusMitra();
 		$this->data['sektor'] = $this->mitra_model->getSektorUsaha();
@@ -1340,7 +1380,7 @@ class Mitra extends CI_Controller {
 		$this->load->view('mitra/cetak_cicilan', compact('mitra', 'angsuran'));
 	}
 
-	public function CreateExcel() {
+	public function createExcel() {
 		$fileName = 'kartu-piutang-' . date('Y') .'.xlsx';  
 
 		$cicilanOpex = $this->mitra_model->getOpexCicilan();
@@ -1405,7 +1445,22 @@ class Mitra extends CI_Controller {
         redirect(base_url()."/storage/".$fileName);         
     }
 
-	// public function createMitraAccount(){
-	// 	$mitra = $this->mitra_model->getMitra();
-	// }
+	public function cetak_surat($nokontrak){
+		$document = file_get_contents("assets\media\surat_peringatan.rtf");
+		$mitra = $this->mitra_model->getMitra($nokontrak);
+
+		$document = str_replace("#NAMA", $mitra->nama_peminjam, $document);
+		$document = str_replace("#TEMPAT", $mitra->alamat_rumah, $document);
+		$document = str_replace("#TANGGAL", date('d-m-Y'), $document);
+		$document = str_replace("#NOKONTRAK", $mitra->nokontrak, $document);
+		$document = str_replace("##TGLKONTRAK", $mitra->tglkontrak, $document);
+		$document = str_replace("#PINJAMAN", number_format($mitra->pinjjumlah), $document);
+		$document = str_replace("#SISA", number_format($mitra->angjumlah), $document);
+		$document = str_replace("#BAYAR", number_format($mitra->saldojumlah), $document);
+
+		header("Content-type: application/msword");
+        header("Content-disposition: inline; filename=surat-peringatan-" . $nokontrak . ".doc");
+        header("Content-length: " . strlen($document));
+        echo $document;
+	}
 }

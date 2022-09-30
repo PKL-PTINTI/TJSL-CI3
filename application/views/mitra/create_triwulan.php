@@ -59,7 +59,7 @@
                                 <input type="number" class="form-control" name="labaops" >
                             </div>
 
-                            <label><h4> Pendapat6nBeban Lain</h6></label>
+                            <label><h4> Pendapatan Beban Lain</h6></label>
 
                             <div class="form-group">
                                 <label>Pendapatan Lain (Rp)           :</label>
@@ -88,7 +88,7 @@
 
 
 
-                        <label><h4> LAPORAN POSISI KEUANG6N/ Neraca</h6></label>
+                        <label><h4> LAPORAN POSISI KEUANGAN/ Neraca</h6></label>
                             <div class="form-group">
                                 <label> Aset Lancar (Rp)      :</label>
                                 <input type="number" class="form-control" name="asetlancar" >
@@ -118,8 +118,8 @@
                                 <input type="number" class="form-control" name="jumlahaset" >
                             </div>
                         
-                            <label><h4> LIABILITAS/hutang usaha D6NEKUITAS/modal</h6></label>
-                            <label><h4> LIABILIT6Shutang usaha</h6></label>
+                            <label><h4> LIABILITAS/hutang usaha DANEKUITAS/modal</h6></label>
+                            <label><h4> LIABILITAS hutang usaha</h6></label>
                             <div class="form-group">
                                 <label> Liabilitas dan Ekuitas            :</label>
                                 <input type="text" class="form-control" name="liabilitasdanekuitas" readonly value="Liabilitas dan ekuitas">
@@ -151,7 +151,7 @@
                                 <input type="number" class="form-control" name="jumlahliabilitasdanekuitas" >
                             </div> 
 
-                            <label><h4> Lapor6nArus Kas</h6></label>
+                            <label><h4> LaporanArus Kas</h6></label>
                             <label><h4> Arus Kas da6iAktivitas Operasi</h6></label>
 
                             <div class="form-group">
@@ -168,7 +168,7 @@
                                 <input type="number" class="form-control" name="aruskasbersihaktops" >
                             </div> 
 
-                            <label><h4> Arus Kas da6iAktivitas Investasi</h6></label>
+                            <label><h4> Arus Kas Aktivitas Investasi</h6></label>
 
                             <div class="form-group">
                                 <label> Kas masuk/Bertambah Investasi (Rp)      :</label>
@@ -185,7 +185,7 @@
                             </div> 
 
 
-                            <label><h4> Arus Kas da6iAktivitas Pendanaan</h6></label>
+                            <label><h4> Arus Kas Aktivitas Pendanaan</h6></label>
 
                             <div class="form-group">
                                 <label> Kas masuk/Bertambah Pendanaan (Rp)      :</label>

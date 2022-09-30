@@ -17,6 +17,16 @@ $("#table-cicilan-2").dataTable({
 	scrollX: true,
 });
 
+$("#table-cicilan-3").dataTable({
+	columnDefs: [{ sortable: false, targets: [2, 3] }],
+	scrollX: true,
+});
+
+$("#table-cicilan-4	").dataTable({
+	columnDefs: [{ sortable: false, targets: [2, 3] }],
+	scrollX: true,
+});
+
 $("#table-jurnal-bank").dataTable({
 	columnDefs: [{ sortable: false, targets: [2, 3] }],
 	scrollX: true,

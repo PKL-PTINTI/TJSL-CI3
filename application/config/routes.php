@@ -84,3 +84,6 @@ $route['Admin/Mitra/Cicilan/Create/(:any)'] = 'Admin/Mitra/CretaeCicilan/$1';
 $route['Admin/Jurnal/Transaksi/(:any)'] = 'Admin/Jurnal/JurnalBank/$1';
 
 // ENDTASK: Jurnal Management System
+
+$route['api/auth/login']['post'] = 'api/auth/login';
+$route['Admin/Laporan/PerhitunganLaporan'] = 'Admin/Laporan/PerhitunganLaporan';

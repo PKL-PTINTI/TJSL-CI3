@@ -18,36 +18,17 @@ class Mitra extends CI_Controller {
 			$this->data['username'] = $this->tank_auth->get_username();
 			$this->data['email'] = $this->tank_auth->get_email();
 
-			$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
-
-			$this->data['profile_name'] = $profile['name'];
-			$this->data['profile_foto'] = $profile['foto'];
-
-			foreach ($this->tank_auth->get_roles($this->data['user_id']) as $val) {
-				$this->data['role_id'] = $val['role_id'];
-				$this->data['role'] = $val['role'];
-				$this->data['full_name_role'] = $val['full'];
-			}
-
-			$this->data['link_active'] = 'Dashboard';
-
-			//buat permission
-			if (!$this->tank_auth->permit($this->data['link_active'])) {
-				redirect('Home');
-			}
-
-			$this->load->model("ShowmenuModel", 'showmenu_model');
+			$this->data['profile_name'] = $this->tank_auth->get_username();
+			$this->data['profile_foto'] = 'no_image.jpg';
+			$this->data['role_id'] = 2;
+			$this->data['role'] = 'Mitra';
+			$this->data['full_name_role'] = 'Mitra Binaan';
 			$this->load->model('MitraModel', 'mitra_model');
-			$this->data['ShowMenu'] = $this->showmenu_model->getShowMenu();
-
-			$OpenShowMenu = $this->showmenu_model->getOpenShowMenu($this->data);
-
-			$this->data['openMenu'] = $this->showmenu_model->getDataOpenMenu($OpenShowMenu->id_menu_parent);
 		}
 	}
 
 	public function index(){
-        $no_kontrak = 5080;
+        $no_kontrak = $this->tank_auth->get_user_id();
 		$this->data['title'] = 'Rincian Cicilan';
 		$this->data['header'] = 'Rincian Cicilan No Kontrak '.$no_kontrak;
 		$this->data['mitra'] = $this->mitra_model->getMitraKontrak($no_kontrak);
@@ -376,6 +357,22 @@ class Mitra extends CI_Controller {
 		$this->template->load('mitra/cicilan', $this->data);
 	}
 
+	public function laporan(){
+		$this->data['title'] = 'Laporan';
+		$this->data['header'] = 'Laporan';
+		$this->data['mitra'] = $this->mitra_model->getMitra($this->session->userdata('id_user'));
+		$this->data['laporan'] = $this->db->query("SELECT * FROM updatetriwulanmitra WHERE nokontrak=" . $this->data['user_id'])->result_array();
+
+		$this->template->load('mitra/laporan_triwulan', $this->data);
+	}
+
+	public function cetakcicilan(){
+		$nokontrak = $this->tank_auth->get_user_id();
+		$mitra = $this->mitra_model->getMitraKontrak($nokontrak);
+		$angsuran = $this->mitra_model->getOpexCicilanMitra($nokontrak);
+		$this->load->view('mitra/cetak_cicilan', compact('mitra', 'angsuran'));
+	}
+
     public function tambahtriwulan(){
         $this->data['title'] = 'Tambah Triwulan';
         $this->template->load('mitra/create_triwulan', $this->data);
@@ -385,7 +382,7 @@ class Mitra extends CI_Controller {
         $this->load->model('MitraModel', 'mitra_model');
         $this->mitra_model->sroreTriwulan(
             [
-                "nokontrak" => 5080,
+                "nokontrak" => $this->tank_auth->get_user_id(),
                 "tgl" => $this->input->post('tgl'),
                 "laplabarugi" => 'LAPORAN LABA RUGI',
                 "omset" => $this->input->post('omset'),

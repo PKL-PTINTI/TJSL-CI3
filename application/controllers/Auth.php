@@ -52,12 +52,12 @@ class Auth extends CI_Controller
 			$this->data['use_recaptcha'] = $this->config->item('use_recaptcha', 'tank_auth');
 			$this->data['captcha_registration'] = $this->config->item('captcha_registration', 'tank_auth');
 
-			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
-				if ($this->data['use_recaptcha'])
-					$this->form_validation->set_rules('g-recaptcha-response', 'Confirmation Code', 'trim|required|callback__check_recaptcha');
-				else
-					$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|required|callback__check_captcha');
-			}
+			// if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
+			// 	if ($this->data['use_recaptcha'])
+			// 		$this->form_validation->set_rules('g-recaptcha-response', 'Confirmation Code', 'trim|required|callback__check_recaptcha');
+			// 	else
+			// 		$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|required|callback__check_captcha');
+			// }
 
 			$this->data['errors'] = array();
 
@@ -149,10 +149,7 @@ class Auth extends CI_Controller
 						$profile = $this->tank_auth->get_user_profile($this->data['user_id']);
 
 						$this->data['profile_name'] = $profile['name'];
-
-						$this->session->set_flashdata('message', 'Selamat datang <b> ' . $this->data['profile_name'] . '</b> di INTI Marketing & Sales Information System (IMSIS)');
-
-						redirect($this->config->item('login-success', 'tank_auth'));
+						redirect('auth/redirect');
 					} else {
 						$this->tank_auth->logout();
 						$this->tank_auth->notice('acct-unapproved');
@@ -172,14 +169,14 @@ class Auth extends CI_Controller
 			}
 
 			$this->data['show_captcha'] = FALSE;
-			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
-				$this->data['show_captcha'] = TRUE;
-				if ($this->data['use_recaptcha']) {
-					$this->data['recaptcha_html'] = $this->_create_recaptcha();
-				} else {
-					$this->data['captcha_html'] = $this->_create_captcha();
-				}
-			}
+			// if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
+			// 	$this->data['show_captcha'] = TRUE;
+			// 	if ($this->data['use_recaptcha']) {
+			// 		$this->data['recaptcha_html'] = $this->_create_recaptcha();
+			// 	} else {
+			// 		$this->data['captcha_html'] = $this->_create_captcha();
+			// 	}
+			// }
 
 			$this->load->view('auth/login', $this->data);
 		}
@@ -188,6 +185,14 @@ class Auth extends CI_Controller
 	public function captcha()
 	{
 		$this->cool_captcha->createImage();
+	}
+
+	public function redirect(){
+		if($this->session->userdata('roles') == 'mitra'){
+			return redirect('mitra');
+		} else {
+			return redirect('Admin/Dashboard');
+		}
 	}
 
 	/**

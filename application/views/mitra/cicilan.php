@@ -140,7 +140,7 @@
                     <div class="card-header d-flex justify-content-between">
                         <h4><?= $header; ?> Jurnal</h4>
                         <div>
-                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Cetakcicilan/' . $mitra->nokontrak) ?>">Cetak Cicilan</a>
+                            <a class="btn btn-primary" href="<?= base_url('Mitra/cetakcicilan') ?>">Cetak Cicilan</a>
                         </div>
                     </div>
                     <div class="card-body">

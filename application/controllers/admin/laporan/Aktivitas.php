@@ -32,7 +32,7 @@ class Aktivitas extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Dashboard';
+			$this->data['link_active'] = 'Admin/Laporan/Aktivitas';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {

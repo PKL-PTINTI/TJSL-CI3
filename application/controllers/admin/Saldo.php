@@ -30,7 +30,7 @@ class Saldo extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Dashboard';
+			$this->data['link_active'] = 'Admin/Saldo';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -55,6 +55,47 @@ class Saldo extends CI_Controller {
 		$this->template->load('saldo/index', $this->data);
     }
 
+	public function updateSaldo(){
+		$totpengeluaranX=0; 
+		$totpemasukanX=0;
+		$saldokaskecil= 4687041;
+		$saldomandiri = 213381864.81;
+		$saldobri = 108631624;
+
+		$kasjurnal = $this->db->query("SELECT * FROM opex  WHERE id_akun='101010101' ORDER BY tanggal ASC ")->result_array();
+		foreach($kasjurnal as $kas){
+			if($kas['tanggal']>='2022-01-01' AND $kas['tampil']=='0'){
+				$totpengeluaranX += $kas['pengeluaran']; 
+                $totpemasukanX += $kas['pemasukan'];
+                $saldokaskecil += $kas['pemasukan']-$kas['pengeluaran'];
+			}
+		}
+
+		$kasmandiri = $this->db->query("SELECT * FROM opex  WHERE id_akun='101010201' ORDER BY tanggal ASC ")->result_array();
+		foreach($kasmandiri as $mandiri){
+			if($mandiri['tanggal']>='2022-01-01' AND $mandiri['tampil']=='0'){
+				$totpengeluaranX += $mandiri['pengeluaran']; 
+                $totpemasukanX += $mandiri['pemasukan'];
+                $saldomandiri += $mandiri['pemasukan']-$mandiri['pengeluaran'];
+			}
+		}
+
+		$kasbri = $this->db->query("SELECT * FROM opex  WHERE id_akun='101010204' ORDER BY tanggal ASC ")->result_array();
+		foreach($kasbri as $bri){
+			if($bri['tanggal']>='2022-01-01' AND $bri['tampil']=='0'){
+				$totpengeluaranX += $bri['pengeluaran']; 
+                $totpemasukanX += $bri['pemasukan'];
+                $saldobri += $bri['pemasukan']-$bri['pengeluaran'];
+			}
+		}
+
+		$this->db->set('kaskecil', $saldokaskecil);
+		$this->db->set('mandiri', $saldomandiri);
+		$this->db->set('bri', $saldobri);
+		$this->db->where('perioda', date("M Y", mktime(0, 0, 0, date('m'), 0, date('Y'))));	
+		$this->db->update('saldokasbank');
+	}
+
 	public function update($akun){
 		if ($akun == 'kas') {	
 			$id_akun = '101010101';	
@@ -70,22 +111,7 @@ class Saldo extends CI_Controller {
 			$url = 'bri';
 		}
 
-		$opex = $this->saldo_model->getJurnalByAkun($id_akun);
-		$saldo = $opex[0]->saldo + $saldoawal;
-
-		if ($akun == 'kas') {	
-			$this->db->set('kaskecil', $saldo);
-			$this->db->where('perioda', date("M Y", mktime(0, 0, 0, date('m'), 0, date('Y'))));	
-			$this->db->update('saldokasbank');
-		} elseif ($akun == 'mandiri') {
-			$this->db->set('mandiri', $saldo);
-			$this->db->where('perioda', date("M Y", mktime(0, 0, 0, date('m'), 0, date('Y'))));
-			$this->db->update('saldokasbank');
-		} elseif ($akun == 'bri') {
-			$this->db->set('bri', $saldo);
-			$this->db->where('perioda', date("M Y", mktime(0, 0, 0, date('m'), 0, date('Y'))));
-			$this->db->update('saldokasbank');
-		}	
+		$this->updateSaldo();
 
 		redirect(base_url('Admin/Saldo/Jurnal/' . $url));
 	}

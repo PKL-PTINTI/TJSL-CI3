@@ -49,7 +49,7 @@
                                         <td><?= number_format($n['debet' . $perioda]) ?></td>
                                         <td><?= number_format($n['kredit' . $perioda]) ?></td>
                                         <td><?= number_format($n['saldo' . $perioda]) ?></td>
-                                        <td><?= $n['selisih'] ?></td>
+                                        <td><?= number_format($n['selisih']) ?></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

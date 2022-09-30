@@ -3,6 +3,11 @@
         border-color: #004666;
         color: #e9ecef;
     }
+
+    .form-group {
+        margin-left: 5rem;
+        margin-bottom: 25px;
+    }
 </style>
 <section class="section">
     <div class="section-header">

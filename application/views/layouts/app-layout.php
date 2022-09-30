@@ -193,7 +193,7 @@
                     </li>
                 </ul>
             </nav>
-            <div class="main-sidebar sidebar-style-2">
+                <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
                         <a href="<?= base_url('/Admin/Dashboard') ?>">TJSL</a>
@@ -202,117 +202,52 @@
                         <a href="<?= base_url('/Admin/Dashboard') ?>">INTI</a>
                     </div>
                     <ul class="sidebar-menu">
-                        <li class="menu-header">
-                            Dashboard</li>
-                        <li class="nav-item <?php if($this->uri->segment(2) == 'Dashboard') { echo 'active'; } ?>">
-                            <a href="<?= base_url('/Admin/Dashboard') ?>" class="nav-link"><i
-                                    class="fa-solid fa-house-chimney"></i><span>Dashboard</span></a>
-                        </li>
 
-                        
-                        <li class="menu-header">
-                            Settings</li>
-                        <li class="nav-item <?php if($this->uri->segment(1) == 'Usersmanagement') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Usersmanagement') ?>"><i class="fa-solid fa-users-viewfinder"></i>
-                                <span>Pengguna</span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?php if($this->uri->segment(1) == 'Menu') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Menu') ?>"><i class="fa-solid fa-bars"></i>
-                                <span>Menu</span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?php if($this->uri->segment(1) == 'Roles') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Roles') ?>"><i class="fa-solid fa-shield-halved"></i>
-                                <span>Hak Akses</span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?php if($this->uri->segment(1) == 'Permission') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Permission') ?>"><i class="fa-solid fa-hands-holding-circle"></i>
-                                <span>Modul</span>
-                            </a>
-                        </li>
 
-                        <li class="menu-header">Management Data</li>
-                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Mitra') { echo 'active'; } ?>">
-                            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
-                                    class="fa-solid fa-people-roof"></i> <span>Mitra Binaan</span></a>
-                            <ul class="dropdown-menu">
-                                <?php $domain = 'tjslptinti.test' ?>
-                                <li><a class="nav-link" href="<?= base_url('/Admin/Mitra') ?>">Semua Mitra</a></li>
-                                <li><a class="nav-link" onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/lancar', 'Lancar'
-                                        )">Lancar</a>
-                                </li>
-                                <li><a class="nav-link" onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/kuranglancar', 'Kurang Lancar'
-                                        )">Kurang
-                                        Lancar</a></li>
-                                <li><a class="nav-link" onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/diragukan', 'Diragukan'
-                                        )">Diragukan</a>
-                                </li>
-                                <li><a class="nav-link" onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/macet', 'Macet'
-                                        )">Macet</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="<?php if($this->uri->segment(2) == 'Saldo') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/Saldo') ?>"><i class="fa-solid fa-building-columns"></i>
-                                <span>Saldo Kas dan Bank</span>
-                            </a>
-                        </li>
-                        <li class="menu-header">Laporan</li>
-                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Jurnal') { echo 'active'; } ?>">
-                            <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-book-open"></i>
-                                <span>Jurnal</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="<?= base_url('/Admin/Jurnal') ?>">Transaksi Jurnal</a>
-                                </li>
-                                <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('Admin/Jurnal/Transaksi/kas', 'Transaksi Kas')">Transaksi Kas</a></li>
-                                <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('Admin/Jurnal/Transaksi/bri', 'Transaksi BRI')">Transaksi BRI</a></li>
-                                <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('Admin/Jurnal/Transaksi/mandiri', 'Transaksi Mandiri')">Transaksi Mandiri</a></li>
-                                <li><a class="nav-link" href="#"
-                                        onclick="changeUrlJurnal('Admin/Jurnal/Transaksi/bank', 'Transaksi Bank')">Transaksi Bank</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'Laporan') { echo 'active'; } ?>">
-                            <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-magnifying-glass-chart"></i>
-                                <span>Laporan Keuangan</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/PosisiKeuangan') ?>">Posisi Keuangan</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/Aktivitas') ?>">Aktivitas</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/ArusKas') ?>">Arus Kas</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/Kinerja') ?>">Kinerja</a></li>
-                                <li><a class="nav-link" href="<?= base_url('Admin/laporan/Catatan') ?>">Catatan </a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-header">
-                            Laninnya</li>
-                        <li class="nav-item <?php if($this->uri->segment(2) == 'COA') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/coa') ?>"><i class="fa-solid fa-file-invoice"></i>
-                                <span>Code Of Account</span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?php if($this->uri->segment(2) == 'Agingrate') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/AgingRate') ?>"><i class="fa-brands fa-uncharted"></i>
-                                <span>Aging Rate</span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?php if($this->uri->segment(2) == 'RKA') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/RKA') ?>"><i class="fa-solid fa-money-bill-wheat"></i>
-                                <span>RKA</span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?php if($this->uri->segment(2) == 'Neracasaldo') { echo 'active'; } ?>">
-                            <a class="nav-link" href="<?= base_url('/Admin/NeracaSaldo') ?>"><i class="fa-solid fa-scale-balanced"></i>
-                                <span>Neraca Saldo</span>
-                            </a>
-                        </li>
+                    <?php
+                        function showMenu($data, $link_active, $openMenu)
+                        {
+                            foreach ($data as $menuUtama) {
+                                if ($menuUtama->child) {
+
+                        ?>
+                                <?php if($menuUtama->attribute == 'dropdown'){ ?>
+                                    <li class="nav-item dropdown <?php $ci =& get_instance(); echo ($ci->uri->segment(2) == 'Laporan') ? 'active' : NULL; ?>">
+                                        <a href="#" class="nav-link has-dropdown"><i class="<?php echo $menuUtama->icon; ?>"></i> <span><?php echo $menuUtama->nama_menu ?></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li class="nav-item">
+                                                <?php foreach($menuUtama->content_child as $menuchild): ?>
+                                                    <a href="<?php echo site_url($menuchild->href) ?>" class="nav-link">
+                                                        <span><?php echo $menuchild->nama_menu ?></span>
+                                                    </a>
+                                                <?php endforeach; ?>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                <?php }else { ?>
+                                    <li class="menu-header"><?php echo $menuUtama->nama_menu ?></li>
+                                        <?php
+                                            showMenu($menuUtama->content_child, $link_active, $openMenu);
+                                        ?>
+                                    </li>
+                                <?php } ?>
+                            <?php
+                                } else {
+                            ?>
+                            <li class="nav-item <?php echo ($link_active == $menuUtama->href) ? 'active' : NULL; ?>">
+                                <a href="<?php echo site_url($menuUtama->href) ?>" class="nav-link">
+                                    <i class="<?php echo (empty($menuUtama->icon)) ? 'fas fa-circle' : $menuUtama->icon; ?>"></i>
+                                    <span><?php echo $menuUtama->nama_menu ?></span>
+                                </a>
+                            </li>
+                        <?php
+                                }
+                            }
+                        }
+
+                        showMenu($ShowMenu, $link_active, $openMenu);
+                    ?>
+                    </ul>
                 </aside>
             </div>
 
