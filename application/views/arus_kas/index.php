@@ -20,9 +20,9 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/Laporan/Aruskas/CreateExcel') ?>">Export Data</a>
+                                        href="<?= base_url('admin/laporan/aruskas/createexcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/Laporan/Aruskas/Cetak') ?>" target="_blank">Cetak Laporan</a>
+                                        href="<?= base_url('admin/laporan/aruskas/cetak') ?>" target="_blank">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>
@@ -53,24 +53,24 @@
                                             <?php
                                                 echo $no == 1 ? '<td colspan="14"> I. AKTIVITAS OPERASI <br class="pt-1"></td></tr>' : '';
                                                 echo $no == 1 ? '<td colspan="14"> KAS DITERIMA DARI <br class="pt-1"></td></tr>' : '';
-                                                echo $no == 7 ? '<td colspan="14"> KAS DIKELUARKAN UNTUK <br class="pt-1"></td></tr>' : '';
+                                                echo $no == 6 ? '<td colspan="14"> KAS DIKELUARKAN UNTUK <br class="pt-1"></td></tr>' : '';
                                                 echo $no == 15 ? '<td colspan="14"> II. AKTIVITAS INVESTASI <br class="pt-1"></td></tr>' : '';
                                                 echo $no == 15 ? '<td colspan="14"> KAS DIKELUARKAN UNTUK <br class="pt-1"></td></tr>' : '';  
                                             ?>
                                             <td class="text-center"><?= $ak['id'] ?></td>
                                             <td><?= $ak['keterangan'] ?></td>
-                                            <td><?= $ak['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
-                                            <td><?= $ak['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
-                                            <td><?= $ak[$perioda] ?></td>
-                                            <td><?= $ak['sd' . $perioda] ?></td>
-                                            <td><?= $ak['rkajan' . date('y')] ?></td>
-                                            <td><?= $ak['rkasdjan' . date('y')] ?></td>
-                                            <td><?= $ak[$perioda] ?></td>
-                                            <td><?= $ak['sd' . $perioda] ?></td>
-                                            <td><?= $ak['rkajan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
-                                            <td><?= $ak['rkasdjan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
-                                            <td><?= $ak['prosen' . $perioda] ?></td>
-                                            <td><?= $ak['prosensd' . $perioda] ?></td>
+                                            <td><?= number_format($ak['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                            <td><?= number_format($ak['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                            <td><?= number_format($ak[$perioda]) ?></td>
+                                            <td><?= number_format($ak['sd' . $perioda]) ?></td>
+                                            <td><?= number_format($ak['rkajan' . date('y')]) ?></td>
+                                            <td><?= number_format($ak['rkasdjan' . date('y')]) ?></td>
+                                            <td><?= number_format($ak[$perioda]) ?></td>
+                                            <td><?= number_format($ak['sd' . $perioda]) ?></td>
+                                            <td><?= number_format($ak['rkajan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                            <td><?= number_format($ak['rkasdjan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                            <td><?= number_format($ak['prosen' . $perioda]) ?></td>
+                                            <td><?= number_format($ak['prosensd' . $perioda]) ?></td>
                                         </tr>
                                     <?php  $no++; endforeach; ?>
                                 </tbody>

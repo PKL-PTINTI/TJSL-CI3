@@ -16,7 +16,7 @@
                         <h4><?= 'Kartu Perkiraan' ?> Tanggal Jurnal</h4>
                     </div>
                     <div class="card-body">
-                        <form id="form-perkiraan" action="<?= base_url('Admin/Saldo/kartu_perkiraan_data') ?>" method="post">
+                        <form id="form-perkiraan" action="<?= base_url('admin/Saldo/kartu_perkiraan_data') ?>" method="post">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">

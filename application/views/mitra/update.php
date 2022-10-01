@@ -2,8 +2,8 @@
     <div class="section-header">
         <h1>Data Mitra <?= $mitra->nama_peminjam ?></h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('Admin/Mitra') ?>">Mitra</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('admin/mitra') ?>">Mitra</a></div>
             <div class="breadcrumb-item">Update Data Mitra</div>
         </div>
     </div>
@@ -16,7 +16,7 @@
                         <h4>Update Data Mitra A.N <?= $mitra->nama_peminjam ?></h4>
                     </div>
                     <div class="card-body">
-                        <form action="<?= base_url('Admin/Mitra/StoreUpdate') ?>" method="post">
+                        <form action="<?= base_url('admin/mitra/storeupdate') ?>" method="post">
                             <div class="form-group">
                                 <label>ID Mitra</label>
                                 <input type="text" class="form-control" placeholder="Nomor Kontrak"

@@ -30,7 +30,7 @@ class Saldo extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Admin/Saldo';
+			$this->data['link_active'] = 'admin/saldo';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -113,7 +113,7 @@ class Saldo extends CI_Controller {
 
 		$this->updateSaldo();
 
-		redirect(base_url('Admin/Saldo/Jurnal/' . $url));
+		redirect(base_url('admin/saldo/jurnal/' . $url));
 	}
 	
 	public function jurnal($bank)

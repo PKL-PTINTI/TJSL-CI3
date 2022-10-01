@@ -22,7 +22,7 @@
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/Coa/CreateExcel') ?>">Export Data</a>
+                                        href="<?= base_url('admin/coa/createexcel') ?>">Export Data</a>
                                 </div>
                             </div>
                         </div>

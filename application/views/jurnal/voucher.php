@@ -2,8 +2,8 @@
     <div class="section-header">
         <h1>Tambah Data Transaksi Voucher</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('Admin/jurnal') ?>">Jurnal</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('admin/jurnal') ?>">Jurnal</a></div>
             <div class="breadcrumb-item">Tambah Data Transaksi Voucher</div>
         </div>
     </div>
@@ -16,7 +16,7 @@
                         <h4 class="card-title">Data Transaksi Voucher</h4>
                     </div>
                     <div class="card-body">
-                    <form action="<?= base_url('Admin/jurnal/AddVoucher') ?>" method="post" class="repeater">
+                    <form action="<?= base_url('admin/jurnal/addvoucher') ?>" method="post" class="repeater">
                         <div class="form-group">
                             <label>Nomor Bukti</label>
                             <input type="text" class="form-control" placeholder="Nomor Bukti" name="nomor_bukti">

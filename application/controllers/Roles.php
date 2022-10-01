@@ -26,7 +26,7 @@ class Roles extends CI_Controller
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Roles';
+			$this->data['link_active'] = 'roles';
 
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
 				redirect('Home');
@@ -71,7 +71,7 @@ class Roles extends CI_Controller
 			$this->data['full'] = $this->input->post('full');
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->data['action'] = site_url('Roles/add');
+			$this->data['action'] = site_url('roles/add');
 			$this->data['url'] = site_url('Roles');
 			$this->data['title'] = "Pengaturan Hak Akses";
 			$this->data['header'] = "Pengaturan Hak Akses";
@@ -107,7 +107,7 @@ class Roles extends CI_Controller
 			}
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->data['action'] = site_url('Roles/update/' . $id);
+			$this->data['action'] = site_url('roles/update/' . $id);
 			$this->data['url'] = site_url('Roles');
 			$this->data['title'] = "Pengaturan Hak Akses";
 			$this->data['header'] = "Pengaturan Hak Akses";
@@ -167,7 +167,7 @@ class Roles extends CI_Controller
 			$this->data['listPermissionByRoles'] = $this->roles_model->getAllPermissionByRoles($id);
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->data['action'] = site_url('Roles/role_permission/' . $id);
+			$this->data['action'] = site_url('roles/role_permission/' . $id);
 			$this->data['url'] = site_url('Roles');
 			$this->data['title'] = "Pengaturan Hak Akses";
 			$this->data['header'] = "Pengaturan Hak Akses";

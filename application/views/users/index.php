@@ -30,7 +30,7 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Usersmanagement/create') ?>">Tambah User</a>
+                                        href="<?= base_url('usersmanagement/create') ?>">Tambah User</a>
                                 </div>
                             </div>
                         </div>
@@ -62,20 +62,20 @@
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <?php if ($user->activated != 0): ?>
-                                                        <a class="dropdown-item" href="<?php echo site_url('Usersmanagement/update/' . $user->id_user); ?>"><i class="fa-solid fa-pen-to-square text-primary pr-2"></i> Update </a>
+                                                        <a class="dropdown-item" href="<?php echo site_url('usersmanagement/update/' . $user->id_user); ?>"><i class="fa-solid fa-pen-to-square text-primary pr-2"></i> Update </a>
                                                     <?php endif ?>
                                                     <?php if ($user->banned == '1'): ?>
-                                                        <a class="dropdown-item" href="<?php echo site_url('Usersmanagement/unbanned/' . $user->id_user); ?>"><i class="fa-solid fa-user-check text-warning pr-2"></i> Unbanned </a>
+                                                        <a class="dropdown-item" href="<?php echo site_url('usersmanagement/unbanned/' . $user->id_user); ?>"><i class="fa-solid fa-user-check text-warning pr-2"></i> Unbanned </a>
                                                     <?php else: ?>
                                                         <?php if ($user->activated != 0): ?>
-                                                            <a class="dropdown-item" href="<?php echo site_url('Usersmanagement/banned/' . $user->id_user); ?>"><i class="fa-solid fa-user-lock text-danger pr-2"></i> Banned </a>
+                                                            <a class="dropdown-item" href="<?php echo site_url('usersmanagement/banned/' . $user->id_user); ?>"><i class="fa-solid fa-user-lock text-danger pr-2"></i> Banned </a>
                                                         <?php endif ?>
                                                     <?php endif ?>
                                                     <?php if ($user->activated == '0'): ?>
-                                                        <a class="dropdown-item" href="<?php echo site_url('Usersmanagement/activate/' . $user->id_user); ?>"><i class="fa-solid fa-check-to-slot text-success pr-2"></i> Aktifasi </a>
+                                                        <a class="dropdown-item" href="<?php echo site_url('usersmanagement/activate/' . $user->id_user); ?>"><i class="fa-solid fa-check-to-slot text-success pr-2"></i> Aktifasi </a>
                                                     <?php endif ?>
                                                     <?php if ($user->activated != 0): ?>
-                                                        <a class="dropdown-item" href="<?php echo site_url('Usersmanagement/change_role/' . $user->id_user); ?>"><i class="fa-solid fa-user-shield text-info pr-2"></i> Hak Akses </a>
+                                                        <a class="dropdown-item" href="<?php echo site_url('usersmanagement/change_role/' . $user->id_user); ?>"><i class="fa-solid fa-user-shield text-info pr-2"></i> Hak Akses </a>
                                                     <?php endif ?>
                                                 </div>
                                             </div>

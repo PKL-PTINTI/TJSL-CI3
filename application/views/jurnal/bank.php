@@ -20,11 +20,11 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/jurnal/Periodaopex?id_akun=' . $id_akun . '&type=perioda') ?>">Perioda</a>
+                                        href="<?= base_url('admin/jurnal/periodaopex?id_akun=' . $id_akun . '&type=perioda') ?>">Perioda</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/jurnal/Periodaopex?id_akun=' . $id_akun . ' &type=perkiraan') ?>">Kartu Perkiraan</a>
+                                        href="<?= base_url('admin/jurnal/periodaopex?id_akun=' . $id_akun . ' &type=perkiraan') ?>">Kartu Perkiraan</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/jurnal/CreateExcel') ?>">Export Excel</a>
+                                        href="<?= base_url('admin/jurnal/createexcel') ?>">Export Excel</a>
                                 </div>
                             </div>
                         </div>

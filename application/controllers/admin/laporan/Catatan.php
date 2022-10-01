@@ -1,9 +1,8 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-	use PhpOffice\PhpSpreadsheet\Spreadsheet;
-	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-	use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-	defined('BASEPATH') OR exit('No direct script access allowed');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class Catatan extends CI_Controller {
 
@@ -33,7 +32,7 @@ class Catatan extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Admin/Laporan/Catatan';
+			$this->data['link_active'] = 'admin/laporan/catatan';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {

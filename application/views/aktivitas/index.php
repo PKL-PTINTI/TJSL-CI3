@@ -25,9 +25,9 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/Laporan/Aktivitas/CreateExcel') ?>">Export Data</a>
+                                        href="<?= base_url('admin/laporan/aktivitas/createexcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('Admin/Laporan/Aktivitas/Cetak') ?>" target="_blank">Cetak Laporan</a>
+                                        href="<?= base_url('admin/laporan/aktivitas/cetak') ?>" target="_blank">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>
@@ -65,18 +65,18 @@
                                     <tr>
                                         <td class="text-center"><?= $no++ ?></td>
                                         <td><?= $a['keterangan'] ?></td>
-                                        <td><?= $a['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ] ?></td>
-                                        <td><?= $a['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ] ?></td>
-                                        <td><?= $a[$perioda] ?></td>
-                                        <td><?= $a['sd' . $perioda] ?></td>
-                                        <td><?= $a['rkajan' . date('y')] ?></td>
-                                        <td><?= $a['rkasdjan' . date('y')] ?></td>
-                                        <td><?= $a[$perioda] ?></td>
-                                        <td><?= $a['sd' . $perioda] ?></td>
-                                        <td><?= $a['rkajan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
-                                        <td><?= $a['rkasdjan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))] ?></td>
-                                        <td><?= $a['prosen' . $perioda] ?></td>
-                                        <td><?= $a['prosensd' . $perioda] ?></td>
+                                        <td><?= number_format($a['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ]) ?></td>
+                                        <td><?= number_format($a['sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ]) ?></td>
+                                        <td><?= number_format($a[$perioda]) ?></td>
+                                        <td><?= number_format($a['sd' . $perioda]) ?></td>
+                                        <td><?= number_format($a['rkajan' . date('y')]) ?></td>
+                                        <td><?= number_format($a['rkasdjan' . date('y')]) ?></td>
+                                        <td><?= number_format($a[$perioda]) ?></td>
+                                        <td><?= number_format($a['sd' . $perioda]) ?></td>
+                                        <td><?= number_format($a['rkajan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                        <td><?= number_format($a['rkasdjan' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                        <td><?= number_format($a['prosen' . $perioda]) ?></td>
+                                        <td><?= number_format($a['prosensd' . $perioda]) ?></td>
                                     </tr>
                                     <?php endforeach; ?>
                             </table>

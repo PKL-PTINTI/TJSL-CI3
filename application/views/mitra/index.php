@@ -29,19 +29,19 @@
 
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/lancar', 'Lancar'
+                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/lancar', 'Lancar'
                                         )" href="#">Mitra Lancar</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/kuranglancar', 'Kurang Lancar'
+                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/kuranglancar', 'Kurang Lancar'
                                         )" href="#">Mitra Kurang Lancar</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/diragukan', 'Diragukan'
+                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/diragukan', 'Diragukan'
                                         )" href="#">Mitra Diragukan</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('Admin/Mitra/Get_data_mitra/Kolektibilitas/macet', 'Macet'
+                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/macet', 'Macet'
                                         )" href="#">Mitra Macet</a>
                                     </div>
                                 </div>
@@ -56,19 +56,19 @@
 
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('Admin/Mitra/Get_data_mitra/Masalah/normal', 'Normal'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/normal', 'Normal'
                                         )" href="#">Mitra Normal</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('Admin/Mitra/Get_data_mitra/Masalah/masalah', 'Bermasalah'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/masalah', 'Bermasalah'
                                         )" href="#">Mitra Bermasalah</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('Admin/Mitra/Get_data_mitra/Masalah/khusus', 'Khusus'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/khusus', 'Khusus'
                                         )" href="#">Mitra Khusus</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('Admin/Mitra/Get_data_mitra/Masalah/wo', 'Wipe Out'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/wo', 'Wipe Out'
                                         )" href="#">Mitra WO</a>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                                         <a class="dropdown-item" data-sektor="" href="#">Sektor Lain-lain</a>
                                     </div>
                                 </div>
-                                <a class="btn btn-primary mb-3 " href="<?= base_url('Admin/Mitra/Create') ?>">Tambah Data Mitra</a>
+                                <a class="btn btn-primary mb-3 " href="<?= base_url('admin/mitra/create') ?>">Tambah Data Mitra</a>
                             </div>
                         </div>
                         <div>
@@ -151,7 +151,7 @@
                                         <th>No Kontrak</th>
                                         <th>Lokasi Usaha</th>
                                         <th>Mulai Cicil</th>
-                                        <th>Kolektibilitas</th>
+                                        <th>kolektibilitas</th>
 
                                         <th>Pinjaman Pokok</th>
                                         <th>Pinjaman Jasa</th>

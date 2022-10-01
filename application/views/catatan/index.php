@@ -43,9 +43,9 @@
                             <div class="col d-flex justify-content-between">
                                 <div class="d-flex">
                                     <a class="btn btn-primary mb-3 mr-2" 
-                                        href="<?= base_url('Admin/Laporan/Catatan/CreateExcel') ?>">Export Data</a>
+                                        href="<?= base_url('admin/laporan/catatan/createexcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3 mr-3"
-                                        href="<?= base_url('Admin/Laporan/Catatan/Cetak') ?>" target="_blank">Cetak Laporan</a>
+                                        href="<?= base_url('admin/laporan/catatan/cetak') ?>" target="_blank">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>

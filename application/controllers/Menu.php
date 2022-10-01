@@ -26,7 +26,7 @@ class Menu extends CI_Controller
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Menu';
+			$this->data['link_active'] = 'menu';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -88,7 +88,7 @@ class Menu extends CI_Controller
 			$this->data['listMenu'] = $this->menu_model->getAllMenu();
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->data['action'] = site_url('Menu/add');
+			$this->data['action'] = site_url('menu/add');
 			$this->data['url'] = site_url('Menu');
 			$this->data['title'] = "Pengaturan Menu";
 			$this->data['header'] = "Pengaturan Menu";
@@ -142,7 +142,7 @@ class Menu extends CI_Controller
 			$this->data['sort'] = $menu->sort;
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->data['action'] = site_url('Menu/update/' . $id);
+			$this->data['action'] = site_url('menu/update/' . $id);
 			$this->data['url'] = site_url('Menu');
 			$this->data['title'] = "Pengaturan Menu";
 			$this->data['header'] = "Pengaturan Menu";

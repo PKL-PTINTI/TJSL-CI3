@@ -14,7 +14,7 @@ class Auth extends CI_Controller
 
     function index()
 	{
-		redirect('Auth/login');
+		redirect('auth/login');
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Auth extends CI_Controller
 		if($this->session->userdata('roles') == 'mitra'){
 			return redirect('mitra');
 		} else {
-			return redirect('Admin/Dashboard');
+			return redirect('admin/dashboard');
 		}
 	}
 

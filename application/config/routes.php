@@ -65,25 +65,22 @@ $route['translate_uri_dashes'] = FALSE;
 // $route['admin/mitra/kolektibilitas/diragukan/(:any)'] = 'admin/mitra/sektordiragukan/$1';
 // $route['admin/mitra/kolektibilitas/macet/(:any)'] = 'admin/mitra/sektormacet/$1';
 
-$route['Admin/Mitra/Get_data_mitra/Kolektibilitas/(:any)'] = 'Admin/Mitra/Get_data_mitra/$1';
-$route['Admin/Mitra/Get_data_mitra/Masalah/(:any)'] = 'Admin/Mitra/Get_data_mitra/$1';
-$route['Admin/Mitra/Get_data_mitra/Koleksektor/(:any)/(:any)'] = 'Admin/Mitra/Get_data_mitra/$1/$2';
-$route['Admin/Mitra/Get_data_mitra/Masalahsektor/(:any)/(:any)'] = 'Admin/Mitra/Get_data_mitra/$1/$2';
+$route['admin/mitra/get_data_mitra/kolektibilitas/(:any)'] = 'admin/mitra/get_data_mitra/$1';
+$route['admin/mitra/get_data_mitra/masalah/(:any)'] = 'admin/mitra/get_data_mitra/$1';
+$route['admin/mitra/get_data_mitra/koleksektor/(:any)/(:any)'] = 'admin/mitra/get_data_mitra/$1/$2';
+$route['admin/mitra/get_data_mitra/masalahsektor/(:any)/(:any)'] = 'admin/mitra/get_data_mitra/$1/$2';
 
-$route['Admin/Mitra/Update/(:any)'] = 'Admin/Mitra/Update/$1';
-$route['Admin/Mitra/Destroy/(:any)'] = 'Admin/Mitra/Destroy/$1';
+$route['admin/mitra/update/(:any)'] = 'admin/mitra/update/$1';
+$route['admin/mitra/destroy/(:any)'] = 'admin/mitra/destroy/$1';
 
-$route['Admin/Mitra/Cicilan/(:any)'] = 'Admin/Mitra/RincianCicilan/$1';
-$route['Admin/Mitra/Cicilan/Create/(:any)'] = 'Admin/Mitra/CretaeCicilan/$1';
+$route['admin/mitra/cicilan/(:any)'] = 'admin/mitra/rinciancicilan/$1';
+$route['admin/mitra/cicilan/create/(:any)'] = 'admin/mitra/cretaecicilan/$1';
 
 // ENDTASK: Mitra Management System
 
 
 // TASK: Jurnal Management System
 
-$route['Admin/Jurnal/Transaksi/(:any)'] = 'Admin/Jurnal/JurnalBank/$1';
+$route['admin/jurnal/transaksi/(:any)'] = 'admin/jurnal/jurnalbank/$1';
 
 // ENDTASK: Jurnal Management System
-
-$route['api/auth/login']['post'] = 'api/auth/login';
-$route['Admin/Laporan/PerhitunganLaporan'] = 'Admin/Laporan/PerhitunganLaporan';

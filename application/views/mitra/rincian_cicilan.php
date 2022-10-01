@@ -11,8 +11,8 @@
     <div class="section-header">
         <h1>Rincian Cicilan</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/Dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('Admin/Mitra') ?>">Mitra</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('admin/mitra') ?>">Mitra</a></div>
             <div class="breadcrumb-item"><?= $header ?></div>
         </div>
     </div>
@@ -140,10 +140,10 @@
                     <div class="card-header d-flex justify-content-between">
                         <h4><?= $header; ?> Jurnal</h4>
                         <div>
-                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Cicilan/Create/' . $mitra->nokontrak) ?>">Tambah Cicilan</a>
-                            <a class="btn btn-primary d-none" href="<?= base_url('Admin/Mitra/Copytojurnal/' . $mitra->nokontrak) ?>">Copy Cicilan Ke Jurnal</a>
-                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/Cetakcicilan/' . $mitra->nokontrak) ?>">Cetak Cicilan</a>
-                            <a class="btn btn-primary" href="<?= base_url('Admin/Mitra/CreateExcel/') ?>">Export Cicilan</a>
+                            <a class="btn btn-primary" href="<?= base_url('admin/mitra/cicilan/create/' . $mitra->nokontrak) ?>">Tambah Cicilan</a>
+                            <a class="btn btn-primary d-none" href="<?= base_url('admin/mitra/copytojurnal/' . $mitra->nokontrak) ?>">Copy Cicilan Ke Jurnal</a>
+                            <a class="btn btn-primary" href="<?= base_url('admin/mitra/cetakcicilan/' . $mitra->nokontrak) ?>">Cetak Cicilan</a>
+                            <a class="btn btn-primary" href="<?= base_url('admin/mitra/createexcel/') ?>">Export Cicilan</a>
                         </div>
                     </div>
                     <div class="card-body">

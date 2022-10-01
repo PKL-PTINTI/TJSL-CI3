@@ -30,7 +30,7 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Menu/add') ?>">Tambah Menu</a>
+                                        href="<?= base_url('menu/add') ?>">Tambah Menu</a>
                                 </div>
                             </div>
                         </div>
@@ -69,8 +69,8 @@
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="<?php echo site_url('Menu/update/' . $menu->id_menu); ?>"><i class="fa-solid fa-pen-to-square text-primary pr-2"></i> Update </a>
-                                                    <a class="dropdown-item" href="<?php echo site_url('Menu/delete/' . $menu->id_menu); ?>"><i class="fa-solid fa-user-lock text-danger pr-2"></i> Delete </a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('menu/update/' . $menu->id_menu); ?>"><i class="fa-solid fa-pen-to-square text-primary pr-2"></i> Update </a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('menu/delete/' . $menu->id_menu); ?>"><i class="fa-solid fa-user-lock text-danger pr-2"></i> Delete </a>
                                                 </div>
                                             </div>
                                         </td>

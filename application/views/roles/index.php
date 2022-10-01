@@ -30,7 +30,7 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Roles/add') ?>">Tambah Hak Akses</a>
+                                        href="<?= base_url('roles/add') ?>">Tambah Hak Akses</a>
                                 </div>
                             </div>
                         </div>
@@ -63,10 +63,10 @@
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="<?php echo site_url('Roles/change_default/' . $role->role_id); ?>"><i class="fa-solid fa-square-check text-primary"></i>&nbsp Default</a>
-                                                    <a class="dropdown-item" href="<?php echo site_url('Roles/role_permission/' . $role->role_id); ?>"><i class="fa-solid fa-hands-holding-circle text-sucsess"></i>&nbsp Modul</a>
-                                                    <a class="dropdown-item" href="<?php echo site_url('Roles/update/' . $role->role_id); ?>"><i class="fa-solid fa-pen-to-square text-warning"></i>&nbsp Update</a>
-                                                    <a class="dropdown-item" href="<?php echo site_url('Roles/delete/' . $role->role_id); ?>" onclick="return confirm('Apakah Anda Yakin UntuK Menghapus Data?')"><i class="fa-solid fa-trash-can text-danger"></i>&nbsp Hapus</a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('roles/change_default/' . $role->role_id); ?>"><i class="fa-solid fa-square-check text-primary"></i>&nbsp Default</a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('roles/role_permission/' . $role->role_id); ?>"><i class="fa-solid fa-hands-holding-circle text-sucsess"></i>&nbsp Modul</a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('roles/update/' . $role->role_id); ?>"><i class="fa-solid fa-pen-to-square text-warning"></i>&nbsp Update</a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('roles/delete/' . $role->role_id); ?>" onclick="return confirm('Apakah Anda Yakin UntuK Menghapus Data?')"><i class="fa-solid fa-trash-can text-danger"></i>&nbsp Hapus</a>
                                                 </div>
                                             </div>
                                         </td>

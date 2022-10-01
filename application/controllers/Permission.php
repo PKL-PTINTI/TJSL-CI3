@@ -26,7 +26,7 @@ class Permission extends CI_Controller
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Permission';
+			$this->data['link_active'] = 'permission';
 
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
 				redirect('Home');
@@ -74,7 +74,7 @@ class Permission extends CI_Controller
 			$this->data['permission'] = $this->input->post('permission');
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->data['action'] = site_url('Permission/add');
+			$this->data['action'] = site_url('permission/add');
 			$this->data['url'] = site_url('Permission');
 			$this->data['title'] = "Pengaturan Modul";
 			$this->data['header'] = "Pengaturan Modul";
@@ -111,7 +111,7 @@ class Permission extends CI_Controller
 			$this->data['permission'] = $permission->permission;
 
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			$this->data['action'] = site_url('Permission/update/' . $id);
+			$this->data['action'] = site_url('permission/update/' . $id);
 			$this->data['url'] = site_url('Permission');
 			$this->data['title'] = "Pengaturan Modul";
 			$this->data['header'] = "Pengaturan Modul";

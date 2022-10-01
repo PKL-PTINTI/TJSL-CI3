@@ -2,7 +2,7 @@
     <div class="section-header">
         <h1>Roles Permission</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="<?= base_url('Roles') ?>">Role</a></div>
             <div class="breadcrumb-item">Create Roles</div>
         </div>

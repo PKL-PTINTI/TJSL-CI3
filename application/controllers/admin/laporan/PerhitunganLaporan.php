@@ -10,44 +10,43 @@ class PerhitunganLaporan extends CI_Controller {
         $this->load->model('SaldoModel', 'saldo_model');
     }
 
-	public function index(){
-		$mitra = $this->mitra_model->getMitra();
+	public function exceute(){
+		$mitra = $this->db->query("SELECT * FROM mitra ORDER BY tglkontrak ASC")->result_array();
 		$bulansekarang = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 		$bulansebelumnya = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-2, date("d"), date("Y"))));
 		$desTahunLalu = 'des' . strval(date('y') - 1);
 
         $totnilsaldopokok_bermasalah = 0; $totsektorindustribermasalah = 0; $totsektorindustribermasalah = 0; $totsektorperdaganganbermasalah = 0; $totsektorpertanianbermasalah = 0; $totsektorperkebunanbermasalah = 0; $totsektorperikananbermasalah = 0; $totsektorpeternakanbermasalah = 0; $totsektorjasabermasalah = 0; $totsektorlainlainbermasalah = 0;
-		
-		foreach ($mitra as $key => $value) {
-			if(($value->tdkbermasalah  ==  'masalah' || $value->tdkbermasalah  ==  'Masalah' || $value->tdkbermasalah  ==  'MASALAH') AND $value->saldopokok > '0'){
-				$totnilsaldopokok_bermasalah += $value->saldopokok;
-				$no++;
 
-				if($value->sektorUsaha  ==  'Sektor Industri'){
-					$totsektorindustribermasalah  +=  $value->saldopokok;
-				}
-				if($value->sektorUsaha  ==  'Sektor Perdagangan'){
-					$totsektorperdaganganbermasalah  +=  $value->saldopokok;
-				}
-				if($value->sektorUsaha  ==  'Sektor Pertanian'){
-					$totsektorpertanianbermasalah  +=  $value->saldopokok;
-				}
-				if($value->sektorUsaha  ==  'Sektor Perkebunan'){
-					$totsektorperkebunanbermasalah  +=  $value->saldopokok;
-				}
-				if($value->sektorUsaha  ==  'Sektor Perikanan'){
-					$totsektorperikananbermasalah  +=  $value->saldopokok;
-				}
-				if($value->sektorUsaha  ==  'Sektor Peternakan'){
-					$totsektorpeternakanbermasalah  +=  $value->saldopokok;
-				}
-				if($value->sektorUsaha  ==  'Sektor Jasa'){
-					$totsektorjasabermasalah  +=  $value->saldopokok;
-				}
-				if($value->sektorUsaha  ==  'Sektor Lain-lain'){
-					$totsektorlainlainbermasalah  +=  $value->saldopokok;
-				}
-			}
+		foreach ($mitra as $key => $value) {
+            if (($value['tdkbermasalah'] == 'masalah' OR $value['tdkbermasalah'] == 'MASALAH' OR $value['tdkbermasalah'] == 'Masalah') AND $value['saldopokok'] > '0') {
+                $totnilsaldopokok_bermasalah += $value['saldopokok'];
+
+                if($value['sektorUsaha']  ==  'Sektor Industri'){
+                    $totsektorindustribermasalah  +=  $value['saldopokok'];
+                }
+                if($value['sektorUsaha']  ==  'Sektor Perdagangan'){
+                    $totsektorperdaganganbermasalah  +=  $value['saldopokok'];
+                }
+                if($value['sektorUsaha']  ==  'Sektor Pertanian'){
+                    $totsektorpertanianbermasalah  +=  $value['saldopokok'];
+                }
+                if($value['sektorUsaha']  ==  'Sektor Perkebunan'){
+                    $totsektorperkebunanbermasalah  +=  $value['saldopokok'];
+                }
+                if($value['sektorUsaha']  ==  'Sektor Perikanan'){
+                    $totsektorperikananbermasalah  +=  $value['saldopokok'];
+                }
+                if($value['sektorUsaha']  ==  'Sektor Peternakan'){
+                    $totsektorpeternakanbermasalah  +=  $value['saldopokok'];
+                }
+                if($value['sektorUsaha']  ==  'Sektor Jasa'){
+                    $totsektorjasabermasalah  +=  $value['saldopokok'];
+                }
+                if($value['sektorUsaha']  ==  'Sektor Lain-lain'){
+                    $totsektorlainlainbermasalah  +=  $value['saldopokok'];
+                }
+            }
 		}
 
         $this->db->query("UPDATE neraca SET $bulansekarang='$totnilsaldopokok_bermasalah' WHERE id='11'");
@@ -70,6 +69,10 @@ class PerhitunganLaporan extends CI_Controller {
         $asetNetoTerikat = 0;
         $tingkatpengembalianpinjamanMBtotal = 0;
         $kasDanSetaraKasPadaAwalTahun = 0;
+        $BebanAdmDanUmum = 0;
+        $BebanAdmDanUmumklr = 0;
+        $BebanAdmDanUmummsk = 0;
+        $BebanAdmdanUmumklr = 0;
 
 		$KasBankYgDiBatasiPenggunaannyaklr = 0; $KasBankYgDiBatasiPenggunaannyamsk = 0; $KasBankYgDiBatasiPenggunaannya = 0; $JasaAdmPinjamanklr = 0; $JasaAdmPinjamanmsk = 0; $JasaAdmPinjaman = 0; $AktivaTetapHargaPerolehanklr = 0; $AktivaTetapHargaPerolehanmsk = 0; $AktivaTetapHargaPerolehan = 0; $PengembalianKelebihanAngsuranklr = 0; $PengembalianKelebihanAngsuranmsk = 0; $PengembalianKelebihanAngsuran = 0; $BebanUpahTenagakerjaklr = 0; $BebanUpahTenagakerjamsk = 0;
 		$BebanUpahTenagakerja = 0; $BebanPembinaanmsk = 0; $BebanPembinaanklr = 0; $BebanPembinaan = 0; $pengembalianPinjamanMBklr = 0; $pengembalianPinjamanMBmsk = 0; $pengembalianPinjamanMB = 0; $pengembalianPinjamanMBbermasalahklr = 0; $pengembalianPinjamanMBbermasalahmsk = 0; $pengembalianPinjamanMBbermasalah = 0; $PiutangMitraBinaanPinjamanmsk = 0; $PiutangMitraBinaanPinjamanklr = 0; $PiutangMitraBinaanPinjaman = 0; $PiutangMitraBinaanPinjamanindustrimsk = 0;
@@ -86,160 +89,160 @@ class PerhitunganLaporan extends CI_Controller {
 		$ANTterbebaskanklr = 0; $ANTterbebaskan = 0; $PenyisihanANTTBerakhirPemenuhanProgrammsk = 0; $PenyisihanANTTBerakhirPemenuhanProgramklr = 0; $PenyisihanANTTBerakhirPemenuhanProgram = 0; $ANTTerbebaskanklr = 0; $ANTTerbebaskanmsk = 0; $ANTTerbebaskan = 0; $KewajibanJangkaPendekAngsuranBelumTeridentifikasi = 0; $PendapatanLainLainLainlain = 0;
 
         foreach($mitra as $key => $value){
-            if(($value->tdkbermasalah  ==  'normal' || $value->tdkbermasalah  ==  'Normal' || $value->tdkbermasalah  ==  'NORMAL') AND $value->saldopokok > '0'){
-                $totalsaldopokoktdkbermasalah += $value->saldopokok;
-                if($value->kolektibilitas  ==  'lancar' OR $value->kolektibilitas  ==  'Lancar' OR $value->kolektibilitas  ==  'LANCAR'){
-                    $totallancar += $value->saldopokok ;
+            if(($value['tdkbermasalah']  ==  'normal' || $value['tdkbermasalah']  ==  'Normal' || $value['tdkbermasalah']  ==  'NORMAL') AND $value['saldopokok'] > '0'){
+                $totalsaldopokoktdkbermasalah += $value['saldopokok'];
+                if($value['kolektibilitas']  ==  'lancar' OR $value['kolektibilitas']  ==  'Lancar' OR $value['kolektibilitas']  ==  'LANCAR'){
+                    $totallancar += $value['saldopokok'] ;
                 }
-                if($value->kolektibilitas  ==  'kurang lancar' OR $value->kolektibilitas  ==  'Kurang Lancar' OR $value->kolektibilitas  ==  'KURANG LANCAR'){
-                    $totalkuranglancar += $value->saldopokok ;
+                if($value['kolektibilitas']  ==  'kurang lancar' OR $value['kolektibilitas']  ==  'Kurang Lancar' OR $value['kolektibilitas']  ==  'KURANG LANCAR'){
+                    $totalkuranglancar += $value['saldopokok'] ;
                 }
-                if($value->kolektibilitas  ==  'diragukan' OR $value->kolektibilitas  ==  'Diragukan' OR $value->kolektibilitas  ==  'DIRAGUKAN'){
-                    $totaldiragukan += $value->saldopokok ;
+                if($value['kolektibilitas']  ==  'diragukan' OR $value['kolektibilitas']  ==  'Diragukan' OR $value['kolektibilitas']  ==  'DIRAGUKAN'){
+                    $totaldiragukan += $value['saldopokok'] ;
                 }
-                if($value->kolektibilitas  ==  'macet' OR $value->kolektibilitas  ==  'Macet' OR $value->kolektibilitas  ==  'MACET'){
-                    $totalmacet += $value->saldopokok ;
+                if($value['kolektibilitas']  ==  'macet' OR $value['kolektibilitas']  ==  'Macet' OR $value['kolektibilitas']  ==  'MACET'){
+                    $totalmacet += $value['saldopokok'] ;
                 }
             }
 
-            if(($value->tdkbermasalah  ==  'normal' OR $value->tdkbermasalah  ==  'Normal' OR $value->tdkbermasalah  ==  'NORMAL')
-            	AND $value->saldopokok > '0' AND ($value->sektorUsaha  ==  'Sektor Industri' OR $value->sektorUsaha  ==  'sektor industri')){
+            if(($value['tdkbermasalah']  ==  'normal' OR $value['tdkbermasalah']  ==  'Normal' OR $value['tdkbermasalah']  ==  'NORMAL')
+            	AND $value['saldopokok'] > '0' AND ($value['sektorUsaha']  ==  'Sektor Industri' OR $value['sektorUsaha']  ==  'sektor industri')){
    
-                $totsektorindustri += $value->saldopokok;
-                if($value->kolektibilitas  ==  'Kurang Lancar' OR $value->kolektibilitas  ==  'kurang lancar'){
-                    $totindustriKurangLancar += $value->saldojumlah;
+                $totsektorindustri += $value['saldopokok'];
+                if($value['kolektibilitas']  ==  'Kurang Lancar' OR $value['kolektibilitas']  ==  'kurang lancar'){
+                    $totindustriKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas  ==  'Diragukan' OR $value->kolektibilitas  ==  'diragukan' ){
-                    $totindustriDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas']  ==  'Diragukan' OR $value['kolektibilitas']  ==  'diragukan' ){
+                    $totindustriDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas  ==  'Macet' OR $value->kolektibilitas  ==  'macet' ){
-                    $totindustriMacet += $value->saldojumlah;
+                if($value['kolektibilitas']  ==  'Macet' OR $value['kolektibilitas']  ==  'macet' ){
+                    $totindustriMacet += $value['saldojumlah'];
                 }       
             }
 
-            if(($value->tdkbermasalah == 'normal' OR $value->tdkbermasalah == 'Normal' OR $value->tdkbermasalah == 'NORMAL')
-                AND $value->saldopokok>'0' AND ($value->sektorUsaha == 'Sektor Perdagangan' OR $value->sektorUsaha == 'sektor perdagangan')){
-                $totsektorperdagangan += $value->saldopokok;
-                if($value->kolektibilitas == 'Lancar' OR  $value->kolektibilitas == 'lancar'){
-                    $totperdaganganLancar += $value->saldojumlah;
+            if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL')
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perdagangan' OR $value['sektorUsaha'] == 'sektor perdagangan')){
+                $totsektorperdagangan += $value['saldopokok'];
+                if($value['kolektibilitas'] == 'Lancar' OR  $value['kolektibilitas'] == 'lancar'){
+                    $totperdaganganLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Kurang Lancar' OR  $value->kolektibilitas == 'kurang lancar'){
-                    $totperdaganganKurangLancar += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Kurang Lancar' OR  $value['kolektibilitas'] == 'kurang lancar'){
+                    $totperdaganganKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Diragukan' OR  $value->kolektibilitas == 'diragukan'){
-                    $totperdaganganDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Diragukan' OR  $value['kolektibilitas'] == 'diragukan'){
+                    $totperdaganganDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Macet' OR $value->kolektibilitas == 'macet'){
-                    $totperdaganganMacet += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Macet' OR $value['kolektibilitas'] == 'macet'){
+                    $totperdaganganMacet += $value['saldojumlah'];
                 }   
             }
 
-            if(($value->tdkbermasalah == 'normal' OR $value->tdkbermasalah == 'Normal' OR $value->tdkbermasalah == 'NORMAL' )
-                AND $value->saldopokok>'0' AND ($value->sektorUsaha == 'Sektor Pertanian' OR $value->sektorUsaha == 'sektor pertanian')){
+            if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Pertanian' OR $value['sektorUsaha'] == 'sektor pertanian')){
 
-                $totsektorpertanian += $value->saldopokok;
-                if($value->kolektibilitas == 'Lancar' OR  $value->kolektibilitas == 'lancar'){
-                    $totpertanianLancar += $value->saldojumlah;
+                $totsektorpertanian += $value['saldopokok'];
+                if($value['kolektibilitas'] == 'Lancar' OR  $value['kolektibilitas'] == 'lancar'){
+                    $totpertanianLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Kurang Lancar' OR $value->kolektibilitas == 'kurang lancar'){
-                    $totpertanianKurangLancar += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Kurang Lancar' OR $value['kolektibilitas'] == 'kurang lancar'){
+                    $totpertanianKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Diragukan' OR $value->kolektibilitas == 'diragukan'){
-                    $totpertanianDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Diragukan' OR $value['kolektibilitas'] == 'diragukan'){
+                    $totpertanianDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Macet' OR $value->kolektibilitas == 'macet'){
-                    $totpertanianMacet += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Macet' OR $value['kolektibilitas'] == 'macet'){
+                    $totpertanianMacet += $value['saldojumlah'];
                 }       
             }
 
-            if(($value->tdkbermasalah == 'normal' OR $value->tdkbermasalah == 'Normal' OR $value->tdkbermasalah == 'NORMAL' )
-                AND $value->saldopokok>'0' AND ($value->sektorUsaha == 'Sektor Perkebunan' OR $value->sektorUsaha == 'sektor perkebunan')){
+            if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perkebunan' OR $value['sektorUsaha'] == 'sektor perkebunan')){
                 
-                $totsektorperkebunan += $value->saldopokok;
-                if($value->kolektibilitas == 'Lancar' OR $value->kolektibilitas == 'lancar'){
-                    $totperkebunanLancar += $value->saldojumlah;
+                $totsektorperkebunan += $value['saldopokok'];
+                if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar'){
+                    $totperkebunanLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Kurang Lancar' OR $value->kolektibilitas == 'kurang lancar'){
-                    $totperkebunanKurangLancar += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Kurang Lancar' OR $value['kolektibilitas'] == 'kurang lancar'){
+                    $totperkebunanKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Diragukan' OR  $value->kolektibilitas == 'diragukan'){
-                    $totperkebunanDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Diragukan' OR  $value['kolektibilitas'] == 'diragukan'){
+                    $totperkebunanDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Macet' OR $value->kolektibilitas == 'macet'){
-                    $totperkebunanMacet += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Macet' OR $value['kolektibilitas'] == 'macet'){
+                    $totperkebunanMacet += $value['saldojumlah'];
                 }     
             }
 
-            if(($value->tdkbermasalah == 'normal' OR $value->tdkbermasalah == 'Normal' OR $value->tdkbermasalah == 'NORMAL' )
-                AND $value->saldopokok>'0' AND ($value->sektorUsaha == 'Sektor Perikanan' OR $value->sektorUsaha == 'sektor perikanan')){
+            if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perikanan' OR $value['sektorUsaha'] == 'sektor perikanan')){
    
-                $totsektorperikanan += $value->saldopokok;
-                if($value->kolektibilitas == 'Lancar' OR $value->kolektibilitas == 'lancar'){
-                    $totperikananLancar += $value->saldojumlah;
+                $totsektorperikanan += $value['saldopokok'];
+                if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar'){
+                    $totperikananLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Kurang Lancar' OR $value->kolektibilitas == 'kurang lancar'){
-                    $totperikananKurangLancar += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Kurang Lancar' OR $value['kolektibilitas'] == 'kurang lancar'){
+                    $totperikananKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Diragukan' OR $value->kolektibilitas == 'diragukan'){
-                    $totperikananDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Diragukan' OR $value['kolektibilitas'] == 'diragukan'){
+                    $totperikananDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Macet' OR $value->kolektibilitas == 'macet'){
-                    $totperikananMacet += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Macet' OR $value['kolektibilitas'] == 'macet'){
+                    $totperikananMacet += $value['saldojumlah'];
                 }                        
             }
 
-            if(($value->tdkbermasalah == 'normal' OR $value->tdkbermasalah == 'Normal' OR $value->tdkbermasalah == 'NORMAL' )
-                AND $value->saldopokok>'0' AND ($value->sektorUsaha == 'Sektor Peternakan' OR $value->sektorUsaha == 'sektor peternakan')  ){
+            if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Peternakan' OR $value['sektorUsaha'] == 'sektor peternakan')  ){
    
-                $totsektorpeternakan += $value->saldopokok;
-                if($value->kolektibilitas == 'Lancar' OR $value->kolektibilitas == 'lancar' ){
-                    $totpeternakanLancar += $value->saldojumlah;
+                $totsektorpeternakan += $value['saldopokok'];
+                if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar' ){
+                    $totpeternakanLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Kurang Lancar' OR $value->kolektibilitas == 'kurang lancar' ){
-                    $totpeternakanKurangLancar += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Kurang Lancar' OR $value['kolektibilitas'] == 'kurang lancar' ){
+                    $totpeternakanKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Diragukan' OR $value->kolektibilitas == 'diragukan' ){
-                    $totpeternakanDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Diragukan' OR $value['kolektibilitas'] == 'diragukan' ){
+                    $totpeternakanDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Macet' OR $value->kolektibilitas == 'macet' ){
-                    $totpeternakanMacet += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Macet' OR $value['kolektibilitas'] == 'macet' ){
+                    $totpeternakanMacet += $value['saldojumlah'];
                 }       
             }
 
-            if( ($value->tdkbermasalah == 'normal' OR $value->tdkbermasalah == 'Normal' OR $value->tdkbermasalah == 'NORMAL' )
-                AND $value->saldopokok>'0' AND ($value->sektorUsaha == 'Sektor Jasa' OR $value->sektorUsaha == 'sektor jasa')  ){
+            if( ($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Jasa' OR $value['sektorUsaha'] == 'sektor jasa')  ){
    
-                $totsektorjasa += $value->saldopokok;
-                if($value->kolektibilitas == 'Lancar' OR $value->kolektibilitas == 'lancar' ){
-                    $totjasaLancar += $value->saldojumlah;
+                $totsektorjasa += $value['saldopokok'];
+                if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar' ){
+                    $totjasaLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Kurang Lancar' OR $value->kolektibilitas == 'kurang lancar'){
-                    $totjasaKurangLancar += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Kurang Lancar' OR $value['kolektibilitas'] == 'kurang lancar'){
+                    $totjasaKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Diragukan' OR $value->kolektibilitas == 'diragukan' ){
-                    $totjasaDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Diragukan' OR $value['kolektibilitas'] == 'diragukan' ){
+                    $totjasaDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Macet'  OR $value->kolektibilitas == 'macet' ){
-                    $totjasaMacet += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Macet'  OR $value['kolektibilitas'] == 'macet' ){
+                    $totjasaMacet += $value['saldojumlah'];
                 }
                         
             }
 
-            if( ($value->tdkbermasalah == 'normal' OR $value->tdkbermasalah == 'Normal' OR $value->tdkbermasalah == 'NORMAL' )
-                AND $value->saldopokok>'0' AND ($value->sektorUsaha == 'Sektor Lain-lain' OR $value->sektorUsaha == 'sektor lain-lain')  ){
+            if( ($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Lain-lain' OR $value['sektorUsaha'] == 'sektor lain-lain')  ){
 
-                $totsektorlainlain += $value->saldopokok;
-                if($value->kolektibilitas == 'Lancar'  OR $value->kolektibilitas == 'lancar' ){
-                    $totlainlainLancar += $value->saldojumlah;
+                $totsektorlainlain += $value['saldopokok'];
+                if($value['kolektibilitas'] == 'Lancar'  OR $value['kolektibilitas'] == 'lancar' ){
+                    $totlainlainLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Kurang Lancar' OR $value->kolektibilitas == 'kurang lancar' ){
-                    $totlainlainKurangLancar += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Kurang Lancar' OR $value['kolektibilitas'] == 'kurang lancar' ){
+                    $totlainlainKurangLancar += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Diragukan' OR $value->kolektibilitas == 'diragukan' ){
-                    $totlainlainDiragukan += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Diragukan' OR $value['kolektibilitas'] == 'diragukan' ){
+                    $totlainlainDiragukan += $value['saldojumlah'];
                 }
-                if($value->kolektibilitas == 'Macet' OR $value->kolektibilitas == 'macet' ){
-                    $totlainlainMacet += $value->saldojumlah;
+                if($value['kolektibilitas'] == 'Macet' OR $value['kolektibilitas'] == 'macet' ){
+                    $totlainlainMacet += $value['saldojumlah'];
                 }
                         
             }
@@ -251,55 +254,55 @@ class PerhitunganLaporan extends CI_Controller {
         $tingkatpengembalianpinjamanMBMacet = $totalmacet;
 
         $totsektorindustrisejakAwal = $totsektorindustri;
-        $jurnal = $this->jurnal_model->get_jurnal_all();
+        $jurnal = $this->db->query("SELECT * FROM opex ORDER BY tanggal ASC")->result_array();
 		$tglawal = date('Y-m-01', strtotime(date('Y-m-d', strtotime('-1 days', strtotime(date('Y-m-01', strtotime(date("d-m-Y"))))))));
 		$tglakhir = date('Y-m-01', strtotime(date("d-m-Y")));
 
         foreach ($jurnal as $key => $value) {
-            if($value->tanggal >= $tglawal AND $value->tanggal < $tglakhir AND $value->tampil == '0'){
+            if($value['tanggal'] >= $tglawal AND $value['tanggal'] < $tglakhir AND $value['tampil'] == '0'){
             
                 //0103070000   Aktiva Lain-lain/Kas Bank Yang Dibatasi Pengunaanya 
-                if($value->id_akun == '103070000'){ 
-                    $KasBankYgDiBatasiPenggunaannyaklr += $value->pengeluaran; 
-                    $KasBankYgDiBatasiPenggunaannyamsk += $value->pemasukan; 
+                if($value['id_akun'] == '103070000'){ 
+                    $KasBankYgDiBatasiPenggunaannyaklr += $value['pengeluaran']; 
+                    $KasBankYgDiBatasiPenggunaannyamsk += $value['pemasukan']; 
                     $KasBankYgDiBatasiPenggunaannya = $KasBankYgDiBatasiPenggunaannyaklr - $KasBankYgDiBatasiPenggunaannyamsk;
                 }  
                 
                 //0403010100   Pendapatan/Jasa Administrasi Pinjaman/Program Kemitraan 
-                if($value->id_akun == '403010100'){ 
-                    $JasaAdmPinjamanklr += $value->pengeluaran; 
-                    $JasaAdmPinjamanmsk += $value->pemasukan; 
+                if($value['id_akun'] == '403010100'){ 
+                    $JasaAdmPinjamanklr += $value['pengeluaran']; 
+                    $JasaAdmPinjamanmsk += $value['pemasukan']; 
                     $JasaAdmPinjaman = $JasaAdmPinjamanklr - $JasaAdmPinjamanmsk;
                 } 
                 
                 //0102010101   Aktiva Tetap/Harga Perolehan/Kendaraan 
                 //0102010201   Aktiva Tetap/Harga Perolehan/Inventaris Kantor 
-                if($value->id_akun == '102010101' OR $value->id_akun == '102010201'){ 
-                    $AktivaTetapHargaPerolehanmsk += $value->pemasukan;
-                    $AktivaTetapHargaPerolehanklr += $value->pengeluaran;
+                if($value['id_akun'] == '102010101' OR $value['id_akun'] == '102010201'){ 
+                    $AktivaTetapHargaPerolehanmsk += $value['pemasukan'];
+                    $AktivaTetapHargaPerolehanklr += $value['pengeluaran'];
                     $AktivaTetapHargaPerolehan = $AktivaTetapHargaPerolehanklr - $AktivaTetapHargaPerolehanmsk;             
                 }
                 
                 //0412020500   Pengembalian kelebihan Angsuran 
-                if($value->id_akun == '412020500'){ 
-                    $PengembalianKelebihanAngsuranklr += $value->pengeluaran; 
-                    $PengembalianKelebihanAngsuranmsk += $value->pemasukan; 
+                if($value['id_akun'] == '412020500'){ 
+                    $PengembalianKelebihanAngsuranklr += $value['pengeluaran']; 
+                    $PengembalianKelebihanAngsuranmsk += $value['pemasukan']; 
                     $PengembalianKelebihanAngsuran = $PengembalianKelebihanAngsuranklr - $PengembalianKelebihanAngsuranmsk;
                 }
                 
                 //0406010000   Beban Upah Tenaga kerja/Honorer/Program Kemitraan 
-                if($value->id_akun == '406010000'){
-                    $BebanUpahTenagakerjaklr += $value->pengeluaran;
-                    $BebanUpahTenagakerjamsk += $value->pemasukan; 
+                if($value['id_akun'] == '406010000'){
+                    $BebanUpahTenagakerjaklr += $value['pengeluaran'];
+                    $BebanUpahTenagakerjamsk += $value['pemasukan']; 
                     $BebanUpahTenagakerja = $BebanUpahTenagakerjaklr - $BebanUpahTenagakerjamsk;
                 }
                 
                 //0405010100   Beban Pembinaan/Beban Survey/Program Kemitraan 
                 //0405020100   Beban Pembinaan/Beban Monitoring/Program Kemitraan 
                 //0405030100   Beban Pembinaan/Beban Penagihan Pinjaman/Program Kemitraan 
-                if($value->id_akun == '405010100' OR $value->id_akun == '405020100' OR $value->id_akun == '405030100'){ 
-                    $BebanPembinaanmsk += $value->pemasukan; 
-                    $BebanPembinaanklr += $value->pengeluaran;             
+                if($value['id_akun'] == '405010100' OR $value['id_akun'] == '405020100' OR $value['id_akun'] == '405030100'){ 
+                    $BebanPembinaanmsk += $value['pemasukan']; 
+                    $BebanPembinaanklr += $value['pengeluaran'];             
                     $BebanPembinaan = $BebanPembinaanklr - $BebanPembinaanmsk;
                 }
                 
@@ -314,10 +317,10 @@ class PerhitunganLaporan extends CI_Controller {
                 //0101060208   Aktiva Lancar/Piutang Mitra Binaan/Angsuran/Lain-lain 
                 
                 //pengembalian pinjaman pokok !
-                if($value->id_akun == '101060201' OR $value->id_akun == '101060202' OR $value->id_akun == '101060203' OR $value->id_akun == '101060204'
-                    OR $value->id_akun == '101060205' OR $value->id_akun == '101060206' OR $value->id_akun == '101060207' OR $value->id_akun == '101060208'){ 
-                    $pengembalianPinjamanMBklr += $value->pengeluaran; 
-                    $pengembalianPinjamanMBmsk += $value->pemasukan; 
+                if($value['id_akun'] == '101060201' OR $value['id_akun'] == '101060202' OR $value['id_akun'] == '101060203' OR $value['id_akun'] == '101060204'
+                    OR $value['id_akun'] == '101060205' OR $value['id_akun'] == '101060206' OR $value['id_akun'] == '101060207' OR $value['id_akun'] == '101060208'){ 
+                    $pengembalianPinjamanMBklr += $value['pengeluaran']; 
+                    $pengembalianPinjamanMBmsk += $value['pemasukan']; 
                     $pengembalianPinjamanMB = $pengembalianPinjamanMBklr - $pengembalianPinjamanMBmsk;             
                 }
                 //lap arus kas end
@@ -331,61 +334,61 @@ class PerhitunganLaporan extends CI_Controller {
                 //0101060106   Aktiva Lancar/Piutang Mitra Binaan/Pinjaman/Sektor Peternakan 
                 //0101060107   Aktiva Lancar/Piutang Mitra Binaan/Pinjaman/Sektor Jasa 
                 //0101060108   Aktiva Lancar/Piutang Mitra Binaan/Pinjaman/Lain-lain 
-                if($value->id_akun == '101060101' OR $value->id_akun == '101060102' OR $value->id_akun == '101060103' OR $value->id_akun == '101060104'
-                    OR $value->id_akun == '101060105' OR $value->id_akun == '101060106' OR $value->id_akun == '101060107' OR $value->id_akun == '101060108')
+                if($value['id_akun'] == '101060101' OR $value['id_akun'] == '101060102' OR $value['id_akun'] == '101060103' OR $value['id_akun'] == '101060104'
+                    OR $value['id_akun'] == '101060105' OR $value['id_akun'] == '101060106' OR $value['id_akun'] == '101060107' OR $value['id_akun'] == '101060108')
                 { 
-                $PiutangMitraBinaanPinjamanmsk += $value->pemasukan; 
-                $PiutangMitraBinaanPinjamanklr += $value->pengeluaran;
+                $PiutangMitraBinaanPinjamanmsk += $value['pemasukan']; 
+                $PiutangMitraBinaanPinjamanklr += $value['pengeluaran'];
                 $PiutangMitraBinaanPinjaman = $PiutangMitraBinaanPinjamanklr - $PiutangMitraBinaanPinjamanmsk;         
                 }
                 
-                if($value->id_akun == '101060101')//industri
+                if($value['id_akun'] == '101060101')//industri
                 { 
-                    $PiutangMitraBinaanPinjamanindustrimsk += $value->pemasukan;
-                    $PiutangMitraBinaanPinjamanIndustriklr += $value->pengeluaran;  
+                    $PiutangMitraBinaanPinjamanindustrimsk += $value['pemasukan'];
+                    $PiutangMitraBinaanPinjamanIndustriklr += $value['pengeluaran'];  
                     $PiutangMitraBinaanPinjamanIndustrijul = $PiutangMitraBinaanPinjamanIndustriklr - $PiutangMitraBinaanPinjamanindustrimsk;       
                 }
-                if($value->id_akun == '101060102')//perdagangan
+                if($value['id_akun'] == '101060102')//perdagangan
                 { 
-                    $PiutangMitraBinaanPinjamanPerdaganganmsk += $value->pemasukan;         
-                    $PiutangMitraBinaanPinjamanPerdaganganklr += $value->pengeluaran;         
+                    $PiutangMitraBinaanPinjamanPerdaganganmsk += $value['pemasukan'];         
+                    $PiutangMitraBinaanPinjamanPerdaganganklr += $value['pengeluaran'];         
                     $PiutangMitraBinaanPinjamanPerdagangan = $PiutangMitraBinaanPinjamanPerdaganganklr - $PiutangMitraBinaanPinjamanPerdaganganmsk;       
                 }
-                if($value->id_akun == '101060103')//pertanian
+                if($value['id_akun'] == '101060103')//pertanian
                 { 
-                    $PiutangMitraBinaanPinjamanPertanianmsk += $value->pemasukan;  
-                    $PiutangMitraBinaanPinjamanPertanianklr += $value->pengeluaran;         
+                    $PiutangMitraBinaanPinjamanPertanianmsk += $value['pemasukan'];  
+                    $PiutangMitraBinaanPinjamanPertanianklr += $value['pengeluaran'];         
                     $PiutangMitraBinaanPinjamanPertanian = $PiutangMitraBinaanPinjamanPertanianklr - $PiutangMitraBinaanPinjamanPertanianmsk;
                 }
-                if($value->id_akun == '101060104')//perkebunan
+                if($value['id_akun'] == '101060104')//perkebunan
                 { 
-                    $PiutangMitraBinaanPinjamanPerkebunanmsk += $value->pemasukan; 
-                    $PiutangMitraBinaanPinjamanPerkebunanklr += $value->pengeluaran; 
+                    $PiutangMitraBinaanPinjamanPerkebunanmsk += $value['pemasukan']; 
+                    $PiutangMitraBinaanPinjamanPerkebunanklr += $value['pengeluaran']; 
                     $PiutangMitraBinaanPinjamanPerkebunan = $PiutangMitraBinaanPinjamanPerkebunanklr - $PiutangMitraBinaanPinjamanPerkebunanmsk;        
                 }
-                if($value->id_akun == '101060105')//perikanan
+                if($value['id_akun'] == '101060105')//perikanan
                 { 
-                    $PiutangMitraBinaanPinjamanPerikananmsk += $value->pemasukan;
-                    $PiutangMitraBinaanPinjamanPerikananklr += $value->pengeluaran;         
+                    $PiutangMitraBinaanPinjamanPerikananmsk += $value['pemasukan'];
+                    $PiutangMitraBinaanPinjamanPerikananklr += $value['pengeluaran'];         
                     $PiutangMitraBinaanPinjamanPerikanan = $PiutangMitraBinaanPinjamanPerikananklr - $PiutangMitraBinaanPinjamanPerikananmsk;
                 }
-                if($value->id_akun == '101060106')//peternakan
+                if($value['id_akun'] == '101060106')//peternakan
                 { 
-                    $PiutangMitraBinaanPinjamanPeternakanmsk += $value->pemasukan;
-                    $PiutangMitraBinaanPinjamanPeternakanklr += $value->pengeluaran;         
+                    $PiutangMitraBinaanPinjamanPeternakanmsk += $value['pemasukan'];
+                    $PiutangMitraBinaanPinjamanPeternakanklr += $value['pengeluaran'];         
                     $PiutangMitraBinaanPinjamanPeternakan=
                     $PiutangMitraBinaanPinjamanPeternakanklr - $PiutangMitraBinaanPinjamanPeternakanmsk;
                 }
-                if($value->id_akun == '101060107')//Jasa
+                if($value['id_akun'] == '101060107')//Jasa
                 { 
-                    $PiutangMitraBinaanPinjamanJasamsk += $value->pemasukan;
-                    $PiutangMitraBinaanPinjamanJasaklr += $value->pengeluaran;
+                    $PiutangMitraBinaanPinjamanJasamsk += $value['pemasukan'];
+                    $PiutangMitraBinaanPinjamanJasaklr += $value['pengeluaran'];
                     $PiutangMitraBinaanPinjamanJasa = $PiutangMitraBinaanPinjamanJasaklr - $PiutangMitraBinaanPinjamanJasamsk;         
                 }
-                if($value->id_akun == '101060108')//Lain
+                if($value['id_akun'] == '101060108')//Lain
                 { 
-                    $PiutangMitraBinaanPinjamanLainmsk += $value->pemasukan;
-                    $PiutangMitraBinaanPinjamanLainklr += $value->pengeluaran;
+                    $PiutangMitraBinaanPinjamanLainmsk += $value['pemasukan'];
+                    $PiutangMitraBinaanPinjamanLainklr += $value['pengeluaran'];
                     $PiutangMitraBinaanPinjamanLain = $PiutangMitraBinaanPinjamanLainklr - $PiutangMitraBinaanPinjamanLainmsk;         
                 }
                 
@@ -394,26 +397,26 @@ class PerhitunganLaporan extends CI_Controller {
                 //laporan aktivitas start
                 
                 //403020100 pendapatan /jasa giro/ program kemitraan
-                if($value->id_akun == '403020100')//pendapatan /jasa giro/ program kemitraan
+                if($value['id_akun'] == '403020100')//pendapatan /jasa giro/ program kemitraan
                 {
-                    $AktivaLancarPiutangBungaklr += $value->pengeluaran; 
-                    $AktivaLancarPiutangBungamsk += $value->pemasukan; 
+                    $AktivaLancarPiutangBungaklr += $value['pengeluaran']; 
+                    $AktivaLancarPiutangBungamsk += $value['pemasukan']; 
                     $AktivaLancarPiutangBunga = $AktivaLancarPiutangBungaklr - $AktivaLancarPiutangBungamsk;
                 }
         
                 //403020101 Pendapatan/Jasa Giro/BL
-                if($value->id_akun == '403020101')////403020101 Pendapatan/Jasa Giro/BL
+                if($value['id_akun'] == '403020101')////403020101 Pendapatan/Jasa Giro/BL
                 {
-                    $PendapatanJasaGiroBLklr += $value->pengeluaran; 
-                    $PendapatanJasaGiroBLmsk += $value->pemasukan; 
+                    $PendapatanJasaGiroBLklr += $value['pengeluaran']; 
+                    $PendapatanJasaGiroBLmsk += $value['pemasukan']; 
                     $PendapatanJasaGiroBL = $PendapatanJasaGiroBLklr - $PendapatanJasaGiroBLmsk;
         
                 }
                 //403020102 Pendapatan/Jasa Giro/BUMN Peduli 403020100???
-                if($value->id_akun == '403020102')//403020102 Pendapatan/Jasa Giro/BUMN Peduli
+                if($value['id_akun'] == '403020102')//403020102 Pendapatan/Jasa Giro/BUMN Peduli
                 {
-                    $PendapatanJasaGiroBUMNPeduliklr += $value->pengeluaran;
-                    $PendapatanJasaGiroBUMNPedulimsk += $value->pemasukan; 
+                    $PendapatanJasaGiroBUMNPeduliklr += $value['pengeluaran'];
+                    $PendapatanJasaGiroBUMNPedulimsk += $value['pemasukan']; 
                     $PendapatanJasaGiroBUMNPeduli = $PendapatanJasaGiroBUMNPeduliklr - $PendapatanJasaGiroBUMNPedulimsk;
                 }
                 
@@ -424,54 +427,54 @@ class PerhitunganLaporan extends CI_Controller {
                 //0403030200     Pendapatan/Pendapatan Lain-lain/Penyesuaian Alokasi Penyisihan Piutang 
                 //0403030300     Pendapatan/Pendapatan Lain-lain/Selisih Kas & Bank 
                 //0403030400     Pendapatan/Pendapatan Lain-lain/Lain-lain 
-                if($value->id_akun == '403030100' OR $value->id_akun == '403030200' OR $value->id_akun == '403030300' OR $value->id_akun == '403030400'){
-                    $PendapatanLainlainklr += $value->pengeluaran;
-                    $PendapatanLainlainmsk += $value->pemasukan; 
+                if($value['id_akun'] == '403030100' OR $value['id_akun'] == '403030200' OR $value['id_akun'] == '403030300' OR $value['id_akun'] == '403030400'){
+                    $PendapatanLainlainklr += $value['pengeluaran'];
+                    $PendapatanLainlainmsk += $value['pemasukan']; 
                     $PendapatanLainlain = $PendapatanLainlainklr - $PendapatanLainlainmsk;
 
-                    if($value->id_akun == '403030100'){ 
-                        $PendapatanLainPiutangHapusBukuklr += $value->pengeluaran; 
-                        $PendapatanLainPiutangHapusBukumsk += $value->pemasukan; 
+                    if($value['id_akun'] == '403030100'){ 
+                        $PendapatanLainPiutangHapusBukuklr += $value['pengeluaran']; 
+                        $PendapatanLainPiutangHapusBukumsk += $value['pemasukan']; 
                         $PendapatanLainPiutangHapusBuku = $PendapatanLainPiutangHapusBukuklr - $PendapatanLainPiutangHapusBukumsk;
                     }
-                    if($value->id_akun == '403030200'){ 
-                        $PendapatanLainPenyisihanPiutangklr += $value->pengeluaran;
-                        $PendapatanLainPenyisihanPiutangmsk += $value->pemasukan; 
+                    if($value['id_akun'] == '403030200'){ 
+                        $PendapatanLainPenyisihanPiutangklr += $value['pengeluaran'];
+                        $PendapatanLainPenyisihanPiutangmsk += $value['pemasukan']; 
                         $PendapatanLainPenyisihanPiutang = $PendapatanLainPenyisihanPiutangklr - $PendapatanLainPenyisihanPiutangmsk;
                     }
-                    if($value->id_akun == '403030300'){ 
-                        $PendapatanLainLainSelisihKasBankLainklr += $value->pengeluaran;
-                        $PendapatanLainLainSelisihKasBankLainmsk += $value->pemasukan; 
+                    if($value['id_akun'] == '403030300'){ 
+                        $PendapatanLainLainSelisihKasBankLainklr += $value['pengeluaran'];
+                        $PendapatanLainLainSelisihKasBankLainmsk += $value['pemasukan']; 
                         $PendapatanLainLainSelisihKasBankLain = $PendapatanLainLainSelisihKasBankLainklr - $PendapatanLainLainSelisihKasBankLainmsk;
                     }
-                    if($value->id_akun == '403030400' ){ 
-                        $PendapatanLainLainLainlainklr += $value->pengeluaran;
-                        $PendapatanLainLainLainlainmsk += $value->pemasukan; 
+                    if($value['id_akun'] == '403030400' ){ 
+                        $PendapatanLainLainLainlainklr += $value['pengeluaran'];
+                        $PendapatanLainLainLainlainmsk += $value['pemasukan']; 
                         $PendapatanLainLainLainlain = $PendapatanLainLainLainlainklr - $PendapatanLainLainLainlainmsk;
                     }
                 }
                 
                 // 040103000    Penyisihan/Alokasi Dana BUMN Peduli 
-                if($value->id_akun == '401030000')
+                if($value['id_akun'] == '401030000')
                 {
-                    $PenyisihanAlokasiDanaBUMNPeduliklr += $value->pengeluaran; 
-                    $PenyisihanAlokasiDanaBUMNPedulimsk += $value->pemasukan; 
+                    $PenyisihanAlokasiDanaBUMNPeduliklr += $value['pengeluaran']; 
+                    $PenyisihanAlokasiDanaBUMNPedulimsk += $value['pemasukan']; 
                     $PenyisihanAlokasiDanaBUMNPeduli = $PenyisihanAlokasiDanaBUMNPeduliklr - $PenyisihanAlokasiDanaBUMNPedulimsk;
                 }
                 
                 // 401010000   Penyisihan/ANTT Berakhir Pemenuhan Program
-                if($value->id_akun == '401010000')
+                if($value['id_akun'] == '401010000')
                 { 
-                    $PenyisihanANTTBerakhirPemenuhanProgramklr += $value->pengeluaran;
-                    $PenyisihanANTTBerakhirPemenuhanProgrammsk += $value->pemasukan;
+                    $PenyisihanANTTBerakhirPemenuhanProgramklr += $value['pengeluaran'];
+                    $PenyisihanANTTBerakhirPemenuhanProgrammsk += $value['pemasukan'];
                     $PenyisihanANTTBerakhirPemenuhanProgram = $PenyisihanANTTBerakhirPemenuhanProgramklr - $PenyisihanANTTBerakhirPemenuhanProgrammsk;                        
                 }
                 
                 // 401020000 penyisihan ANTT berakhir waktu
-                if($value->id_akun == '401020000')
+                if($value['id_akun'] == '401020000')
                 {
-                    $penyisihanANTTberakhirwaktuklr += $value->pengeluaran; 
-                    $penyisihanANTTberakhirwaktumsk += $value->pemasukan;
+                    $penyisihanANTTberakhirwaktuklr += $value['pengeluaran']; 
+                    $penyisihanANTTberakhirwaktumsk += $value['pemasukan'];
                     $penyisihanANTTberakhirwaktu = $penyisihanANTTberakhirwaktuklr - $penyisihanANTTberakhirwaktumsk; 
                 }
                 
@@ -500,14 +503,14 @@ class PerhitunganLaporan extends CI_Controller {
                 //0404010307     Penyaluran/Dana Pembinaan Kemitraan/Pemagangan/Sektor Jasa 
                 //0404010308     Penyaluran/Dana Pembinaan Kemitraan/Pemagangan/Lain-lain 
                 
-                if($value->id_akun == '404010101' OR $value->id_akun == '404010102' OR $value->id_akun == '404010103' OR $value->id_akun == '404010104'
-                OR $value->id_akun == '404010105' OR $value->id_akun == '404010106' OR $value->id_akun == '404010107' OR $value->id_akun == '404010108' OR
-                $value->id_akun == '404010201' OR $value->id_akun == '404010202' OR $value->id_akun == '404010203' OR $value->id_akun == '404010204'
-                OR $value->id_akun == '404010205' OR $value->id_akun == '404010206' OR $value->id_akun == '404010207' OR $value->id_akun == '404010208' OR
-                $value->id_akun == '0404010301' OR $value->id_akun == '0404010302' OR $value->id_akun == '0404010303' OR $value->id_akun == '0404010304' 
-                OR $value->id_akun == '0404010305' OR $value->id_akun == '0404010306' OR $value->id_akun == '0404010307' OR $value->id_akun == '0404010308'){ 
-                    $DanaPembinaanKemitraanklr += $value->pengeluaran;
-                    $DanaPembinaanKemitraanmsk += $value->pemasukan;
+                if($value['id_akun'] == '404010101' OR $value['id_akun'] == '404010102' OR $value['id_akun'] == '404010103' OR $value['id_akun'] == '404010104'
+                OR $value['id_akun'] == '404010105' OR $value['id_akun'] == '404010106' OR $value['id_akun'] == '404010107' OR $value['id_akun'] == '404010108' OR
+                $value['id_akun'] == '404010201' OR $value['id_akun'] == '404010202' OR $value['id_akun'] == '404010203' OR $value['id_akun'] == '404010204'
+                OR $value['id_akun'] == '404010205' OR $value['id_akun'] == '404010206' OR $value['id_akun'] == '404010207' OR $value['id_akun'] == '404010208' OR
+                $value['id_akun'] == '0404010301' OR $value['id_akun'] == '0404010302' OR $value['id_akun'] == '0404010303' OR $value['id_akun'] == '0404010304' 
+                OR $value['id_akun'] == '0404010305' OR $value['id_akun'] == '0404010306' OR $value['id_akun'] == '0404010307' OR $value['id_akun'] == '0404010308'){ 
+                    $DanaPembinaanKemitraanklr += $value['pengeluaran'];
+                    $DanaPembinaanKemitraanmsk += $value['pemasukan'];
                     $DanaPembinaanKemitraan= $DanaPembinaanKemitraanklr - $DanaPembinaanKemitraanmsk;                           
                 }
                 
@@ -522,11 +525,11 @@ class PerhitunganLaporan extends CI_Controller {
                 //0404020900     Penyaluran/Dana Bina Lingkungan/Diklat MB PK 
                 //0404021000     Penyaluran/Dana Bina Lingkungan/Pengentasan kemiskinan 
                                     
-                if($value->id_akun == '404020100' OR $value->id_akun == '404020200' OR $value->id_akun == '404020300' OR $value->id_akun == '404020400'
-                OR $value->id_akun == '404020500' OR $value->id_akun == '404020600' OR $value->id_akun == '404020700' OR $value->id_akun == '404020800' OR
-                $value->id_akun == '404020900' OR $value->id_akun == '404021000' ){ 
-                    $DanaBinaLingkunganklr += $value->pengeluaran;  
-                    $DanaBinaLingkunganmsk += $value->pemasukan;  
+                if($value['id_akun'] == '404020100' OR $value['id_akun'] == '404020200' OR $value['id_akun'] == '404020300' OR $value['id_akun'] == '404020400'
+                OR $value['id_akun'] == '404020500' OR $value['id_akun'] == '404020600' OR $value['id_akun'] == '404020700' OR $value['id_akun'] == '404020800' OR
+                $value['id_akun'] == '404020900' OR $value['id_akun'] == '404021000' ){ 
+                    $DanaBinaLingkunganklr += $value['pengeluaran'];  
+                    $DanaBinaLingkunganmsk += $value['pemasukan'];  
                     $DanaBinaLingkungan = $DanaBinaLingkunganklr - $DanaBinaLingkunganmsk;                  
                 }
                 
@@ -534,34 +537,34 @@ class PerhitunganLaporan extends CI_Controller {
                 //0407020000     Beban Adm dan Umum/Bina Lingkungan 
                 //0407030000     Beban Adm dan Umum/BUMN Peduli 
                 
-                if($value->id_akun == '407010000' OR $value->id_akun == '407020000' OR $value->id_akun == '407030000'){ 
-                    $BebanAdmDanUmumklr += $value->pengeluaran; 
-                    $BebanAdmdanUmummsk += $value->pemasukan; 
-                    $BebanAdmdanUmum = $BebanAdmDanUmumklr - $BebanAdmdanUmummsk;
+                if($value['id_akun'] == '407010000' OR $value['id_akun'] == '407020000' OR $value['id_akun'] == '407030000'){ 
+                    $BebanAdmdanUmumklr += $value['pengeluaran']; 
+                    $BebanAdmdanUmummsk += $value['pemasukan']; 
+                    $BebanAdmdanUmum = $BebanAdmdanUmumklr - $BebanAdmdanUmummsk;
 
-                    if($value->id_akun == '407010000'){ 
-                        $BebanAdmDanUmumklr += $value->pengeluaran; 
-                        $BebanAdmdanUmummsk += $value->pemasukan; 
-                        $BebanAdmDanUmum = $BebanAdmDanUmumklr - $BebanAdmdanUmummsk;
+                    if($value['id_akun'] == '407010000'){ 
+                        $BebanAdmDanUmumklr += $value['pengeluaran']; 
+                        $BebanAdmDanUmummsk += $value['pemasukan']; 
+                        $BebanAdmDanUmum = $BebanAdmDanUmumklr - $BebanAdmDanUmummsk;
                     }
-                    if($value->id_akun == '407020000' OR $value->id_akun == '407030000'){ 
-                        $BebanAdmDanUmumBLklr += $value->pengeluaran; 
-                        $BebanAdmDanUmumBLmsk += $value->pemasukan; 
+                    if($value['id_akun'] == '407020000' OR $value['id_akun'] == '407030000'){ 
+                        $BebanAdmDanUmumBLklr += $value['pengeluaran']; 
+                        $BebanAdmDanUmumBLmsk += $value['pemasukan']; 
                         $BebanAdmDanUmumBL = $BebanAdmDanUmumBLklr - $BebanAdmDanUmumBLmsk;
                     }
                 }
                 
                 //410010000   Beban Penyusutan Aktiva Tetap/Program Kemitraan
-                if($value->id_akun == '410010000'){ 
-                    $BebanPenyusutanAktivaTetapProgramKemitraanklr += $value->pengeluaran; 
-                    $BebanPenyusutanAktivaTetapProgramKemitraanmsk += $value->pemasukan; 
+                if($value['id_akun'] == '410010000'){ 
+                    $BebanPenyusutanAktivaTetapProgramKemitraanklr += $value['pengeluaran']; 
+                    $BebanPenyusutanAktivaTetapProgramKemitraanmsk += $value['pemasukan']; 
                     $BebanPenyusutanAktivaTetapProgramKemitraan = $BebanPenyusutanAktivaTetapProgramKemitraanklr - $BebanPenyusutanAktivaTetapProgramKemitraanmsk;
                 }
 
                 //408010000 Beban Pemeliharaan/Program Kemitraan
-                if($value->id_akun == '408010000') { 
-                    $BebanPemeliharaanProgramKemitraanklr += $value->pengeluaran; 
-                    $BebanPemeliharaanProgramKemitraanmsk += $value->pemasukan; 
+                if($value['id_akun'] == '408010000') { 
+                    $BebanPemeliharaanProgramKemitraanklr += $value['pengeluaran']; 
+                    $BebanPemeliharaanProgramKemitraanmsk += $value['pemasukan']; 
                     $BebanPemeliharaanProgramKemitraan = $BebanPemeliharaanProgramKemitraanklr - $BebanPemeliharaanProgramKemitraanmsk;
                 }
                 
@@ -575,56 +578,56 @@ class PerhitunganLaporan extends CI_Controller {
                 //0411080800     Beban Penyisihan Piutang/Lain-lain/Lain-lain 
                                         
                 //411010100 Beban Penyisihan Piutang/Sektor Industri/Sektor Industri
-                if($value->id_akun == '411010100'){ 
-                    $BebanPenyisihanPiutangSektorIndustriSektorIndustriklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorIndustriSektorIndustrimsk += $value->pemasukan;
+                if($value['id_akun'] == '411010100'){ 
+                    $BebanPenyisihanPiutangSektorIndustriSektorIndustriklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorIndustriSektorIndustrimsk += $value['pemasukan'];
                     $BebanPenyisihanPiutangSektorIndustriSektorIndustri = $BebanPenyisihanPiutangSektorIndustriSektorIndustriklr - $BebanPenyisihanPiutangSektorIndustriSektorIndustrimsk;
                 }
 
                 //411020200 Beban Penyisihan Piutang/SektorPerdagangan/SektorPerdagangan
-                if($value->id_akun == '411020200'){ 
-                    $BebanPenyisihanPiutangSektorPerdaganganSektorPerdaganganklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorPerdaganganSektorPerdaganganmsk += $value->pemasukan;
+                if($value['id_akun'] == '411020200'){ 
+                    $BebanPenyisihanPiutangSektorPerdaganganSektorPerdaganganklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorPerdaganganSektorPerdaganganmsk += $value['pemasukan'];
                     $BebanPenyisihanPiutangSektorPerdaganganSektorPerdagangan = $BebanPenyisihanPiutangSektorPerdaganganSektorPerdaganganklr - $BebanPenyisihanPiutangSektorPerdaganganSektorPerdaganganmsk;
                 }
 
                 //411030300 Beban Penyisihan Piutang/SektorPertanian/SektorPertanian
-                if($value->id_akun == '411030300'){ 
-                    $BebanPenyisihanPiutangSektorPertanianSektorPertanianklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorPertanianSektorPertanianmsk += $value->pemasukan; 
+                if($value['id_akun'] == '411030300'){ 
+                    $BebanPenyisihanPiutangSektorPertanianSektorPertanianklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorPertanianSektorPertanianmsk += $value['pemasukan']; 
                     $BebanPenyisihanPiutangSektorPertanianSektorPertanian = $BebanPenyisihanPiutangSektorPertanianSektorPertanianklr - $BebanPenyisihanPiutangSektorPertanianSektorPertanianmsk;
                 }
 
                 //411040400 Beban Penyisihan Piutang/SektorPerkebunan/SektorPerkebunan
-                if($value->id_akun == '411040400'){ 
-                    $BebanPenyisihanPiutangSektorPerkebunanSektorPerkebunanklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorPerkebunanSektorPerkebunanmsk += $value->pemasukan;
+                if($value['id_akun'] == '411040400'){ 
+                    $BebanPenyisihanPiutangSektorPerkebunanSektorPerkebunanklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorPerkebunanSektorPerkebunanmsk += $value['pemasukan'];
                     $BebanPenyisihanPiutangSektorPerkebunanSektorPerkebunan = $BebanPenyisihanPiutangSektorPerkebunanSektorPerkebunanklr - $BebanPenyisihanPiutangSektorPerkebunanSektorPerkebunanmsk;
                 }
 
                 //411050500 Beban Penyisihan Piutang/SektorPerikanan/SektorPerikanan
-                if($value->id_akun == '411050500'){ 
-                    $BebanPenyisihanPiutangSektorPerikananSektorPerikananklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorPerikananSektorPerikananmsk += $value->pemasukan; 
+                if($value['id_akun'] == '411050500'){ 
+                    $BebanPenyisihanPiutangSektorPerikananSektorPerikananklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorPerikananSektorPerikananmsk += $value['pemasukan']; 
                     $BebanPenyisihanPiutangSektorPerikananSektorPerikanan = $BebanPenyisihanPiutangSektorPerikananSektorPerikananklr - $BebanPenyisihanPiutangSektorPerikananSektorPerikananmsk;
                 }
                 //411060600 Beban Penyisihan Piutang/SektorPeternakan/SektorPeternakan
-                if($value->id_akun == '411060600'){ 
-                    $BebanPenyisihanPiutangSektorPeternakanSektorPeternakanklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorPeternakanSektorPeternakanmsk += $value->pemasukan; 
+                if($value['id_akun'] == '411060600'){ 
+                    $BebanPenyisihanPiutangSektorPeternakanSektorPeternakanklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorPeternakanSektorPeternakanmsk += $value['pemasukan']; 
                     $BebanPenyisihanPiutangSektorPeternakanSektorPeternakan = $BebanPenyisihanPiutangSektorPeternakanSektorPeternakanklr - $BebanPenyisihanPiutangSektorPeternakanSektorPeternakanmsk;
                 }
 
                 //411070700 Beban Penyisihan Piutang/SektorJasa/SektorJasa
-                if($value->id_akun == '411070700'){ 
-                    $BebanPenyisihanPiutangSektorJasaSektorJasaklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorJasaSektorJasamsk += $value->pemasukan;
+                if($value['id_akun'] == '411070700'){ 
+                    $BebanPenyisihanPiutangSektorJasaSektorJasaklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorJasaSektorJasamsk += $value['pemasukan'];
                     $BebanPenyisihanPiutangSektorJasaSektorJasa = $BebanPenyisihanPiutangSektorJasaSektorJasaklr - $BebanPenyisihanPiutangSektorJasaSektorJasamsk;
                 }
                 //411080800 Beban Penyisihan Piutang/SektorLainlain/SektorLainlain
-                if($value->id_akun == '411080800'){ 
-                    $BebanPenyisihanPiutangSektorLainlainSektorLainlainklr += $value->pengeluaran;
-                    $BebanPenyisihanPiutangSektorLainlainSektorLainlainmsk += $value->pemasukan;
+                if($value['id_akun'] == '411080800'){ 
+                    $BebanPenyisihanPiutangSektorLainlainSektorLainlainklr += $value['pengeluaran'];
+                    $BebanPenyisihanPiutangSektorLainlainSektorLainlainmsk += $value['pemasukan'];
                     $BebanPenyisihanPiutangSektorLainlainSektorLainlain = $BebanPenyisihanPiutangSektorLainlainSektorLainlainklr - $BebanPenyisihanPiutangSektorLainlainSektorLainlainmsk;
                 }
 
@@ -658,26 +661,26 @@ class PerhitunganLaporan extends CI_Controller {
                 
                 
                 //412020400 Beban Lainlain/Program Kemitraan
-                if($value->id_akun == '412020400')
+                if($value['id_akun'] == '412020400')
                 { 
-                    $BebanLainlainProgramKemitraanklr += $value->pengeluaran; 
-                    $BebanLainlainProgramKemitraanmsk += $value->pemasukan;
+                    $BebanLainlainProgramKemitraanklr += $value['pengeluaran']; 
+                    $BebanLainlainProgramKemitraanmsk += $value['pemasukan'];
                     $BebanLainlainProgramKemitraan = $BebanLainlainProgramKemitraanklr - $BebanLainlainProgramKemitraanmsk;
                 }
                 
                 //415020000 ANT terbebaskan ANT= Aset Neto Terikat
-                if($value->id_akun == '415020000')
+                if($value['id_akun'] == '415020000')
                 { 
-                    $ANTterbebaskanmsk += $value->pemasukan;
-                    $ANTterbebaskanklr += $value->pengeluaran;
+                    $ANTterbebaskanmsk += $value['pemasukan'];
+                    $ANTterbebaskanklr += $value['pengeluaran'];
                     $ANTterbebaskan = $ANTterbebaskanklr - $ANTterbebaskanmsk;
                 }
                 
                 //415010000 ANT Penyisihan BUMN Peduli ANT=Aset Neto terikat
-                if($value->id_akun == '415010000')
+                if($value['id_akun'] == '415010000')
                 {
-                    $ANTPenyisihanBUMNPedulimsk += $value->pemasukan; 
-                    $ANTPenyisihanBUMNPeduliklr += $value->pengeluaran;
+                    $ANTPenyisihanBUMNPedulimsk += $value['pemasukan']; 
+                    $ANTPenyisihanBUMNPeduliklr += $value['pengeluaran'];
                     $ANTPenyisihanBUMNPeduli = $ANTPenyisihanBUMNPeduliklr-$ANTPenyisihanBUMNPedulimsk;
                 }
                 
@@ -693,80 +696,80 @@ class PerhitunganLaporan extends CI_Controller {
                 //0101070700     Aktiva Lancar/Alokasi Penyisihan Piutang Mitra Binaan/Sektor Jasa 
                 //0101070800     Aktiva Lancar/Alokasi Penyisihan Piutang Mitra Binaan/Sektor Lain-lain 
             
-                if( $value->id_akun == '0101070100' OR  $value->id_akun == '0101070200' OR
-                    $value->id_akun == '0101070300' OR  $value->id_akun == '0101070400' OR
-                    $value->id_akun == '0101070500' OR  $value->id_akun == '0101070600' OR
-                    $value->id_akun == '0101070700' OR  $value->id_akun == '0101070800')
+                if( $value['id_akun'] == '0101070100' OR  $value['id_akun'] == '0101070200' OR
+                    $value['id_akun'] == '0101070300' OR  $value['id_akun'] == '0101070400' OR
+                    $value['id_akun'] == '0101070500' OR  $value['id_akun'] == '0101070600' OR
+                    $value['id_akun'] == '0101070700' OR  $value['id_akun'] == '0101070800')
                 {
-                    $AktivaLancarAlokasiPenyisihanPiutangMitraBinaanmsk += $value->pemasukan;
-                    $AktivaLancarAlokasiPenyisihanPiutangMitraBinaanklr += $value->pengeluaran;
+                    $AktivaLancarAlokasiPenyisihanPiutangMitraBinaanmsk += $value['pemasukan'];
+                    $AktivaLancarAlokasiPenyisihanPiutangMitraBinaanklr += $value['pengeluaran'];
                     $AktivaLancarAlokasiPenyisihanPiutangMitraBinaan = $AktivaLancarAlokasiPenyisihanPiutangMitraBinaanklr - $AktivaLancarAlokasiPenyisihanPiutangMitraBinaanmsk;
                 }
                                                     
-                if($value->id_akun == '102020201')
+                if($value['id_akun'] == '102020201')
                 {
                     $AktivaTetapAkumulasiPenyusutanInventarisKant=0-40478000;
                 }
                                                         
-                if($value->id_akun == '201040000')//17  Kewajiban julgka Pendek/Kelebihan Pembayaran Angsuran
+                if($value['id_akun'] == '201040000')//17  Kewajiban julgka Pendek/Kelebihan Pembayaran Angsuran
                 {
-                    $KelebihanPembayaranAngsuranklr += $value->pengeluaran;
-                    $KelebihanPembayaranAngsuranmsk += $value->pemasukan;
+                    $KelebihanPembayaranAngsuranklr += $value['pengeluaran'];
+                    $KelebihanPembayaranAngsuranmsk += $value['pemasukan'];
                     $KelebihanPembayaranAngsuran = $KelebihanPembayaranAngsuranklr - $KelebihanPembayaranAngsuranmsk; 
                 }
             
-                if($value->id_akun == '412020500')// Pengembalian kelebihan Angsuran 
+                if($value['id_akun'] == '412020500')// Pengembalian kelebihan Angsuran 
                 {
-                    $PengembaliankelebihanAngsuranklr += $value->pengeluaran; //
-                    $PengembaliankelebihanAngsuranmsk += $value->pemasukan; //
+                    $PengembaliankelebihanAngsuranklr += $value['pengeluaran']; //
+                    $PengembaliankelebihanAngsuranmsk += $value['pemasukan']; //
                     $selisihPengembaliankelebihanAngsuran = $PengembaliankelebihanAngsuranklr+$PengembaliankelebihanAngsuranmsk;//laposkeu
                 }
             
-                if($value->id_akun == '201050000')//18  Kewajiban jangka Pendek/Angsuran Belum Teridentifikasi
+                if($value['id_akun'] == '201050000')//18  Kewajiban jangka Pendek/Angsuran Belum Teridentifikasi
                 {
-                    $KewajibanJangkaPendekAngsuranBelumTeridentifikasimsk += $value->pemasukan;
-                    $KewajibanJangkaPendekAngsuranBelumTeridentifikasiklr += $value->pengeluaran;
+                    $KewajibanJangkaPendekAngsuranBelumTeridentifikasimsk += $value['pemasukan'];
+                    $KewajibanJangkaPendekAngsuranBelumTeridentifikasiklr += $value['pengeluaran'];
                     $KewajibanJangkaPendekAngsuranBelumTeridentifikasi = $KewajibanJangkaPendekAngsuranBelumTeridentifikasiklr - $KewajibanJangkaPendekAngsuranBelumTeridentifikasimsk;
                 }
             
-                if($value->id_akun == '403030400')//balance 18  Pendapatan/Pendapatan Lain-lain/Lain-lain
+                if($value['id_akun'] == '403030400')//balance 18  Pendapatan/Pendapatan Lain-lain/Lain-lain
                 {
-                    $PendapatanPendapatanLainlainLainlainklr += $value->pengeluaran;
-                    $PendapatanPendapatanLainlainLainlainmsk += $value->pemasukan;
+                    $PendapatanPendapatanLainlainLainlainklr += $value['pengeluaran'];
+                    $PendapatanPendapatanLainlainLainlainmsk += $value['pemasukan'];
                     $PendapatanPendapatanLainlainLainlain= $PendapatanPendapatanLainlainLainlainklr- $PendapatanPendapatanLainlainLainlainmsk;
                 }
             
-                if($value->id_akun == '202010000')//19 Kewajiban julgka Panjulg/Program Kemitraan
+                if($value['id_akun'] == '202010000')//19 Kewajiban julgka Panjulg/Program Kemitraan
                 {
-                    $KewajibanjulgkaPanjulgProgramKemitraanmsk += $value->pemasukan;
-                    $KewajibanjulgkaPanjulgProgramKemitraanklr += $value->pengeluaran; 
+                    $KewajibanjulgkaPanjulgProgramKemitraanmsk += $value['pemasukan'];
+                    $KewajibanjulgkaPanjulgProgramKemitraanklr += $value['pengeluaran']; 
                     $KewajibanjulgkaPanjulgProgramKemitraan= $KewajibanjulgkaPanjulgProgramKemitraanklr- $KewajibanjulgkaPanjulgProgramKemitraanmsk;
                 }
             
-                if($value->id_akun == '101020100')//balance 19  Aktiva Lancar/Persediaan/Program Kemitraan
+                if($value['id_akun'] == '101020100')//balance 19  Aktiva Lancar/Persediaan/Program Kemitraan
                 {
-                    $AktivaLancarPersediaanProgramKemitraanklr += $value->pengeluaran; //OK udah benar !
-                    $AktivaLancarPersediaanProgramKemitraanmsk += $value->pemasukan;
+                    $AktivaLancarPersediaanProgramKemitraanklr += $value['pengeluaran']; //OK udah benar !
+                    $AktivaLancarPersediaanProgramKemitraanmsk += $value['pemasukan'];
                     $AktivaLancarPersediaanProgramKemitraan= $AktivaLancarPersediaanProgramKemitraanklr- $AktivaLancarPersediaanProgramKemitraanmsk;
                 }
             
-                if($value->id_akun == '415020000')//22 415020000 ANT terbebaskan 
+                if($value['id_akun'] == '415020000')//22 415020000 ANT terbebaskan 
                 {
-                    $ANTterbebaskanmsk += $value->pemasukan;
-                    $ANTterbebaskanklr += $value->pengeluaran;
+                    $ANTterbebaskanmsk += $value['pemasukan'];
+                    $ANTterbebaskanklr += $value['pengeluaran'];
                     $ANTterbebaskan = $ANTterbebaskanklr - $ANTterbebaskanmsk; 
             
                 }
-                if($value->id_akun == '412020400')//23 Penyisihan/LAIN LAIN ?????? tanya Wagi
+                if($value['id_akun'] == '412020400')//23 Penyisihan/LAIN LAIN ?????? tanya Wagi
                 {
-                    $PenyisihanANTTBerakhirPemenuhanProgrammsk += $value->pemasukan;
-                    $PenyisihanANTTBerakhirPemenuhanProgramklr += $value->pengeluaran; 
+                    $PenyisihanANTTBerakhirPemenuhanProgrammsk += $value['pemasukan'];
+                    $PenyisihanANTTBerakhirPemenuhanProgramklr += $value['pengeluaran']; 
                     $PenyisihanANTTBerakhirPemenuhanProgram = $PenyisihanANTTBerakhirPemenuhanProgramklr - $PenyisihanANTTBerakhirPemenuhanProgrammsk;
                 }
-                if($value->id_akun == '415020000')//balance 23  ANT Terbebaskan ???? balance korek ???
+                if($value['id_akun'] == '415020000')//balance 23  ANT Terbebaskan ???? balance korek ???
                 {
-                    $ANTTerbebaskanklr += $value->pengeluaran; 
-                    $ANTTerbebaskanmsk += $value->pemasukan;
+                    $ANTTerbebaskanklr += $value['pengeluaran']; 
+                    $ANTTerbebaskanmsk += $value['pemasukan'];
                     $ANTTerbebaskan = $ANTTerbebaskanklr - $ANTTerbebaskanmsk;
                 }
             }
@@ -782,22 +785,13 @@ class PerhitunganLaporan extends CI_Controller {
         $PiutangMitraBinaanPinjaman = 0 - $PiutangMitraBinaanPinjaman;
         $PiutangMitraBinaanPinjamansejakAwal = $PiutangMitraBinaanPinjaman + $PiutangMitraBinaanPinjamanBulanSebelumnya;
 
-        echo ' $PiutangMitraBinaanPinjamansejakAwal='; echo $PiutangMitraBinaanPinjamansejakAwal;
-        echo nl2br("\n");
-
         $JasaAdmPinjamansejakAwal = $this->db->query("SELECT sd$bulansekarang FROM aktivitasoperasikasditerima WHERE id='4'")->result_array()[0]['sd' . $bulansekarang];
         $PendapatanJasaGirosejakAwal = $this->db->query("SELECT sd$bulansekarang FROM aktivitasoperasikasditerima WHERE id='5'")->result_array()[0]['sd'. $bulansekarang];
         $PendapatanLainPiutangHapusBukusejakAwal = $this->db->query("SELECT sd$bulansekarang FROM aktivitasoperasikasditerima WHERE id='6'")->result_array()[0]['sd' . $bulansekarang];
 
         $PendapatanLainlainsejakAwal=$PendapatanLainlain;
-        echo ' $PendapatanLainlain='; echo $PendapatanLainlain;
-        echo nl2br("\n");
         $pengembalianPinjamanMBsejakAwal=$pengembalianPinjamanMB;
         $PiutangMitraBinaanPinjamanIndustrisejakAwal= $totsektorindustri;
-        echo ' $PiutangMitraBinaanPinjamanPerdagangan='; echo $PiutangMitraBinaanPinjamanPerdagangan;
-        echo nl2br("\n");
-        echo ' $totsektorperdagangan='; echo $totsektorperdagangan;
-        echo nl2br("\n");
         $PiutangMitraBinaanPinjamanPerdagangansejakAwal=$totsektorperdagangan;
         $PiutangMitraBinaanPinjamanPertaniansejakAwal=$totsektorpertanian;
         $PiutangMitraBinaanPinjamanPerkebunansejakAwal=$totsektorperkebunan;
@@ -805,6 +799,7 @@ class PerhitunganLaporan extends CI_Controller {
         $PiutangMitraBinaanPinjamanPeternakansejakAwal=$totsektorpeternakan;
         $PiutangMitraBinaanPinjamanJasasejakAwal=$totsektorjasa;
         $PiutangMitraBinaanPinjamanLainsejakAwal=$totsektorlainlain;
+
         $tingkatpengembalianpinjamanMBtotalsejakAwal=$PiutangMitraBinaanPinjamanIndustrisejakAwal+
                 $PiutangMitraBinaanPinjamanPerdagangansejakAwal+
                 $PiutangMitraBinaanPinjamanPertaniansejakAwal+
@@ -813,16 +808,11 @@ class PerhitunganLaporan extends CI_Controller {
                 $PiutangMitraBinaanPinjamanPeternakansejakAwal+
                 $PiutangMitraBinaanPinjamanJasasejakAwal+
                 $PiutangMitraBinaanPinjamanLainsejakAwal;
+        
         $saldomandiri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='1'")->result_array()[0][$bulansekarang];
         $saldobri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='2'")->result_array()[0][$bulansekarang];
         $saldokas = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='3'")->result_array()[0][$bulansekarang];
         $totsaldobank = $saldomandiri + $saldobri;
-
-        echo nl2br("\n");
-        echo '  $saldomandiri='; echo number_format($saldomandiri); 
-        echo '  $saldobri='; echo number_format($saldobri);
-        echo '  $totsaldobank='; echo number_format($totsaldobank);
-        echo nl2br("\n");
 
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldokas'  WHERE id='1'"); //kas 
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldokas'  WHERE id='2'"); //kas PK 
@@ -883,7 +873,7 @@ class PerhitunganLaporan extends CI_Controller {
         $alok_totsektorpeternakanbermasalah = 0 - $totsektorpeternakanbermasalah;
         $alok_totsektorjasabermasalah = 0 - $totsektorjasabermasalah;
         $alok_totsektorlainlainbermasalah = 0 - $totsektorlainlainbermasalah; 
-    
+
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totnilsaldopokok_bermasalah'  WHERE id='42'"); //alok penyisihan piutang bermasalah
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorindustribermasalah'  WHERE id='43'");  
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorperdaganganbermasalah'  WHERE id='44'");  

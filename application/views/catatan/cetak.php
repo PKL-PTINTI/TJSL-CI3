@@ -409,7 +409,7 @@
          </table>
          </p>
    </font>
-   <!--
+<!--    
       <script>
       		window.print();
       	</script>

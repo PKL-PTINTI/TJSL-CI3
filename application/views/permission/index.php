@@ -30,7 +30,7 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Permission/add') ?>">Tambah Module</a>
+                                        href="<?= base_url('permission/add') ?>">Tambah Module</a>
                                 </div>
                             </div>
                         </div>
@@ -57,8 +57,8 @@
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="<?php echo site_url('Permission/update/' . $permission->permission_id); ?>"><i class="fa-solid fa-pen-to-square text-primary pr-2"></i> Update </a>
-                                                    <a class="dropdown-item" href="<?php echo site_url('Permission/delete/' . $permission->permission_id); ?>"><i class="fa-solid fa-user-lock text-danger pr-2"></i> Delete </a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('permission/update/' . $permission->permission_id); ?>"><i class="fa-solid fa-pen-to-square text-primary pr-2"></i> Update </a>
+                                                    <a class="dropdown-item" href="<?php echo site_url('permission/delete/' . $permission->permission_id); ?>"><i class="fa-solid fa-user-lock text-danger pr-2"></i> Delete </a>
                                                 </div>
                                             </div>
                                         </td>

@@ -186,7 +186,7 @@
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="<?= site_url('Auth/logout'); ?>" class="dropdown-item has-icon text-danger">
+                            <a href="<?= site_url('auth/logout'); ?>" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </div>
@@ -196,10 +196,10 @@
                 <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="<?= base_url('/Admin/Dashboard') ?>">TJSL</a>
+                        <a href="<?= base_url('/admin/dashboard') ?>">TJSL</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="<?= base_url('/Admin/Dashboard') ?>">INTI</a>
+                        <a href="<?= base_url('/admin/dashboard') ?>">INTI</a>
                     </div>
                     <ul class="sidebar-menu">
 
@@ -212,7 +212,7 @@
 
                         ?>
                                 <?php if($menuUtama->attribute == 'dropdown'){ ?>
-                                    <li class="nav-item dropdown <?php $ci =& get_instance(); echo ($ci->uri->segment(2) == 'Laporan') ? 'active' : NULL; ?>">
+                                    <li class="nav-item dropdown <?php $ci =& get_instance(); echo ($ci->uri->segment(2) == 'laporan') ? 'active' : NULL; ?>">
                                         <a href="#" class="nav-link has-dropdown"><i class="<?php echo $menuUtama->icon; ?>"></i> <span><?php echo $menuUtama->nama_menu ?></span></a>
                                         <ul class="dropdown-menu">
                                             <li class="nav-item">

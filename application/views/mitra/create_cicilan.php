@@ -2,8 +2,8 @@
     <div class="section-header">
         <h1>Input Data Cicilan Baru</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('Admin/Mitra') ?>">Mitra</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('admin/Mitra') ?>">Mitra</a></div>
             <div class="breadcrumb-item">Input Data Cicilan Baru</div>
         </div>
     </div>
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="<?= base_url('Admin/Mitra/TambahCicilan') ?>" method="post">
+                        <form action="<?= base_url('admin/mitra/tambahcicilan') ?>" method="post">
                             <input type="hidden" name="no_kontrak" value="<?= $mitra->nokontrak ?>">
                             <div class="form-group">
                                 <label>Jumlah Cicilan Pokok</label>

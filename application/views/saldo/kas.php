@@ -20,7 +20,7 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/Saldo/KartuPerkiraan?id_akun=' . $id_akun) ?>">Kartu Perkiraan</a>
+                                        href="<?= base_url('admin/saldo/kartuperkiraan?id_akun=' . $id_akun) ?>">Kartu Perkiraan</a>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
 						                            <i class="fas fa-ellipsis-v"></i>
 					                            </a>
 					                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						                        <a class="dropdown-item btndelete" id="button_delete" href="' . base_url('Admin/Jurnal/Destroy/' . str_replace('/', '%', $data_jurnal->nobukti)) . '">
+						                        <a class="dropdown-item btndelete" id="button_delete" href="#" onclick="delete_jurnal(this)" data-opex="<?= $j->nobukti ?>">
                                                     <i class="fas fa-trash text-danger pr-2"></i> Delete </a>
 					                        </div>
                                         </td>
