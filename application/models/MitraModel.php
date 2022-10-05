@@ -40,7 +40,7 @@ class MitraModel extends CI_Model {
 			'posisikeuangan' => $posisikeuangan,
 			'aruskas' => $aruskas,
 			'masalah' => $masalah
-		];;
+		];
 	}
 
 	private function _get_data_mitra_query($param1, $param2){
@@ -74,10 +74,10 @@ class MitraModel extends CI_Model {
 			$this->db->where('tdkbermasalah', $param1);
 			$this->db->or_where('tdkbermasalah', ucfirst($param1));
 			$this->db->or_where('tdkbermasalah', strtoupper($param1));
+			$this->db->where('saldopokok >', 0);
 			if ($param2) {
 				$this->db->where('sektorUsaha', 'sektor ' . $param2, 'Sektor ' . ucfirst($param2), 'SEKTOR ' . strtoupper($param2));
 			}
-			$this->db->where('saldopokok >', 0);
 		}
 
         foreach ($this->column_search as $item) // loop kolom 
@@ -258,7 +258,7 @@ class MitraModel extends CI_Model {
 		$this->db->or_where('id_akun', '101060207');
 		$this->db->or_where('id_akun', '101060208');
 		$this->db->or_where('id_akun', '403010100');
-		$this->db->order_by('tanggal', 'DESC');
+		$this->db->order_by('tanggal', 'ESC');
 		$query = $this->db->get();
 		
 		return $query->result();

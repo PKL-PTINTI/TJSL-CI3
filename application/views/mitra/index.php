@@ -56,19 +56,19 @@
 
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/normal', 'Normal'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/normal', 'Normal'
                                         )" href="#">Mitra Normal</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/masalah', 'Bermasalah'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/masalah', 'Bermasalah'
                                         )" href="#">Mitra Bermasalah</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/khusus', 'Khusus'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/khusus', 'Khusus'
                                         )" href="#">Mitra Khusus</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/masalah/wo', 'Wipe Out'
+                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/wo', 'Wipe Out'
                                         )" href="#">Mitra WO</a>
                                     </div>
                                 </div>

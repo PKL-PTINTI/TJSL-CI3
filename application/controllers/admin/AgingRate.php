@@ -360,7 +360,7 @@ class AgingRate extends CI_Controller {
 			$sheet->setCellValue($alphabet[$key + 2].'5', $agingrate[$key]->kuranglancar);
 			$sheet->setCellValue($alphabet[$key + 2].'6', $agingrate[$key]->diragukan);
 			$sheet->setCellValue($alphabet[$key + 2].'7', $agingrate[$key]->macet);
-			$sheet->setCellValue($alphabet[$key + 3].'8', $agingrate[$key + 1]->selisih);
+			$sheet->setCellValue($alphabet[$key + 3].'8', $agingrate[$key]->selisih);
 			$sheet->setCellValue($alphabet[$key + 2].'9', $agingrate[$key]->jumlah);
 
 			$sheet->setCellValue($alphabet[$key + 2].'13', $agingrate[$key]->lankekrglan);
@@ -371,7 +371,6 @@ class AgingRate extends CI_Controller {
 		$prodef = $this->agingrate_model->getProdef();
 		$sheet->setCellValue('D19', $prodef[0]->prodeflancar);
 		$sheet->setCellValue('D20', $prodef[0]->prodefkuranglancar);
-		$sheet->setCellValue('D21', $prodef[0]->prodefdiragukan);
 
 		$writer = new Xlsx($spreadsheet);
 		$writer->save("storage/".$fileName);

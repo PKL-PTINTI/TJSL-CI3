@@ -180,9 +180,6 @@
           </div>
         </section>
       </div>
-      <footer class="main-footer">
-          Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
-      </footer>
     </div>
   </div>
 </body>

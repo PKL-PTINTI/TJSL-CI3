@@ -64,6 +64,15 @@ class Dashboard extends PerhitunganLaporan {
 		$this->data['pemasukan_bulanan'] = 0;
 		$this->data['pengeluaran_bulanan'] = 0;
 
+		$pemasukanBulanIni = $this->db->query("SELECT SUM(pemasukan) as pemasukan FROM opex WHERE DATE_FORMAT(`tanggal`, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')")->row()->pemasukan == null ? 0 : $this->db->query("SELECT SUM(pemasukan) as pemasukan FROM opex WHERE DATE_FORMAT(`tanggal`, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')")->row()->pemasukan;
+		$pemasukanBulanKemarin = intval($this->db->query("SELECT SUM(pemasukan) as pemasukan FROM opex WHERE DATE_FORMAT(`tanggal`, '%Y-%m') = DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m')")->row()->pemasukan);
+
+		if($pemasukanBulanIni == 0){
+			$this->data['persentase_pemasukan'] = 0;
+		}else{
+			$this->data['persentase_pemasukan'] = ($pemasukanBulanIni / $pemasukanBulanKemarin) * 100;
+		}
+
 		foreach ($this->data['data_chart_opex'] as $key => $value) {
 			preg_match('/(\d{1,4}\d{1})/', $this->data['data_chart_opex'][$key]->tanggal, $output_array);
 			if ($output_array[0] == date('Y')) {

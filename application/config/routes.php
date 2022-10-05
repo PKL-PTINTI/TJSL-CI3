@@ -66,7 +66,7 @@ $route['translate_uri_dashes'] = FALSE;
 // $route['admin/mitra/kolektibilitas/macet/(:any)'] = 'admin/mitra/sektormacet/$1';
 
 $route['admin/mitra/get_data_mitra/kolektibilitas/(:any)'] = 'admin/mitra/get_data_mitra/$1';
-$route['admin/mitra/get_data_mitra/masalah/(:any)'] = 'admin/mitra/get_data_mitra/$1';
+$route['admin/mitra/get_data_mitra/bermasalah/(:any)'] = 'admin/mitra/get_data_mitra/$1';
 $route['admin/mitra/get_data_mitra/koleksektor/(:any)/(:any)'] = 'admin/mitra/get_data_mitra/$1/$2';
 $route['admin/mitra/get_data_mitra/masalahsektor/(:any)/(:any)'] = 'admin/mitra/get_data_mitra/$1/$2';
 

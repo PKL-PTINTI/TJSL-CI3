@@ -2,48 +2,52 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class PerhitunganModel extends CI_Model {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
     
-    public function getSaldoPokokBermasalah($sektor = '') {
-        $this->db->select_sum('saldopokok');
-        $this->db->from('mitra');
-        $this->db->where('saldopokok >', '0');
-        $this->db->where('tdkbermasalah', 'masalah');
-        $this->db->where('tdkbermasalah', 'Masalah');
-        $this->db->where('tdkbermasalah', 'MASALAH');
-        if ($sektor != '') {
-            $this->db->where('sektorUsaha', $sektor);
-        }
-
-        $query = $this->db->get();
-        return $query->result()[0]->saldopokok;
+    public function updateCatatanAtasLapKeu($nilaiLaporan, $perioda, $id){
+        $this->db->set($perioda, $nilaiLaporan);
+        $this->db->where('id', $id);
+        $this->db->update('catatanataslapkeu');
     }
 
-    public function getSaldoPokokTdkBermasalah($kolektibilitas = '') {
-        $this->db->select_sum('saldopokok');
-        $this->db->from('mitra');
-        $this->db->where('saldopokok >', '0');
-        if ($kolektibilitas) {
-            $this->db->where('kolektibilitas', $kolektibilitas, ucfirst($kolektibilitas), strtoupper($kolektibilitas));
-        }
-        $this->db->where('tdkbermasalah', 'normal');
-        $this->db->where('tdkbermasalah', 'Normal');
-        $this->db->where('tdkbermasalah', 'NORMAL');
+    public function selectCatatanAtasLapKeu($fieldPerioda, $id){
+        $this->db->select($fieldPerioda);
+        $this->db->from('catatanataslapkeu');
+        $this->db->where('id', $id);
         $query = $this->db->get();
-        return $query->result()[0]->saldopokok;
+        return $query->result_array()[0][$fieldPerioda];
     }
 
-    public function getSaldoOpexAkun($query = '') {	
-        $tanggalawal = date('Y-m-01', mktime(0, 0, 0, date('m')-1, date('d'), date('y')));
-		$tanggalakhir = date('Y-m-01');
+    public function updatePerubahanAsetNetoTidakTerikat($perioda, $nilaiLaporan, $id){
+        $this->db->set($perioda, $nilaiLaporan);
+        $this->db->where('id', $id);
+        $this->db->update('perubahanasetnetotidakterikat');
+    }
 
-        $this->db->select_sum('pengeluaran');
-        $this->db->select_sum('pemasukan');
-        $this->db->from('opex');
-        $this->db->where('tanggal >=', $tanggalawal);
-        $this->db->where('tanggal <=', $tanggalakhir);
-        $this->db->where($query);
+    public function updatePerubahanAsetNetoTidakTerikatSD($perioda, $nilaiLaporan, $id){
+        $this->db->set('sd' . $perioda, $nilaiLaporan);
+        $this->db->where('id', $id);
+        $this->db->update('perubahanasetnetotidakterikat');
+    }
+
+    public function selectPerubahanAsetNetoTidakTerikat($fieldPerioda, $id){
+        $this->db->select($fieldPerioda);
+        $this->db->from('perubahanasetnetotidakterikat');
+        $this->db->where('id', $id);
         $query = $this->db->get();
-        return ($query->result()[0]->pengeluaran - $query->result()[0]->pemasukan);
+        return $query->result_array()[0][$fieldPerioda];
+    }
+
+    public function selectPerubahanAsetNetoTidakTerikatSD($fieldPerioda, $id){
+        $this->db->select('sd' . $fieldPerioda);
+        $this->db->from('perubahanasetnetotidakterikat');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        return $query->result_array()[0]['sd' . $fieldPerioda];
     }
 
 }

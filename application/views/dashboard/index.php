@@ -62,14 +62,14 @@
                     <canvas id="myChart2" height="182"></canvas>
                     <div class="statistic-details mt-sm-4">
                     <div class="statistic-details-item">
-                        <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span> 7%</span>
+                        <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span> <?= $persentase_pemasukan ?>%</span>
                         <div class="detail-value"><?= number_format($pemasukan_bulanan); ?></div>
-                        <div class="detail-name">Today's Sales</div>
+                        <div class="detail-name">Pemasukan Bulanan</div>
                     </div>
                     <div class="statistic-details-item">
                         <span class="text-muted"><span class="text-danger"><i class="fas fa-caret-down"></i></span> 23%</span>
                         <div class="detail-value"><?= number_format($pengeluaran_bulanan); ?></div>
-                        <div class="detail-name">This Week's Sales</div>
+                        <div class="detail-name">Pengeluaran Bulanan</div>
                     </div>
                     </div>
                 </div>
@@ -137,24 +137,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Sebaran Mitra</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div id="myMap" style="position:relative;width:100%;min-width:290px;height:600px;"></div>
-                            <div id="legend">Population Density<br/>(people/mi<sup>2</sup>)<br/></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
@@ -281,137 +264,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
-
-<script>
-        var map, datasource;
-
-        var defaultColor = '#00ff80';
-        var colorScale = [
-            10, '#09e076',
-            20, '#0bbf67',
-            50, '#f7e305',
-            100, '#f7c707',
-            200, '#f78205',
-            500, '#f75e05',
-            1000, '#f72505'
-        ];
-
-        function GetMap() {
-            //Initialize a map instance.
-            map = new atlas.Map('myMap', {
-                // center: [-94.6, 39.1],
-                // center at indonesian
-                center: [111.2520315, -7.5070458],
-                zoom: 6,
-
-                //Pitch the map so that the extrusion of the polygons is visible.
-                pitch: 45,
-
-                view: 'Auto',
-
-                //Add authentication details for connecting to Azure Maps.
-                authOptions: {
-                    authType: 'subscriptionKey',
-                    subscriptionKey: 'ylzPmj9lHIt7A20IJs9JoUzOSrEwD34Q71HdkD47wJA'
-                }
-            });
-
-            //Create a legend.
-            createLegend();
-
-            //Wait until the map resources are ready.
-            map.events.add('ready', function () {
-                //Create a data source to add your data to.
-                datasource = new atlas.source.DataSource();
-                map.sources.add(datasource);
-
-                //Load a dataset of polygons that have metadata we can style against.
-                datasource.importDataFromUrl('/data/geojson/US_States_Population_Density.json');
-
-                //Create a stepped expression based on the color scale.
-                var steppedExp = [
-                    'step',
-                    ['get', 'density'],
-                    defaultColor
-                ];
-                steppedExp = steppedExp.concat(colorScale);
-
-                //Create and add a polygon extrusion layer to the map below the labels so that they are still readable.
-                map.layers.add(new atlas.layer.PolygonExtrusionLayer(datasource, null, {
-                    base: 100,
-                    fillColor: steppedExp,
-                    fillOpacity: 0.7,
-                    height: [
-                        'interpolate',
-                        ['linear'],
-                        ['get', 'density'],
-                        0, 100,
-                        1200, 960000
-                    ]
-                }), 'labels');
-            });
-        }
-
-        function createLegend() {
-            var html = [];
-            html.push('<i style="background:', defaultColor, '"></i> 0-', colorScale[0], '<br/>');
-
-            for (var i = 0; i < colorScale.length; i += 2) {
-                html.push(
-                    '<i style="background:', (colorScale[i + 1]), '"></i> ',
-                    colorScale[i], (colorScale[i + 2] ? '&ndash;' + colorScale[i + 2] + '<br/>' : '+')
-                );
-            }
-
-            document.getElementById('legend').innerHTML += html.join('');
-        }
-    </script>
-    <style>
-        #legend {
-            position: absolute;
-            top: 1px;
-            left: 5px;
-            font-family: Arial;
-            font-size: 12px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 5px;
-            padding: 5px;
-            line-height: 20px;
-        }
-
-            #legend i {
-                width: 18px;
-                height: 18px;
-                float: left;
-                margin-right: 8px;
-                opacity: 0.7;
-            }
-    </style>
-
-<script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
-        var options = {
-          title: 'Mitra Binaan  ',
-          is3D: true,
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
-      }
-    </script>

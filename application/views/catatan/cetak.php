@@ -47,8 +47,8 @@
                </tr>
                <tr>
                   <td><b>BANK</b></td>
-                  <td align="right"><?= number_format($catatan[2][$perioda]) ?></td>
-                  <td align="right"><?= number_format($catatan[2][$akhirtahun]) ?></td>
+                  <td align="right"><b><?= number_format($catatan[2][$perioda]) ?></b></td>
+                  <td align="right"><b><?= number_format($catatan[2][$akhirtahun]) ?></b></td>
                </tr>
                <tr>
                   <td style="padding-left: 25px;">Mandiri</td>

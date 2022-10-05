@@ -37,11 +37,9 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/components.css">
-    <link href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" rel="stylesheet" />
-    <script src="<?= base_url() ?>assets/js/atlas.min.js"></script>
 </head>
 
-<body data-base_url="<?= base_url() ?>" onload="GetMap()">
+<body data-base_url="<?= base_url() ?>">
     <div id="app">
         <div class="main-wrapper">
             <div class="navbar-bg"></div>
@@ -193,7 +191,7 @@
                     </li>
                 </ul>
             </nav>
-                <div class="main-sidebar sidebar-style-2">
+                <div class="main-sidebar sidebar-style-2 <?php $ci =& get_instance(); echo ($ci->uri->segment(3) == 'cicilan') ? 'd-none' : NULL; ?>">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
                         <a href="<?= base_url('/admin/dashboard') ?>">TJSL</a>
