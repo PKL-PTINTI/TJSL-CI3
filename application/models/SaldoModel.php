@@ -26,12 +26,9 @@ class SaldoModel extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('opex');
-        if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
-			$tahun = date('Y') . '-01-01';
-		}
+        $tahun = date('Y') . '-01-01';
 
 		$this->db->where('tanggal >=', $tahun);
-		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
         $this->db->where('id_akun', '101010101');
         $this->db->where('tampil', '0');    
         $query = $this->db->get();
@@ -42,12 +39,9 @@ class SaldoModel extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('opex');
-        if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
-			$tahun = date('Y') . '-01-01';
-		}
+        $tahun = date('Y') . '-01-01';
 
 		$this->db->where('tanggal >=', $tahun);
-		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
         $this->db->where('id_akun', '101010201');
         $this->db->where('tampil', '0');
 
@@ -59,13 +53,11 @@ class SaldoModel extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('opex');
-        if(date('Y-m-01', strtotime(date('Y-m-d H:i:s', time()))) >= date('Y') . '-01-01' AND date('Y-m-01', strtotime(date( 'Y-m-d H:i:s', time () ))) < mktime(0, 0, 0, '01',   '01',   date("Y")+1)){
-			$tahun = date('Y') . '-01-01';
-		}
+		$tahun = date('Y') . '-01-01';
 
 		$this->db->where('tanggal >=', $tahun);
-		$this->db->where('tanggal <=', date('Y-m-d H:i:s', time()));
         $this->db->where('id_akun', '101010204');
+        $this->db->where('tampil', '0');
         $query = $this->db->get();
         return $query->result();
     }

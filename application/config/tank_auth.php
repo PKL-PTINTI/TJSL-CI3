@@ -55,7 +55,7 @@ $config['registration_fields'][] = array('name', 'Nama Lengkap', 'trim|required'
 | to your own controller with flashdata to restrict its viewing.
 |--------------------------------------------------------------------------
 */
-$config['login-success'] = 'admin/dashboard';
+$config['login-success'] = 'Admin/dashboard';
 $config['logout-success'] = 'Auth';     // Set FALSE for landing page in /views/landing/, '' for home, or 'controller' for your custom controller
 
 /*

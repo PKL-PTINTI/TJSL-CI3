@@ -11,8 +11,8 @@
     <div class="section-header">
         <h1>Rincian Cicilan</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('admin/mitra') ?>">Mitra</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('Admin/mitra') ?>">Mitra</a></div>
             <div class="breadcrumb-item"><?= $header ?></div>
         </div>
     </div>

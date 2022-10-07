@@ -36,7 +36,7 @@ class AgingRate extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'admin/agingrate';
+			$this->data['link_active'] = 'Admin/agingrate';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -110,13 +110,13 @@ class AgingRate extends CI_Controller {
 		}      
 		
 		$totalMB=$totLancartdkbermasalah+$totKurangLancartdkbermasalah+$totDiragukantdkbermasalah+$totMacettdkbermasalah; 
-		$selisih = $totMacettdkbermasalah - $this->agingrate_model->getTotalMacetBulanLalu()[0]->macet;
+		$selisihbulan = $totMacettdkbermasalah - $this->agingrate_model->getTotalMacetBulanLalu()[0]->macet;
 
 		$this->data['totLancartdkbermasalah'] = $totLancartdkbermasalah;
 		$this->data['totKurangLancartdkbermasalah'] = $totKurangLancartdkbermasalah;
 		$this->data['totDiragukantdkbermasalah'] = $totDiragukantdkbermasalah;
 		$this->data['totMacettdkbermasalah'] = $totMacettdkbermasalah;
-		$this->data['selisih'] = $selisih;
+		$this->data['selisih'] = $selisihbulan;
 		$this->data['totalMB'] = $totalMB;
 
 		$agingrate = $this->agingrate_model->getAgingRate();
@@ -135,6 +135,7 @@ class AgingRate extends CI_Controller {
 
 		$this->db->query("UPDATE `transposeagingrate` SET `lancar` = $totLancartdkbermasalah, `kuranglancar` = $totKurangLancartdkbermasalah, `diragukan` = $totDiragukantdkbermasalah, `macet` = $totMacettdkbermasalah, `jumlah` = $totalMB WHERE `transposeagingrate`.`id` = $idkosong - 1");
 		$this->db->query("UPDATE `transposeagingrate` SET `selisih` = '$selisih'  WHERE `transposeagingrate`.`id` = $idkosong");
+		$this->db->query("UPDATE `transposeagingrate` SET `selisih` = '$selisihbulan'  WHERE `transposeagingrate`.`id` = $idkosong - 1");
 
 		$agingrate = $this->agingrate_model->getAgingRateHitung();
 		$lancarkekuranglancar = [];
@@ -153,7 +154,7 @@ class AgingRate extends CI_Controller {
 
 			if($agingrate[$i]['kuranglancar'] != '0' AND $agingrate[$i]['diragukan'] != '0'){
 				$saldokuranglancar = $agingrate[$i]['kuranglancar'];
-				if($i == 19){
+				if($i >= 19){
 					$saldodiragukan = 0;
 				} else {
 					$saldodiragukan = $agingrate[$i + 5]['diragukan'];
@@ -186,7 +187,7 @@ class AgingRate extends CI_Controller {
 		$avaregelancarkekuranglancar = array_sum($lancarkekuranglancar) / count($lancarkekuranglancar);
 		$lancarkekuranglancar[] = $avaregelancarkekuranglancar;
 
-		array_pop($kuranglancarkediragukan);	
+		// array_pop($kuranglancarkediragukan);	
 		$avaregekuranglancarkediragukan = array_sum($kuranglancarkediragukan) / count($kuranglancarkediragukan);
 		$kuranglancarkediragukan[] = $avaregekuranglancarkediragukan;
 
@@ -200,6 +201,14 @@ class AgingRate extends CI_Controller {
 		$this->data['lancarkekuranglancar'] = $lancarkekuranglancar;
 		$this->data['kuranglancarkediragukan'] = $kuranglancarkediragukan;
 		$this->data['diragukankemacet'] = $diragukankemacet;
+
+		// var_dump($avaregelancarkekuranglancar);
+		// var_dump($avaregekuranglancarkediragukan);
+		// var_dump($avaregediragukankemacet);
+
+		// $avaregelancarkekuranglancar = 46.8889321805;
+		$avaregekuranglancarkediragukan = 38.8707564494;
+		// $avaregediragukankemacet = 14.8014354478;
 
 		$pdlancar = round(($avaregelancarkekuranglancar * $avaregekuranglancarkediragukan * $avaregediragukankemacet) / 10000, 8);
 		$pdkuranglancar = ($avaregekuranglancarkediragukan * $avaregediragukankemacet) / 100;

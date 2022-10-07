@@ -34,7 +34,7 @@ class Dashboard extends PerhitunganLaporan {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'admin/dashboard';
+			$this->data['link_active'] = 'Admin/dashboard';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -84,7 +84,7 @@ class Dashboard extends PerhitunganLaporan {
 				unset($this->data['data_chart_opex'][$key]);
 			}
 		}
-		$this->exceute();
+		// $this->exceute();
 		$this->template->load('dashboard/index', $this->data);
 	}
 }

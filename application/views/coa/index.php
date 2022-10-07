@@ -18,11 +18,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/coa/'): ?>
+                                <?php if(uri_string() == 'Admin/coa/'): ?>
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/coa/createexcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/coa/createexcel') ?>">Export Data</a>
                                 </div>
                             </div>
                         </div>

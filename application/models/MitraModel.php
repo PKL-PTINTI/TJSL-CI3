@@ -51,6 +51,7 @@ class MitraModel extends CI_Model {
 		
 		// Kolektibilitas
 		if($param1 == 'lancar' || $param1 == 'diragukan' || $param1 == 'macet'){
+			$this->db->order_by('tglkontrak', 'ASC');
 			$this->db->where('kolektibilitas', $param1, ucfirst($param1), strtoupper($param1));	
 			if($param1 == 'lancar'){
 				$this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL');
@@ -61,6 +62,7 @@ class MitraModel extends CI_Model {
 		}
 
 		if($param1 == 'kuranglancar'){
+			$this->db->order_by('tglkontrak', 'ASC');
 			$this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL');
 			$this->db->where('saldopokok >', 0);
 			$this->db->where('kolektibilitas', 'kurang lancar', 'Kurang Lancar', 'KURANG LANCAR');

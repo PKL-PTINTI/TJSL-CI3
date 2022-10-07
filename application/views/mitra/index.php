@@ -29,19 +29,19 @@
 
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/lancar', 'Lancar'
+                                        changeUrlMitra('Admin/mitra/get_data_mitra/kolektibilitas/lancar', 'Lancar'
                                         )" href="#">Mitra Lancar</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/kuranglancar', 'Kurang Lancar'
+                                        changeUrlMitra('Admin/mitra/get_data_mitra/kolektibilitas/kuranglancar', 'Kurang Lancar'
                                         )" href="#">Mitra Kurang Lancar</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/diragukan', 'Diragukan'
+                                        changeUrlMitra('Admin/mitra/get_data_mitra/kolektibilitas/diragukan', 'Diragukan'
                                         )" href="#">Mitra Diragukan</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitra('admin/mitra/get_data_mitra/kolektibilitas/macet', 'Macet'
+                                        changeUrlMitra('Admin/mitra/get_data_mitra/kolektibilitas/macet', 'Macet'
                                         )" href="#">Mitra Macet</a>
                                     </div>
                                 </div>
@@ -56,19 +56,19 @@
 
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/normal', 'Normal'
+                                        changeUrlMitraMasalah('Admin/mitra/get_data_mitra/bermasalah/normal', 'Normal'
                                         )" href="#">Mitra Normal</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/masalah', 'Bermasalah'
+                                        changeUrlMitraMasalah('Admin/mitra/get_data_mitra/bermasalah/masalah', 'Bermasalah'
                                         )" href="#">Mitra Bermasalah</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/khusus', 'Khusus'
+                                        changeUrlMitraMasalah('Admin/mitra/get_data_mitra/bermasalah/khusus', 'Khusus'
                                         )" href="#">Mitra Khusus</a>
                                         <a class="dropdown-item"
                                         onclick="
-                                        changeUrlMitraMasalah('admin/mitra/get_data_mitra/bermasalah/wo', 'Wipe Out'
+                                        changeUrlMitraMasalah('Admin/mitra/get_data_mitra/bermasalah/wo', 'Wipe Out'
                                         )" href="#">Mitra WO</a>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                                         <a class="dropdown-item" data-sektor="" href="#">Sektor Lain-lain</a>
                                     </div>
                                 </div>
-                                <a class="btn btn-primary mb-3 " href="<?= base_url('admin/mitra/create') ?>">Tambah Data Mitra</a>
+                                <a class="btn btn-primary mb-3 " href="<?= base_url('Admin/mitra/create') ?>">Tambah Data Mitra</a>
                             </div>
                         </div>
                         <div>

@@ -2,8 +2,8 @@
     <div class="section-header">
         <h1>Input Data Mitra Baru</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="<?= base_url('admin/Mitra') ?>">Mitra</a></div>
+            <div class="breadcrumb-item active"><a href="<?= base_url('Admin/dashboard') ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?= base_url('Admin/Mitra') ?>">Mitra</a></div>
             <div class="breadcrumb-item">Input Data Mitra Baru</div>
         </div>
     </div>
@@ -16,7 +16,7 @@
                         <h4>Mitra Baru</h4>
                     </div>
                     <div class="card-body">
-                        <form action="<?= base_url('admin/mitra/store') ?>" method="post">
+                        <form action="<?= base_url('Admin/mitra/store') ?>" method="post">
                             <div class="form-group">
                                 <label>Nomor Kontrak</label>
                                 <input type="text" class="form-control" placeholder="Nomor Kontrak"

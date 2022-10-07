@@ -25,7 +25,7 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/rka/createexcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/rka/createexcel') ?>">Export Data</a>
                                 </div>
                             </div>
                         </div>

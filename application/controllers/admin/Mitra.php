@@ -34,7 +34,7 @@ class Mitra extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'admin/mitra';
+			$this->data['link_active'] = 'Admin/mitra';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -115,11 +115,11 @@ class Mitra extends CI_Controller {
 							<i class="fas fa-ellipsis-v"></i>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="' . base_url('admin/mitra/detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
-							<a class="dropdown-item" href="' . base_url('admin/mitra/update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
-							<a class="dropdown-item" href="' . base_url('admin/mitra/cetak_surat/' . $mitra->nokontrak) . '"><i class="fas fa-print pr-2"></i></i> Cetak Surat peringatan </a>
-							<a class="dropdown-item" href="' . base_url('admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
-							<a class="dropdown-item" href="' . base_url('admin/mitra/destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/cetak_surat/' . $mitra->nokontrak) . '"><i class="fas fa-print pr-2"></i></i> Cetak Surat peringatan </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
 						</div>
 					</div>
 				';
@@ -131,10 +131,10 @@ class Mitra extends CI_Controller {
 							<i class="fas fa-ellipsis-v"></i>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="' . base_url('admin/mitra/detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
-							<a class="dropdown-item" href="' . base_url('admin/mitra/update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
-							<a class="dropdown-item" href="' . base_url('admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
-							<a class="dropdown-item" href="' . base_url('admin/mitra/destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
+							<a class="dropdown-item" href="' . base_url('Admin/mitra/destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
 						</div>
 					</div>
 				';
@@ -536,7 +536,7 @@ class Mitra extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Mitra Baru Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
-		redirect(base_url('admin/mitra'));
+		redirect(base_url('Admin/mitra'));
 	}
 
 	public function storeUpdate(){
@@ -580,7 +580,7 @@ class Mitra extends CI_Controller {
 		], ['nokontrak' => $nokontrak]);
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Mitra Berhasil Di Update\',position: \'bottomRight\'});</script>');
 
-		return redirect(base_url('admin/mitra'));
+		return redirect(base_url('Admin/mitra'));
 	}
 
 	public function update($nokontrak){
@@ -603,7 +603,7 @@ class Mitra extends CI_Controller {
 	public function destroy($id){
 		$this->mitra_model->destroy($id);
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Mitra Berhasil Dihapus\',position: \'bottomRight\'});</script>');
-		redirect(base_url('admin/mitra'));
+		redirect(base_url('Admin/mitra'));
 	}
 
 	public function rincianCicilan($no_kontrak){
@@ -1176,7 +1176,7 @@ class Mitra extends CI_Controller {
 		]);
 
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Cicilan Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
-		redirect(base_url('admin/mitra/cicilan/'.$no_kontrak));
+		redirect(base_url('Admin/mitra/cicilan/'.$no_kontrak));
 
 	}
 
@@ -1363,7 +1363,7 @@ class Mitra extends CI_Controller {
 			}
 		}
 
-		redirect(base_url('admin/mitra/cicilan/'.$no_kontrak));
+		redirect(base_url('Admin/mitra/cicilan/'.$no_kontrak));
 	}
 
 	public function detail($no_kontrak){

@@ -20,13 +20,13 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/jurnal/create') ?>">Tambah Data Jurnal</a>
+                                        href="<?= base_url('Admin/jurnal/create') ?>">Tambah Data Jurnal</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/jurnal/voucher') ?>">Tambah Data Voucher</a>
+                                        href="<?= base_url('Admin/jurnal/voucher') ?>">Tambah Data Voucher</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/jurnal/periodaopex') ?>">Perioda</a>
+                                        href="<?= base_url('Admin/jurnal/periodaopex') ?>">Perioda</a>
                                     <a class="btn btn-primary mb-3 "
-                                        href="<?= base_url('admin/jurnal/createexcel') ?>">Export Excel</a>
+                                        href="<?= base_url('Admin/jurnal/createexcel') ?>">Export Excel</a>
                                 </div>
                             </div>
                         </div>

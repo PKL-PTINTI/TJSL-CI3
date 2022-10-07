@@ -20,7 +20,7 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/saldo/kartuperkiraan?id_akun=' . $id_akun) ?>">Kartu Perkiraan</a>
+                                        href="<?= base_url('Admin/saldo/kartuperkiraan?id_akun=' . $id_akun) ?>">Kartu Perkiraan</a>
                                 </div>
                             </div>
                         </div>
@@ -45,9 +45,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $no = 1; $saldo = 0;?>
+                                    <?php $no = 1;?>
                                     <?php foreach($jurnal as $j): ?>
-                                    <?php $saldo += $j->pemasukan - $j->pengeluaran ?>
+                                    <?php $saldoawal += $j->pemasukan - $j->pengeluaran ?>
                                     <tr>
                                         <td class="text-center"><?= $no++ ?></td>
                                         <td><?= $j->id_opex ?></td>
@@ -55,7 +55,7 @@
                                         <td><?= $j->tanggal ?></td>
                                         <td><?= number_format($j->pemasukan) ?></td>
                                         <td><?= number_format($j->pengeluaran) ?></td>
-                                        <td><?= number_format($saldo + $saldoawal) ?></td>
+                                        <td><?= number_format($saldoawal) ?></td>
                                         <td><?= $j->keterangan ?></td>
                                         <td><?= $j->nobukti ?></td>
                                         <td><?= number_format($j->tot_pemasukan) ?></td>

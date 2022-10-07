@@ -89,7 +89,7 @@ class PerhitunganLaporan extends CI_Controller {
 		$ANTterbebaskanklr = 0; $ANTterbebaskan = 0; $PenyisihanANTTBerakhirPemenuhanProgrammsk = 0; $PenyisihanANTTBerakhirPemenuhanProgramklr = 0; $PenyisihanANTTBerakhirPemenuhanProgram = 0; $ANTTerbebaskanklr = 0; $ANTTerbebaskanmsk = 0; $ANTTerbebaskan = 0; $KewajibanJangkaPendekAngsuranBelumTeridentifikasi = 0; $PendapatanLainLainLainlain = 0;
 
         foreach($mitra as $key => $value){
-            if(($value['tdkbermasalah']  ==  'normal' || $value['tdkbermasalah']  ==  'Normal' || $value['tdkbermasalah']  ==  'NORMAL') AND $value['saldopokok'] > '0'){
+            if(($value['tdkbermasalah']  ==  'normal' || $value['tdkbermasalah']  ==  'Normal' || $value['tdkbermasalah']  ==  'NORMAL') AND $value['saldopokok'] > '0' AND $value['kolektibilitas']!='LUNAS'){
                 $totalsaldopokoktdkbermasalah += $value['saldopokok'];
                 if($value['kolektibilitas']  ==  'lancar' OR $value['kolektibilitas']  ==  'Lancar' OR $value['kolektibilitas']  ==  'LANCAR'){
                     $totallancar += $value['saldopokok'] ;
@@ -106,7 +106,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if(($value['tdkbermasalah']  ==  'normal' OR $value['tdkbermasalah']  ==  'Normal' OR $value['tdkbermasalah']  ==  'NORMAL')
-            	AND $value['saldopokok'] > '0' AND ($value['sektorUsaha']  ==  'Sektor Industri' OR $value['sektorUsaha']  ==  'sektor industri')){
+            	AND $value['saldopokok'] > '0' AND ($value['sektorUsaha']  ==  'Sektor Industri' OR $value['sektorUsaha']  ==  'sektor industri') AND $value['kolektibilitas']!='LUNAS'){
    
                 $totsektorindustri += $value['saldopokok'];
                 if($value['kolektibilitas']  ==  'Kurang Lancar' OR $value['kolektibilitas']  ==  'kurang lancar'){
@@ -121,7 +121,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL')
-                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perdagangan' OR $value['sektorUsaha'] == 'sektor perdagangan')){
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perdagangan' OR $value['sektorUsaha'] == 'sektor perdagangan') AND $value['kolektibilitas']!='LUNAS'){
                 $totsektorperdagangan += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar' OR  $value['kolektibilitas'] == 'lancar'){
                     $totperdaganganLancar += $value['saldojumlah'];
@@ -138,7 +138,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
-                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Pertanian' OR $value['sektorUsaha'] == 'sektor pertanian')){
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Pertanian' OR $value['sektorUsaha'] == 'sektor pertanian') AND $value['kolektibilitas']!='LUNAS' ){
 
                 $totsektorpertanian += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar' OR  $value['kolektibilitas'] == 'lancar'){
@@ -156,7 +156,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
-                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perkebunan' OR $value['sektorUsaha'] == 'sektor perkebunan')){
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perkebunan' OR $value['sektorUsaha'] == 'sektor perkebunan') AND $value['kolektibilitas']!='LUNAS' ){
                 
                 $totsektorperkebunan += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar'){
@@ -174,7 +174,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
-                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perikanan' OR $value['sektorUsaha'] == 'sektor perikanan')){
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perikanan' OR $value['sektorUsaha'] == 'sektor perikanan') AND $value['kolektibilitas']!='LUNAS' ){
    
                 $totsektorperikanan += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar'){
@@ -192,7 +192,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
-                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Peternakan' OR $value['sektorUsaha'] == 'sektor peternakan')  ){
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Peternakan' OR $value['sektorUsaha'] == 'sektor peternakan') AND $value['kolektibilitas']!='LUNAS' ){
    
                 $totsektorpeternakan += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar' ){
@@ -210,7 +210,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if( ($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
-                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Jasa' OR $value['sektorUsaha'] == 'sektor jasa')  ){
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Jasa' OR $value['sektorUsaha'] == 'sektor jasa') AND $value['kolektibilitas']!='LUNAS' ){
    
                 $totsektorjasa += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar' OR $value['kolektibilitas'] == 'lancar' ){
@@ -229,7 +229,7 @@ class PerhitunganLaporan extends CI_Controller {
             }
 
             if( ($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL' )
-                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Lain-lain' OR $value['sektorUsaha'] == 'sektor lain-lain')  ){
+                AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Lain-lain' OR $value['sektorUsaha'] == 'sektor lain-lain') AND $value['kolektibilitas']!='LUNAS' ){
 
                 $totsektorlainlain += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar'  OR $value['kolektibilitas'] == 'lancar' ){
@@ -800,18 +800,27 @@ class PerhitunganLaporan extends CI_Controller {
         $PiutangMitraBinaanPinjamanJasasejakAwal=$totsektorjasa;
         $PiutangMitraBinaanPinjamanLainsejakAwal=$totsektorlainlain;
 
-        $tingkatpengembalianpinjamanMBtotalsejakAwal=$PiutangMitraBinaanPinjamanIndustrisejakAwal+
-                $PiutangMitraBinaanPinjamanPerdagangansejakAwal+
-                $PiutangMitraBinaanPinjamanPertaniansejakAwal+
-                $PiutangMitraBinaanPinjamanPerkebunansejakAwal+
-                $PiutangMitraBinaanPinjamanPerikanansejakAwal+
-                $PiutangMitraBinaanPinjamanPeternakansejakAwal+
-                $PiutangMitraBinaanPinjamanJasasejakAwal+
-                $PiutangMitraBinaanPinjamanLainsejakAwal;
+
+        // $tingkatpengembalianpinjamanMBtotalsejakAwal=$PiutangMitraBinaanPinjamanIndustrisejakAwal+
+        //         $PiutangMitraBinaanPinjamanPerdagangansejakAwal+
+        //         $PiutangMitraBinaanPinjamanPertaniansejakAwal+
+        //         $PiutangMitraBinaanPinjamanPerkebunansejakAwal+
+        //         $PiutangMitraBinaanPinjamanPerikanansejakAwal+
+        //         $PiutangMitraBinaanPinjamanPeternakansejakAwal+
+        //         $PiutangMitraBinaanPinjamanJasasejakAwal+
+        //         $PiutangMitraBinaanPinjamanLainsejakAwal;
+
+        $tingkatpengembalianpinjamanMBtotalsejakAwal=$PiutangMitraBinaanPinjamanIndustrisejakAwal+$PiutangMitraBinaanPinjamanPerdagangansejakAwal+$PiutangMitraBinaanPinjamanPertaniansejakAwal+$PiutangMitraBinaanPinjamanPerkebunansejakAwal+$PiutangMitraBinaanPinjamanPerikanansejakAwal+$PiutangMitraBinaanPinjamanPeternakansejakAwal+
+$PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwal;
         
-        $saldomandiri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='1'")->result_array()[0][$bulansekarang];
-        $saldobri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='2'")->result_array()[0][$bulansekarang];
-        $saldokas = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='3'")->result_array()[0][$bulansekarang];
+        // $saldomandiri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='1'")->result_array()[0][$bulansekarang];
+        // $saldobri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='2'")->result_array()[0][$bulansekarang];
+        // $saldokas = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='3'")->result_array()[0][$bulansekarang];
+        // $totsaldobank = $saldomandiri + $saldobri;
+        $perioda = date('M Y', strtotime($bulansekarang));
+        $saldomandiri = $this->db->query("SELECT mandiri FROM saldokasbank WHERE perioda='$perioda'")->result_array()[0]['mandiri'];	
+        $saldobri = $this->db->query("SELECT bri FROM saldokasbank WHERE perioda='$perioda'")->result_array()[0]['bri'];
+        $saldokas = $this->db->query("SELECT kaskecil FROM saldokasbank WHERE perioda='$perioda'")->result_array()[0]['kaskecil'];
         $totsaldobank = $saldomandiri + $saldobri;
 
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldokas'  WHERE id='1'"); //kas 
@@ -1124,8 +1133,7 @@ class PerhitunganLaporan extends CI_Controller {
         $PendapatanLainlainsd=$PendapatanLainlainsdBulanSebelumnya+$PendapatanLainlain;
         $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$PendapatanLainlainsd'  WHERE id='3'");
 
-        $Jumlah1sdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='4'")->result_array()[0]['sd' . $bulansebelumnya];
-        $Jumlah1sd= floor($Jumlah1sdBulanSebelumnya)+ floor($Jumlah1);
+        $Jumlah1sd= $PendapatanLainlainsd+$PendapatanBungasd+$PendapatanJasaAdministrasiPinjamanProgramKemitraansd;
         $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$Jumlah1sd'  WHERE id='4'");
 
         $PenyisihanAlokasiDanaBUMNPedulisdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='6'")->result_array()[0]['sd' . $bulansebelumnya];
@@ -1144,8 +1152,7 @@ class PerhitunganLaporan extends CI_Controller {
         $jumlah2sd=$jumlah2sdBulanSebelumnya+$Jumlah2;
         $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$jumlah2sd'  WHERE id='9'");
 
-        $JumlahPendapatansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='10'")->result_array()[0]['sd' . $bulansebelumnya];
-        $JumlahPendapatansd=floor($JumlahPendapatansdBulanSebelumnya)+ floor($JumlahPendapatan);
+        $JumlahPendapatansd=$jumlah2sd+$Jumlah1sd; 
         $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$JumlahPendapatansd'  WHERE id='10'");
 
         $DanaPembinaanKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='12'")->result_array()[0]['sd' . $bulansebelumnya];

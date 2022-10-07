@@ -18,13 +18,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
-                                <?php if(uri_string() == 'admin/aging_rate/'): ?>
+                                <?php if(uri_string() == 'Admin/aging_rate/'): ?>
                                 <?php endif; ?>
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/agingrate/createexcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/agingRate/createexcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/agingrate/hitungagingrate') ?>">Hitung Aging Rate</a>
+                                        href="<?= base_url('Admin/agingRate/hitungagingrate') ?>">Hitung Aging Rate</a>
                                 </div>
                             </div>
                         </div>

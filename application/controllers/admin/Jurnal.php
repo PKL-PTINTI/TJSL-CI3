@@ -36,7 +36,7 @@ class Jurnal extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'admin/jurnal';
+			$this->data['link_active'] = 'Admin/jurnal';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -414,7 +414,7 @@ class Jurnal extends CI_Controller {
 	//End Pengeluaran
 
 	$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
-	redirect(base_url('admin/jurnal'));
+	redirect(base_url('Admin/jurnal'));
 	}
 
 	public function destroy(){
@@ -422,7 +422,7 @@ class Jurnal extends CI_Controller {
 		$nobukti = $this->input->post('opex');
 		$this->jurnal_model->destroy($nobukti);
 		// $this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Jurnal Berhasil Dihapus\',position: \'bottomRight\'});</script>');
-		// redirect(base_url('admin/Jurnal'));
+		// redirect(base_url('Admin/Jurnal'));
 		// $referred_from = $this->session->userdata('referred_from');
 		// redirect($referred_from, 'refresh');
 	}
@@ -534,7 +534,7 @@ class Jurnal extends CI_Controller {
 		}
 
 		$this->session->set_flashdata('message', '<script>iziToast.success({title: \'Success\',message: \'Data Voucher Berhasil Ditambahkan\',position: \'bottomRight\'});</script>');
-		redirect(base_url('admin/jurnal'));	
+		redirect(base_url('Admin/jurnal'));	
 	}
 
 	public function createExcel() {

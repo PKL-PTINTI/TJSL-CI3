@@ -191,7 +191,7 @@ class Auth extends CI_Controller
 		if($this->session->userdata('roles') == 'mitra'){
 			return redirect('mitra');
 		} else {
-			return redirect('admin/dashboard');
+			return redirect('Admin/dashboard');
 		}
 	}
 

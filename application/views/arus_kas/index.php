@@ -20,9 +20,9 @@
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/laporan/aruskas/createexcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/laporan/arusKas/createexcel') ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('admin/laporan/aruskas/cetak') ?>" target="_blank">Cetak Laporan</a>
+                                        href="<?= base_url('Admin/laporan/arusKas/cetak') ?>" target="_blank">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>

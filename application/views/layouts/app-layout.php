@@ -194,10 +194,10 @@
                 <div class="main-sidebar sidebar-style-2 <?php $ci =& get_instance(); echo ($ci->uri->segment(3) == 'cicilan') ? 'd-none' : NULL; ?>">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="<?= base_url('/admin/dashboard') ?>">TJSL</a>
+                        <a href="<?= base_url('/Admin/dashboard') ?>">TJSL</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="<?= base_url('/admin/dashboard') ?>">INTI</a>
+                        <a href="<?= base_url('/Admin/dashboard') ?>">INTI</a>
                     </div>
                     <ul class="sidebar-menu">
 
