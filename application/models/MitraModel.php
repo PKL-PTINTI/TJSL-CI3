@@ -141,6 +141,16 @@ class MitraModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function getJurnalOpex($nobukti){
+		return $nobukti;
+		$this->db->select('*');
+		$this->db->from('opex');
+		$this->db->where('nobukti', $nobukti);
+		$query = $this->db->get();
+		
+		return $query->row();
+	}
+
 	public function getMitraCicilan($id)
 	{
 		$this->db->select('*');

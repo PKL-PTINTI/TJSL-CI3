@@ -74,7 +74,7 @@ class AgingRate extends CI_Controller {
 		$totnilsaldopokok_tdkbermasalah = 0;
 
 		foreach($mitra as $m){
-			if($m->saldopokok > '0' AND ($m->tdkbermasalah == 'normal' OR $m->tdkbermasalah == 'Normal' OR $m->tdkbermasalah == 'NORMAL')){
+			if($m->saldopokok > '0' AND ($m->tdkbermasalah == 'normal' OR $m->tdkbermasalah == 'Normal' OR $m->tdkbermasalah == 'NORMAL') AND $m->kolektibilitas!='LUNAS' AND $m->kolektibilitas!='Lunas' AND $m->kolektibilitas!='lunas'){
 				if($m->kolektibilitas=='lancar' OR $m->kolektibilitas=='Lancar' OR  $m->kolektibilitas=='LANCAR'){
 					$totLancartdkbermasalah+=$m->saldopokok;
 				}
@@ -129,7 +129,7 @@ class AgingRate extends CI_Controller {
 		}
 
 		$this->data['idkosong'] = $idkosong; 
-		$this->data['bulankosong'] = $bulankosong ;
+		$this->data['bulankosong'] = $bulankosong;
 
 		$selisih = 0 - $totMacettdkbermasalah;
 
@@ -159,7 +159,7 @@ class AgingRate extends CI_Controller {
 				} else {
 					$saldodiragukan = $agingrate[$i + 5]['diragukan'];
 				}
-				// echo 'kuranglancar ke diragukan => '; echo $saldokuranglancar; echo ' / '; echo $saldodiragukan; echo nl2br("\n");
+				// echo 'kuranglancar ke diragukan => '; echo $saldodiragukan; echo ' / '; echo $saldokuranglancar; echo nl2br("\n");
 				$kuranglancarkediragukan[] = ($saldodiragukan / $saldokuranglancar) * 100;
 			}
 		}
@@ -187,7 +187,8 @@ class AgingRate extends CI_Controller {
 		$avaregelancarkekuranglancar = array_sum($lancarkekuranglancar) / count($lancarkekuranglancar);
 		$lancarkekuranglancar[] = $avaregelancarkekuranglancar;
 
-		// array_pop($kuranglancarkediragukan);	
+		array_pop($kuranglancarkediragukan);
+		array_pop($kuranglancarkediragukan);
 		$avaregekuranglancarkediragukan = array_sum($kuranglancarkediragukan) / count($kuranglancarkediragukan);
 		$kuranglancarkediragukan[] = $avaregekuranglancarkediragukan;
 
@@ -201,14 +202,6 @@ class AgingRate extends CI_Controller {
 		$this->data['lancarkekuranglancar'] = $lancarkekuranglancar;
 		$this->data['kuranglancarkediragukan'] = $kuranglancarkediragukan;
 		$this->data['diragukankemacet'] = $diragukankemacet;
-
-		// var_dump($avaregelancarkekuranglancar);
-		// var_dump($avaregekuranglancarkediragukan);
-		// var_dump($avaregediragukankemacet);
-
-		// $avaregelancarkekuranglancar = 46.8889321805;
-		$avaregekuranglancarkediragukan = 38.8707564494;
-		// $avaregediragukankemacet = 14.8014354478;
 
 		$pdlancar = round(($avaregelancarkekuranglancar * $avaregekuranglancarkediragukan * $avaregediragukankemacet) / 10000, 8);
 		$pdkuranglancar = ($avaregekuranglancarkediragukan * $avaregediragukankemacet) / 100;
@@ -234,9 +227,9 @@ class AgingRate extends CI_Controller {
 		$this->data['avaregekuranglancarkediragukan'] = $avaregekuranglancarkediragukan;
 		$this->data['avaregediragukankemacet'] = $avaregediragukankemacet;
 
-		$this->db->query("UPDATE transposeagingrate SET lankekrglan='$avaregelancarkekuranglancar' WHERE id=$idkosong");     
-		$this->db->query("UPDATE transposeagingrate SET krglankediragu='$avaregekuranglancarkediragukan' WHERE id=$idkosong");
-		$this->db->query("UPDATE transposeagingrate SET diragukemacet='$avaregediragukankemacet' WHERE id=$idkosong");
+		$this->db->query("UPDATE transposeagingrate SET lankekrglan='$avaregelancarkekuranglancar' WHERE id=$idkosong - 2");     
+		$this->db->query("UPDATE transposeagingrate SET krglankediragu='$avaregekuranglancarkediragukan' WHERE id=$idkosong - 6");
+		$this->db->query("UPDATE transposeagingrate SET diragukemacet='$avaregediragukankemacet' WHERE id=$idkosong - 4");
 
 		$aloklancar      =0-round($pdlancar      *$totLancartdkbermasalah /100); 
 		$alokkuranglancar=0-round($pdkuranglancar*$totKurangLancartdkbermasalah/100);
@@ -301,85 +294,117 @@ class AgingRate extends CI_Controller {
 		$this->data['totalokjasa'] = $totalokjasa;
 		$this->data['totaloklainlain'] = $totaloklainlain;
 
-		$this->db->query("UPDATE transposeagingrate SET prodeflancar='$pdlancar' WHERE id=$idkosong");//
-		$this->db->query("UPDATE transposeagingrate SET prodefkuranglancar='$pdkuranglancar' WHERE id=$idkosong");
+		$this->db->query("UPDATE transposeagingrate SET prodeflancar='$pdlancar' WHERE id=$idkosong - 1");//
+		$this->db->query("UPDATE transposeagingrate SET prodefkuranglancar='$pdkuranglancar' WHERE id=$idkosong - 1 ");
 
 		$this->data['title'] = 'Aging Rate';
 
 		$this->template->load('aging_rate/detail', $this->data);
 	}
 
-	public function CreateExcel() {
+	public function alokasipiutang(){
+		$this->data['title'] = 'Alokasi Piutang';
+		$this->data['header'] = 'Alokasi Piutang';
+		$perioda = date('M', strtotime('-1 month'));
+		$this->data['piutangmitra'] = $this->db->query("SELECT * FROM piutangmitra WHERE masalah='tdkbermasalah' AND perioda='$perioda'")->result_array();
+		$this->data['alokasisisih'] = $this->db->query("SELECT SUM(alokasisisih) as alok FROM piutangmitra WHERE masalah='tdkbermasalah' AND perioda='$perioda'")->result_array()[0]['alok'];
+		$this->data['saldopiutang'] = $this->db->query("SELECT SUM(sisapinjaman) as saldopiutang FROM piutangmitra WHERE masalah='tdkbermasalah' AND perioda='$perioda'")->result_array()[0]['saldopiutang'];
+
+		$this->template->load('aging_rate/alokasipiutang', $this->data);
+	}
+
+	public function exportAlokasiPiutang(){
+		$fileName = 'Alokasi Piutang.xlsx';	
+		$perioda = date('M', strtotime('-1 month'));
+		$piutangmitra = $this->db->query("SELECT * FROM piutangmitra WHERE masalah='tdkbermasalah' AND perioda='$perioda'")->result_array();
+		$alokasisisih = $this->db->query("SELECT SUM(alokasisisih) as alok FROM piutangmitra WHERE masalah='tdkbermasalah' AND perioda='$perioda'")->result_array()[0]['alok'];
+		$saldopiutang = $this->db->query("SELECT SUM(sisapinjaman) as saldopiutang FROM piutangmitra WHERE masalah='tdkbermasalah' AND perioda='$perioda'")->result_array()[0]['saldopiutang'];
+
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->getColumnDimension('A')->setWidth(5);
+		$sheet->getColumnDimension('B')->setWidth(20);
+		$sheet->getColumnDimension('C')->setWidth(20);
+		$sheet->getColumnDimension('D')->setWidth(20);
+		$sheet->getColumnDimension('E')->setWidth(20);
+		$sheet->getColumnDimension('F')->setWidth(20);
+		$sheet->getColumnDimension('G')->setWidth(20);
+		$sheet->setCellValue('A1', 'No');
+		$sheet->setCellValue('B1', 'No kontrak');
+		$sheet->setCellValue('C1', 'Sektor');
+		$sheet->setCellValue('D1', 'Status');
+		$sheet->setCellValue('E1', 'Sisa Pinjaman');
+		$sheet->setCellValue('F1', 'Alokasi Sisa Pinjaman');
+		$sheet->setCellValue('G1', 'Alokasi Sisa Pinjaman (%)');
+
+		$no = 1;
+		$x = 2;
+		foreach ($piutangmitra as $piutang) {
+			$sheet->setCellValue('A'.$x, $no++);
+			$sheet->setCellValue('B'.$x, $piutang['nokontrak']);
+			$sheet->setCellValue('C'.$x, $piutang['sektor']);
+			$sheet->setCellValue('D'.$x, $piutang['status']);
+			$sheet->setCellValue('E'.$x, number_format($piutang['sisapinjaman']));
+			$sheet->setCellValue('F'.$x, number_format($piutang['alokasisisih']));
+			$sheet->setCellValue('G'.$x, ($piutang['alokasisisih']/$saldopiutang)*100);
+			$x++;
+		}
+
+		$writer = new Xlsx($spreadsheet);
+		$writer->save("storage/".$fileName);
+		header("Content-Type: application/vnd.ms-excel");
+        redirect(base_url()."/storage/".$fileName); 
+	}
+
+	public function createExcel() {
 		$fileName = 'aging-rate-' . date('Y') .'.xlsx';  
-
 		$agingrate = $this->agingrate_model->getAgingRate();
-		
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-		
-		$inputFileType = 'Xlsx';
-		$inputFileName = 'storage\AgingRate.xlsx';
-
-		$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
-		$spreadsheet = $reader->load($inputFileName);
+		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
 
-		$stylebold = array(
-			'font'  => array(
-				'bold'  => true,
-				'size'  => 11,
-			));
+		$sheet->getColumnDimension('A')->setWidth(5);
+		$sheet->getColumnDimension('B')->setWidth(20);
+		$sheet->getColumnDimension('C')->setWidth(20);
+		$sheet->getColumnDimension('D')->setWidth(20);
+		$sheet->getColumnDimension('E')->setWidth(20);
+		$sheet->getColumnDimension('F')->setWidth(20);
+		$sheet->getColumnDimension('G')->setWidth(20);
+		$sheet->getColumnDimension('H')->setWidth(20);
+		$sheet->getColumnDimension('I')->setWidth(20);
+		$sheet->getColumnDimension('J')->setWidth(20);
+		$sheet->getColumnDimension('K')->setWidth(20);
+		$sheet->getColumnDimension('L')->setWidth(20);
+		$sheet->getColumnDimension('M')->setWidth(20);
 
-		// for alpabet A-Z
-		$alphabet = range('A', 'Z');
-		$alphabet = array_merge($alphabet, range('A', 'Z'));
+		$sheet->setCellValue('A1', 'No');
+		$sheet->setCellValue('B1', 'Bulan');
+		$sheet->setCellValue('C1', 'Lancar');
+		$sheet->setCellValue('D1', 'Kurang Lancar');
+		$sheet->setCellValue('E1', 'Diragukan');
+		$sheet->setCellValue('F1', 'Macet');
+		$sheet->setCellValue('G1', 'Selisih');
+		$sheet->setCellValue('H1', 'Jumlah');
+		$sheet->setCellValue('I1', 'Lancar Ke Kurang Lancar');
+		$sheet->setCellValue('J1', 'Kurang Lancar Ke Diragukan');
+		$sheet->setCellValue('K1', 'Diragukan Ke Macet');
+		$sheet->setCellValue('L1', 'Probabilitas Default Lancar');
+		$sheet->setCellValue('M1', 'Probabilitas Default Kurang Lancar');
 		
-		$_back = strval(date('Y') - 1);
-		$_now = date('M Y', mktime(0, 0, 0, date("m"), 0, date("Y")));
-		$sheet->setCellValue('B2', "STEP #1 isi angka kualitas AR dari bulan Januari $_back  -  $_now");
-		$sheet->getStyle('B2')->applyFromArray($stylebold);
-
-		$month = array();
-		$bulan = array (
-			1 =>   'jan',
-			'feb',
-			'mar',
-			'apr',
-			'mei',
-			'jun',
-			'jul',
-			'ags',
-			'sep',
-			'okt',
-			'nov',
-			'des'
-		);
-		for ($i=1; $i <= 12; $i++) { 
-			$month[] = ucfirst($bulan[$i]) . ' ' . date('y', mktime(0, 0, 0, date("m"), date("d"), date("Y")- 1));
-		}
-		for ($i=1; $i <= 12; $i++) { 
-			$month[] = ucfirst($bulan[$i]) . ' ' . date('y', mktime(0, 0, 0, date("m"), date("d"), date("Y")));
-		}
-		
-		$averagelnkekrglan = 0;
-
 		foreach ($agingrate as $key => $value) {
-			$sheet->setCellValue($alphabet[$key + 2].'3', $month[$key]);
-			$sheet->setCellValue($alphabet[$key + 2].'4', $agingrate[$key]->lancar);
-			$sheet->setCellValue($alphabet[$key + 2].'5', $agingrate[$key]->kuranglancar);
-			$sheet->setCellValue($alphabet[$key + 2].'6', $agingrate[$key]->diragukan);
-			$sheet->setCellValue($alphabet[$key + 2].'7', $agingrate[$key]->macet);
-			$sheet->setCellValue($alphabet[$key + 3].'8', $agingrate[$key]->selisih);
-			$sheet->setCellValue($alphabet[$key + 2].'9', $agingrate[$key]->jumlah);
-
-			$sheet->setCellValue($alphabet[$key + 2].'13', $agingrate[$key]->lankekrglan);
-			$sheet->setCellValue($alphabet[$key + 2].'14', $agingrate[$key]->krglankediragu);
-			$sheet->setCellValue($alphabet[$key + 2].'15', $agingrate[$key]->diragukemacet);			
+			$sheet->setCellValue('A' . ($key + 2), $value->id);
+			$sheet->setCellValue('B' . ($key + 2), $value->bulan);
+			$sheet->setCellValue('C' . ($key + 2), number_format($value->lancar));
+			$sheet->setCellValue('D' . ($key + 2), number_format($value->kuranglancar));
+			$sheet->setCellValue('E' . ($key + 2), number_format($value->diragukan));
+			$sheet->setCellValue('F' . ($key + 2), number_format($value->macet));
+			$sheet->setCellValue('G' . ($key + 2), number_format($value->selisih));
+			$sheet->setCellValue('H' . ($key + 2), number_format($value->jumlah));
+			$sheet->setCellValue('I' . ($key + 2), round($value->lankekrglan, 2));
+			$sheet->setCellValue('J' . ($key + 2), round($value->krglankediragu, 2));
+			$sheet->setCellValue('K' . ($key + 2), round($value->diragukemacet, 2));
+			$sheet->setCellValue('L' . ($key + 2), round($value->prodeflancar, 2));
+			$sheet->setCellValue('M' . ($key + 2), round($value->prodefkuranglancar, 2));
 		}
-
-		$prodef = $this->agingrate_model->getProdef();
-		$sheet->setCellValue('D19', $prodef[0]->prodeflancar);
-		$sheet->setCellValue('D20', $prodef[0]->prodefkuranglancar);
 
 		$writer = new Xlsx($spreadsheet);
 		$writer->save("storage/".$fileName);

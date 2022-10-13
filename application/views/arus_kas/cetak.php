@@ -196,18 +196,13 @@
          </table>
          </p>
    </font>
-   <!--
+   
       <script>
       		window.print();
       	</script>
-      -->
+     
 
       <!-- add script document on raedy print -->
-      <script>
-         $(document).ready(function () {
-            window.print();
-         });
-      </script>
    </div>   
    </p>
    </div>

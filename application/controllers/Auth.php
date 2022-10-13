@@ -52,12 +52,12 @@ class Auth extends CI_Controller
 			$this->data['use_recaptcha'] = $this->config->item('use_recaptcha', 'tank_auth');
 			$this->data['captcha_registration'] = $this->config->item('captcha_registration', 'tank_auth');
 
-			// if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
-			// 	if ($this->data['use_recaptcha'])
-			// 		$this->form_validation->set_rules('g-recaptcha-response', 'Confirmation Code', 'trim|required|callback__check_recaptcha');
-			// 	else
-			// 		$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|required|callback__check_captcha');
-			// }
+			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
+				if ($this->data['use_recaptcha'])
+					$this->form_validation->set_rules('g-recaptcha-response', 'Confirmation Code', 'trim|required|callback__check_recaptcha');
+				else
+					$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|required|callback__check_captcha');
+			}
 
 			$this->data['errors'] = array();
 
@@ -169,14 +169,14 @@ class Auth extends CI_Controller
 			}
 
 			$this->data['show_captcha'] = FALSE;
-			// if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
-			// 	$this->data['show_captcha'] = TRUE;
-			// 	if ($this->data['use_recaptcha']) {
-			// 		$this->data['recaptcha_html'] = $this->_create_recaptcha();
-			// 	} else {
-			// 		$this->data['captcha_html'] = $this->_create_captcha();
-			// 	}
-			// }
+			if ($this->tank_auth->is_max_login_attempts_exceeded($login)) {
+				$this->data['show_captcha'] = TRUE;
+				if ($this->data['use_recaptcha']) {
+					$this->data['recaptcha_html'] = $this->_create_recaptcha();
+				} else {
+					$this->data['captcha_html'] = $this->_create_captcha();
+				}
+			}
 
 			$this->load->view('auth/login', $this->data);
 		}

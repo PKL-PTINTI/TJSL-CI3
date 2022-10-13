@@ -24,8 +24,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped" id="table-1">
+                        <div>
+                            <table class="table table-striped" id="table-saldo">
                                 <thead>
                                     <tr>
                                         <th class="text-center">NO</th>

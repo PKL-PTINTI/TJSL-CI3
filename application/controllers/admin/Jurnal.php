@@ -558,8 +558,7 @@ class Jurnal extends CI_Controller {
 		$sheet->getColumnDimension('M')->setWidth(15);
 		$sheet->getColumnDimension('N')->setWidth(15);
 		$sheet->getColumnDimension('O')->setWidth(13);
-
-        $sheet = $spreadsheet->getActiveSheet();
+		
        	$sheet->setCellValue('A1', 'No ID');
         $sheet->setCellValue('B1', 'No Akun');
         $sheet->setCellValue('C1', 'Tanggal');
@@ -715,7 +714,7 @@ class Jurnal extends CI_Controller {
 			}
 		}
 
-		$end = [
+		$uraian = [
 			'no' => '',
 			'id_opex' => '',
 			'id_akun' => '',
@@ -729,11 +728,17 @@ class Jurnal extends CI_Controller {
 			'action' => '',
 		];
 
-		$data[] = $end;
+		$data[] = $uraian;
 				
 		$this->output
 			->set_content_type('application/json')
-			->set_output(json_encode(array('data' => $data, 'totpengeluaran' => $totpengeluaran, 'totpemasukan' => $totpemasukan, 'saldo_akhir' => $saldo_akhir, 'selisih' => $selisih)));
+			->set_output(json_encode(
+				array('data' => $data, 
+					  'totpengeluaran' => $totpengeluaran, 
+					  'totpemasukan' => $totpemasukan, 
+					  'saldo_akhir' => $saldo_akhir, 
+					  'selisih' => $selisih
+					)));
 	}
 	
 	public function bank($akun){

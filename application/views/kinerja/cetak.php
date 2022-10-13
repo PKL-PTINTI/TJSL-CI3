@@ -194,3 +194,7 @@
       -----------------------   =   <?= number_format($danatersedia[6][$perioda]) ?>  % = skor = <?= number_format($danatersedia[7][$perioda]) ?>  <br>  
       <?= number_format($danatersedia[5][$perioda]) ?></b>
    </font>
+
+      <script>
+      	window.print();
+      </script>

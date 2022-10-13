@@ -12,6 +12,11 @@ var cicilan = $("#table-cicilan-1").dataTable({
 	scrollX: true,
 });
 
+var cicilan = $("#table-saldo").dataTable({
+	columnDefs: [{ sortable: false, targets: [2, 3] }],
+	scrollX: true,
+});
+
 $("#table-cicilan-2").dataTable({
 	columnDefs: [{ sortable: false, targets: [2, 3] }],
 	scrollX: true,
@@ -35,6 +40,9 @@ $("#table-jurnal-bank").dataTable({
 $("#table-agingrate").dataTable({
 	columnDefs: [{ sortable: false, targets: [2, 3] }],
 	scrollX: true,
+});
+$("#table-piutang").dataTable({
+	columnDefs: [{ sortable: false, targets: [2, 3] }]
 });
 
 let table_perioda = $("#table-jurnal-perioda").dataTable({
@@ -351,6 +359,31 @@ $("#form-perkiraan").on("submit", function (e) {
 	});
 });
 
+function delete_mitra(element){
+	var url = element.dataset.url;
+	swal({
+		title: 'Kamu Serius?',
+		text: 'Saolnya data ini bakal dihapus lhooo..',
+		icon: 'warning',
+		buttons: true,
+		dangerMode: true,
+	  })
+	  .then((willDelete) => {
+		if (willDelete) {
+			$.ajax({
+				type: "GET",
+				url: url,
+			});
+			swal('Berhasil', 'Yeayy! Datanya sudah berhasil dihapus.', 	{
+				icon: 'success',
+			});
+			table_mitra.ajax.reload(null, false);
+		} else {
+			swal('Gak Jadi Di Hapus', 'Datanya aman kok!', 'info');
+		}
+	  });
+}
+
 function delete_jurnal(element){
 	var url = window.location.origin + '' + "/Admin/jurnal/destroy";
 
@@ -377,7 +410,7 @@ function delete_jurnal(element){
 				});
 				table_jurnal.ajax.reload(null, false);
 			} else {
-				swal('Gak Jadi Di H	apus', 'Datanya aman kok!', 'info');
+				swal('Gak Jadi Di Hapus', 'Datanya aman kok!', 'info');
 			}
 		  });
 	//   });

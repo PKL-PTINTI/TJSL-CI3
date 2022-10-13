@@ -21,6 +21,10 @@
                                 <div>
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/neracaSaldo/createexcel') ?>">Export Data</a>
+                                    <a class="btn btn-primary mb-3" 
+                                        href="<?= base_url('Admin/neracaSaldo/hitungNeracaSaldo') ?>">Hitung Neraca Saldo</a>
+                                    <a class="btn btn-primary mb-3" 
+                                        href="<?= base_url('Admin/neracaSaldo/cetakNeracaSaldo') ?>">Cetak Neraca Saldo</a>
                                 </div>
                             </div>
                         </div>
@@ -32,10 +36,9 @@
                                         <th>Kode Rekening</th>
                                         <th>Uraian</th>
                                         <th><?= 'Des ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
-                                        <th>Debet <?= $bulan ?></th>
-                                        <th>Kredit <?= $bulan ?></th>
-                                        <th>Saldo <?= $bulan ?></th>   
-                                        <th>Selisih</th>
+                                        <th>Debet</th>
+                                        <th>Kredit</th>
+                                        <th>Saldo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,13 +46,12 @@
                                     <?php foreach ($neracasaldo as $n): ?>
                                     <tr>
                                         <td class="text-center"><?= $no++ ?></td>
-                                        <td><?= $n['id_akun'] ?></td>
+                                        <td><?= $n['id_akun'] == 0 ? '' : $n['id_akun'] ?></td>
                                         <td><?= $n['nama_akun'] ?></td>
                                         <td><?= number_format($n['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
                                         <td><?= number_format($n['debet' . $perioda]) ?></td>
                                         <td><?= number_format($n['kredit' . $perioda]) ?></td>
                                         <td><?= number_format($n['saldo' . $perioda]) ?></td>
-                                        <td><?= number_format($n['selisih']) ?></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

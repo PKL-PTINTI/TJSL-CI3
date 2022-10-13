@@ -70,8 +70,8 @@
                   <div class="col-lg-12">
                     <div class="invoice-title">
                         <div>
-                        <h4> KARTU PIUTANG MITRA BINAAN </h4>
-                        <p>Data per Agustus 2022</p>
+                        <h4> BUKTI BAYAR MITRA BINAAN </h4>
+                        <p>Data per <?= date('M Y') ?></p>
                         </div>
                         <div class="invoice-number"><div class="pb-2 bd-highlight"> <img src='<?= base_url('assets/img/INTI.png') ?>' width='75' height='75' class="img-thumbnail" /></div>
                     </div>
@@ -83,7 +83,7 @@
                             No. ID<br>
                             NAMA PERUSAHAAN<br>
                             NAMA PEMILIK<br>
-                            ALAMAT<br>
+                            ALAMAT<br><br><br>
                             STATUS BINAAN<br>
                             TELEPHONE<br>
                             JAMINAN<br>
@@ -141,7 +141,7 @@
                           <th class="text-right">JUMLAH</th>
                           <th class="text-right">SALDO</th>
                         </tr>
-                        <?php foreach ($angsuran['dataOpex'] as $key => $value): ?>
+                        <?php foreach($angsuran['dataOpex'] as $value): ?>
                           <tr>
                             <td><?= $value['no'] ?></td>
                             <td><?= $value['tanggal'] ?></td>
@@ -151,7 +151,7 @@
                             <td class="text-right"><?= number_format($value['jumlah']) ?></td>
                             <td class="text-right"><?= number_format($value['sisaPinjamanJumlah']) ?></td>
                           </tr>
-                        <?php endforeach; ?>
+                        <?php endforeach ?>
                       </table>
                     </div>
                     <div class="row mt-4">
@@ -171,7 +171,7 @@
               </div>
               <hr>
               <div class="text-md-right">
-                <div class="float-lg-left mb-lg-0 mb-3">
+                <div class="float-lg-left mb-lg-0 pb-3">
                   <button class="btn btn-danger btn-icon icon-left"><i class="fas fa-times"></i> Cancel</button>
                   <button class="btn btn-warning btn-icon icon-left"><i class="fas fa-print"></i> Print</button>
                 </div> 

@@ -84,7 +84,11 @@ class Dashboard extends PerhitunganLaporan {
 				unset($this->data['data_chart_opex'][$key]);
 			}
 		}
-		// $this->exceute();
+		
+		if (date('d') == '01') {
+			$this->execute();
+		}
+
 		$this->template->load('dashboard/index', $this->data);
 	}
 }

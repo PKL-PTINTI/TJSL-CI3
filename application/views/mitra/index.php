@@ -22,7 +22,7 @@
                                     <button class="btn btn-primary dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        Kolektabilitas Mitra
+                                        Kolektibilitas Mitra
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start"
                                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);">

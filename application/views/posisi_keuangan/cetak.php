@@ -202,13 +202,13 @@
                </tr>                      
             </tbody>
          </table>
-         </p>
+</p>
    </font>
-   <!--
+   
       <script>
       		window.print();
       	</script>
-      -->
+     
    </div>   
    </p>
    </div>

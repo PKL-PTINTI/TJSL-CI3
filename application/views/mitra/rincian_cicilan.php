@@ -139,14 +139,15 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4><?= $header; ?> Jurnal</h4>
-                        <div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
                             <a class="btn btn-primary" href="<?= base_url('Admin/mitra/cicilan/create/' . $mitra->nokontrak) ?>">Tambah Cicilan</a>
                             <a class="btn btn-primary d-none" href="<?= base_url('Admin/mitra/copytojurnal/' . $mitra->nokontrak) ?>">Copy Cicilan Ke Jurnal</a>
                             <a class="btn btn-primary" href="<?= base_url('Admin/mitra/cetakcicilan/' . $mitra->nokontrak) ?>">Cetak Cicilan</a>
-                            <a class="btn btn-primary" href="<?= base_url('Admin/mitra/createexcel/') ?>">Export Cicilan</a>
+                            <a class="btn btn-primary" href="<?= base_url('Admin/mitra/cetakBuktiBayar/' . $mitra->nokontrak) ?>">Cetak Bukti Bayar</a>
+                            <a class="btn btn-primary" href="<?= base_url('Admin/mitra/createexcel/'. $mitra->nokontrak) ?>">Export Cicilan</a>
                         </div>
-                    </div>
-                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" id="table-cicilan-1">
                                 <thead>
@@ -195,7 +196,7 @@
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item btndelete" onclick="delete_jurnal(this)" data-opex="<?= $c['nobukti'] ?>"><i
                                                         class="fas fa-trash text-danger pr-2"></i> Delete </a>
-                                                    <a class="dropdown-item"><i class="fas fa-print text-sucess pr-2"></i> Cetak Bukti </a>
+                                                    <a class="dropdown-item" href="<?= base_url('Admin/mitra/cetakBuktiBayar/' . str_replace('/', '%', $c['nobukti'])); ?>"><i class="fas fa-print text-sucess pr-2"></i> Cetak Bukti </a>
                                                 </div>
                                             </div>
                                         </td>
