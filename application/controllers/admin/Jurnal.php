@@ -715,7 +715,7 @@ class Jurnal extends CI_Controller {
 		}
 
 		$uraian = [
-			'no' => '',
+			'no' => count($data) + 1,
 			'id_opex' => '',
 			'id_akun' => '',
 			'tanggal' => '',

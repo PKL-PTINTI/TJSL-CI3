@@ -164,7 +164,6 @@
                                         <th>No Bukti</th>
                                         <th>ID OPEX</th>
                                         <th>Updated By</th>
-                                        <th>Tampil</th>
                                         <th>Tanggal Update</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -185,7 +184,6 @@
                                         <td><?= $c['nobukti'] ?></td>
                                         <td><?= $c['id_opex'] ?></td>
                                         <td><?= $c['updated'] ?></td>
-                                        <td><?= $c['tampil'] ?></td>
                                         <td><?= $c['tglUpdate'] ?></td>
                                         <td>
                                             <div class="dropdown">
@@ -196,7 +194,6 @@
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item btndelete" onclick="delete_jurnal(this)" data-opex="<?= $c['nobukti'] ?>"><i
                                                         class="fas fa-trash text-danger pr-2"></i> Delete </a>
-                                                    <a class="dropdown-item" href="<?= base_url('Admin/mitra/cetakBuktiBayar/' . str_replace('/', '%', $c['nobukti'])); ?>"><i class="fas fa-print text-sucess pr-2"></i> Cetak Bukti </a>
                                                 </div>
                                             </div>
                                         </td>

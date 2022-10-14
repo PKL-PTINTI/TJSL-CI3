@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Invoice &mdash; Stisla</title>
+  <title>Bukti Bayar Cicilan Mitra Binaan</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -94,7 +94,7 @@
                   <div class="col-lg-12">
                     <div class="invoice-title">
                         <div>
-                        <h4> BUKTI BAYAR MITRA BINAAN </h4>
+                        <h4> BUKTI BAYAR CICILAN MITRA BINAAN </h4>
                         <p>Data per <?= date('M Y') ?></p>
                         </div>
                         <div class="invoice-number"><div class="pb-2 bd-highlight"> <img src='<?= base_url('assets/img/INTI.png') ?>' width='75' height='75' class="img-thumbnail" /></div>

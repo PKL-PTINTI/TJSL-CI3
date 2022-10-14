@@ -5,6 +5,7 @@ class PerhitunganLaporan extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
+        ini_set('memory_limit','512M');
         $this->load->model('MitraModel', 'mitra_model');
         $this->load->model('JurnalModel', 'jurnal_model');
         $this->load->model('SaldoModel', 'saldo_model');
@@ -122,6 +123,7 @@ class PerhitunganLaporan extends CI_Controller {
 
             if(($value['tdkbermasalah'] == 'normal' OR $value['tdkbermasalah'] == 'Normal' OR $value['tdkbermasalah'] == 'NORMAL')
                 AND $value['saldopokok']>'0' AND ($value['sektorUsaha'] == 'Sektor Perdagangan' OR $value['sektorUsaha'] == 'sektor perdagangan') AND $value['kolektibilitas']!='LUNAS'){
+                
                 $totsektorperdagangan += $value['saldopokok'];
                 if($value['kolektibilitas'] == 'Lancar' OR  $value['kolektibilitas'] == 'lancar'){
                     $totperdaganganLancar += $value['saldojumlah'];
@@ -800,28 +802,17 @@ class PerhitunganLaporan extends CI_Controller {
         $PiutangMitraBinaanPinjamanJasasejakAwal=$totsektorjasa;
         $PiutangMitraBinaanPinjamanLainsejakAwal=$totsektorlainlain;
 
-
-        // $tingkatpengembalianpinjamanMBtotalsejakAwal=$PiutangMitraBinaanPinjamanIndustrisejakAwal+
-        //         $PiutangMitraBinaanPinjamanPerdagangansejakAwal+
-        //         $PiutangMitraBinaanPinjamanPertaniansejakAwal+
-        //         $PiutangMitraBinaanPinjamanPerkebunansejakAwal+
-        //         $PiutangMitraBinaanPinjamanPerikanansejakAwal+
-        //         $PiutangMitraBinaanPinjamanPeternakansejakAwal+
-        //         $PiutangMitraBinaanPinjamanJasasejakAwal+
-        //         $PiutangMitraBinaanPinjamanLainsejakAwal;
-
         $tingkatpengembalianpinjamanMBtotalsejakAwal=$PiutangMitraBinaanPinjamanIndustrisejakAwal+$PiutangMitraBinaanPinjamanPerdagangansejakAwal+$PiutangMitraBinaanPinjamanPertaniansejakAwal+$PiutangMitraBinaanPinjamanPerkebunansejakAwal+$PiutangMitraBinaanPinjamanPerikanansejakAwal+$PiutangMitraBinaanPinjamanPeternakansejakAwal+
 $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwal;
         
-        // $saldomandiri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='1'")->result_array()[0][$bulansekarang];
-        // $saldobri = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='2'")->result_array()[0][$bulansekarang];
-        // $saldokas = $this->db->query("SELECT $bulansekarang FROM kasbank WHERE id='3'")->result_array()[0][$bulansekarang];
-        // $totsaldobank = $saldomandiri + $saldobri;
         $perioda = date('M Y', strtotime($bulansekarang));
         $saldomandiri = $this->db->query("SELECT mandiri FROM saldokasbank WHERE perioda='$perioda'")->result_array()[0]['mandiri'];	
         $saldobri = $this->db->query("SELECT bri FROM saldokasbank WHERE perioda='$perioda'")->result_array()[0]['bri'];
         $saldokas = $this->db->query("SELECT kaskecil FROM saldokasbank WHERE perioda='$perioda'")->result_array()[0]['kaskecil'];
         $totsaldobank = $saldomandiri + $saldobri;
+
+        var_dump($PiutangMitraBinaanPinjamanPerdagangansejakAwal);
+        die;
 
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldokas'  WHERE id='1'"); //kas 
         $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldokas'  WHERE id='2'"); //kas PK 

@@ -29,7 +29,7 @@
          <table class="table table-sm">
             <thead>
                <tr>
-                  <td><b>KODE REKENING</b></td>
+                  <td align="center"><b>KODE REKENING</b></td>
                   <td><b> U R A I A N</b></td>
                   <td align="right"><b> DES <?= date('Y', mktime(0, 0, 0, 0, 0, date("Y"))) ?></b></td>
                   <td align="right"><b>DEBIT</b></td>
@@ -41,7 +41,7 @@
             <tbody>
                 <?php foreach ($neracasaldo as $n): ?>
                 <tr>
-                    <td><?= $n['id_akun'] == 0 ? '' : $n['id_akun'] ?></td>
+                    <td align="center"><?= $n['id_akun'] == 0 ? '' : $n['id_akun'] ?></td>
                     <td><?= $n['nama_akun'] ?></td>
                     <td align="right"><?= number_format($n['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
                     <td align="right"><?= number_format($n['debet' . $perioda]) ?></td>
@@ -54,11 +54,11 @@
          </table>
          </p>
    </font>
-   <!--
+   
       <script>
       		window.print();
       	</script>
-      -->
+     
    </div>   
    </p>
    </div>

@@ -1,3 +1,4 @@
+
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -177,96 +178,100 @@ class NeracaSaldo extends CI_Controller {
     }
 
 	public function hitungNeracaSaldo(){
+		ini_set('memory_limit','512M');
 		$tanggalAwalTahun = date('Y-01-01');
 		$tanggalBulanTerkahir = date('Y-m-t', strtotime('-1 month'));
 		$desTahunLalu = 'des' . date('y', strtotime('-1 year'));
+		$desTahunLaluNeracaSaldo = $this->neracasaldo_model->getDesTahunLaluNeracaSaldo();
+		$catatanAtasLapKeuDesTahunLalu = $this->neracasaldo_model->getCatatanAtasLapKeu();
+		$catatanAtasLapKeu = $this->neracasaldo_model->getCatatanAtasLapKeuBulan();
 
 		echo '$tglawal = '; echo $tanggalAwalTahun;
 		echo '$tglakhir = '; echo $tanggalBulanTerkahir;echo nl2br("\n");
 
 		$asetlancardesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neraca WHERE id='5'")->result_array()[0][$desTahunLalu];
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$asetlancardesTahunLalu' WHERE id='2'");
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($asetlancardesTahunLalu, '2');
 
-		$piutangMBdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='8'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$piutangMBdesTahunLalu' WHERE id='11'");
+		$piutangMBdesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '8')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($piutangMBdesTahunLalu, '11');
 
-		$sektorIndustridesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='9'")->result_array()[0][$desTahunLalu];;   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorIndustridesTahunLalu' WHERE id='12'");  
+		$sektorIndustridesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '9')[$desTahunLalu];;   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorIndustridesTahunLalu, '12');  
 
-		$aloksektorIndustridesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='18'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$aloksektorIndustridesTahunLalu' WHERE id='21'");  
+		$aloksektorIndustridesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '18')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($aloksektorIndustridesTahunLalu, '21');  
 
-		$alokasiSisihMBdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='17'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$alokasiSisihMBdesTahunLalu' WHERE id='20'");  
+		$alokasiSisihMBdesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '17')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($alokasiSisihMBdesTahunLalu, '20');  
 
 		$LiabilitasJangkaPendekdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neraca WHERE id='20'")->result_array()[0][$desTahunLalu];//liabilitas   
 
 		$kelebihanAngsurandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neraca WHERE id='17'")->result_array()[0][$desTahunLalu];//17. kelebihan angsuran   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$kelebihanAngsurandesTahunLalu' WHERE id='56'");  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($kelebihanAngsurandesTahunLalu, '56');  
 
 		$jasaGirosddesTahunLalu = $this->db->query("SELECT sd$desTahunLalu FROM  perubahanasetnetotidakterikat WHERE id='2'")->result_array()[0]['sd' . $desTahunLalu];   
-		// $this->db->query("UPDATE neracasaldo SET $desTahunLalu='$jasaGirosddesTahunLalu' WHERE id='62'");  
+		// $this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($jasaGirosddesTahunLalu, '62');  
 
-		$pendapatanLainlainpiutangsddesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='59'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$pendapatanLainlainpiutangsddesTahunLalu' WHERE id='63'");  
+		$pendapatanLainlainpiutangsddesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '59')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($pendapatanLainlainpiutangsddesTahunLalu, '63');  
 
-		$pendapatanLainlainPenyesuaiandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='60'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$pendapatanLainlainPenyesuaiandesTahunLalu' WHERE id='64'");  
+		$pendapatanLainlainPenyesuaiandesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '60')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($pendapatanLainlainPenyesuaiandesTahunLalu, '64');  
 
-		$pendapatanLainlainLaindesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='61'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$pendapatanLainlainLaindesTahunLalu' WHERE id='65'");  
+		$pendapatanLainlainLaindesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '61')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($pendapatanLainlainLaindesTahunLalu, '65');  
 
 
-		$BebanUmumAdmdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='65'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$BebanUmumAdmdesTahunLalu' WHERE id='66'");  
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$BebanUmumAdmdesTahunLalu' WHERE id='67'");  
+		$BebanUmumAdmdesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '65')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($BebanUmumAdmdesTahunLalu, '66');  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($BebanUmumAdmdesTahunLalu, '67');  
 
-		$sektorIndustridesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='68'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorIndustridesTahunLalu' WHERE id='69'");  
+		$sektorIndustridesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '68')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorIndustridesTahunLalu, '69');  
 
-		$sektorPerdagangandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='69'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorPerdagangandesTahunLalu' WHERE id='70'");  
+		$sektorPerdagangandesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '69')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorPerdagangandesTahunLalu, '70');  
 
-		$sektorPertaniandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='70'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorPertaniandesTahunLalu' WHERE id='71'");  
+		$sektorPertaniandesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '70')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorPertaniandesTahunLalu, '71');  
 
-		$sektorPerkebunandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='71'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorPerkebunandesTahunLalu' WHERE id='72'");  
+		$sektorPerkebunandesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '71')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorPerkebunandesTahunLalu, '72');  
 
-		$sektorPerikanandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='72'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorPerikanandesTahunLalu' WHERE id='73'");  
+		$sektorPerikanandesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '72')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorPerikanandesTahunLalu, '73');  
 
-		$sektorPeternakandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='73'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorPeternakandesTahunLalu' WHERE id='74'");  
+		$sektorPeternakandesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '73')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorPeternakandesTahunLalu, '74');  
 
-		$sektorJasadesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='74'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorJasadesTahunLalu' WHERE id='75'");  
+		$sektorJasadesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '74')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorJasadesTahunLalu, '75');  
 
-		$sektorLainlaindesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='75'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$sektorLainlaindesTahunLalu' WHERE id='76'");  
+		$sektorLainlaindesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '75')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($sektorLainlaindesTahunLalu, '76');  
 
-		$bebanLainlaindesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='76'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$bebanLainlaindesTahunLalu' WHERE id='77'");  
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$bebanLainlaindesTahunLalu' WHERE id='78'");  
+		$bebanLainlaindesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '76')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($bebanLainlaindesTahunLalu, '77');  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($bebanLainlaindesTahunLalu, '78');  
 
-		$aloksektorJasabermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='49'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$aloksektorJasabermasalahdesTahunLalu' WHERE id='45'");  
+		$aloksektorJasabermasalahdesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '49')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($aloksektorJasabermasalahdesTahunLalu, '45');  
 
 		$AngsuranBelumTeridentifikasidesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neraca WHERE id='18'")->result_array()[0][$desTahunLalu];//18. angsuran  blum teridentifikasi
 
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$AngsuranBelumTeridentifikasidesTahunLalu' WHERE id='57'");  
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$LiabilitasJangkaPendekdesTahunLalu' WHERE id='54'");  
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$LiabilitasJangkaPendekdesTahunLalu' WHERE id='55'");  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($AngsuranBelumTeridentifikasidesTahunLalu, '57');  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($LiabilitasJangkaPendekdesTahunLalu, '54');  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($LiabilitasJangkaPendekdesTahunLalu, '55');  
 
 
 		$pendapatansddesTahunLalu = $this->db->query("SELECT sd$desTahunLalu FROM  perubahanasetnetotidakterikat WHERE id='4'")->result_array()[0]['sd' . $desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$pendapatansddesTahunLalu' WHERE id='60'");  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($pendapatansddesTahunLalu, '60');  
 
 		$jasaAdmPinjamansddesTahunLalu = $this->db->query("SELECT sd$desTahunLalu FROM  perubahanasetnetotidakterikat WHERE id='1'")->result_array()[0]['sd' . $desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$jasaAdmPinjamansddesTahunLalu' WHERE id='61'");  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($jasaAdmPinjamansddesTahunLalu, '61');  
 
 		$asetNetodesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neraca WHERE id='24'")->result_array()[0][$desTahunLalu];//aset neto   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$asetNetodesTahunLalu' WHERE id='58'"); 
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($asetNetodesTahunLalu, '58'); 
 
 		$nomor=1;
 		$totPiutangMitraBinaanDebet=$totPiutangMitraBinaanKredit=0;
@@ -650,349 +655,349 @@ class NeracaSaldo extends CI_Controller {
 		$bulansekarang = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 		$bulansebelumnya = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-2, date("d"), date("Y"))));
 		
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukankas' WHERE id='4'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluarankas' WHERE id='4'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukankas, '4'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluarankas, '4');
 
-		$saldokasPKdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='4'")->result_array()[0][$desTahunLalu];//baca kas PK desTahunLalu
+		$saldokasPKdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '4')[$desTahunLalu];//baca kas PK desTahunLalu
 		$saldoKasPK=$saldokasPKdesTahunLalu+$totpemasukankas-$totpengeluarankas;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$saldoKasPK' WHERE id='4'");
+		$this->neracasaldo_model->updateNeracaSaldo($saldoKasPK, '4');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanmandiri' WHERE id='5'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranmandiri' WHERE id='5'");
-		$SaldoMandiridesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='5'")->result_array()[0][$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanmandiri, '5'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranmandiri, '5');
+		$SaldoMandiridesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '5')[$desTahunLalu];   
 		$saldoMandiriJurnal=$SaldoMandiridesTahunLalu+$totpemasukanmandiri-$totpengeluaranmandiri;    
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$saldoMandiriJurnal' WHERE id='5'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($saldoMandiriJurnal, '5');//  
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanbri' WHERE id='7'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranbri' WHERE id='7'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanbri, '7'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranbri, '7');
 
-		$SaldoBRIdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='7'")->result_array()[0][$desTahunLalu];   
+		$SaldoBRIdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '7')[$desTahunLalu];   
 		$saldoBRIJurnal=$SaldoBRIdesTahunLalu+$totpemasukanbri-$totpengeluaranbri;    
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$saldoBRIJurnal' WHERE id='7'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($saldoBRIJurnal, '7');//  
 
 		$debetno3=$totpemasukankas+$totpemasukanmandiri+$totpemasukanbri;
 		$kreditno3=$totpengeluarankas+$totpengeluaranmandiri+$totpengeluaranbri;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$debetno3' WHERE id='3'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$kreditno3' WHERE id='3'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($debetno3, '3'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($kreditno3, '3');
 
-		$SaldoKasSetaraKasdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='3'")->result_array()[0][$desTahunLalu];   
+		$SaldoKasSetaraKasdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '3')[$desTahunLalu];   
 
 		$SaldoKasSetaraKas= $SaldoKasSetaraKasdesTahunLalu+$debetno3-$kreditno3;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$SaldoKasSetaraKas' WHERE id='3'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($SaldoKasSetaraKas, '3');//  
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanindustribermasalah' WHERE id='30'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranindustribermasalah' WHERE id='30'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanindustribermasalah, '30'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranindustribermasalah, '30');
 
 		$aloktotpemasukanindustribermasalah=$totpemasukanindustribermasalah;
 		$aloktotpengeluaranindustribermasalah=$totpengeluaranindustribermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanindustribermasalah' WHERE id='39'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranindustribermasalah' WHERE id='39'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanindustribermasalah, '39'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranindustribermasalah, '39');
 
-		$sektorindustriBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='30'")->result_array()[0][$desTahunLalu];   
+		$sektorindustriBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '30')[$desTahunLalu];   
 
 		$sektorindustriBermasalah= $sektorindustriBermasalahdesTahunLalu+$totpemasukanindustribermasalah-$totpengeluaranindustribermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorindustriBermasalah' WHERE id='30'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($sektorindustriBermasalah, '30');//  
 
-		$aloksektorindustriBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='39'")->result_array()[0][$desTahunLalu];   
+		$aloksektorindustriBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '39')[$desTahunLalu];   
 
 		$aloksektorindustriBermasalah= $aloksektorindustriBermasalahdesTahunLalu-$aloktotpemasukanindustribermasalah+$aloktotpengeluaranindustribermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorindustriBermasalah' WHERE id='39'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanperdaganganbermasalah' WHERE id='31'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranperdaganganbermasalah' WHERE id='31'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorindustriBermasalah, '39');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanperdaganganbermasalah, '31'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranperdaganganbermasalah, '31');
 		$aloktotpemasukanperdaganganbermasalah=$totpemasukanperdaganganbermasalah;
 		$aloktotpengeluaranperdaganganbermasalah=$totpengeluaranperdaganganbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanperdaganganbermasalah' WHERE id='40'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranperdaganganbermasalah' WHERE id='40'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanperdaganganbermasalah, '40'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranperdaganganbermasalah, '40');
 
-		$sektorperdaganganBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='31'")->result_array()[0][$desTahunLalu];   
+		$sektorperdaganganBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '31')[$desTahunLalu];   
 
 		$sektorperdaganganBermasalah= $sektorperdaganganBermasalahdesTahunLalu+$totpemasukanperdaganganbermasalah-$totpengeluaranperdaganganbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorperdaganganBermasalah' WHERE id='31'");//  
-		$aloksektorperdaganganBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='40'")->result_array()[0][$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldo($sektorperdaganganBermasalah, '31');//  
+		$aloksektorperdaganganBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '40')[$desTahunLalu];   
 
 		$aloksektorperdaganganBermasalah= $aloksektorperdaganganBermasalahdesTahunLalu-$aloktotpemasukanperdaganganbermasalah+$aloktotpengeluaranperdaganganbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorperdaganganBermasalah' WHERE id='40'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorperdaganganBermasalah, '40');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanpertanianbermasalah' WHERE id='32'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranpertanianbermasalah' WHERE id='32'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanpertanianbermasalah, '32'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranpertanianbermasalah, '32');
 		$aloktotpemasukanpertanianbermasalah=$totpemasukanpertanianbermasalah;
 		$aloktotpengeluaranpertanianbermasalah=$totpengeluaranpertanianbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='alok$totpemasukanpertanianbermasalah' WHERE id='41'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='alok$totpengeluaranpertanianbermasalah' WHERE id='41'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanpertanianbermasalah, '41'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranpertanianbermasalah, '41');
 
-		$sektorpertanianBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='32'")->result_array()[0][$desTahunLalu];   
+		$sektorpertanianBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '32')[$desTahunLalu];   
 
 		$sektorpertanianBermasalah= $sektorpertanianBermasalahdesTahunLalu+$totpemasukanpertanianbermasalah-$totpengeluaranpertanianbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorpertanianBermasalah' WHERE id='32'");//  
-		$aloksektorpertanianBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='41'")->result_array()[0][$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldo($sektorpertanianBermasalah, '32');//  
+		$aloksektorpertanianBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '41')[$desTahunLalu];   
 
 		$aloksektorpertanianBermasalah= $aloksektorpertanianBermasalahdesTahunLalu-$totpemasukanpertanianbermasalah+$totpengeluaranpertanianbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorpertanianBermasalah' WHERE id='41'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanperkebunanbermasalah' WHERE id='33'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranperkebunanbermasalah' WHERE id='33'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorpertanianBermasalah, '41');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanperkebunanbermasalah, '33'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranperkebunanbermasalah, '33');
 
 		$aloktotpemasukanperkebunanbermasalah=$totpemasukanperkebunanbermasalah;
 		$aloktotpengeluaranperkebunanbermasalah=$totpengeluaranperkebunanbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanperkebunanbermasalah' WHERE id='42'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranperkebunanbermasalah' WHERE id='42'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanperkebunanbermasalah, '42'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranperkebunanbermasalah, '42');
 
 
-		$sektorperkebunanBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='33'")->result_array()[0][$desTahunLalu];   
+		$sektorperkebunanBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '33')[$desTahunLalu];   
 
 		$sektorperkebunanBermasalah= $sektorperkebunanBermasalahdesTahunLalu+$totpemasukanperkebunanbermasalah-$totpengeluaranperkebunanbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorperkebunanBermasalah' WHERE id='33'");//  
-		$aloksektorperkebunanBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='42'")->result_array()[0][$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldo($sektorperkebunanBermasalah, '33');//  
+		$aloksektorperkebunanBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '42')[$desTahunLalu];   
 
 		$aloksektorperkebunanBermasalah= $aloksektorperkebunanBermasalahdesTahunLalu-$aloktotpemasukanperkebunanbermasalah+$aloktotpengeluaranperkebunanbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorperkebunanBermasalah' WHERE id='42'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorperkebunanBermasalah, '42');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanperikananbermasalah' WHERE id='34'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranperikananbermasalah' WHERE id='34'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanperikananbermasalah, '34'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranperikananbermasalah, '34');
 
 		$aloktotpemasukanperikananbermasalah=$totpemasukanperikananbermasalah;
 		$aloktotpengeluaranperikananbermasalah=$totpengeluaranperikananbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanperikananbermasalah' WHERE id='43'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranperikananbermasalah' WHERE id='43'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanperikananbermasalah, '43'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranperikananbermasalah, '43');
 
-		$sektorperikananBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='34'")->result_array()[0][$desTahunLalu];   
+		$sektorperikananBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '34')[$desTahunLalu];   
 
 		$sektorperikananBermasalah= $sektorperikananBermasalahdesTahunLalu+$totpemasukanperikananbermasalah-$totpengeluaranperikananbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorperikananBermasalah' WHERE id='34'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($sektorperikananBermasalah, '34');//  
 
-		$aloksektorperikananBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='43'")->result_array()[0][$desTahunLalu];   
+		$aloksektorperikananBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '43')[$desTahunLalu];   
 
 		$aloksektorperikananBermasalah= $aloksektorperikananBermasalahdesTahunLalu-$aloktotpemasukanperikananbermasalah+$aloktotpengeluaranperikananbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorperikananBermasalah' WHERE id='43'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorperikananBermasalah, '43');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanpeternakanbermasalah' WHERE id='35'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranpeternakanbermasalah' WHERE id='35'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanpeternakanbermasalah, '35'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranpeternakanbermasalah, '35');
 		$aloktotpemasukanpeternakanbermasalah=$totpemasukanpeternakanbermasalah;
 		$aloktotpengeluaranpeternakanbermasalah=$totpengeluaranpeternakanbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanpeternakanbermasalah' WHERE id='44'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranpeternakanbermasalah' WHERE id='44'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanpeternakanbermasalah, '44'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranpeternakanbermasalah, '44');
 		
 
-		$sektorpeternakanBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='35'")->result_array()[0][$desTahunLalu];   
+		$sektorpeternakanBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '35')[$desTahunLalu];   
 
 		$sektorpeternakanBermasalah= $sektorpeternakanBermasalahdesTahunLalu+$totpemasukanpeternakanbermasalah-$totpengeluaranpeternakanbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorpeternakanBermasalah' WHERE id='35'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($sektorpeternakanBermasalah, '35');//  
 
-		$aloksektorpeternakanBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='44'")->result_array()[0][$desTahunLalu];   
+		$aloksektorpeternakanBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '44')[$desTahunLalu];   
 
 		$aloksektorpeternakanBermasalah= $aloksektorpeternakanBermasalahdesTahunLalu-$aloktotpemasukanpeternakanbermasalah+$aloktotpengeluaranpeternakanbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorpeternakanBermasalah' WHERE id='44'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorpeternakanBermasalah, '44');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanjasabermasalah' WHERE id='36'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranjasabermasalah' WHERE id='36'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanjasabermasalah, '36'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranjasabermasalah, '36');
 
 		$aloktotpemasukanjasabermasalah=$totpemasukanjasabermasalah;
 		$aloktotpengeluaranjasabermasalah=$totpengeluaranjasabermasalah;
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanjasabermasalah' WHERE id='45'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranjasabermasalah' WHERE id='45'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanjasabermasalah, '45'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranjasabermasalah, '45');
 
-		$sektorjasaBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='36'")->result_array()[0][$desTahunLalu];   
+		$sektorjasaBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '36')[$desTahunLalu];   
 
 		$sektorjasaBermasalah= $sektorjasaBermasalahdesTahunLalu+$aloktotpemasukanjasabermasalah-$aloktotpengeluaranjasabermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorjasaBermasalah' WHERE id='36'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($sektorjasaBermasalah, '36');//  
 
-		$aloksektorjasaBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='45'")->result_array()[0][$desTahunLalu];   
+		$aloksektorjasaBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '45')[$desTahunLalu];   
 
 		$aloksektorjasaBermasalah= $aloksektorjasaBermasalahdesTahunLalu-$aloktotpemasukanjasabermasalah+$aloktotpengeluaranjasabermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorjasaBermasalah' WHERE id='45'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorjasaBermasalah, '45');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanLainlainbermasalah' WHERE id='37'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranLainlainbermasalah' WHERE id='37'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanLainlainbermasalah, '37'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranLainlainbermasalah, '37');
 		$aloktotpemasukanLainlainbermasalah=$totpemasukanLainlainbermasalah;
 		$aloktotpengeluaranLainlainbermasalah=$totpengeluaranLainlainbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanLainlainbermasalah' WHERE id='46'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranLainlainbermasalah' WHERE id='46'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanLainlainbermasalah, '46'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranLainlainbermasalah, '46');
 
-		$sektorLainlainBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='37'")->result_array()[0][$desTahunLalu];   
+		$sektorLainlainBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '37')[$desTahunLalu];   
 
 		$sektorLainlainBermasalah= $sektorLainlainBermasalahdesTahunLalu+$totpemasukanLainlainbermasalah-$totpengeluaranLainlainbermasalah;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$sektorLainlainBermasalah' WHERE id='37'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($sektorLainlainBermasalah, '37');//  
 
-		$aloksektorLainlainBermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='46'")->result_array()[0][$desTahunLalu];   
+		$aloksektorLainlainBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '46')[$desTahunLalu];   
 
 		$aloksektorLainlainBermasalah= $aloksektorLainlainBermasalahdesTahunLalu-$aloktotpemasukanLainlainbermasalah+$aloktotpengeluaranLainlainbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorLainlainBermasalah' WHERE id='46'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorLainlainBermasalah, '46');
 
 		$aloktotpemasukanindustri1= round($aloktotpemasukanindustri-$aloktotpemasukanindustribermasalah);//(21-39)
 		$aloktotpengeluaranindustri1=round($aloktotpengeluaranindustri-$aloktotpengeluaranindustribermasalah);
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranindustri1' WHERE id='21'");
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanindustri1' WHERE id='21'"); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranindustri1, '21');
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanindustri1, '21'); 
 
-		$aloksektorIndustridesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='21'")->result_array()[0][$desTahunLalu];   
+		$aloksektorIndustridesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '21')[$desTahunLalu];   
 		$aloksektorIndustri=$aloksektorIndustridesTahunLalu+$aloktotpengeluaranindustri1-$aloktotpemasukanindustri1;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorIndustri' WHERE id='21'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorIndustri, '21');  
 
 		$aloktotpemasukanperdagangan1= round($aloktotpemasukanperdagangan-$aloktotpemasukanperdaganganbermasalah);//(22-40)
 		$aloktotpengeluaranperdagangan1= round ($aloktotpengeluaranperdagangan-$aloktotpengeluaranperdaganganbermasalah);
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanperdagangan1' WHERE id='22'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranperdagangan1' WHERE id='22'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanperdagangan1, '22'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranperdagangan1, '22');
 
-		$aloksektorperdagangandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='22'")->result_array()[0][$desTahunLalu];   
+		$aloksektorperdagangandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '22')[$desTahunLalu];   
 		$aloksektorperdagangan=$aloksektorperdagangandesTahunLalu+$aloktotpengeluaranperdagangan1-$aloktotpemasukanperdagangan1;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorperdagangan' WHERE id='22'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorperdagangan, '22');  
 
 		$aloktotpemasukanpertanian1= round($aloktotpemasukanpertanian-$aloktotpemasukanpertanianbermasalah);//(23-41)
 		$aloktotpengeluaranpertanian1= round ($aloktotpengeluaranpertanian-$aloktotpengeluaranpertanianbermasalah);
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanpertanian1' WHERE id='23'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranpertanian1' WHERE id='23'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanpertanian1, '23'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranpertanian1, '23');
 
-		$aloksektorpertaniandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='23'")->result_array()[0][$desTahunLalu];   
+		$aloksektorpertaniandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '23')[$desTahunLalu];   
 		$aloksektorpertanian=$aloksektorpertaniandesTahunLalu+$aloktotpengeluaranpertanian1-$aloktotpemasukanpertanian1;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorpertanian' WHERE id='23'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorpertanian, '23');  
 
 		$aloktotpemasukanperkebunan1= round($aloktotpemasukanperkebunan-$aloktotpemasukanperkebunanbermasalah);//(24-42)
 		$aloktotpengeluaranperkebunan1=round($aloktotpengeluaranperkebunan-$aloktotpengeluaranperkebunanbermasalah);
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanperkebunan1' WHERE id='24'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranperkebunan1' WHERE id='24'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanperkebunan1, '24'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranperkebunan1, '24');
 
-		$aloksektorperkebunandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='24'")->result_array()[0][$desTahunLalu];   
+		$aloksektorperkebunandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '24')[$desTahunLalu];   
 		$aloksektorperkebunan=$aloksektorperkebunandesTahunLalu+$aloktotpengeluaranperkebunan1-$aloktotpemasukanperkebunan1;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorperkebunan' WHERE id='24'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorperkebunan, '24');  
 
 		$aloktotpemasukanperikanan1= round($aloktotpemasukanperikanan-$aloktotpemasukanperikananbermasalah);//(25-43)
 		$aloktotpengeluaranperikanan1= round($aloktotpengeluaranperikanan-$aloktotpengeluaranperikananbermasalah);
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanperikanan1' WHERE id='25'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranperikanan1' WHERE id='25'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanperikanan1, '25'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranperikanan1, '25');
 
-		$aloksektorperikanandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='25'")->result_array()[0][$desTahunLalu];   
+		$aloksektorperikanandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '25')[$desTahunLalu];   
 		$aloksektorperikanan=$aloksektorperikanandesTahunLalu+$aloktotpengeluaranperikanan1-$aloktotpemasukanperikanan1;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorperikanan' WHERE id='25'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorperikanan, '25');  
 
 		$aloktotpemasukanpeternakan1= round($aloktotpemasukanpeternakan-$aloktotpemasukanpeternakanbermasalah) ; //(26-44)
 		$aloktotpengeluaranpeternakan1= round($aloktotpengeluaranpeternakan-$aloktotpengeluaranpeternakanbermasalah);
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanpeternakan1' WHERE id='26'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranpeternakan1' WHERE id='26'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanpeternakan1, '26'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranpeternakan1, '26');
 
-		$aloksektorpeternakandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='26'")->result_array()[0][$desTahunLalu];   
+		$aloksektorpeternakandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '26')[$desTahunLalu];   
 		$aloksektorpeternakan=$aloksektorpeternakandesTahunLalu+$aloktotpengeluaranpeternakan1-$aloktotpemasukanpeternakan1;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorpeternakan' WHERE id='26'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorpeternakan, '26');  
 
 		$aloktotpemasukanjasa1= round($aloktotpemasukanjasa-$aloktotpemasukanjasabermasalah);//27-45 $totpemasukanjasabermasalah
 		$aloktotpengeluaranjasa1=round( $aloktotpengeluaranjasa-$aloktotpengeluaranjasabermasalah);
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanjasa1' WHERE id='27'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranjasa1' WHERE id='27'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanjasa1, '27'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranjasa1, '27');
 
-		$aloksektorjasadesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='27'")->result_array()[0][$desTahunLalu];   
+		$aloksektorjasadesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '27')[$desTahunLalu];   
 		$aloksektorjasa=$aloksektorjasadesTahunLalu+$aloktotpengeluaranjasa1-$aloktotpemasukanjasa1;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorjasa' WHERE id='27'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorjasa, '27');  
 
 		$aloktotpemasukanLainlain1= round($aloktotpemasukanLainlain-$aloktotpemasukanLainlainbermasalah);//28-46
 		$aloktotpengeluaranLainlain1= round($aloktotpengeluaranLainlain-$aloktotpengeluaranLainlainbermasalah);
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotpemasukanLainlain1' WHERE id='28'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotpengeluaranLainlain1' WHERE id='28'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotpemasukanLainlain1, '28'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranLainlain1, '28');
 
-		$aloksektorLainlaindesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='28'")->result_array()[0][$desTahunLalu];   
+		$aloksektorLainlaindesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '28')[$desTahunLalu];   
 		$aloksektorLainlain=$aloksektorLainlaindesTahunLalu+$aloktotpengeluaranLainlain1-$aloktotpemasukanLainlain1;
 		
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloksektorLainlain' WHERE id='28'");  
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanindustri' WHERE id='12'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranindustri' WHERE id='12'");
+		$this->neracasaldo_model->updateNeracaSaldo($aloksektorLainlain, '28');  
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanindustri, '12'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranindustri, '12');
 
-		$totpiutangindustridesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='12'")->result_array()[0][$desTahunLalu];    
+		$totpiutangindustridesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '12')[$desTahunLalu];    
 
 		$totpiutangindustri=$totpiutangindustridesTahunLalu+$totpemasukanindustri-$totpengeluaranindustri;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangindustri' WHERE id='12'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangindustri, '12');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanperdagangan' WHERE id='13'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranperdagangan' WHERE id='13'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanperdagangan, '13'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranperdagangan, '13');
 
-		$totpiutangperdagangandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='13'")->result_array()[0][$desTahunLalu];    
+		$totpiutangperdagangandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '13')[$desTahunLalu];    
 
 		$totpiutangperdagangan=$totpiutangperdagangandesTahunLalu+$totpemasukanperdagangan-$totpengeluaranperdagangan;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangperdagangan' WHERE id='13'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangperdagangan, '13');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanpertanian' WHERE id='14'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranpertanian' WHERE id='14'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanpertanian, '14'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranpertanian, '14');
 
-		$totpiutangpertaniandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='14'")->result_array()[0][$desTahunLalu];    
+		$totpiutangpertaniandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '14')[$desTahunLalu];    
 
 		$totpiutangpertanian=$totpiutangpertaniandesTahunLalu+$totpemasukanpertanian-$totpengeluaranpertanian;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangpertanian' WHERE id='14'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangpertanian, '14');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanperkebunan' WHERE id='15'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranperkebunan' WHERE id='15'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanperkebunan, '15'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranperkebunan, '15');
 
-		$totpiutangperkebunandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='15'")->result_array()[0][$desTahunLalu];    
+		$totpiutangperkebunandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '15')[$desTahunLalu];    
 
 		$totpiutangperkebunan=$totpiutangperkebunandesTahunLalu+$totpemasukanperkebunan-$totpengeluaranperkebunan;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangperkebunan' WHERE id='15'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangperkebunan, '15');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanperikanan' WHERE id='16'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranperikanan' WHERE id='16'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanperikanan, '16'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranperikanan, '16');
 
-		$totpiutangperikanandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='16'")->result_array()[0][$desTahunLalu];    
+		$totpiutangperikanandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '16')[$desTahunLalu];    
 
 		$totpiutangperikanan=$totpiutangperikanandesTahunLalu+$totpemasukanperikanan-$totpengeluaranperikanan;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangperikanan' WHERE id='16'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangperikanan, '16');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanpeternakan' WHERE id='17'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranpeternakan' WHERE id='17'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanpeternakan, '17'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranpeternakan, '17');
 
-		$totpiutangpeternakandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='17'")->result_array()[0][$desTahunLalu];    
+		$totpiutangpeternakandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '17')[$desTahunLalu];    
 
 		$totpiutangpeternakan=$totpiutangpeternakandesTahunLalu+$totpemasukanpeternakan-$totpengeluaranpeternakan;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangpeternakan' WHERE id='17'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangpeternakan, '17');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanjasa' WHERE id='18'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranjasa' WHERE id='18'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanjasa, '18'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranjasa, '18');
 
-		$totpiutangjasadesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='18'")->result_array()[0][$desTahunLalu];    
+		$totpiutangjasadesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '18')[$desTahunLalu];    
 		
 		$totpiutangjasa=$totpiutangjasadesTahunLalu+$totpemasukanjasa-$totpengeluaranjasa;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangjasa' WHERE id='18'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangjasa, '18');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanLainlain' WHERE id='19'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranLainlain' WHERE id='19'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanLainlain, '19'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranLainlain, '19');
 
-		$totpiutangLainlaindesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='19'")->result_array()[0][$desTahunLalu];    
+		$totpiutangLainlaindesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '19')[$desTahunLalu];    
 
 		$totpiutangLainlain=$totpiutangLainlaindesTahunLalu+$totpemasukanLainlain-$totpengeluaranLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpiutangLainlain' WHERE id='19'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpiutangLainlain, '19');
 
-		$lapkasPK = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='1'")->result_array()[0][$bulansekarang];   
+		$lapkasPK = $this->getElementData($catatanAtasLapKeu, '1')[$bulansekarang];   
 
-		$saldomandiri = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='4'")->result_array()[0][$bulansekarang];   
+		$saldomandiri = $this->getElementData($catatanAtasLapKeu, '4')[$bulansekarang];   
 
-		$mandiri = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='4'")->result_array()[0][$bulansekarang];   
+		$mandiri = $this->getElementData($catatanAtasLapKeu, '4')[$bulansekarang];   
 
-		$saldobri = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='5'")->result_array()[0][$bulansekarang];   
+		$saldobri = $this->getElementData($catatanAtasLapKeu, '5')[$bulansekarang];   
 
 		if( round($saldoKasPK)!= round($lapkasPK) ){
 			echo ' false no 4 $saldoKasPK (lap vs jurnal)';
@@ -1000,14 +1005,14 @@ class NeracaSaldo extends CI_Controller {
 			echo ' $lapKasPK$bulansekarang='; echo $lapkasPK;
 			$selisih=$saldoKasPK-$lapKasPK;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='4'");
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '4');
 		}else{
 			echo ' true no 4 $saldoKasPK (lap vs jurnal)'; 
 			echo ' $saldoKasPK$bulansekarang='; echo $saldoKasPK;
 			echo ' $lapKasPK$bulansekarang='; echo $lapkasPK;
 			$selisih=$saldoKasPK-$lapkasPK;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='4'");
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '4');
 		} 
 		echo nl2br("\n");
 
@@ -1017,14 +1022,14 @@ class NeracaSaldo extends CI_Controller {
 			echo ' $saldoMandiriJurnal$bulansekarang='; echo $saldoMandiriJurnal;
 			echo ' selisih='; echo $selisih; 
 			$selisih=$saldomandiri-$saldoMandiriJurnal;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='5'");
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '5');
 		}else{
 			echo 'true no 5 $saldomandiri'; 
 			echo ' $saldomandiri$bulansekarang='; echo $saldomandiri; echo ' VS ';
 			echo ' $saldoMandiriJurnal$bulansekarang='; echo $saldoMandiriJurnal;
 			$selisih=$saldomandiri-$saldoMandiriJurnal;
 			echo ' selisih='; echo $selisih;  
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='5'");
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '5');
 		} 
 		echo nl2br("\n");
 
@@ -1034,14 +1039,14 @@ class NeracaSaldo extends CI_Controller {
 			echo ' $saldoBRIJurnal$bulansekarang='; echo $saldoBRIJurnal;     
 			$selisih=$saldobri-$saldoBRIJurnal;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='7'"); 
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '7'); 
 		}else{
 			echo 'true no 7 $saldobri (lap vs jurnal)';  
 			echo ' $saldobri$bulansekarang='; echo $saldobri;
 			echo ' $saldoBRIJurnal$bulansekarang='; echo $saldoBRIJurnal;
 			$selisih=$saldobri-$saldoBRIJurnal;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='7'");
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '7');
 		} 
 		echo nl2br("\n");
 
@@ -1059,22 +1064,22 @@ class NeracaSaldo extends CI_Controller {
 		$aloktotDebetAlokPenyisihanPiutang=
 		$aloktotpemasukanindustri1+$aloktotpemasukanperdagangan1+$aloktotpemasukanpertanian1+$aloktotpemasukanperkebunan1+$aloktotpemasukanperikanan1+$aloktotpemasukanpeternakan1+$aloktotpemasukanjasa1+$aloktotpemasukanLainlain1;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$aloktotDebetAlokPenyisihanPiutang' WHERE id='20'");  //$selisihkreditaloksektorindustri
+		$this->neracasaldo_model->updateNeracaSaldoKredit($aloktotDebetAlokPenyisihanPiutang, '20');  //$selisihkreditaloksektorindustri
 
 		$aloktotKreditAlokPenyisihanPiutang=
 		$aloktotpengeluaranindustri1+$aloktotpengeluaranperdagangan1+$aloktotpengeluaranpertanian1+$aloktotpengeluaranperkebunan1+$aloktotpengeluaranperikanan1+$aloktotpengeluaranpeternakan1+$aloktotpengeluaranjasa1+$aloktotpengeluaranLainlain1;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$aloktotKreditAlokPenyisihanPiutang' WHERE id='20'");  
+		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotKreditAlokPenyisihanPiutang, '20');  
 
-		$aloktotSaldoAlokPenyisihanPiutangdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='20'")->result_array()[0][$desTahunLalu];   
+		$aloktotSaldoAlokPenyisihanPiutangdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '20')[$desTahunLalu];   
 
 		$aloktotSaldoAlokPenyisihanPiutang= $aloktotSaldoAlokPenyisihanPiutangdesTahunLalu-$aloktotDebetAlokPenyisihanPiutang+$aloktotKreditAlokPenyisihanPiutang;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloktotSaldoAlokPenyisihanPiutang' WHERE id='20'");  
+		$this->neracasaldo_model->updateNeracaSaldo($aloktotSaldoAlokPenyisihanPiutang, '20');  
 
 		$piutangMBbersih=$piutangMBdesTahunLalu+$alokasiSisihMBdesTahunLalu;
 
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$piutangMBbersih' WHERE id='10'");  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($piutangMBbersih, '10');  
 
 		$totPiutangMitraBinaanDebet=
 		$totpemasukanindustri+$totpemasukanperdagangan+$totpemasukanpertanian+$totpemasukanperkebunan
@@ -1083,7 +1088,7 @@ class NeracaSaldo extends CI_Controller {
 		$debetPiutangMBbersih=$debetAlokasiPenyisihanPiutangBermasalah+$totPiutangMitraBinaanbermasalahDebet+
 		$aloktotKreditAlokPenyisihanPiutang+$totPiutangMitraBinaanDebet;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$debetPiutangMBbersih' WHERE id='10'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($debetPiutangMBbersih, '10');
 
 		echo nl2br("\n");
 
@@ -1093,122 +1098,122 @@ class NeracaSaldo extends CI_Controller {
 
 		$kreditPiutangMBbersih=$kreditAlokasiPenyisihanPiutangBermasalah+$totPiutangMitraBinaanbermasalahKredit+$aloktotDebetAlokPenyisihanPiutang+$totPiutangMitraBinaanKredit;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$kreditPiutangMBbersih' WHERE id='10'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($kreditPiutangMBbersih, '10');
 
 		$PiutangMBbersihdesTahunLalu=$piutangMBbersih;
 		$PiutangMBbersih=$PiutangMBbersihdesTahunLalu+$debetPiutangMBbersih-$kreditPiutangMBbersih;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$PiutangMBbersih' WHERE id='10'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanPiutangJasaAdmPinjaman' WHERE id='47'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranPiutangJasaAdmPinjaman' WHERE id='47'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanPiutangJasaAdmPinjaman' WHERE id='48'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranPiutangJasaAdmPinjaman' WHERE id='48'");
+		$this->neracasaldo_model->updateNeracaSaldo($PiutangMBbersih, '10');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanPiutangJasaAdmPinjaman, '47'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranPiutangJasaAdmPinjaman, '47');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanPiutangJasaAdmPinjaman, '48'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranPiutangJasaAdmPinjaman, '48');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='0' WHERE id='49'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='0' WHERE id='49'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='0' WHERE id='50'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='0' WHERE id='50'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet(0, '49'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit(0, '49');
+		$this->neracasaldo_model->updateNeracaSaldoDebet(0, '50'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit(0, '50');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='0' WHERE id='51'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='0' WHERE id='51'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='0' WHERE id='52'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='0' WHERE id='52'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet(0, '51'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit(0, '51');
+		$this->neracasaldo_model->updateNeracaSaldoDebet(0, '52'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit(0, '52');
 
 		$totPiutangMitraBinaanDebet=
 		$totpemasukanindustri+$totpemasukanperdagangan+$totpemasukanpertanian+$totpemasukanperkebunan
 		+$totpemasukanperikanan+$totpemasukanpeternakan+$totpemasukanjasa+$totpemasukanLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totPiutangMitraBinaanDebet' WHERE id='11'"); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totPiutangMitraBinaanDebet, '11'); 
 
 		$totPiutangMitraBinaanKredit=
 		$totpengeluaranindustri+$totpengeluaranperdagangan+$totpengeluaranpertanian+$totpengeluaranperkebunan
 		+$totpengeluaranperikanan+$totpengeluaranpeternakan+$totpengeluaranjasa+$totpengeluaranLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totPiutangMitraBinaanKredit' WHERE id='11'"); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totPiutangMitraBinaanKredit, '11'); 
 
-		$piutangMitraBinaandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='11'")->result_array()[0][$desTahunLalu];   
+		$piutangMitraBinaandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '11')[$desTahunLalu];   
 
 		$piutangMitraBinaan=$piutangMitraBinaandesTahunLalu+$totPiutangMitraBinaanDebet-$totPiutangMitraBinaanKredit;         
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$piutangMitraBinaan' WHERE id='11'");  
+		$this->neracasaldo_model->updateNeracaSaldo($piutangMitraBinaan, '11');  
 
 		$totLiabilitasDebet=$totpemasukanAngsBelumTeridentifikasi+$totpemasukanKelebihanPembayaranAngs;
 		$totLiabilitasKredit=$totpengeluaranAngsBelumTeridentifikasi+$totpengeluaranKelebihanPembayaranAngs;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totLiabilitasDebet' WHERE id='54'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totLiabilitasKredit' WHERE id='54'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totLiabilitasDebet, '54'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totLiabilitasKredit, '54');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totLiabilitasDebet' WHERE id='55'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totLiabilitasKredit' WHERE id='55'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totLiabilitasDebet, '55'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totLiabilitasKredit, '55');
 
-		$LiabilitasdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  neracasaldo WHERE id='54'")->result_array()[0][$desTahunLalu];   
+		$LiabilitasdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '54')[$desTahunLalu];   
 
 		$totLiabilitasSaldo=$LiabilitasdesTahunLalu+$totLiabilitasKredit-$totLiabilitasDebet;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totLiabilitasSaldo' WHERE id='54'");//
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totLiabilitasSaldo' WHERE id='55'");//
+		$this->neracasaldo_model->updateNeracaSaldo($totLiabilitasSaldo, '54');//
+		$this->neracasaldo_model->updateNeracaSaldo($totLiabilitasSaldo, '55');//
 
 		$totpemasukanBebanAdmdanUmum=round($totpemasukanBebanAdmdanUmum);
-		$bebanAdmdanUmumdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='65'")->result_array()[0][$desTahunLalu];   
+		$bebanAdmdanUmumdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '65')[$desTahunLalu];   
 
 		$bebanAdmdanUmum=$totpengeluaranBebanAdmdanUmum-$totpemasukanBebanAdmdanUmum;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanAdmdanUmum' WHERE id='66'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanAdmdanUmum' WHERE id='66'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanAdmdanUmum, '66'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanAdmdanUmum, '66');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanAdmdanUmum' WHERE id='67'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanAdmdanUmum' WHERE id='67'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanAdmdanUmum, '67'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanAdmdanUmum, '67');
 			
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$bebanAdmdanUmum' WHERE id='66'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$bebanAdmdanUmum' WHERE id='67'");
+		$this->neracasaldo_model->updateNeracaSaldo($bebanAdmdanUmum, '66');
+		$this->neracasaldo_model->updateNeracaSaldo($bebanAdmdanUmum, '67');
 
 		$jumBebanPenyisihanIndustri= 0-( $totpemasukanBebanPenyisihanIndustri-$totpengeluaranBebanPenyisihanIndustri);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanIndustri' WHERE id='69'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanIndustri' WHERE id='69'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanIndustri' WHERE id='69'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanIndustri, '69');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanIndustri, '69');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanIndustri, '69');
 
 		$jumBebanPenyisihanPerdagangan= 0-( $totpemasukanBebanPenyisihanPerdagangan-$totpengeluaranBebanPenyisihanPerdagangan);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanPerdagangan' WHERE id='70'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanPerdagangan' WHERE id='70'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanPerdagangan' WHERE id='70'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanPerdagangan, '70');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanPerdagangan, '70');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanPerdagangan, '70');
 
 		$jumBebanPenyisihanPertanian= 0-( $totpemasukanBebanPenyisihanPertanian-$totpengeluaranBebanPenyisihanPertanian);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanPertanian' WHERE id='71'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanPertanian' WHERE id='71'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanPertanian' WHERE id='71'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanPertanian, '71');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanPertanian, '71');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanPertanian, '71');
 
 		$jumBebanPenyisihanPerkebunan= 0-( $totpemasukanBebanPenyisihanPerkebunan-$totpengeluaranBebanPenyisihanPerkebunan);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanPerkebunan' WHERE id='72'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanPerkebunan' WHERE id='72'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanPerkebunan' WHERE id='72'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanPerkebunan, '72');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanPerkebunan, '72');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanPerkebunan, '72');
 
 		$jumBebanPenyisihanPerikanan=  0-($totpemasukanBebanPenyisihanPerikanan-$totpengeluaranBebanPenyisihanPerikanan);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanPerikanan' WHERE id='73'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanPerikanan' WHERE id='73'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanPerikanan' WHERE id='73'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanPerikanan, '73');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanPerikanan, '73');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanPerikanan, '73');
 
 		$jumBebanPenyisihanPeternakan=0-( $totpemasukanBebanPenyisihanPeternakan-$totpengeluaranBebanPenyisihanPeternakan);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanPeternakan' WHERE id='74'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanPeternakan' WHERE id='74'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanPeternakan' WHERE id='74'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanPeternakan, '74');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanPeternakan, '74');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanPeternakan, '74');
 
 		$jumBebanPenyisihanJasa=0-( $totpemasukanBebanPenyisihanJasa-$totpengeluaranBebanPenyisihanJasa);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanJasa' WHERE id='75'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanJasa' WHERE id='75'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanJasa' WHERE id='75'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanJasa, '75');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanJasa, '75');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanJasa, '75');
 
 		$jumBebanPenyisihanLainlain= $sektorLainlaindesTahunLalu+ $totpemasukanBebanPenyisihanLainlain-$totpengeluaranBebanPenyisihanLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanLainlain' WHERE id='76'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanLainlain' WHERE id='76'");
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$jumBebanPenyisihanLainlain' WHERE id='76'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanLainlain, '76');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanLainlain, '76');
+		$this->neracasaldo_model->updateNeracaSaldo($jumBebanPenyisihanLainlain, '76');
 
 
 		$totDebetBebanPenyisihan=
@@ -1221,7 +1226,7 @@ class NeracaSaldo extends CI_Controller {
 			+$totpemasukanBebanPenyisihanJasa
 			+$totpemasukanBebanPenyisihanLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totDebetBebanPenyisihan' WHERE id='68'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totDebetBebanPenyisihan, '68');
 
 		$totKreditBebanPenyisihan=
 			$totpengeluaranBebanPenyisihanIndustri
@@ -1233,26 +1238,26 @@ class NeracaSaldo extends CI_Controller {
 			+$totpengeluaranBebanPenyisihanJasa
 			+$totpengeluaranBebanPenyisihanLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totKreditBebanPenyisihan' WHERE id='68'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totKreditBebanPenyisihan, '68');
 
-		$totBebanPenyisihandesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  neracasaldo WHERE id='68'")->result_array()[0][$desTahunLalu];   
+		$totBebanPenyisihandesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '68')[$desTahunLalu];   
 		$totBebanPenyisihan=$totKreditBebanPenyisihan-$totDebetBebanPenyisihan;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totBebanPenyisihan' WHERE id='68'");
+		$this->neracasaldo_model->updateNeracaSaldo($totBebanPenyisihan, '68');
 
 		$totpemasukanBebanLainlain=$totpemasukanBebanLainlain-2;
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanLainlain' WHERE id='77'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanLainlain' WHERE id='77'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanLainlain' WHERE id='78'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanLainlain' WHERE id='78'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanLainlain, '77'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanLainlain, '77');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanLainlain, '78'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanLainlain, '78');
 
-		$BebanLainlaindesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  neracasaldo WHERE id='77'")->result_array()[0][$desTahunLalu];   
+		$BebanLainlaindesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '77')[$desTahunLalu];   
 
 		$BebanLainlain=   $totpengeluaranBebanLainlain-$totpemasukanBebanLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$BebanLainlain' WHERE id='77'");
+		$this->neracasaldo_model->updateNeracaSaldo($BebanLainlain, '77');
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$BebanLainlain' WHERE id='78'");
+		$this->neracasaldo_model->updateNeracaSaldo($BebanLainlain, '78');
 
 		$totPiutangMitraBinaanbermasalahDebet=
 			$totpemasukanindustribermasalah
@@ -1264,8 +1269,8 @@ class NeracaSaldo extends CI_Controller {
 			+$totpemasukanjasabermasalah
 			+$totpemasukanLainlainbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totPiutangMitraBinaanbermasalahDebet' WHERE id='38'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totPiutangMitraBinaanbermasalahDebet' WHERE id='29'");  
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totPiutangMitraBinaanbermasalahDebet, '38');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totPiutangMitraBinaanbermasalahDebet, '29');  
 		$totPiutangMitraBinaanbermasalahKredit=
 			$totpengeluaranindustribermasalah
 			+$totpengeluaranperdaganganbermasalah
@@ -1276,50 +1281,50 @@ class NeracaSaldo extends CI_Controller {
 			+$totpengeluaranjasabermasalah
 			+$totpengeluaranLainlainbermasalah;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totPiutangMitraBinaanbermasalahKredit' WHERE id='29'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totPiutangMitraBinaanbermasalahKredit' WHERE id='38'"); //Alokasi Penyisihan Piutang Bermasalah
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totPiutangMitraBinaanbermasalahKredit, '29'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totPiutangMitraBinaanbermasalahKredit, '38'); //Alokasi Penyisihan Piutang Bermasalah
 
 
-			$totPiutangMitraBinaanbermasalahdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  neracasaldo WHERE id='29'")->result_array()[0][$desTahunLalu]; 
+			$totPiutangMitraBinaanbermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '29')[$desTahunLalu]; 
 
 
 		$totPiutangMitraBinaanbermasalah=$totPiutangMitraBinaanbermasalahdesTahunLalu+$totPiutangMitraBinaanbermasalahDebet-$totPiutangMitraBinaanbermasalahKredit;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totPiutangMitraBinaanbermasalah' WHERE id='29'"); 
+		$this->neracasaldo_model->updateNeracaSaldo($totPiutangMitraBinaanbermasalah, '29'); 
 		$aloktotPiutangMitraBinaanbermasalah=0-$totPiutangMitraBinaanbermasalah;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$aloktotPiutangMitraBinaanbermasalah' WHERE id='38'"); //Alokasi Penyisihan Piutang Bermasalah
+		$this->neracasaldo_model->updateNeracaSaldo($aloktotPiutangMitraBinaanbermasalah, '38'); //Alokasi Penyisihan Piutang Bermasalah
 
 		$DebetLiabilitasJangkaPendek=$totpemasukanAngsuranBelumTeridentifikasi+$totpemasukanKelebihanPembayaranAngs;
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$DebetLiabilitasJangkaPendek' WHERE id='54'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$DebetLiabilitasJangkaPendek' WHERE id='55'"); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($DebetLiabilitasJangkaPendek, '54'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($DebetLiabilitasJangkaPendek, '55'); 
 
 		$KreditLiabilitasJangkaPendek=$totpengeluaranAngsuranBelumTeridentifikasi+$totpengeluaranKelebihanPembayaranAngs;
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$KreditLiabilitasJangkaPendek' WHERE id='54'");
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$KreditLiabilitasJangkaPendek' WHERE id='55'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($KreditLiabilitasJangkaPendek, '54');
+		$this->neracasaldo_model->updateNeracaSaldoKredit($KreditLiabilitasJangkaPendek, '55');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanKelebihanPembayaranAngs' WHERE id='56'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranKelebihanPembayaranAngs' WHERE id='56'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanKelebihanPembayaranAngs, '56'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranKelebihanPembayaranAngs, '56');
 
-		$totpengeluaranKelebihanPembayaranAngsdesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='52'")->result_array()[0][$desTahunLalu];   
+		$totpengeluaranKelebihanPembayaranAngsdesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '52')[$desTahunLalu];   
 
 		$totpengeluaranKelebihanPembayaranAngs=$totpengeluaranKelebihanPembayaranAngsdesTahunLalu-
 		$totpemasukanKelebihanPembayaranAngs+$totpengeluaranKelebihanPembayaranAngs;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$totpengeluaranKelebihanPembayaranAngs' WHERE id='56'");
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanAngsuranBelumTeridentifikasi' WHERE id='57'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranAngsuranBelumTeridentifikasi' WHERE id='57'");
+		$this->neracasaldo_model->updateNeracaSaldo($totpengeluaranKelebihanPembayaranAngs, '56');
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanAngsuranBelumTeridentifikasi, '57'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranAngsuranBelumTeridentifikasi, '57');
 
-		$angsBelumTeridentifikasidesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='53'")->result_array()[0][$desTahunLalu];   
+		$angsBelumTeridentifikasidesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '53')[$desTahunLalu];   
 
 		$angsBelumTeridentifikasi=$angsBelumTeridentifikasidesTahunLalu+$totpemasukanAngsuranBelumTeridentifikasi-$totpengeluaranAngsuranBelumTeridentifikasi;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$angsBelumTeridentifikasi' WHERE id='57'");  
+		$this->neracasaldo_model->updateNeracaSaldo($angsBelumTeridentifikasi, '57');  
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanJasaAdmPinjaman' WHERE id='61'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranJasaAdmPinjaman' WHERE id='61'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanJasaAdmPinjaman, '61'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranJasaAdmPinjaman, '61');
 
 		$saldoJasaAdmPinjaman=$totpengeluaranJasaAdmPinjaman-$totpemasukanJasaAdmPinjaman;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$saldoJasaAdmPinjaman' WHERE id='61'");
+		$this->neracasaldo_model->updateNeracaSaldo($saldoJasaAdmPinjaman, '61');
 
 		$totDebetBebanPenyisihanPiutang=round(
 			$totpemasukanBebanPenyisihanPiutangIndustri
@@ -1330,7 +1335,7 @@ class NeracaSaldo extends CI_Controller {
 			+$totpemasukanBebanPenyisihanPiutangPeternakan
 			+$totpemasukanBebanPenyisihanPiutangJasa
 			+$totpemasukanBebanPenyisihanPiutangLainlain);
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totDebetBebanPenyisihanPiutang' WHERE id='68'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totDebetBebanPenyisihanPiutang, '68');
 
 
 		$totKreditBebanPenyisihanPiutang=round(
@@ -1343,64 +1348,64 @@ class NeracaSaldo extends CI_Controller {
 			+$totpengeluaranBebanPenyisihanPiutangJasa
 			+$totpengeluaranBebanPenyisihanPiutangLainlain);
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totKreditBebanPenyisihanPiutang' WHERE id='68'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totKreditBebanPenyisihanPiutang, '68');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanJasaGiroPK' WHERE id='62'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranJasaGiroPK' WHERE id='62'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanJasaGiroPK, '62'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranJasaGiroPK, '62');
 
 		$saldoJasaGiroPK=$totpengeluaranJasaGiroPK-$totpemasukanJasaGiroPK;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$saldoJasaGiroPK' WHERE id='62'");
+		$this->neracasaldo_model->updateNeracaSaldo($saldoJasaGiroPK, '62');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanPendapatanLainlainPiutangHapusBuku' WHERE id='63'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranPendapatanLainlainPiutangHapusBuku' WHERE id='63'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanPendapatanLainlainPiutangHapusBuku, '63'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranPendapatanLainlainPiutangHapusBuku, '63');
 
 		$PendapatanLainlainPiutangHapusBuku=$totpengeluaranPendapatanLainlainPiutangHapusBuku-$totpemasukanPendapatanLainlainPiutangHapusBuku;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$PendapatanLainlainPiutangHapusBuku' WHERE id='63'");
+		$this->neracasaldo_model->updateNeracaSaldo($PendapatanLainlainPiutangHapusBuku, '63');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanPendapatanLainlainLainlain' WHERE id='65'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranPendapatanLainlainLainlain' WHERE id='65'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanPendapatanLainlainLainlain, '65'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranPendapatanLainlainLainlain, '65');
 
-		$pendapatanLainlainLainsddesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM  catatanataslapkeu WHERE id='61'")->result_array()[0][$desTahunLalu];   
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$pendapatanLainlainLainsddesTahunLalu' WHERE id='65'");  
+		$pendapatanLainlainLainsddesTahunLalu = $this->getElementData($catatanAtasLapKeuDesTahunLalu, '61')[$desTahunLalu];   
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($pendapatanLainlainLainsddesTahunLalu, '65');  
 
 		$pendapatanLainlainLains=$totpemasukanPendapatanLainlainLainlain-$totpengeluaranPendapatanLainlainLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$pendapatanLainlainLains' WHERE id='65'");
+		$this->neracasaldo_model->updateNeracaSaldo($pendapatanLainlainLains, '65');
 
 		$PendapatanDebet=round(
 			$totpemasukanJasaAdmPinjaman+
 			$totpemasukanJasaGiroPK+
 			$totpemasukanPendapatanLainlainPiutangHapusBuku+
 			$totpemasukanPendapatanLainlainLainlain);
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$PendapatanDebet' WHERE id='60'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($PendapatanDebet, '60');
 
 		$PendapatanKredit= round(
 			$totpengeluaranJasaAdmPinjaman+
 			$totpengeluaranJasaGiroPK+
 			$totpengeluaranPendapatanLainlainPiutangHapusBuku+
 			$totpengeluaranPendapatanLainlainLainlain);
-			$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$PendapatanKredit' WHERE id='60'");
+			$this->neracasaldo_model->updateNeracaSaldoKredit($PendapatanKredit, '60');
 
 		$Pendapatan=$PendapatanKredit-$PendapatanDebet;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$Pendapatan' WHERE id='60'");
+		$this->neracasaldo_model->updateNeracaSaldo($Pendapatan, '60');
 			
 		$aktivabersihawalperiodaSDdesTahunLalu = $this->db->query("SELECT sd$desTahunLalu FROM  perubahanasetnetotidakterikat WHERE id='29'")->result_array()[0]['sd' . $desTahunLalu];
-		$this->db->query("UPDATE neracasaldo SET $desTahunLalu='$aktivabersihawalperiodaSDdesTahunLalu' WHERE id='59'");  
+		$this->neracasaldo_model->updateNeracaSaldoDesTahunLalu($aktivabersihawalperiodaSDdesTahunLalu, '59');  
 
 		$totpemasukanAktivaBersihAwalPerioda=$PendapatanDebet-$totpemasukanBebanAdmdanUmum-$totDebetBebanPenyisihanPiutang-$totpemasukanBebanLainlain;
 
 		$totpengeluaranAktivaBersihAwalPerioda=$PendapatanKredit-$totpengeluaranBebanAdmdanUmum-$totKreditBebanPenyisihanPiutang-$totpengeluaranBebanLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanAktivaBersihAwalPerioda' WHERE id='59'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranAktivaBersihAwalPerioda' WHERE id='59'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanAktivaBersihAwalPerioda, '59'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranAktivaBersihAwalPerioda, '59');
 
 		$AktivaBersihAwalPerioda=$aktivabersihawalperiodaSDdesTahunLalu+$totpemasukanAktivaBersihAwalPerioda-$totpengeluaranAktivaBersihAwalPerioda;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$AktivaBersihAwalPerioda' WHERE id='59'");
+		$this->neracasaldo_model->updateNeracaSaldo($AktivaBersihAwalPerioda, '59');
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$totpemasukanBebanPenyisihanPiutangLainlain' WHERE id='76'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$totpengeluaranBebanPenyisihanPiutangLainlain' WHERE id='76'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanBebanPenyisihanPiutangLainlain, '76'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranBebanPenyisihanPiutangLainlain, '76');
 
 		$totpemasukanBebanAdmdanUmum=round($totpemasukanBebanAdmdanUmum);
 
@@ -1410,178 +1415,181 @@ class NeracaSaldo extends CI_Controller {
 		$AsetNetoKredit=
 		$PendapatanKredit+$totpengeluaranBebanAdmdanUmum+$totKreditBebanPenyisihanPiutang+$totpengeluaranBebanLainlain;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$AsetNetoDebet' WHERE id='58'"); 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$AsetNetoKredit' WHERE id='58'");
+		$this->neracasaldo_model->updateNeracaSaldoDebet($AsetNetoDebet, '58'); 
+		$this->neracasaldo_model->updateNeracaSaldoKredit($AsetNetoKredit, '58');
 
 		$asetNeto=$asetNetodesTahunLalu-$AsetNetoDebet+$AsetNetoKredit;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$asetNeto' WHERE id='58'");
+		$this->neracasaldo_model->updateNeracaSaldo($asetNeto, '58');
 
 		$liabilitasDanAsetNetodDebet=$DebetLiabilitasJangkaPendek+$AsetNetoDebet;
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$liabilitasDanAsetNetodDebet' WHERE id='53'");  
+		$this->neracasaldo_model->updateNeracaSaldoDebet($liabilitasDanAsetNetodDebet, '53');  
 
 		$liabilitasDanAsetNetodkredit=$AsetNetoKredit+$KreditLiabilitasJangkaPendek;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$liabilitasDanAsetNetodkredit' WHERE id='53'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($liabilitasDanAsetNetodkredit, '53');
 
-		$liabilitasDanAsetNetodesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='53'")->result_array()[0][$desTahunLalu];   
+		$liabilitasDanAsetNetodesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '53')[$desTahunLalu];   
 
 		$liabilitasDanAsetNeto=$liabilitasDanAsetNetodesTahunLalu+$liabilitasDanAsetNetodkredit-$liabilitasDanAsetNetodDebet;
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$liabilitasDanAsetNeto' WHERE id='53'");
+		$this->neracasaldo_model->updateNeracaSaldo($liabilitasDanAsetNeto, '53');
 
 		$asetLancarDebet=$debetno3+$debetPiutangMBbersih;
 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$asetLancarDebet' WHERE id='2'"); 
-		$this->db->query("UPDATE neracasaldo SET debet$bulansekarang='$asetLancarDebet' WHERE id='1'"); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($asetLancarDebet, '2'); 
+		$this->neracasaldo_model->updateNeracaSaldoDebet($asetLancarDebet, '1'); 
 
 		$asetLancarKredit=$kreditno3+$kreditPiutangMBbersih;
 
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$asetLancarKredit' WHERE id='2'");
-		$this->db->query("UPDATE neracasaldo SET kredit$bulansekarang='$asetLancarKredit' WHERE id='1'");
+		$this->neracasaldo_model->updateNeracaSaldoKredit($asetLancarKredit, '2');
+		$this->neracasaldo_model->updateNeracaSaldoKredit($asetLancarKredit, '1');
 
-		$asetLancardesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM neracasaldo WHERE id='2'")->result_array()[0][$desTahunLalu];   
+		$asetLancardesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '2')[$desTahunLalu];   
 
 		$asetLancar= $asetLancardesTahunLalu+$asetLancarDebet-$asetLancarKredit;
 
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$asetLancar' WHERE id='2'");//  
-		$this->db->query("UPDATE neracasaldo SET saldo$bulansekarang='$asetLancar' WHERE id='1'");//  
+		$this->neracasaldo_model->updateNeracaSaldo($asetLancar, '2');//  
+		$this->neracasaldo_model->updateNeracaSaldo($asetLancar, '1');//  
 
-		$lapCALKid8totpiutangMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='8'")->result_array()[0][$bulansekarang];   
+		$lapCALKid8totpiutangMB = $this->getElementData($catatanAtasLapKeu, '8')[$bulansekarang];   
 
 		if($piutangMitraBinaan== $lapCALKid8totpiutangMB){
 			echo ' true'; 
 			echo ' neracasaldo id 11';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='11'");   
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '11');   
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 11';
 			$selisih= $piutangMitraBinaan-$lapCALKid8totpiutangMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='11'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '11');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid9industri = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='9'")->result_array()[0][$bulansekarang];   
+		$lapCALKid9industri = $this->getElementData($catatanAtasLapKeu, '9')[$bulansekarang];   
 
 		if($totpiutangindustri== $lapCALKid9industri){
 			echo ' true'; 
 			echo ' neracasaldo id 12';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='12'"); 
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '12'); 
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 12';
 			$selisih= $totpiutangindustri-$lapCALKid9industri;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='12'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '12');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid10perdagangan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='10'")->result_array()[0][$bulansekarang];   
+		$lapCALKid10perdagangan = $this->getElementData($catatanAtasLapKeu, '10')[$bulansekarang]; 
+		var_dump($lapCALKid10perdagangan);
+		var_dump($totpiutangperdagangan);
+		die;
 
 		if($totpiutangperdagangan== $lapCALKid10perdagangan){
 			echo ' true'; 
 			echo ' neracasaldo id 13';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='13'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '13');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 13';
 			$selisih= $totpiutangperdagangan-$lapCALKid10perdagangan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='13'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '13');    
 		}
 		echo nl2br("\n");
 
 	
-				$lapCALKid10pertanian = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='11'")->result_array()[0][$bulansekarang];  
+		$lapCALKid10pertanian = $this->getElementData($catatanAtasLapKeu, '11')[$bulansekarang];  
 
 		if($totpiutangpertanian== $lapCALKid10pertanian){
 			echo ' true'; 
 			echo ' neracasaldo id 14';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='14'");  
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '14');  
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 14';
 			$selisih= $totpiutangpertanian-$lapCALKid10pertanian;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='14'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '14');    
 		}
 		echo nl2br("\n");
-		$lapCALKid10perkebunan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='12'")->result_array()[0][$bulansekarang];   
+		$lapCALKid10perkebunan = $this->getElementData($catatanAtasLapKeu, '12')[$bulansekarang];   
 
 		if($totpiutangperkebunan== $lapCALKid10perkebunan){
 			echo ' true'; 
 			echo ' neracasaldo id 15';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='15'"); 
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '15'); 
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 15';
 			$selisih= $totpiutangperkebunan-$lapCALKid10perkebunan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='15'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '15');    
 		}
 		echo nl2br("\n");
-		$lapCALKid10perikanan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='13'")->result_array()[0][$bulansekarang];   
+		$lapCALKid10perikanan = $this->getElementData($catatanAtasLapKeu, '13')[$bulansekarang];   
 
 		if($totpiutangperikanan== $lapCALKid10perikanan){
 			echo ' true'; 
 			echo ' neracasaldo id 16';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='16'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '16');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 16';
 			$selisih= $totpiutangperikanan-$lapCALKid10perikanan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='16'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '16');    
 		}
 		echo nl2br("\n");
-		$lapCALKid10peternakan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='14'")->result_array()[0][$bulansekarang];   
+		$lapCALKid10peternakan = $this->getElementData($catatanAtasLapKeu, '14')[$bulansekarang];   
 
 		if($totpiutangpeternakan== $lapCALKid10peternakan){
 			echo ' true'; 
 			echo ' neracasaldo id 17';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='17'"); 
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '17'); 
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 17';
 			$selisih= $totpiutangpeternakan-$lapCALKid10peternakan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='17'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '17');    
 		}
 		echo nl2br("\n");
-		$lapCALKid10jasa = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='15'")->result_array()[0][$bulansekarang];   
+		$lapCALKid10jasa = $this->getElementData($catatanAtasLapKeu, '15')[$bulansekarang];   
 
 		if($totpiutangjasa== $lapCALKid10jasa){
 			echo ' true'; 
 			echo ' neracasaldo id 18';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='18'");  
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '18');  
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 18';
 			$selisih= $totpiutangjasa-$lapCALKid10jasa;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='18'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '18');    
 		}
 		echo nl2br("\n");
-		$lapCALKid10Lainlain = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='16'")->result_array()[0][$bulansekarang];   
+		$lapCALKid10Lainlain = $this->getElementData($catatanAtasLapKeu, '16')[$bulansekarang];   
 
 		if($totpiutangLainlain== $lapCALKid10Lainlain){
 			echo ' true'; 
 			echo ' neracasaldo id 19';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='19'");
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '19');
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 19';
 			$selisih= $totpiutangLainlain-$lapCALKid10Lainlain;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='19'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '19');    
 		}
 		echo nl2br("\n");
-		$lapCALKid17alokpiutangMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='17'")->result_array()[0][$bulansekarang];   
+		$lapCALKid17alokpiutangMB = $this->getElementData($catatanAtasLapKeu, '17')[$bulansekarang];   
 
 		if($aloktotSaldoAlokPenyisihanPiutang== $lapCALKid17alokpiutangMB){
 			echo ' true'; 
 			echo ' neracasaldo id 20';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='20'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '20');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 20'; echo number_format($aloktotSaldoAlokPenyisihanPiutang); 
@@ -1589,15 +1597,15 @@ class NeracaSaldo extends CI_Controller {
 			echo number_format($lapCALKid17alokpiutangMB);
 			$selisih= $aloktotSaldoAlokPenyisihanPiutang-$lapCALKid17alokpiutangMB;
 			echo ' selisih='; echo number_format($selisih);
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='20'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '20');    
 		}
 		echo nl2br("\n");
-		$lapCALKid18alokindustriMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='18'")->result_array()[0][$bulansekarang];   
+		$lapCALKid18alokindustriMB = $this->getElementData($catatanAtasLapKeu, '18')[$bulansekarang];   
 
 		if( round($aloksektorIndustri)== round($lapCALKid18alokindustriMB)){
 			echo ' true'; 
 			echo ' neracasaldo id 21';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='21'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '21');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 21'; echo $aloksektorIndustri; 
@@ -1605,15 +1613,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid18alokindustriMB;
 			$selisih= $aloksektorIndustri-$lapCALKid18alokindustriMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='21'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '21');    
 		}
 		echo nl2br("\n");
-		$lapCALKid19alokperdaganganMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='19'")->result_array()[0][$bulansekarang];   
+		$lapCALKid19alokperdaganganMB = $this->getElementData($catatanAtasLapKeu, '19')[$bulansekarang];   
 
 		if( round($aloksektorperdagangan)== round($lapCALKid19alokperdaganganMB)){
 			echo ' true'; 
 			echo ' neracasaldo id 22';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='22'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '22');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 22'; echo $aloksektorperdagangan; 
@@ -1621,16 +1629,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid19alokperdaganganMB;
 			$selisih= $aloksektorperdagangan-$lapCALKid19alokperdaganganMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='22'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '22');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid20alokpertanianMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='20'")->result_array()[0][$bulansekarang];   
+		$lapCALKid20alokpertanianMB = $this->getElementData($catatanAtasLapKeu, '20')[$bulansekarang];   
 
 		if(round($aloksektorpertanian)== round($lapCALKid20alokpertanianMB)){
 			echo ' true'; 
 			echo ' neracasaldo id 23';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='23'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '23');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 23'; echo $aloksektorpertanian; 
@@ -1638,15 +1646,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid20alokpertanianMB;
 			$selisih= $aloksektorpertanian-$lapCALKid20alokpertanianMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='23'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '23');    
 		}
 		echo nl2br("\n");
-		$lapCALKid21alokperkebunanMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='21'")->result_array()[0][$bulansekarang];   
+		$lapCALKid21alokperkebunanMB = $this->getElementData($catatanAtasLapKeu, '21')[$bulansekarang];   
 
 		if( round($aloksektorperkebunan)== round($lapCALKid21alokperkebunanMB)){
 			echo ' true'; 
 			echo ' neracasaldo id 24';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='24'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '24');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 24'; echo $aloksektorperkebunan; 
@@ -1654,28 +1662,28 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid21alokperkebunanMB;
 			$selisih= $aloksektorperkebunan-$lapCALKid21alokperkebunanMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='24'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '24');    
 		}
 		echo nl2br("\n");
-		$lapCALKid22alokperikananMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='22'")->result_array()[0][$bulansekarang];   
+		$lapCALKid22alokperikananMB = $this->getElementData($catatanAtasLapKeu, '22')[$bulansekarang];   
 
 		if( round($aloksektorperikanan)== round($lapCALKid22alokperikananMB)){
 			echo ' true';  echo ' neracasaldo id 25';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='25'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '25');    
 		}else{
 			echo ' false'; echo ' neracasaldo id 25 :: '; echo number_format($aloksektorperikanan); 
 			echo ' vs ::CALKid_22= '; echo number_format($lapCALKid22alokperikananMB);
 			$selisih= $aloksektorperikanan-$lapCALKid22alokperikananMB;
 			echo ' selisih='; echo number_format($selisih);
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='25'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '25');    
 		}
 		echo nl2br("\n");
-		$lapCALKid23alokpeternakanMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='23'")->result_array()[0][$bulansekarang];   
+		$lapCALKid23alokpeternakanMB = $this->getElementData($catatanAtasLapKeu, '23')[$bulansekarang];   
 
 		if( round($aloksektorpeternakan)== round($lapCALKid23alokpeternakanMB)){
 			echo ' true'; 
 			echo ' neracasaldo id 26';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='26'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '26');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 26'; echo $aloksektorpeternakan; 
@@ -1683,15 +1691,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid23alokpeternakanMB;
 			$selisih= $aloksektorpeternakan-$lapCALKid23alokpeternakanMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='26'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '26');    
 		}
 		echo nl2br("\n");
-		$lapCALKid24alokjasaMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='24'")->result_array()[0][$bulansekarang];   
+		$lapCALKid24alokjasaMB = $this->getElementData($catatanAtasLapKeu, '24')[$bulansekarang];   
 
 		if(round($aloksektorjasa)== round($lapCALKid24alokjasaMB)){
 			echo ' true'; 
 			echo ' neracasaldo id 27';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='27'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '27');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 27'; echo $aloksektorjasa; 
@@ -1699,16 +1707,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid24alokjasaMB;
 			$selisih= $aloksektorjasa-$lapCALKid24alokjasaMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='27'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '27');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid25alokLainlainMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='25'")->result_array()[0][$bulansekarang];   
+		$lapCALKid25alokLainlainMB = $this->getElementData($catatanAtasLapKeu, '25')[$bulansekarang];   
 
 		if(round($aloksektorLainlain)== round($lapCALKid25alokLainlainMB)){
 			echo ' true'; 
 			echo ' neracasaldo id 28';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='28'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '28');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 28'; echo $aloksektorLainlain; 
@@ -1716,16 +1724,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid25alokLainlainMB;
 			$selisih= $aloksektorLainlain-$lapCALKid25alokLainlainMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='28'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '28');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid32totpiutangmitrabermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='32'")->result_array()[0][$bulansekarang];   
+		$lapCALKid32totpiutangmitrabermasalahMB = $this->getElementData($catatanAtasLapKeu, '32')[$bulansekarang];   
 
 		if($totPiutangMitraBinaanbermasalah== $lapCALKid32totpiutangmitrabermasalahMB){
 			echo ' true'; 
 			echo ' neracasaldo id 29';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='29'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '29');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 29'; echo $aloksektorjasa; 
@@ -1733,16 +1741,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid32totpiutangmitrabermasalahMB;
 			$selisih= $totPiutangMitraBinaanbermasalah-$lapCALKid32totpiutangmitrabermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='29'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '29');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid33sektorindustribermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='33'")->result_array()[0][$bulansekarang];   
+		$lapCALKid33sektorindustribermasalahMB = $this->getElementData($catatanAtasLapKeu, '33')[$bulansekarang];   
 
 		if($sektorindustriBermasalah== $lapCALKid33sektorindustribermasalahMB){
 			echo ' true'; 
 			echo ' neracasaldo id 30';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='30'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '30');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 30'; echo $aloksektorjasa; 
@@ -1750,16 +1758,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid33sektorindustribermasalahMB;
 			$selisih= $sektorindustriBermasalah-$lapCALKid33sektorindustribermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='30'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '30');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid34sektorperdaganganbermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='34'")->result_array()[0][$bulansekarang];   
+		$lapCALKid34sektorperdaganganbermasalahMB = $this->getElementData($catatanAtasLapKeu, '34')[$bulansekarang];   
 
 		if($sektorperdaganganBermasalah== $lapCALKid34sektorperdaganganbermasalahMB){
 			echo ' true'; 
 			echo ' neracasaldo id 31';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='31'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '31');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 31'; echo $aloksektorjasa; 
@@ -1767,16 +1775,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid34sektorperdaganganbermasalahMB;
 			$selisih= $sektorperdaganganBermasalah-$lapCALKid34sektorperdaganganbermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='31'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '31');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid35sektorpertanianbermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='35'")->result_array()[0][$bulansekarang];   
+		$lapCALKid35sektorpertanianbermasalahMB = $this->getElementData($catatanAtasLapKeu, '35')[$bulansekarang];   
 
 		if($sektorpertanianBermasalah== $lapCALKid35sektorpertanianbermasalahMB){
 			echo ' true'; 
 			echo ' neracasaldo id 32';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='32'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '32');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 32'; echo $aloksektorjasa; 
@@ -1784,16 +1792,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid35sektorpertanianbermasalahMB;
 			$selisih= $sektorpertanianBermasalah-$lapCALKid35sektorpertanianbermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='32'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '32');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid36sektorperkebunanbermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='36'")->result_array()[0][$bulansekarang];   
+		$lapCALKid36sektorperkebunanbermasalahMB = $this->getElementData($catatanAtasLapKeu, '36')[$bulansekarang];   
 
 		if($sektorperkebunanBermasalah== $lapCALKid36sektorperkebunanbermasalahMB){
 			echo ' true'; 
 			echo ' neracasaldo id 33';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='33'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '33');    
 		}else{
 			echo ' false'; 
 			echo ' neracasaldo id 33'; echo $aloksektorjasa; 
@@ -1801,233 +1809,233 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALKid36sektorperkebunanbermasalahMB;
 			$selisih= $sektorperkebunanBermasalah-$lapCALKid36sektorperkebunanbermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='33'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '33');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid37sektorperikananbermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='37'")->result_array()[0][$bulansekarang];   
+		$lapCALKid37sektorperikananbermasalahMB = $this->getElementData($catatanAtasLapKeu, '37')[$bulansekarang];   
 
 		if($sektorperikananBermasalah== $lapCALKid37sektorperikananbermasalahMB){
 			echo ' true';     echo ' neracasaldo id 34';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='34'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '34');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 34'; echo $aloksektorjasa; 
 			echo ' vs ';
 			echo $lapCALKid37sektorperikananbermasalahMB;
 			$selisih= $sektorperikananBermasalah-$lapCALKid37sektorperikananbermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='34'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '34');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid38sektorpeternakanbermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='38'")->result_array()[0][$bulansekarang];   
+		$lapCALKid38sektorpeternakanbermasalahMB = $this->getElementData($catatanAtasLapKeu, '38')[$bulansekarang];   
 
 		if($sektorpeternakanBermasalah== $lapCALKid38sektorpeternakanbermasalahMB){
 			echo ' true';     echo ' neracasaldo id 35';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='35'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '35');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 35'; echo $aloksektorjasa; 
 			echo ' vs ';
 			echo $lapCALKid38sektorpeternakanbermasalahMB;
 			$selisih= $sektorpeternakanBermasalah-$lapCALKid38sektorpeternakanbermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='35'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '35');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid39sektorjasabermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='39'")->result_array()[0][$bulansekarang];   
+		$lapCALKid39sektorjasabermasalahMB = $this->getElementData($catatanAtasLapKeu, '39')[$bulansekarang];   
 
 		if($sektorjasaBermasalah== $lapCALKid39sektorjasabermasalahMB){
 			echo ' true';     echo ' neracasaldo id 36';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='36'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '36');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 36'; echo $aloksektorjasa; 
 			echo ' vs ';
 			echo $lapCALKid39sektorjasabermasalahMB;
 			$selisih= $sektorjasaBermasalah-$lapCALKid39sektorjasabermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='36'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '36');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid40sektorLainlainbermasalahMB = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='40'")->result_array()[0][$bulansekarang];   
+		$lapCALKid40sektorLainlainbermasalahMB = $this->getElementData($catatanAtasLapKeu, '40')[$bulansekarang];   
 
 		if($sektorLainlainBermasalah== $lapCALKid40sektorLainlainbermasalahMB){
 			echo ' true';     echo ' neracasaldo id 37';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='37'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '37');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 37'; echo $aloksektorLainlain; 
 			echo ' vs ';
 			echo $lapCALKid40sektorLainlainbermasalahMB;
 			$selisih= $sektorLainlainBermasalah-$lapCALKid40sektorLainlainbermasalahMB;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='37'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '37');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid42aloktotPiutangMitraBinaanbermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='42'")->result_array()[0][$bulansekarang];   
+		$lapCALKid42aloktotPiutangMitraBinaanbermasalah = $this->getElementData($catatanAtasLapKeu, '42')[$bulansekarang];   
 
 		if($aloktotPiutangMitraBinaanbermasalah== $lapCALKid42aloktotPiutangMitraBinaanbermasalah){
 			echo ' true';     echo ' neracasaldo id 38';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='38'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '38');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 38'; echo $aloktotPiutangMitraBinaanbermasalah; 
 			echo ' vs ';
 			echo $lapCALKid42aloktotPiutangMitraBinaanbermasalah;
 			$selisih= $aloktotPiutangMitraBinaanbermasalah-$lapCALKid42aloktotPiutangMitraBinaanbermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='38'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '38');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid43aloksektorindustriBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='43'")->result_array()[0][$bulansekarang];   
+		$lapCALKid43aloksektorindustriBermasalah = $this->getElementData($catatanAtasLapKeu, '43')[$bulansekarang];   
 
 		if($aloksektorindustriBermasalah== $lapCALKid43aloksektorindustriBermasalah){
 			echo ' true';     echo ' neracasaldo id 39';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='39'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '39');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 39'; echo $aloksektorindustriBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid43aloksektorindustriBermasalah;
 			$selisih= $aloksektorindustriBermasalah-$lapCALKid43aloksektorindustriBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='39'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '39');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid44aloksektorperdaganganBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='44'")->result_array()[0][$bulansekarang];   
+		$lapCALKid44aloksektorperdaganganBermasalah = $this->getElementData($catatanAtasLapKeu, '44')[$bulansekarang];   
 
 		if($aloksektorperdaganganBermasalah== $lapCALKid44aloksektorperdaganganBermasalah){
 			echo ' true';     echo ' neracasaldo id 40';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='40'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '40');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 40'; echo $aloksektorperdaganganBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid44aloksektorperdaganganBermasalah;
 			$selisih= $aloksektorperdaganganBermasalah-$lapCALKid44aloksektorperdaganganBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='40'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '40');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid45aloksektorpertanianBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='45'")->result_array()[0][$bulansekarang];   
+		$lapCALKid45aloksektorpertanianBermasalah = $this->getElementData($catatanAtasLapKeu, '45')[$bulansekarang];   
 
 		if($aloksektorpertanianBermasalah== $lapCALKid45aloksektorpertanianBermasalah){
 			echo ' true';     echo ' neracasaldo id 41';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='41'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '41');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 41'; echo $aloksektorpertanianBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid45aloksektorpertanianBermasalah;
 			$selisih= $aloksektorpertanianBermasalah-$lapCALKid45aloksektorpertanianBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='41'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '41');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid46aloksektorperkebunanBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='46'")->result_array()[0][$bulansekarang];   
+		$lapCALKid46aloksektorperkebunanBermasalah = $this->getElementData($catatanAtasLapKeu, '46')[$bulansekarang];   
 
 		if($aloksektorperkebunanBermasalah== $lapCALKid46aloksektorperkebunanBermasalah){
 			echo ' true';     echo ' neracasaldo id 42';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='42'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '42');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 42'; echo $aloksektorperkebunanBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid46aloksektorperkebunanBermasalah;
 			$selisih= $aloksektorperkebunanBermasalah-$lapCALKid46aloksektorperkebunanBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='42'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '42');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid47aloksektorperikananBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='47'")->result_array()[0][$bulansekarang];   
+		$lapCALKid47aloksektorperikananBermasalah = $this->getElementData($catatanAtasLapKeu, '47')[$bulansekarang];   
 
 		if($aloksektorperikananBermasalah== $lapCALKid47aloksektorperikananBermasalah){
 			echo ' true';     echo ' neracasaldo id 43';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='43'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '43');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 43'; echo $aloksektorperikananBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid47aloksektorperikananBermasalah;
 			$selisih= $aloksektorperikananBermasalah-$lapCALKid47aloksektorperikananBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='43'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '43');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid48aloksektorpeternakanBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='48'")->result_array()[0][$bulansekarang];   
+		$lapCALKid48aloksektorpeternakanBermasalah = $this->getElementData($catatanAtasLapKeu, '48')[$bulansekarang];   
 
 		if($aloksektorpeternakanBermasalah== $lapCALKid48aloksektorpeternakanBermasalah){
 			echo ' true';     echo ' neracasaldo id 44';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='44'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '44');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 44'; echo $aloksektorpeternakanBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid48aloksektorpeternakanBermasalah;
 			$selisih= $aloksektorpeternakanBermasalah-$lapCALKid48aloksektorpeternakanBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='44'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '44');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid49aloksektorjasaBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='49'")->result_array()[0][$bulansekarang];   
+		$lapCALKid49aloksektorjasaBermasalah = $this->getElementData($catatanAtasLapKeu, '49')[$bulansekarang];   
 
 		if($aloksektorjasaBermasalah== $lapCALKid49aloksektorjasaBermasalah){
 			echo ' true';     echo ' neracasaldo id 45';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='45'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '45');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 45'; echo $aloksektorjasaBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid49aloksektorjasaBermasalah;
 			$selisih= $aloksektorjasaBermasalah-$lapCALKid49aloksektorjasaBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='45'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '45');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid50aloksektorLainlainBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='50'")->result_array()[0][$bulansekarang];   
+		$lapCALKid50aloksektorLainlainBermasalah = $this->getElementData($catatanAtasLapKeu, '50')[$bulansekarang];   
 
 		if($aloksektorLainlainBermasalah== $lapCALKid50aloksektorLainlainBermasalah){
 			echo ' true';     echo ' neracasaldo id 46';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='46'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '46');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 46'; echo $aloksektorLainlainBermasalah; 
 			echo ' vs ';
 			echo $lapCALKid50aloksektorLainlainBermasalah;
 			$selisih= $aloksektorLainlainBermasalah-$lapCALKid50aloksektorLainlainBermasalah;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='46'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '46');    
 		}
 		echo nl2br("\n");
 
 	
-				$lapCALKid52kelebihanAngs = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='52'")->result_array()[0][$bulansekarang];  
+				$lapCALKid52kelebihanAngs = $this->getElementData($catatanAtasLapKeu, '52')[$bulansekarang];  
 
 		if($totpengeluaranKelebihanPembayaranAngs== $lapCALKid52kelebihanAngs){
 			echo ' true';     echo ' neracasaldo id 56';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='56'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '56');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 56'; echo $totpengeluaranKelebihanPembayaranAngs; 
 			echo ' vs ';
 			echo $lapCALKid52kelebihanAngs;
 			$selisih= $totpengeluaranKelebihanPembayaranAngs-$lapCALKid52kelebihanAngs;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='56'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '56');    
 		}
 		echo nl2br("\n");
 
-		$lapCALKid53angsBelumTeridentifikasi = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='53'")->result_array()[0][$bulansekarang];   
+		$lapCALKid53angsBelumTeridentifikasi = $this->getElementData($catatanAtasLapKeu, '53')[$bulansekarang];   
 
 		if($angsBelumTeridentifikasi== $lapCALKid53angsBelumTeridentifikasi){
 			echo ' true';     echo ' neracasaldo id 57';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='57'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '57');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 57'; echo $angsBelumTeridentifikasi; 
 			echo ' vs ';
 			echo $lapCALKid53angsBelumTeridentifikasi;
 			$selisih= $angsBelumTeridentifikasi-$lapCALKid53angsBelumTeridentifikasi;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='57'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '57');    
 		}
 		echo nl2br("\n");
 
@@ -2035,7 +2043,7 @@ class NeracaSaldo extends CI_Controller {
 
 		if($asetNeto== $lapneraca24angsBelumTeridentifikasi){
 			echo ' true';     echo ' neracasaldo id 58';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='58'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '58');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 58';echo nl2br("\n");
 			echo $asetNeto; 
@@ -2043,15 +2051,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapneraca24angsBelumTeridentifikasi;
 			$selisih= $asetNeto-$lapneraca24angsBelumTeridentifikasi;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='58'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '58');    
 		}
 		echo nl2br("\n");
 		
-		$lapCALK56pendapatan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='56'")->result_array()[0][$bulansekarang];   
+		$lapCALK56pendapatan = $this->getElementData($catatanAtasLapKeu, '56')[$bulansekarang];   
 
 		if( round($Pendapatan)== round( $lapCALK56pendapatan)){
 			echo ' true';     echo ' neracasaldo id 60';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='60'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '60');    
 		}else{	
 			echo ' false';     echo ' neracasaldo id 60';echo nl2br("\n");
 			echo $Pendapatan; 
@@ -2059,15 +2067,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK56pendapatan;
 			$selisih= $Pendapatan-$lapCALK56pendapatan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='60'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '60');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK57jasaAdmPinjaman = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='57'")->result_array()[0][$bulansekarang];   
+		$lapCALK57jasaAdmPinjaman = $this->getElementData($catatanAtasLapKeu, '57')[$bulansekarang];   
 
 		if($saldoJasaAdmPinjaman== $lapCALK57jasaAdmPinjaman){
 			echo ' true';     echo ' neracasaldo id 61';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='61'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '61');    
 		}else{	
 			echo ' false';     echo ' neracasaldo id 61';echo nl2br("\n");
 			echo $saldoJasaAdmPinjaman; 
@@ -2075,15 +2083,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK57jasaAdmPinjaman;
 			$selisih= $saldoJasaAdmPinjaman-$lapCALK57jasaAdmPinjaman;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='61'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '61');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK58saldoJasaGiroPK = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='58'")->result_array()[0][$bulansekarang];   
+		$lapCALK58saldoJasaGiroPK = $this->getElementData($catatanAtasLapKeu, '58')[$bulansekarang];   
 
 		if(round($saldoJasaGiroPK)== round($lapCALK58saldoJasaGiroPK)){
 			echo ' true';     echo ' neracasaldo id 62';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='62'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '62');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 62';echo nl2br("\n");
 			echo $saldoJasaGiroPK; 
@@ -2091,15 +2099,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK58saldoJasaGiroPK;
 			$selisih= $saldoJasaGiroPK-$lapCALK58saldoJasaGiroPK;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='62'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '62');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK59PendapatanLainlainPiutangHapusBuku = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='59'")->result_array()[0][$bulansekarang];   
+		$lapCALK59PendapatanLainlainPiutangHapusBuku = $this->getElementData($catatanAtasLapKeu, '59')[$bulansekarang];   
 
 		if(round($PendapatanLainlainPiutangHapusBuku)== round($lapCALK59PendapatanLainlainPiutangHapusBuku)){
 			echo ' true';     echo ' neracasaldo id 63';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='63'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '63');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 63';echo nl2br("\n");
 			echo $PendapatanLainlainPiutangHapusBuku; 
@@ -2107,15 +2115,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK59PendapatanLainlainPiutangHapusBuku;
 			$selisih= $PendapatanLainlainPiutangHapusBuku-$lapCALK59PendapatanLainlainPiutangHapusBuku;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='63'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '63');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK59PendapatanLainlainPiutangHapusBuku = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='59'")->result_array()[0][$bulansekarang];   
+		$lapCALK59PendapatanLainlainPiutangHapusBuku = $this->getElementData($catatanAtasLapKeu, '59')[$bulansekarang];   
 
 		if(round($PendapatanLainlainPiutangHapusBuku)== round($lapCALK59PendapatanLainlainPiutangHapusBuku)){
 			echo ' true';     echo ' neracasaldo id 63';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='63'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '63');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 63';echo nl2br("\n");
 			echo $PendapatanLainlainPiutangHapusBuku; 
@@ -2123,15 +2131,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK59PendapatanLainlainPiutangHapusBuku;
 			$selisih= $PendapatanLainlainPiutangHapusBuku-$lapCALK59PendapatanLainlainPiutangHapusBuku;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='63'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '63');    
 		}
 		echo nl2br("\n");
 		$pendapatanLainlainPenyesuaian=0;
-		$lapCALK61pendapatanLainlainPenyesuaian = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='60'")->result_array()[0][$bulansekarang];   
+		$lapCALK61pendapatanLainlainPenyesuaian = $this->getElementData($catatanAtasLapKeu, '60')[$bulansekarang];   
 
 		if(round($pendapatanLainlainPenyesuaian)== round($lapCALK61pendapatanLainlainPenyesuaian)){
 			echo ' true';     echo ' neracasaldo id 64';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='64'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '64');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 64';echo nl2br("\n");
 			echo $pendapatanLainlainPenyesuaian; 
@@ -2139,16 +2147,16 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK61pendapatanLainlainPenyesuaian;
 			$selisih= $pendapatanLainlainPenyesuaian-$lapCALK61pendapatanLainlainPenyesuaian;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='64'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '64');    
 		}
 		echo nl2br("\n");
 
 	
-		$lapCALK61pendapatanLainlainLains = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='61'")->result_array()[0][$bulansekarang];  
+		$lapCALK61pendapatanLainlainLains = $this->getElementData($catatanAtasLapKeu, '61')[$bulansekarang];  
 
 		if(round($pendapatanLainlainLains)== round($lapCALK61pendapatanLainlainLains)){
 			echo ' true';     echo ' neracasaldo id 65';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='65'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '65');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 65';echo nl2br("\n");
 			echo $pendapatanLainlainLains; 
@@ -2156,15 +2164,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK61pendapatanLainlainLains;
 			$selisih= $pendapatanLainlainLains-$lapCALK61pendapatanLainlainLains;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='65'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '65');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK62bebanAdmdanUmum = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='62'")->result_array()[0][$bulansekarang];   
+		$lapCALK62bebanAdmdanUmum = $this->getElementData($catatanAtasLapKeu, '62')[$bulansekarang];   
 
 		if(round($bebanAdmdanUmum)== round($lapCALK62bebanAdmdanUmum)){
 			echo ' true';     echo ' neracasaldo id 66';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='66'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '66');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 66';echo nl2br("\n");
 			echo $bebanAdmdanUmum; 
@@ -2172,15 +2180,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK62bebanAdmdanUmum;
 			$selisih= $bebanAdmdanUmum-$lapCALK62bebanAdmdanUmum;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='66'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '66');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK67totBebanPenyisihan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='67'")->result_array()[0][$bulansekarang];   
+		$lapCALK67totBebanPenyisihan = $this->getElementData($catatanAtasLapKeu, '67')[$bulansekarang];   
 
 		if(round($totBebanPenyisihan)== round($lapCALK67totBebanPenyisihan)){
 			echo ' true';     echo ' neracasaldo id 67';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='67'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '67');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 67';echo nl2br("\n");
 			echo $totBebanPenyisihan; 
@@ -2188,15 +2196,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK67totBebanPenyisihan;
 			$selisih= $totBebanPenyisihan-$lapCALK67totBebanPenyisihan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='67'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '67');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK68totBebanPenyisihan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='68'")->result_array()[0][$bulansekarang];   
+		$lapCALK68totBebanPenyisihan = $this->getElementData($catatanAtasLapKeu, '68')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanIndustri)== round($lapCALK68totBebanPenyisihan)){
 			echo ' true';     echo ' neracasaldo id 68';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='68'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '68');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 68';echo nl2br("\n");
 			echo $jumBebanPenyisihanIndustri; 
@@ -2204,15 +2212,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK68totBebanPenyisihan;
 			$selisih= $jumBebanPenyisihanIndustri-$lapCALK68totBebanPenyisihan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='68'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '68');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK69jumBebanPenyisihanPerdagangan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='69'")->result_array()[0][$bulansekarang];   
+		$lapCALK69jumBebanPenyisihanPerdagangan = $this->getElementData($catatanAtasLapKeu, '69')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanPerdagangan)== round($lapCALK69jumBebanPenyisihanPerdagangan)){
 			echo ' true';     echo ' neracasaldo id 69';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='69'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '69');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 69';echo nl2br("\n");
 			echo $jumBebanPenyisihanPerdagangan; 
@@ -2220,15 +2228,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK69jumBebanPenyisihanPerdagangan;
 			$selisih= $jumBebanPenyisihanPerdagangan-$lapCALK69jumBebanPenyisihanPerdagangan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='69'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '69');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK70jumBebanPenyisihanPertanian = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='70'")->result_array()[0][$bulansekarang];   
+		$lapCALK70jumBebanPenyisihanPertanian = $this->getElementData($catatanAtasLapKeu, '70')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanPertanian)== round($lapCALK70jumBebanPenyisihanPertanian)){
 			echo ' true';     echo ' neracasaldo id 70';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='70'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '70');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 70';echo nl2br("\n");
 			echo $jumBebanPenyisihanPertanian; 
@@ -2236,15 +2244,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK70jumBebanPenyisihanPertanian;
 			$selisih= $jumBebanPenyisihanPertanian-$lapCALK70jumBebanPenyisihanPertanian;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='70'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '70');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK71jumBebanPenyisihanPerkebunan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='71'")->result_array()[0][$bulansekarang];   
+		$lapCALK71jumBebanPenyisihanPerkebunan = $this->getElementData($catatanAtasLapKeu, '71')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanPerkebunan)== round($lapCALK71jumBebanPenyisihanPerkebunan)){
 			echo ' true';     echo ' neracasaldo id 71';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='71'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '71');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 71';echo nl2br("\n");
 			echo $jumBebanPenyisihanPerkebunan; 
@@ -2252,15 +2260,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK71jumBebanPenyisihanPerkebunan;
 			$selisih= $jumBebanPenyisihanPerkebunan-$lapCALK71jumBebanPenyisihanPerkebunan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='71'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '71');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK72jumBebanPenyisihanPerikanan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='72'")->result_array()[0][$bulansekarang];   
+		$lapCALK72jumBebanPenyisihanPerikanan = $this->getElementData($catatanAtasLapKeu, '72')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanPerikanan)== round($lapCALK72jumBebanPenyisihanPerikanan)){
 			echo ' true';     echo ' neracasaldo id 72';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='72'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '72');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 72';echo nl2br("\n");
 			echo $jumBebanPenyisihanPerikanan; 
@@ -2268,15 +2276,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK72jumBebanPenyisihanPerikanan;
 			$selisih= $jumBebanPenyisihanPerikanan-$lapCALK72jumBebanPenyisihanPerikanan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='72'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '72');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK73jumBebanPenyisihanPeternakan = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='73'")->result_array()[0][$bulansekarang];   
+		$lapCALK73jumBebanPenyisihanPeternakan = $this->getElementData($catatanAtasLapKeu, '73')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanPeternakan)== round($lapCALK73jumBebanPenyisihanPeternakan)){
 			echo ' true';     echo ' neracasaldo id 73';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='73'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '73');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 73';echo nl2br("\n");
 			echo $jumBebanPenyisihanPeternakan; 
@@ -2284,15 +2292,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK73jumBebanPenyisihanPeternakan;
 			$selisih= $jumBebanPenyisihanPeternakan-$lapCALK73jumBebanPenyisihanPeternakan;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='73'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '73');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK74jumBebanPenyisihanJasa = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='74'")->result_array()[0][$bulansekarang];   
+		$lapCALK74jumBebanPenyisihanJasa = $this->getElementData($catatanAtasLapKeu, '74')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanJasa)== round($lapCALK74jumBebanPenyisihanJasa)){
 			echo ' true';     echo ' neracasaldo id 74';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='74'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '74');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 74';echo nl2br("\n");
 			echo $jumBebanPenyisihanJasa; 
@@ -2300,15 +2308,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK74jumBebanPenyisihanJasa;
 			$selisih= $jumBebanPenyisihanJasa-$lapCALK74jumBebanPenyisihanJasa;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='74'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '74');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK75jumBebanPenyisihanLainlain = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='75'")->result_array()[0][$bulansekarang];   
+		$lapCALK75jumBebanPenyisihanLainlain = $this->getElementData($catatanAtasLapKeu, '75')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanLainlain)== round($lapCALK75jumBebanPenyisihanLainlain)){
 			echo ' true';     echo ' neracasaldo id 75';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='75'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '75');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 75';echo nl2br("\n");
 			echo $jumBebanPenyisihanLainlain; 
@@ -2316,15 +2324,15 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK75jumBebanPenyisihanLainlain;
 			$selisih= $jumBebanPenyisihanLainlain-$lapCALK75jumBebanPenyisihanLainlain;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='75'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '75');    
 		}
 		echo nl2br("\n");
 
-		$lapCALK75jumBebanLainlain = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='75'")->result_array()[0][$bulansekarang];   
+		$lapCALK75jumBebanLainlain = $this->getElementData($catatanAtasLapKeu, '75')[$bulansekarang];   
 
 		if(round($jumBebanPenyisihanLainlain)== round($lapCALK75jumBebanLainlain)){
 			echo ' true';     echo ' neracasaldo id 76';
-			$this->db->query("UPDATE neracasaldo SET selisih='0' WHERE id='76'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih(0, '76');    
 		}else{
 			echo ' false';     echo ' neracasaldo id 76';echo nl2br("\n");
 			echo $jumBebanPenyisihanLainlain; 
@@ -2332,11 +2340,19 @@ class NeracaSaldo extends CI_Controller {
 			echo $lapCALK75jumBebanLainlain;
 			$selisih= $jumBebanPenyisihanLainlain-$lapCALK75jumBebanLainlain;
 			echo ' selisih='; echo $selisih;
-			$this->db->query("UPDATE neracasaldo SET selisih='$selisih' WHERE id='76'");    
+			$this->neracasaldo_model->updateNeracaSaldoSelisih($selisih, '76');    
 		}
 		echo nl2br("\n");
 
-		return redirect(base_url('Admin/neracaSaldo'));
+		// var_dump(memory_get_usage(), memory_get_usage()/1024);
+		// return redirect(base_url('Admin/neracaSaldo'));
+	}
+
+	private function getElementData($array, $id){
+		$desTahunLalu = 'des' . date('y', strtotime('-1 year'));
+		$index = array_search($id, array_column($array, 'id'));
+
+		return $array[$index];
 	}
 
 	public function cetakNeracaSaldo(){
