@@ -657,34 +657,29 @@ class NeracaSaldo extends CI_Controller {
 		
 		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukankas, '4'); 
 		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluarankas, '4');
-
-		$saldokasPKdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '4')[$desTahunLalu];//baca kas PK desTahunLalu
-		$saldoKasPK=$saldokasPKdesTahunLalu+$totpemasukankas-$totpengeluarankas;
+		
+		$saldoKasPK= $this->getElementData($desTahunLaluNeracaSaldo, '4')[$desTahunLalu] + $totpemasukankas - $totpengeluarankas;
 		$this->neracasaldo_model->updateNeracaSaldo($saldoKasPK, '4');
 
 		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanmandiri, '5'); 
 		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranmandiri, '5');
-		$SaldoMandiridesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '5')[$desTahunLalu];   
-		$saldoMandiriJurnal=$SaldoMandiridesTahunLalu+$totpemasukanmandiri-$totpengeluaranmandiri;    
+
+		$saldoMandiriJurnal= $this->getElementData($desTahunLaluNeracaSaldo, '5')[$desTahunLalu] + $totpemasukanmandiri - $totpengeluaranmandiri;    
 		$this->neracasaldo_model->updateNeracaSaldo($saldoMandiriJurnal, '5');//  
 
 		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanbri, '7'); 
 		$this->neracasaldo_model->updateNeracaSaldoKredit($totpengeluaranbri, '7');
 
-		$SaldoBRIdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '7')[$desTahunLalu];   
-		$saldoBRIJurnal=$SaldoBRIdesTahunLalu+$totpemasukanbri-$totpengeluaranbri;    
-
+		$saldoBRIJurnal = $this->getElementData($desTahunLaluNeracaSaldo, '7')[$desTahunLalu] + $totpemasukanbri - $totpengeluaranbri;    
 		$this->neracasaldo_model->updateNeracaSaldo($saldoBRIJurnal, '7');//  
 
-		$debetno3=$totpemasukankas+$totpemasukanmandiri+$totpemasukanbri;
-		$kreditno3=$totpengeluarankas+$totpengeluaranmandiri+$totpengeluaranbri;
+		$debetno3 = $totpemasukankas+$totpemasukanmandiri+$totpemasukanbri;
+		$kreditno3 = $totpengeluarankas+$totpengeluaranmandiri+$totpengeluaranbri;
 
 		$this->neracasaldo_model->updateNeracaSaldoDebet($debetno3, '3'); 
 		$this->neracasaldo_model->updateNeracaSaldoKredit($kreditno3, '3');
 
-		$SaldoKasSetaraKasdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '3')[$desTahunLalu];   
-
-		$SaldoKasSetaraKas= $SaldoKasSetaraKasdesTahunLalu+$debetno3-$kreditno3;
+		$SaldoKasSetaraKas= $this->getElementData($desTahunLaluNeracaSaldo, '3')[$desTahunLalu] + $debetno3 - $kreditno3;
 		$this->neracasaldo_model->updateNeracaSaldo($SaldoKasSetaraKas, '3');//  
 
 		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanindustribermasalah, '30'); 
@@ -697,14 +692,9 @@ class NeracaSaldo extends CI_Controller {
 		$this->neracasaldo_model->updateNeracaSaldoDebet($aloktotpengeluaranindustribermasalah, '39');
 
 		$sektorindustriBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '30')[$desTahunLalu];   
-
 		$sektorindustriBermasalah= $sektorindustriBermasalahdesTahunLalu+$totpemasukanindustribermasalah-$totpengeluaranindustribermasalah;
-
 		$this->neracasaldo_model->updateNeracaSaldo($sektorindustriBermasalah, '30');//  
-
-		$aloksektorindustriBermasalahdesTahunLalu = $this->getElementData($desTahunLaluNeracaSaldo, '39')[$desTahunLalu];   
-
-		$aloksektorindustriBermasalah= $aloksektorindustriBermasalahdesTahunLalu-$aloktotpemasukanindustribermasalah+$aloktotpengeluaranindustribermasalah;
+		$aloksektorindustriBermasalah= $this->getElementData($desTahunLaluNeracaSaldo, '39')[$desTahunLalu]-$aloktotpemasukanindustribermasalah+$aloktotpengeluaranindustribermasalah;
 
 		$this->neracasaldo_model->updateNeracaSaldo($aloksektorindustriBermasalah, '39');
 		$this->neracasaldo_model->updateNeracaSaldoDebet($totpemasukanperdaganganbermasalah, '31'); 
@@ -1482,9 +1472,6 @@ class NeracaSaldo extends CI_Controller {
 		echo nl2br("\n");
 
 		$lapCALKid10perdagangan = $this->getElementData($catatanAtasLapKeu, '10')[$bulansekarang]; 
-		var_dump($lapCALKid10perdagangan);
-		var_dump($totpiutangperdagangan);
-		die;
 
 		if($totpiutangperdagangan== $lapCALKid10perdagangan){
 			echo ' true'; 
@@ -2346,10 +2333,11 @@ class NeracaSaldo extends CI_Controller {
 
 		// var_dump(memory_get_usage(), memory_get_usage()/1024);
 		// return redirect(base_url('Admin/neracaSaldo'));
+
+		echo memory_get_usage();
 	}
 
 	private function getElementData($array, $id){
-		$desTahunLalu = 'des' . date('y', strtotime('-1 year'));
 		$index = array_search($id, array_column($array, 'id'));
 
 		return $array[$index];

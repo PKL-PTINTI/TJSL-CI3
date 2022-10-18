@@ -59,8 +59,51 @@ class RKA extends CI_Controller {
 		$this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 
 		$this->data['neraca'] = $this->rka_model->getData();
+		$this->data['data_piutang_mb'] = $this->_get_data_chart_piutang();
 		
 		$this->template->load('rka/index', $this->data);
+	}
+
+	private function _get_data_chart_piutang(){
+		$bulan = array (
+			1 =>   'jan' . date('y'),
+			'feb' . date('y'),
+			'mar' . date('y'),
+			'apr' . date('y'),
+			'mei' . date('y'),
+			'jun' . date('y'),
+			'jul' . date('y'),
+			'ags' . date('y'),
+			'sep' . date('y'),
+			'okt' . date('y'),
+			'nov' . date('y'),
+			'des' . date('y')
+		);
+
+		$bulan_ini = [];
+		for ($i=1; $i < (int)ltrim(date('m', mktime(0, 0, 0, date('m'), 0, 0)), '0'); $i++) { 
+			$bulan_ini[] = $bulan[$i];
+		}
+
+		$piutangMB = [];
+		$piutangMBLancar = [];
+		$piutangMBKurangLancar = [];
+		$piutangMBDiragukan = [];
+		$piutangMBMacet = [];
+
+		for ($i=0; $i < count($bulan_ini); $i++) {
+			$piutangMB[$i + 1] = $this->db->query("SELECT `$bulan_ini[$i]` as piutangMB FROM `neraca` WHERE `id`='3'")->row()->piutangMB;
+			$piutangMBLancar[$i + 1] = $this->db->query("SELECT `$bulan_ini[$i]` as piutangMBLancar FROM `tingkatpengembalianhasil` WHERE `id`='1'")->row()->piutangMBLancar;
+			$piutangMBKurangLancar[$i + 1] = $this->db->query("SELECT `$bulan_ini[$i]` as piutangMBKurangLancar FROM `tingkatpengembalianhasil` WHERE `id`='2'")->row()->piutangMBKurangLancar;
+			$piutangMBDiragukan[$i + 1] = $this->db->query("SELECT `$bulan_ini[$i]` as piutangMBDiragukan FROM `tingkatpengembalianhasil` WHERE `id`='3'")->row()->piutangMBDiragukan;
+			$piutangMBMacet[$i + 1] = $this->db->query("SELECT `$bulan_ini[$i]` as piutangMBMacet FROM `tingkatpengembalianhasil` WHERE `id`='4'")->row()->piutangMBMacet;
+		}
+
+		return ['piutangMB' => $piutangMB,
+		'piutangMBLancar' => $piutangMBLancar,
+		'piutangMBKurangLancar' => $piutangMBKurangLancar,
+		'piutangMBDiragukan' => $piutangMBDiragukan,
+		'piutangMBMacet' => $piutangMBMacet];
 	}
 
 	public function CreateExcel() {

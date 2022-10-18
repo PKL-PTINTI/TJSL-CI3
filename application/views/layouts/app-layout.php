@@ -326,17 +326,66 @@
             var myChart = new Chart(statistics_chart_mitra, {
             type: 'line',
             data: {
-                labels: ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'],
+                labels: [<?php foreach($data_piutang_mb['piutangMB'] as $key => $value) { echo '"'._tanggal($key).'",'; } ?>],
                 datasets: [{
-                label: 'Pemasukan',
-                data: [12, 19, 3, 5, 2, 3, 10, 12, 19, 3, 5, 2],
+                label: 'Piutang MB',
+                data: [<?php foreach($data_piutang_mb['piutangMB'] as $key => $value) { echo $value.','; } ?>],
                 borderWidth: 5,
                 borderColor: '#6777ef',
                 backgroundColor: 'transparent',
                 pointBackgroundColor: '#fff',
                 pointBorderColor: '#6777ef',
                 pointRadius: 4
-                }]
+                },
+                {
+                label: 'Piutang MB Lancar',
+                data: [<?php foreach($data_piutang_mb['piutangMBLancar'] as $key => $value) { echo $value.','; } ?>],
+                borderWidth: 2,
+                backgroundColor: 'transparent',
+                borderWidth: 5,
+                borderColor: '#6777ef',
+                pointBorderWidth: 0 ,
+                pointRadius: 3.5,
+                pointBackgroundColor: 'transparent',
+                pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
+                },
+                {
+                label: 'Piutang MB Kurang Lancar',
+                data: [<?php foreach($data_piutang_mb['piutangMBKurangLancar'] as $key => $value) { echo $value.','; } ?>],
+                borderWidth: 2,
+                backgroundColor: 'transparent',
+                borderWidth: 5,
+                borderColor: '#6777ef',
+                pointBorderWidth: 0 ,
+                pointRadius: 3.5,
+                pointBackgroundColor: 'transparent',
+                pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
+                },
+                {
+                label: 'Piutang MB Diragukan',
+                data: [<?php foreach($data_piutang_mb['piutangMBDiragukan'] as $key => $value) { echo $value.','; } ?>],
+                borderWidth: 2,
+                backgroundColor: 'transparent',
+                borderWidth: 5,
+                borderColor: '#6777ef',
+                pointBorderWidth: 0 ,
+                pointRadius: 3.5,
+                pointBackgroundColor: 'transparent',
+                pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
+                },
+                {
+                label: 'Piutang MB Macet',
+                data: [<?php foreach($data_piutang_mb['piutangMBMacet'] as $key => $value) { echo $value.','; } ?>],
+                borderWidth: 2,
+                backgroundColor: 'transparent',
+                borderWidth: 5,
+                borderColor: '#6777ef',
+                pointBorderWidth: 0 ,
+                pointRadius: 3.5,
+                pointBackgroundColor: 'transparent',
+                pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
+                }
+            ]
             },
             options: {
                 legend: {

@@ -8,9 +8,8 @@
    </head>
    <font size="1">
       <?php
-         $tanggal = date('t M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+         $tanggal = month_name(periode_to_month($perioda)) . ' ' . date('Y');
          $akhirtahun = 'des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")));
-         
          ?>
       <div class="mx-auto" style="width: 750px;">
          <p class="fs-6">

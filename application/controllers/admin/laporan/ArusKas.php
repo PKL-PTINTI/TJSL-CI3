@@ -53,20 +53,19 @@ class ArusKas extends CI_Controller {
 		$this->data['title'] = 'Laporan Arus Kas';
         $this->data['header'] = 'Management Laporan Arus Kas';
         $this->data['aruskas'] = $this->aruskas_model->getArusKas();		
-
-		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));	
-
+		$this->data['perioda'] = empty($this->input->get('periode')) ? $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->input->get('periode');
+		$this->data['bulan'] =  month_name(periode_to_month($this->data['perioda'])) . ' ' . date('Y');
+		
 		$this->template->load('arus_kas/index', $this->data);
     }
 
 	public function createExcel() {
-		$fileName = 'aruskas-keuangan-' . date('Y') .'.xlsx';  
+		$fileName = 'aruskas-' . date('Y') .'.xlsx';  
 
 		$aruskas = $this->aruskas_model->getArusKas();
 		$spreadsheet = new Spreadsheet();
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m"), date("d"), date("Y"))));
+		$perioda = empty($this->input->get('periode')) ? $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->input->get('periode');
+		$bulan =  month_name(periode_to_month($perioda)) . ' ' . date('Y');
 
         $sheet = $spreadsheet->getActiveSheet();
 		$sheet->getColumnDimension('A')->setWidth(42);
@@ -146,9 +145,8 @@ class ArusKas extends CI_Controller {
 	public function cetak(){
 		$data = [
 			'aruskas' => $this->aruskas_model->getArusKas(),
+			'perioda' => empty($this->input->get('periode')) ? $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->input->get('periode'),
 		];
-
-		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 
 		$this->load->view('arus_kas/cetak', $data);
 	}

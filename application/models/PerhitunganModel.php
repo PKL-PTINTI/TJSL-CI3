@@ -6,49 +6,49 @@ class PerhitunganModel extends CI_Model {
     public function __construct()
     {
         parent::__construct();
+        $this->bulansekarang = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+		$this->bulansebelumnya = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-2, date("d"), date("Y"))));
+		$this->desTahunLalu = 'des' . strval(date('y') - 1);
     }
-    
-    public function updateCatatanAtasLapKeu($nilaiLaporan, $perioda, $id){
-        $this->db->set($perioda, $nilaiLaporan);
+
+    public function updateCatatanAtasLapKeu($data, $id){
+        $this->db->set($this->bulansekarang, $data);
         $this->db->where('id', $id);
         $this->db->update('catatanataslapkeu');
     }
 
-    public function selectCatatanAtasLapKeu($fieldPerioda, $id){
-        $this->db->select($fieldPerioda);
-        $this->db->from('catatanataslapkeu');
-        $this->db->where('id', $id);
-        $query = $this->db->get();
-        return $query->result_array()[0][$fieldPerioda];
-    }
-
-    public function updatePerubahanAsetNetoTidakTerikat($perioda, $nilaiLaporan, $id){
-        $this->db->set($perioda, $nilaiLaporan);
+    public function updatePerubahanAsetNetoTidakTerikat($data, $id){
+        $this->db->set($this->bulansekarang, $data);
         $this->db->where('id', $id);
         $this->db->update('perubahanasetnetotidakterikat');
     }
 
-    public function updatePerubahanAsetNetoTidakTerikatSD($perioda, $nilaiLaporan, $id){
-        $this->db->set('sd' . $perioda, $nilaiLaporan);
+    public function updatePerubahanAsetNetoTidakTerikatSD($data, $id){
+        $this->db->set('sd' . $this->bulansekarang, $data);
         $this->db->where('id', $id);
         $this->db->update('perubahanasetnetotidakterikat');
     }
 
-    public function selectPerubahanAsetNetoTidakTerikat($fieldPerioda, $id){
-        $this->db->select($fieldPerioda);
-        $this->db->from('perubahanasetnetotidakterikat');
-        $this->db->where('id', $id);
-        $query = $this->db->get();
-        return $query->result_array()[0][$fieldPerioda];
-    }
+    private function _tanggal($tanggal){
+		$bulan = array (
+			1 =>   'jan',
+			'feb',
+			'mar',
+			'apr',
+			'mei',
+			'jun',
+			'jul',
+			'ags',
+			'sep',
+			'okt',
+			'nov',
+			'des'
+		);
+		$pecahkan = explode('-', $tanggal);
+	 
+		return $bulan[(int)$pecahkan[1]] . $pecahkan[0];
 
-    public function selectPerubahanAsetNetoTidakTerikatSD($fieldPerioda, $id){
-        $this->db->select('sd' . $fieldPerioda);
-        $this->db->from('perubahanasetnetotidakterikat');
-        $this->db->where('id', $id);
-        $query = $this->db->get();
-        return $query->result_array()[0]['sd' . $fieldPerioda];
-    }
+	}
 
 }
 

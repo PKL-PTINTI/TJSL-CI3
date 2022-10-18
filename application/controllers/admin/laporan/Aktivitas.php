@@ -50,17 +50,11 @@ class Aktivitas extends CI_Controller {
 
 	public function index()
 	{
-			$this->data['title'] = 'Laporan Aktivitas';
-            $this->data['header'] = 'Management Laporan Aktivitas';
-            $this->data['aktivitas'] = $this->aktivitas_model->getAktivitas();
-
-		if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		}
-
-		if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-		}	
+		$this->data['title'] = 'Laporan Aktivitas';
+		$this->data['header'] = 'Management Laporan Aktivitas';
+		$this->data['aktivitas'] = $this->aktivitas_model->getAktivitas();
+		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+		empty($this->input->get('periode')) ? $this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->data['perioda'] = $this->input->get('periode');
 
 		$this->template->load('aktivitas/index', $this->data);
     }
@@ -69,10 +63,11 @@ class Aktivitas extends CI_Controller {
 		$fileName = 'laporan-aktivitas-' . date('Y') .'.xlsx';
 		$aktivitas = $this->aktivitas_model->getAktivitas();
 		$spreadsheet = new Spreadsheet();
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m"), date("d"), date("Y"))));
-
-        $sheet = $spreadsheet->getActiveSheet();
+		
+		empty($this->input->get('periode')) ? $perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $perioda = $this->input->get('periode');
+		$bulan =  month_name(periode_to_month($perioda)) . ' ' . date('Y');
+        
+		$sheet = $spreadsheet->getActiveSheet();
 		$sheet->getColumnDimension('A')->setWidth(50);
 		$sheet->getColumnDimension('B')->setWidth(20);
 		$sheet->getColumnDimension('C')->setWidth(20);
@@ -163,7 +158,7 @@ class Aktivitas extends CI_Controller {
 			'aktivitas' => $this->aktivitas_model->getAktivitas(),
 		];
 
-		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+		empty($this->input->get('periode')) ? $data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $data['perioda'] = $this->input->get('periode');
 
 		$this->load->view('aktivitas/cetak', $data);
 	}

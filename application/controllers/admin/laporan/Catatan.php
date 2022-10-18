@@ -2,7 +2,6 @@
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class Catatan extends CI_Controller {
 
@@ -52,15 +51,8 @@ class Catatan extends CI_Controller {
 	{
 		$this->data['title'] = 'Catatan Atas Laporan Keuangan';
 		$this->data['header'] = 'Management Catatan Atas Laporan Keuangan';
-
-		if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		}
-
-		if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-		}
-
+		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+		empty($this->input->get('periode')) ? $this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->data['perioda'] = $this->input->get('periode');
 		$this->data['catatan'] = $this->catatan_model->getData();
 
 		$this->template->load('catatan/index', $this->data);
@@ -71,8 +63,8 @@ class Catatan extends CI_Controller {
 
 		$catatan = $this->catatan_model->getData();
 		$spreadsheet = new Spreadsheet();
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m"), date("d"), date("Y"))));
+		empty($this->input->get('periode')) ? $perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $perioda = $this->input->get('periode');
+		$bulan =  month_name(periode_to_month($perioda)) . ' ' . date('Y');
 
 		$sheet = $spreadsheet->getActiveSheet();
 		$sheet->getColumnDimension('A')->setWidth(50);
@@ -164,7 +156,6 @@ class Catatan extends CI_Controller {
 		$sheet->setCellValue('A76', 'BEBAN LAIN-LAIN');
 		$sheet->setCellValue('A77', '- Lain-lain');
 
-
 		$row = 4;
         foreach ($catatan as $val){
 			$row = ($row == 1) ? $row += 1 : $row;
@@ -183,9 +174,8 @@ class Catatan extends CI_Controller {
 	public function cetak(){
 		$data = [
 			'catatan' => $this->catatan_model->getData(),
+			'perioda' => empty($this->input->get('periode')) ? $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->input->get('periode')
 		];
-
-		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
 
 		$this->load->view('catatan/cetak', $data);
 	}

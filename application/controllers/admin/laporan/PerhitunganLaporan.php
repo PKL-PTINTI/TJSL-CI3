@@ -9,6 +9,7 @@ class PerhitunganLaporan extends CI_Controller {
         $this->load->model('MitraModel', 'mitra_model');
         $this->load->model('JurnalModel', 'jurnal_model');
         $this->load->model('SaldoModel', 'saldo_model');
+        $this->load->model('PerhitunganModel', 'perhitungan');
     }
 
 	public function exceute(){
@@ -65,7 +66,7 @@ class PerhitunganLaporan extends CI_Controller {
 		$totsektorlainlain = 0; $totlainlainLancar = 0; $totlainlainKurangLancar = 0; $totlainlainDiragukan = 0; $totlainlainMacet = 0;
 
         $AktivaTetapHargaPerolehanInventarisKantor = 40478000;  
-		$akumPenyusutanInvPeralatan =- 40478000;
+		$akumPenyusutanInvPeralatan = -40478000;
 		$JumlahAsetTetapBersih = $BebanAdmdanUmumBL = 0; 
         $asetNetoTerikat = 0;
         $tingkatpengembalianpinjamanMBtotal = 0;
@@ -256,9 +257,14 @@ class PerhitunganLaporan extends CI_Controller {
         $tingkatpengembalianpinjamanMBMacet = $totalmacet;
 
         $totsektorindustrisejakAwal = $totsektorindustri;
-        $jurnal = $this->db->query("SELECT * FROM opex ORDER BY tanggal ASC")->result_array();
 		$tglawal = date('Y-m-01', strtotime(date('Y-m-d', strtotime('-1 days', strtotime(date('Y-m-01', strtotime(date("d-m-Y"))))))));
 		$tglakhir = date('Y-m-01', strtotime(date("d-m-Y")));
+        $jurnal = $this->db->query("SELECT id_akun, pengeluaran, pemasukan, tanggal, tampil FROM opex ORDER BY tanggal ASC")->result_array();
+        // var_dump("SELECT `id_akun`, `pengeluaran`, `pemasukan` WHERE `tanggal` >= $tglawal AND `tanggal` < $tglakhir AND `tampil` = `0` FROM opex ORDER BY tanggal ASC");
+        // die;
+        // $jurnaltest = $this->db->query("SELECT `id_akun`, `pengeluaran`, `pemasukan` FROM opex WHERE `tanggal` >= '$tglawal' AND `tanggal` < '$tglakhir' AND `tampil` = '0' ORDER BY tanggal ASC")->result_array();
+        // var_dump(array_sum(array_column($jurnaltest, 'pengeluaran')));
+        // die;
 
         foreach ($jurnal as $key => $value) {
             if($value['tanggal'] >= $tglawal AND $value['tanggal'] < $tglakhir AND $value['tampil'] == '0'){
@@ -339,9 +345,9 @@ class PerhitunganLaporan extends CI_Controller {
                 if($value['id_akun'] == '101060101' OR $value['id_akun'] == '101060102' OR $value['id_akun'] == '101060103' OR $value['id_akun'] == '101060104'
                     OR $value['id_akun'] == '101060105' OR $value['id_akun'] == '101060106' OR $value['id_akun'] == '101060107' OR $value['id_akun'] == '101060108')
                 { 
-                $PiutangMitraBinaanPinjamanmsk += $value['pemasukan']; 
-                $PiutangMitraBinaanPinjamanklr += $value['pengeluaran'];
-                $PiutangMitraBinaanPinjaman = $PiutangMitraBinaanPinjamanklr - $PiutangMitraBinaanPinjamanmsk;         
+                    $PiutangMitraBinaanPinjamanmsk += $value['pemasukan']; 
+                    $PiutangMitraBinaanPinjamanklr += $value['pengeluaran'];
+                    $PiutangMitraBinaanPinjaman = $PiutangMitraBinaanPinjamanklr - $PiutangMitraBinaanPinjamanmsk;         
                 }
                 
                 if($value['id_akun'] == '101060101')//industri
@@ -811,25 +817,22 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
         $saldokas = $this->db->query("SELECT kaskecil FROM saldokasbank WHERE perioda='$perioda'")->result_array()[0]['kaskecil'];
         $totsaldobank = $saldomandiri + $saldobri;
 
-        var_dump($PiutangMitraBinaanPinjamanPerdagangansejakAwal);
-        die;
-
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldokas'  WHERE id='1'"); //kas 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldokas'  WHERE id='2'"); //kas PK 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsaldobank'  WHERE id='3'");//bank  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldomandiri'  WHERE id='4'"); //mandiri 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$saldobri'  WHERE id='5'");  //BRI
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$KasBankYgDiBatasiPenggunaannya'  WHERE id='6'");  //kas yg dibatasi penggunaan
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$KasBankYgDiBatasiPenggunaannya'  WHERE id='7'");  //kas yg dibatasi penggunaan
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$tingkatpengembalianpinjamanMBtotalsejakAwal'  WHERE id='8'");//piutang mitra binaan sudah benar !   
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanIndustrisejakAwal'  WHERE id='9'"); //industri 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanPerdagangansejakAwal'  WHERE id='10'"); //perdag
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanPertaniansejakAwal'  WHERE id='11'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanPerkebunansejakAwal'  WHERE id='12'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanPerikanansejakAwal'  WHERE id='13'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanPeternakansejakAwal'  WHERE id='14'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanJasasejakAwal'  WHERE id='15'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangMitraBinaanPinjamanLainsejakAwal'  WHERE id='16'");  //lainlain
+        $this->perhitungan->updateCatatanAtasLapKeu($saldokas, '1'); //kas 
+        $this->perhitungan->updateCatatanAtasLapKeu($saldokas, '2'); //kas PK 
+        $this->perhitungan->updateCatatanAtasLapKeu($totsaldobank, '3');//bank  
+        $this->perhitungan->updateCatatanAtasLapKeu($saldomandiri, '4'); //mandiri 
+        $this->perhitungan->updateCatatanAtasLapKeu($saldobri, '5');  //BRI
+        $this->perhitungan->updateCatatanAtasLapKeu($KasBankYgDiBatasiPenggunaannya, '6');  //kas yg dibatasi penggunaan
+        $this->perhitungan->updateCatatanAtasLapKeu($KasBankYgDiBatasiPenggunaannya, '7');  //kas yg dibatasi penggunaan
+        $this->perhitungan->updateCatatanAtasLapKeu($tingkatpengembalianpinjamanMBtotalsejakAwal, '8');//piutang mitra binaan sudah benar !   
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanIndustrisejakAwal, '9'); //industri 
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanPerdagangansejakAwal, '10'); //perdag
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanPertaniansejakAwal, '11');  
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanPerkebunansejakAwal, '12');  
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanPerikanansejakAwal, '13');  
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanPeternakansejakAwal, '14');  
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanJasasejakAwal, '15');  
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangMitraBinaanPinjamanLainsejakAwal, '16');  //lainlain
 
         $alokasiPenyisihanPiutangMitraIndustriTdkBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='18'")->result_array()[0][$bulansekarang];   //industri
         $alokasiPenyisihanPiutangMitraPerdaganganTdkBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='19'")->result_array()[0][$bulansekarang];   //perdagangan
@@ -841,27 +844,27 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
         $alokasiPenyisihanPiutangMitraLainTdkBermasalah = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='25'")->result_array()[0][$bulansekarang];   //lainlain
 
         $PiutangJasaAdministrasiPinjaman = 0;
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangJasaAdministrasiPinjaman'  WHERE id='26'");  //piutangJasaAdmPinjaman
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PiutangJasaAdministrasiPinjaman'  WHERE id='27'");//piutangJasaAdm  
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangJasaAdministrasiPinjaman, '26');  //piutangJasaAdmPinjaman
+        $this->perhitungan->updateCatatanAtasLapKeu($PiutangJasaAdministrasiPinjaman, '27');//piutangJasaAdm  
     
         $AktivaTetapHargaPerolehanX=40478000;// selalu fixed !
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$AktivaTetapHargaPerolehanX'  WHERE id='28'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$AktivaTetapHargaPerolehanX'  WHERE id='29'");  
+        $this->perhitungan->updateCatatanAtasLapKeu($AktivaTetapHargaPerolehanX, '28');  
+        $this->perhitungan->updateCatatanAtasLapKeu($AktivaTetapHargaPerolehanX, '29');  
     
         $AktivaTetapAkumulasiPenyusutanInventarisKant=0-40478000;
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$AktivaTetapAkumulasiPenyusutanInventarisKant'  WHERE id='30'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$AktivaTetapAkumulasiPenyusutanInventarisKant'  WHERE id='31'");  
+        $this->perhitungan->updateCatatanAtasLapKeu($AktivaTetapAkumulasiPenyusutanInventarisKant, '30');  
+        $this->perhitungan->updateCatatanAtasLapKeu($AktivaTetapAkumulasiPenyusutanInventarisKant, '31');  
     
         //-----------PIUTANG BERMASALAH--------------------------
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totnilsaldopokok_bermasalah'  WHERE id='32'");  //piutang bermasalah total
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorindustribermasalah'  WHERE id='33'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorperdaganganbermasalah'  WHERE id='34'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorpertanianbermasalah'  WHERE id='35'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorperkebunanbermasalah'  WHERE id='36'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorperikananbermasalah'  WHERE id='37'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorpeternakanbermasalah'  WHERE id='38'");
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorjasabermasalah'  WHERE id='39'"); //jasa 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$totsektorlainlainbermasalah'  WHERE id='40'");//lain2
+        $this->perhitungan->updateCatatanAtasLapKeu($totnilsaldopokok_bermasalah, '32');  //piutang bermasalah total
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorindustribermasalah, '33');  
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorperdaganganbermasalah, '34');  
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorpertanianbermasalah, '35');  
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorperkebunanbermasalah, '36');  
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorperikananbermasalah, '37');  
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorpeternakanbermasalah, '38');
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorjasabermasalah, '39'); //jasa 
+        $this->perhitungan->updateCatatanAtasLapKeu($totsektorlainlainbermasalah, '40');//lain2
     
         //------------ALOKASI PENYISIHAN PIUTANG BERMASALAH------------
         $alok_totnilsaldopokok_bermasalah = 0 - $totnilsaldopokok_bermasalah;
@@ -874,46 +877,46 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
         $alok_totsektorjasabermasalah = 0 - $totsektorjasabermasalah;
         $alok_totsektorlainlainbermasalah = 0 - $totsektorlainlainbermasalah; 
 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totnilsaldopokok_bermasalah'  WHERE id='42'"); //alok penyisihan piutang bermasalah
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorindustribermasalah'  WHERE id='43'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorperdaganganbermasalah'  WHERE id='44'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorpertanianbermasalah'  WHERE id='45'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorperkebunanbermasalah'  WHERE id='46'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorperikananbermasalah'  WHERE id='47'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorpeternakanbermasalah'  WHERE id='48'");//piutangJasaAdm  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorjasabermasalah'  WHERE id='49'"); //
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$alok_totsektorlainlainbermasalah'  WHERE id='50'");//lain2  
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totnilsaldopokok_bermasalah, '42'); //alok penyisihan piutang bermasalah
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorindustribermasalah, '43');  
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorperdaganganbermasalah, '44');  
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorpertanianbermasalah, '45');  
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorperkebunanbermasalah, '46');  
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorperikananbermasalah, '47');  
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorpeternakanbermasalah, '48');//piutangJasaAdm  
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorjasabermasalah, '49'); //
+        $this->perhitungan->updateCatatanAtasLapKeu($alok_totsektorlainlainbermasalah, '50');//lain2  
         
         $KelebihanPembayaranAngsuranBulanSebelumnya = $this->db->query("SELECT $bulansebelumnya FROM neraca WHERE id='17'")->result_array()[0][$bulansebelumnya];
         $KelebihanPembayaranAngsuran = $KelebihanPembayaranAngsuranBulanSebelumnya + $PengembalianKelebihanAngsuran;
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$KelebihanPembayaranAngsuran'  WHERE id='52'"); //kelebihan
+        $this->perhitungan->updateCatatanAtasLapKeu($KelebihanPembayaranAngsuran, '52'); //kelebihan
 
         $KewajibanJangkaPendekAngsuranBelumTeridentifikasiDesTahunLalu = $this->db->query("SELECT $desTahunLalu FROM catatanataslapkeu WHERE id='53'")->result_array()[0][$desTahunLalu];
         $KewajibanJangkaPendekAngsuranBelumTeridentifikasisejakAwal = $KewajibanJangkaPendekAngsuranBelumTeridentifikasiDesTahunLalu + $KewajibanJangkaPendekAngsuranBelumTeridentifikasi;
-        $this->db->query("UPDATE catatanataslapkeu SET  $desTahunLalu='$KewajibanJangkaPendekAngsuranBelumTeridentifikasisejakAwal'  WHERE id='53'");//angsuran blm tridentif
+        $this->db->query("UPDATE catatanataslapkeu SET $desTahunLalu='$KewajibanJangkaPendekAngsuranBelumTeridentifikasisejakAwal'  WHERE id='53'");//angsuran blm tridentif
 
         $ProgramKemitraan = $KelebihanPembayaranAngsuran + $KewajibanJangkaPendekAngsuranBelumTeridentifikasisejakAwal;
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$ProgramKemitraan'  WHERE id='51'");//Program Kemitraan
+        $this->perhitungan->updateCatatanAtasLapKeu($ProgramKemitraan, '51');//Program Kemitraan
 
         $AktivaBersihAwalPeriodaBulanSebelumnya = $this->db->query("SELECT sd$bulansekarang FROM perubahanasetnetotidakterikat WHERE id='29'")->result_array()[0]['sd' . $bulansekarang];
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$AktivaBersihAwalPeriodaBulanSebelumnya'  WHERE id='54'"); // AktivaBersihAwalPeriode ambil dari lap-aktivitas 31des2021 (th sebelumnya) aset neto akhir tahun (trbwh)  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$AktivaBersihAwalPeriodaBulanSebelumnya'  WHERE id='55'"); //pendapatan
+        $this->perhitungan->updateCatatanAtasLapKeu($AktivaBersihAwalPeriodaBulanSebelumnya, '54'); // AktivaBersihAwalPeriode ambil dari lap-aktivitas 31des2021 (th sebelumnya) aset neto akhir tahun (trbwh)  
+        $this->perhitungan->updateCatatanAtasLapKeu($AktivaBersihAwalPeriodaBulanSebelumnya, '55'); //pendapatan
 
         //----PENDAPATAN----------------------------
         $Pendapatan = $JasaAdmPinjamansejakAwal + $PendapatanJasaGirosejakAwal + $PendapatanLainPiutangHapusBukusejakAwal + $PendapatanLainPenyisihanPiutang + $PendapatanLainLainLainlain;
 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$Pendapatan'  WHERE id='56'");  //pendapatan
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$JasaAdmPinjamansejakAwal'  WHERE id='57'");  //jasa adm pinj
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PendapatanJasaGirosejakAwal'  WHERE id='58'");//  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PendapatanLainPiutangHapusBukusejakAwal'  WHERE id='59'"); //
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PendapatanLainPenyisihanPiutang'  WHERE id='60'");//
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$PendapatanLainLainLainlain'  WHERE id='61'");//PK
+        $this->perhitungan->updateCatatanAtasLapKeu($Pendapatan, '56');  //pendapatan
+        $this->perhitungan->updateCatatanAtasLapKeu($JasaAdmPinjamansejakAwal, '57');  //jasa adm pinj
+        $this->perhitungan->updateCatatanAtasLapKeu($PendapatanJasaGirosejakAwal, '58');//  
+        $this->perhitungan->updateCatatanAtasLapKeu($PendapatanLainPiutangHapusBukusejakAwal, '59'); //
+        $this->perhitungan->updateCatatanAtasLapKeu($PendapatanLainPenyisihanPiutang, '60');//
+        $this->perhitungan->updateCatatanAtasLapKeu($PendapatanLainLainLainlain, '61');//PK
 
         $BebanAdmDanUmum = $this->db->query("SELECT sd$bulansekarang FROM aktivitasoperasikasditerima WHERE id='14'")->result_array()[0]['sd' . $bulansekarang];
         $BebanUmum = $BebanAdmDanUmumBL + $BebanAdmDanUmum;
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanUmum'  WHERE id='62'");//BEBAN UMUM
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanAdmDanUmum'  WHERE id='65'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanAdmDanUmumBL'  WHERE id='66'"); 
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanUmum, '62');//BEBAN UMUM
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanAdmDanUmum, '65');  
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanAdmDanUmumBL, '66'); 
         
         $alok_totsektorindustriBulanSebelumnya = $this->db->query("SELECT $bulansebelumnya FROM catatanataslapkeu WHERE id='43'")->result_array()[0][$bulansebelumnya];
         $alok_totsektorindustri = $this->db->query("SELECT $bulansekarang FROM catatanataslapkeu WHERE id='43'")->result_array()[0][$bulansekarang];
@@ -1053,222 +1056,222 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
             $BebanPenyisihanPiutangjasa+
             $BebanPenyisihanPiutanglain; //disimpan ke lap aktivitas juga
 
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangsejakAwal'  WHERE id='67'");//total BebanPenyisihanPiutang  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangindustri'  WHERE id='68'"); //industri
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangperdagangan'  WHERE id='69'");//
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangpertanian'  WHERE id='70'"); //
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangperkebunan'  WHERE id='71'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangperikanan'  WHERE id='72'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangpeternakan'  WHERE id='73'");//
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutangjasa'  WHERE id='74'"); //
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanPenyisihanPiutanglain'  WHERE id='75'"); 
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangsejakAwal, '67');//total BebanPenyisihanPiutang  
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangindustri, '68'); //industri
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangperdagangan, '69');//
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangpertanian, '70'); //
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangperkebunan, '71');  
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangperikanan, '72');  
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangpeternakan, '73');//
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutangjasa, '74'); //
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanPenyisihanPiutanglain, '75'); 
 
         // Line 2124
         $BebanLainlainProgramKemitraansejakAwal = $this->db->query("SELECT sd$bulansekarang FROM perubahanasetnetotidakterikat WHERE id='18'")->result_array()[0]['sd' . $bulansekarang];  //lain bermasalah
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanLainlainProgramKemitraansejakAwal'  WHERE id='76'");  
-        $this->db->query("UPDATE catatanataslapkeu SET  $bulansekarang='$BebanLainlainProgramKemitraansejakAwal'  WHERE id='77'");  
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanLainlainProgramKemitraansejakAwal, '76');  
+        $this->perhitungan->updateCatatanAtasLapKeu($BebanLainlainProgramKemitraansejakAwal, '77');  
 
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$JasaAdmPinjaman'  WHERE id='1'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$PendapatanJasaGiro'  WHERE id='2'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$PendapatanLainlain'  WHERE id='3'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($JasaAdmPinjaman, '1');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($PendapatanJasaGiro, '2');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($PendapatanLainlain, '3');
         $Jumlah1=$JasaAdmPinjaman+$PendapatanJasaGiro+$PendapatanLainlain;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$Jumlah1'  WHERE id='4'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$PenyisihanAlokasiDanaBUMNPeduli'  WHERE id='6'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$PenyisihanANTTBerakhirPemenuhanProgram'  WHERE id='7'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$penyisihanANTTberakhirwaktu'  WHERE id='8'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($Jumlah1, '4');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($PenyisihanAlokasiDanaBUMNPeduli, '6');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($PenyisihanANTTBerakhirPemenuhanProgram, '7');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($penyisihanANTTberakhirwaktu, '8');
         $Jumlah2=$PenyisihanAlokasiDanaBUMNPeduli+$PenyisihanANTTBerakhirPemenuhanProgram+$penyisihanANTTberakhirwaktu;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$Jumlah2'  WHERE id='9'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($Jumlah2, '9');
         $JumlahPendapatan=$Jumlah1+$Jumlah2;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$JumlahPendapatan'  WHERE id='10'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$DanaPembinaanKemitraan'  WHERE id='12'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$DanaBinaLingkungan'  WHERE id='13'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$BebanAdmdanUmum'  WHERE id='14'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$BebanPenyusutanAktivaTetapProgramKemitraan'  WHERE id='15'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$BebanPemeliharaanProgramKemitraan'  WHERE id='16'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$BebanPenyisihanPiutang'  WHERE id='17'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$BebanLainlainProgramKemitraan'  WHERE id='18'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($JumlahPendapatan, '10');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($DanaPembinaanKemitraan, '12');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($DanaBinaLingkungan, '13');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($BebanAdmdanUmum, '14');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($BebanPenyusutanAktivaTetapProgramKemitraan, '15');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($BebanPemeliharaanProgramKemitraan, '16');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($BebanPenyisihanPiutang, '17');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($BebanLainlainProgramKemitraan, '18');
         $JumlahBeban=$DanaPembinaanKemitraan+$DanaBinaLingkungan+$BebanAdmdanUmum+$BebanPenyusutanAktivaTetapProgramKemitraan+
                             $BebanPemeliharaanProgramKemitraan+$BebanPenyisihanPiutang+$BebanLainlainProgramKemitraan;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$JumlahBeban'  WHERE id='19'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($JumlahBeban, '19');
         $KenaikanPenurunanAsetNetoTidakTerikat= $JumlahPendapatan+$JumlahBeban;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$KenaikanPenurunanAsetNetoTidakTerikat'  WHERE id='20'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$ANTterbebaskan'  WHERE id='22'");
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$ANTPenyisihanBUMNPeduli'  WHERE id='23'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($KenaikanPenurunanAsetNetoTidakTerikat, '20');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($ANTterbebaskan, '22');
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($ANTPenyisihanBUMNPeduli, '23');
         $KenaikanPenurunanAsetNetoTerikatTemporer=$ANTterbebaskan+$ANTPenyisihanBUMNPeduli; 
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$KenaikanPenurunanAsetNetoTerikatTemporer'  WHERE id='24'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($KenaikanPenurunanAsetNetoTerikatTemporer, '24');
         $Sumbanganterikat=0;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$Sumbanganterikat'  WHERE id='26'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($Sumbanganterikat, '26');
         $KenaikanPenurunanAsetNetoTerikatPermanen=$Sumbanganterikat;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  $bulansekarang='$KenaikanPenurunanAsetNetoTerikatPermanen'  WHERE id='27'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($KenaikanPenurunanAsetNetoTerikatPermanen, '27');
         $KenaikanPenurunanAsetNeto=$KenaikanPenurunanAsetNetoTidakTerikat +$KenaikanPenurunanAsetNetoTerikatTemporer+
                     $KenaikanPenurunanAsetNetoTerikatPermanen;  
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET $bulansekarang='$KenaikanPenurunanAsetNeto'  WHERE id='28'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($KenaikanPenurunanAsetNeto, '28');
 
         $AsetNetoAkhirTahunBulanSebelumnya = $this->db->query("SELECT $bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='30'")->result_array()[0][$bulansebelumnya];
         $AsetNetoAwalTahun = $AsetNetoAkhirTahunBulanSebelumnya;
         
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET $bulansekarang='$AsetNetoAwalTahun'  WHERE id='29'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($AsetNetoAwalTahun, '29');
         $AsetNetoAkhirTahun = $AsetNetoAwalTahun + $KenaikanPenurunanAsetNeto;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET $bulansekarang='$AsetNetoAkhirTahun'  WHERE id='30'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikat($AsetNetoAkhirTahun, '30');
 
         // DARI SINI
         $PendapatanJasaAdministrasiPinjamanProgramKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='1'")->result_array()[0]['sd' . $bulansebelumnya];
         $PendapatanJasaAdministrasiPinjamanProgramKemitraansd = $PendapatanJasaAdministrasiPinjamanProgramKemitraansdBulanSebelumnya + $JasaAdmPinjaman;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET sd$bulansekarang='$PendapatanJasaAdministrasiPinjamanProgramKemitraansd'  WHERE id='1'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($PendapatanJasaAdministrasiPinjamanProgramKemitraansd, '1');
 
         $PendapatanBungasdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='2'")->result_array()[0]['sd' . $bulansebelumnya];     
         $PendapatanBungasd=$PendapatanBungasdBulanSebelumnya+$PendapatanJasaGiro;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$PendapatanBungasd'  WHERE id='2'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($PendapatanBungasd, '2');
 
         $PendapatanLainlainsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='3'")->result_array()[0]['sd' . $bulansebelumnya];
         $PendapatanLainlainsd=$PendapatanLainlainsdBulanSebelumnya+$PendapatanLainlain;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$PendapatanLainlainsd'  WHERE id='3'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($PendapatanLainlainsd, '3');
 
         $Jumlah1sd= $PendapatanLainlainsd+$PendapatanBungasd+$PendapatanJasaAdministrasiPinjamanProgramKemitraansd;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$Jumlah1sd'  WHERE id='4'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($Jumlah1sd, '4');
 
         $PenyisihanAlokasiDanaBUMNPedulisdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='6'")->result_array()[0]['sd' . $bulansebelumnya];
         $PenyisihanAlokasiDanaBUMNPedulisd=$PenyisihanAlokasiDanaBUMNPedulisdBulanSebelumnya+$PenyisihanAlokasiDanaBUMNPeduli;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$PenyisihanAlokasiDanaBUMNPedulisd'  WHERE id='6'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($PenyisihanAlokasiDanaBUMNPedulisd, '6');
 
         $PenyisihanANTTBerakhirPemenuhanProgramsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='7'")->result_array()[0]['sd' . $bulansebelumnya];
         $PenyisihanANTTBerakhirPemenuhanProgramsd=$PenyisihanANTTBerakhirPemenuhanProgramsdBulanSebelumnya+$PenyisihanANTTBerakhirPemenuhanProgram;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$PenyisihanANTTBerakhirPemenuhanProgramsd'  WHERE id='7'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($PenyisihanANTTBerakhirPemenuhanProgramsd, '7');
 
         $penyisihanANTTberakhirwaktusdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='8'")->result_array()[0]['sd' . $bulansebelumnya];
         $penyisihanANTTberakhirwaktusd=$penyisihanANTTberakhirwaktusdBulanSebelumnya+$penyisihanANTTberakhirwaktu;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$penyisihanANTTberakhirwaktusd'  WHERE id='8'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($penyisihanANTTberakhirwaktusd, '8');
 
         $jumlah2sdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='9'")->result_array()[0]['sd' . $bulansebelumnya];
         $jumlah2sd=$jumlah2sdBulanSebelumnya+$Jumlah2;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$jumlah2sd'  WHERE id='9'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($jumlah2sd, '9');
 
         $JumlahPendapatansd=$jumlah2sd+$Jumlah1sd; 
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$JumlahPendapatansd'  WHERE id='10'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($JumlahPendapatansd, '10');
 
         $DanaPembinaanKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='12'")->result_array()[0]['sd' . $bulansebelumnya];
         $DanaPembinaanKemitraansd=$DanaPembinaanKemitraansdBulanSebelumnya+$DanaPembinaanKemitraan;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$DanaPembinaanKemitraansd'  WHERE id='12'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($DanaPembinaanKemitraansd, '12');
 
         $DanaBinaLingkungansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='13'")->result_array()[0]['sd' . $bulansebelumnya];
         $DanaBinaLingkungansd=$DanaBinaLingkungansdBulanSebelumnya+$DanaBinaLingkungan;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$DanaBinaLingkungansd'  WHERE id='13'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($DanaBinaLingkungansd, '13');
 
         $BebanAdmdanUmumsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='14'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanAdmdanUmumsd=$BebanAdmdanUmumsdBulanSebelumnya+$BebanAdmdanUmum;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$BebanAdmdanUmumsd'  WHERE id='14'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($BebanAdmdanUmumsd, '14');
 
         $BebanPenyusutanAktivaTetapProgramKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='15'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanPenyusutanAktivaTetapProgramKemitraansd=$BebanPenyusutanAktivaTetapProgramKemitraansdBulanSebelumnya+$BebanPenyusutanAktivaTetapProgramKemitraan;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$BebanPenyusutanAktivaTetapProgramKemitraansd'  WHERE id='15'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($BebanPenyusutanAktivaTetapProgramKemitraansd, '15');
 
         $BebanPemeliharaanProgramKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='16'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanPemeliharaanProgramKemitraansd=$BebanPemeliharaanProgramKemitraansdBulanSebelumnya+$BebanPemeliharaanProgramKemitraan;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$BebanPemeliharaanProgramKemitraansd'  WHERE id='16'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($BebanPemeliharaanProgramKemitraansd, '16');
 
         $BebanPenyisihanPiutangsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='17'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanPenyisihanPiutangsd=$BebanPenyisihanPiutangsdBulanSebelumnya+$BebanPenyisihanPiutang;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$BebanPenyisihanPiutangsd'  WHERE id='17'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($BebanPenyisihanPiutangsd, '17');
 
         $BebanLainlainProgramKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='18'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanDanPengeluaranLainsd=$BebanLainlainProgramKemitraansdBulanSebelumnya+$BebanLainlainProgramKemitraan;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$BebanDanPengeluaranLainsd'  WHERE id='18'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($BebanDanPengeluaranLainsd, '18');
 
         $JumlahBebansd=$BebanDanPengeluaranLainsd+$BebanPenyisihanPiutangsd+$BebanPemeliharaanProgramKemitraansd+$BebanPenyusutanAktivaTetapProgramKemitraansd+$BebanAdmdanUmumsd+$DanaBinaLingkungansd+$DanaPembinaanKemitraansd;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$JumlahBebansd'  WHERE id='19'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($JumlahBebansd, '19');
 
         $KenaikanPenurunanAsetNetoTidakTerikatsd=$JumlahBebansd+$JumlahPendapatansd;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$KenaikanPenurunanAsetNetoTidakTerikatsd'  WHERE id='20'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($KenaikanPenurunanAsetNetoTidakTerikatsd, '20');
 
         $ANTterbebaskansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='22'")->result_array()[0]['sd' . $bulansebelumnya];
         $ANTterbebaskansd=$ANTterbebaskansdBulanSebelumnya+$ANTterbebaskan;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$ANTterbebaskansd'  WHERE id='22'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($ANTterbebaskansd, '22');
 
         $ANTPenyisihanBUMNPedulisdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='23'")->result_array()[0]['sd' . $bulansebelumnya];
         $ANTPenyisihanBUMNPedulisd=$ANTPenyisihanBUMNPedulisdBulanSebelumnya+$ANTPenyisihanBUMNPeduli;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$ANTPenyisihanBUMNPedulisd'  WHERE id='23'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($ANTPenyisihanBUMNPedulisd, '23');
 
         $KenaikanPenurunanAsetNetoTerikatTemporersdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='24'")->result_array()[0]['sd' . $bulansebelumnya];
         $KenaikanPenurunanAsetNetoTerikatTemporersd=$KenaikanPenurunanAsetNetoTerikatTemporersdBulanSebelumnya+$KenaikanPenurunanAsetNetoTerikatTemporer;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$KenaikanPenurunanAsetNetoTerikatTemporersd'  WHERE id='24'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($KenaikanPenurunanAsetNetoTerikatTemporersd, '24');
 
         $SumbanganterikatsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='26'")->result_array()[0]['sd' . $bulansebelumnya];
         $Sumbanganterikatsd=$SumbanganterikatsdBulanSebelumnya+$Sumbanganterikat;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$Sumbanganterikatsd'  WHERE id='26'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($Sumbanganterikatsd, '26');
 
         $KenaikanPenurunanAsetNetoTerikatPermanensdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM perubahanasetnetotidakterikat WHERE id='27'")->result_array()[0]['sd' . $bulansebelumnya];
         $KenaikanPenurunanAsetNetoTerikatPermanensd=$KenaikanPenurunanAsetNetoTerikatPermanensdBulanSebelumnya+$KenaikanPenurunanAsetNetoTerikatPermanen;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET  sd$bulansekarang='$KenaikanPenurunanAsetNetoTerikatPermanensd'  WHERE id='27'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($KenaikanPenurunanAsetNetoTerikatPermanensd, '27');
 
         $KenaikanPenurunanAsetNetosd=$KenaikanPenurunanAsetNetoTidakTerikatsd+$KenaikanPenurunanAsetNetoTerikatPermanensd+$KenaikanPenurunanAsetNetoTerikatTemporersd;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET sd$bulansekarang='$KenaikanPenurunanAsetNetosd'  WHERE id='28'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($KenaikanPenurunanAsetNetosd, '28');
 
         $AsetNetoAkhirTahunsdDesTahunLalu = $this->db->query("SELECT sd$desTahunLalu FROM perubahanasetnetotidakterikat WHERE id='30'")->result_array()[0]['sd' . $desTahunLalu];//BACA id 30 bulan lalu, simpan ke id 29 bulan ini, AsetNetoAkhirTahunDes2021(BulanSebelumnya dipakai di jul2022->result_array()[0]['sd' . $bulansebelumnya])
         $AsetNetoAwalTahunsd= $AsetNetoAkhirTahunsdDesTahunLalu; // dari bulan lalu-ASET NETO AKHIR TAHUN(paling bwh)
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET       sd$bulansekarang='$AsetNetoAwalTahunsd'  WHERE id='29'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($AsetNetoAwalTahunsd, '29');
 
         $AsetNetoAkhirTahunsd=$AsetNetoAwalTahunsd+$KenaikanPenurunanAsetNetosd;
-        $this->db->query("UPDATE perubahanasetnetotidakterikat SET       sd$bulansekarang='$AsetNetoAkhirTahun'  WHERE id='30'");
+        $this->perhitungan->updatePerubahanAsetNetoTidakTerikatSD($AsetNetoAkhirTahun, '30');
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang=$pengembalianPinjamanMB  WHERE id='2'");
         $pengembalianPinjamanMBsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='2'")->result_array()[0]['sd' . $bulansebelumnya];
         $pengembalianPinjamanMBsd=$pengembalianPinjamanMBsdBulanSebelumnya+
                                         $pengembalianPinjamanMB;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$pengembalianPinjamanMBsd'  WHERE id='2'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$pengembalianPinjamanMBsd'  WHERE id='2'");
         $this->db->query("UPDATE danatersedia SET  $bulansekarang=$pengembalianPinjamanMBsd  WHERE id='5'");
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang=$KewajibanJangkaPendekAngsuranBelumTeridentifikasi  WHERE id='3'");
 
         $KewajibanJangkaPendekAngsuranBelumTeridentifikasisdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='3'")->result_array()[0]['sd' . $bulansebelumnya];
         $KewajibanJangkaPendekAngsuranBelumTeridentifikasisd=$KewajibanJangkaPendekAngsuranBelumTeridentifikasisdBulanSebelumnya+$KewajibanJangkaPendekAngsuranBelumTeridentifikasi;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$KewajibanJangkaPendekAngsuranBelumTeridentifikasisd'  WHERE id='3'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$KewajibanJangkaPendekAngsuranBelumTeridentifikasisd'  WHERE id='3'");
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang=$JasaAdmPinjaman  WHERE id='4'");
 
         $PendapatanJasaAdministrasiPinjamanProgramKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='4'")->result_array()[0]['sd' . $bulansebelumnya];
         $PendapatanJasaAdministrasiPinjamanProgramKemitraansd=$PendapatanJasaAdministrasiPinjamanProgramKemitraansdBulanSebelumnya+$JasaAdmPinjaman;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$PendapatanJasaAdministrasiPinjamanProgramKemitraansd' WHERE id='4'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$PendapatanJasaAdministrasiPinjamanProgramKemitraansd' WHERE id='4'");
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$PendapatanJasaGiro'  WHERE id='5'");//Jasa Giro
         $PendapatanJasaGirosdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='5'")->result_array()[0]['sd' . $bulansebelumnya];
         $PendapatanJasaGirosd= floor($PendapatanJasaGirosdBulanSebelumnya)+ floor($PendapatanJasaGiro);
 
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$PendapatanJasaGirosd' WHERE id='5'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$PendapatanJasaGirosd' WHERE id='5'");
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$PendapatanLainlain'  WHERE id='6'");
         $PendapatanLainlainsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='6'")->result_array()[0]['sd' . $bulansebelumnya];
         $PendapatanLainlainsd=$PendapatanLainlainsdBulanSebelumnya+$PendapatanLainlain;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$PendapatanLainlainsd' WHERE id='6'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$PendapatanLainlainsd' WHERE id='6'");
 
         $PiutangMitraBinaanPinjaman=0-$PiutangMitraBinaanPinjaman;
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$PiutangMitraBinaanPinjaman'  WHERE id='9'");// penyaluran pinj kemitraan=PiutangMitraBinaanPinjaman
 
         $PiutangMitraBinaanPinjamansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='9'")->result_array()[0]['sd' . $bulansebelumnya];
         $PiutangMitraBinaanPinjamansd=$PiutangMitraBinaanPinjamansdBulanSebelumnya+$PiutangMitraBinaanPinjaman;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$PiutangMitraBinaanPinjamansd' WHERE id='9'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$PiutangMitraBinaanPinjamansd' WHERE id='9'");
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$DanaPembinaanKemitraan'  WHERE id='10'");
         
         $DanaPembinaanKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='10'")->result_array()[0]['sd' . $bulansebelumnya];
         $DanaPembinaanKemitraansd=$DanaPembinaanKemitraansdBulanSebelumnya+$DanaPembinaanKemitraan;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$DanaPembinaanKemitraansd' WHERE id='10'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$DanaPembinaanKemitraansd' WHERE id='10'");
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$DanaBinaLingkungan'  WHERE id='11'");
         $DanaBinaLingkungansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='11'")->result_array()[0]['sd' . $bulansebelumnya];
         $DanaBinaLingkungansd=$DanaBinaLingkungansdBulanSebelumnya+$DanaBinaLingkungan;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$DanaBinaLingkungansd' WHERE id='11'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$DanaBinaLingkungansd' WHERE id='11'");
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$BebanPembinaan'  WHERE id='12'");
         $BebanPembinaansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='12'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanPembinaansd=$BebanPembinaansdBulanSebelumnya+$BebanPembinaan;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$BebanPembinaansd' WHERE id='12'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$BebanPembinaansd' WHERE id='12'");
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$BebanUpahTenagakerja'  WHERE id='13'");
         $BebanUpahTenagakerjasdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='13'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanUpahTenagakerjasd=$BebanUpahTenagakerjasdBulanSebelumnya+$BebanUpahTenagakerja;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$BebanUpahTenagakerjasd' WHERE id='13'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$BebanUpahTenagakerjasd' WHERE id='13'");
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$BebanAdmdanUmum'  WHERE id='14'");
         $BebanAdmdanUmumsdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='14'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanAdmdanUmumsd=$BebanAdmdanUmumsdBulanSebelumnya+$BebanAdmdanUmum;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$BebanAdmdanUmumsd' WHERE id='14'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$BebanAdmdanUmumsd' WHERE id='14'");
 
         $PendapatanTotalLainlainsd=$PendapatanLainlainsd+ $BebanAdmdanUmumsd;
         $this->db->query("UPDATE danatersedia SET  $bulansekarang='$PendapatanTotalLainlainsd' WHERE id='4'");
@@ -1276,12 +1279,12 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$BebanPemeliharaanProgramKemitraan'  WHERE id='15'");
         $BebanPemeliharaanProgramKemitraansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='15'")->result_array()[0]['sd' . $bulansebelumnya];
         $BebanPemeliharaanProgramKemitraansd=$BebanPemeliharaanProgramKemitraansdBulanSebelumnya+$BebanPemeliharaanProgramKemitraan;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$BebanPemeliharaanProgramKemitraansd' WHERE id='15'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$BebanPemeliharaanProgramKemitraansd' WHERE id='15'");
 
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$PengembalianKelebihanAngsuran'  WHERE id='16'");
         $PengembalianKelebihanAngsuransdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='16'")->result_array()[0]['sd' . $bulansebelumnya];
         $PengembalianKelebihanAngsuransd=$PengembalianKelebihanAngsuransdBulanSebelumnya+$PengembalianKelebihanAngsuran;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$PengembalianKelebihanAngsuransd' WHERE id='16'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$PengembalianKelebihanAngsuransd' WHERE id='16'");
 
         $kasNetoDiterimaDigunakanUtkAktivitasOps=$PengembalianKelebihanAngsuran
             +$BebanPemeliharaanProgramKemitraan
@@ -1299,26 +1302,26 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$kasNetoDiterimaDigunakanUtkAktivitasOps'  WHERE id='17'");
         $kasNetoDiterimaDigunakanUtkAktivitasOpssdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='17'")->result_array()[0]['sd' . $bulansebelumnya];
         $kasNetoDiterimaDigunakanUtkAktivitasOpssd=$kasNetoDiterimaDigunakanUtkAktivitasOpssdBulanSebelumnya+$kasNetoDiterimaDigunakanUtkAktivitasOps;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$kasNetoDiterimaDigunakanUtkAktivitasOpssd' WHERE id='17'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$kasNetoDiterimaDigunakanUtkAktivitasOpssd' WHERE id='17'");
         
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$AktivaTetapHargaPerolehan'  WHERE id='20'");
         $AktivaTetapHargaPerolehansdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='20'")->result_array()[0]['sd' . $bulansebelumnya];
 
         $AktivaTetapHargaPerolehansd=$AktivaTetapHargaPerolehansdBulanSebelumnya+$AktivaTetapHargaPerolehan;
 
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$AktivaTetapHargaPerolehansd' WHERE id='20'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$AktivaTetapHargaPerolehansd' WHERE id='20'");
 
         $KasNetoDiterimaDigunakanUntukAktivitasInvestasi=$AktivaTetapHargaPerolehan;
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$KasNetoDiterimaDigunakanUntukAktivitasInvestasi'  WHERE id='21'");
         $KasNetoDiterimaDigunakanUntukAktivitasInvestasisdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='21'")->result_array()[0]['sd' . $bulansebelumnya];
         $KasNetoDiterimaDigunakanUntukAktivitasInvestasisd=$KasNetoDiterimaDigunakanUntukAktivitasInvestasisdBulanSebelumnya+$KasNetoDiterimaDigunakanUntukAktivitasInvestasi;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$KasNetoDiterimaDigunakanUntukAktivitasInvestasisd' WHERE id='21'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$KasNetoDiterimaDigunakanUntukAktivitasInvestasisd' WHERE id='21'");
             
         $KenaikanPenurunanAsetNetoDalamKas=$KasNetoDiterimaDigunakanUntukAktivitasInvestasi+$kasNetoDiterimaDigunakanUtkAktivitasOps;
         $this->db->query("UPDATE aktivitasoperasikasditerima SET  $bulansekarang='$KenaikanPenurunanAsetNetoDalamKas'  WHERE id='22'");
         $KenaikanPenurunanAsetNetoDalamKassdBulanSebelumnya = $this->db->query("SELECT sd$bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='22'")->result_array()[0]['sd' . $bulansebelumnya];
         $KenaikanPenurunanAsetNetoDalamKassd=$KenaikanPenurunanAsetNetoDalamKassdBulanSebelumnya+$KenaikanPenurunanAsetNetoDalamKas;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$KenaikanPenurunanAsetNetoDalamKassd' WHERE id='22'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$KenaikanPenurunanAsetNetoDalamKassd' WHERE id='22'");
 
         $kasDanSetaraKasPadaAkhirTahunBulanSebelumya = $this->db->query("SELECT $bulansebelumnya FROM aktivitasoperasikasditerima WHERE id='24'")->result_array()[0][$bulansebelumnya]; //
         $KasDanSetarasKasPadaAwalTahun=$kasDanSetaraKasPadaAkhirTahunBulanSebelumya;// dari bulan lalu, kas dan setara kas pada akhir tahun
@@ -1331,9 +1334,9 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
 
         $kasDanSetaraKasPadaAkhirTahunsdDesTahunLalu = $this->db->query("SELECT sd$desTahunLalu FROM aktivitasoperasikasditerima WHERE id='24'")->result_array()[0]['sd' . $desTahunLalu]; //
         $KasDanSetarasKasPadaAwalTahunsd=$kasDanSetaraKasPadaAkhirTahunsdDesTahunLalu;// dari bulan lalu, kas dan setara kas pada akhir tahun
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$KasDanSetarasKasPadaAwalTahunsd'  WHERE id='23'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$KasDanSetarasKasPadaAwalTahunsd'  WHERE id='23'");
         $KasDanSetaraKasPadaAkhirTahunsd=$KasDanSetarasKasPadaAwalTahunsd + $KenaikanPenurunanAsetNetoDalamKassd;
-        $this->db->query("UPDATE aktivitasoperasikasditerima SET  sd$bulansekarang='$KasDanSetaraKasPadaAkhirTahunsd' WHERE id='24'");
+        $this->db->query("UPDATE aktivitasoperasikasditerima SET sd$bulansekarang='$KasDanSetaraKasPadaAkhirTahunsd' WHERE id='24'");
 
         // DARI SINI LAGi
         $this->db->query("UPDATE neraca SET $bulansekarang='$saldokas'     WHERE id='1'");//SIMPAN KAS 
@@ -1477,6 +1480,8 @@ $PiutangMitraBinaanPinjamanJasasejakAwal+$PiutangMitraBinaanPinjamanLainsejakAwa
         }
 
         $this->db->query("UPDATE danatersedia SET  $bulansekarang='$skor'  WHERE id='8'"); 
+
+        echo memory_get_usage();
 
 	}
 

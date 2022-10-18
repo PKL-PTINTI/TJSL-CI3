@@ -4,8 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 
 class PosisiKeuangan extends CI_Controller {
 
@@ -55,12 +53,12 @@ class PosisiKeuangan extends CI_Controller {
 	{
 		$this->data['title'] = 'Data Laporan Posisi Keuangan';
 		$this->data['header'] = 'Management Data Laporan Posisi Keuangan';
-
 		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-
-		$this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-
+		empty($this->input->get('periode')) ? $this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->data['perioda'] = $this->input->get('periode');
 		$this->data['neraca'] = $this->posisikeuangan_model->getData();
+
+		var_dump($this->data['neraca']);
+		die;
 		
 		$this->template->load('posisi_keuangan/index', $this->data);
 	}
@@ -70,10 +68,10 @@ class PosisiKeuangan extends CI_Controller {
 
 		$neraca = $this->posisikeuangan_model->getData();
 		$spreadsheet = new Spreadsheet();
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-
-        $sheet = $spreadsheet->getActiveSheet();
+		empty($this->input->get('periode')) ? $perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $perioda = $this->input->get('periode');
+		$bulan =  month_name(periode_to_month($perioda)) . ' ' . date('Y');
+        
+		$sheet = $spreadsheet->getActiveSheet();
 		$sheet->getColumnDimension('A')->setWidth(25);
 		$sheet->getColumnDimension('B')->setWidth(40);
 		$sheet->getColumnDimension('C')->setWidth(25);
@@ -162,8 +160,8 @@ class PosisiKeuangan extends CI_Controller {
 	public function cetak(){
 		$neraca = $this->posisikeuangan_model->getData();
 
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+		empty($this->input->get('periode')) ? $perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $perioda = $this->input->get('periode');
+		$bulan =  month_name(periode_to_month($perioda)) . ' ' . date('Y');
 
 		$data = array(
 			'neraca' => $neraca,

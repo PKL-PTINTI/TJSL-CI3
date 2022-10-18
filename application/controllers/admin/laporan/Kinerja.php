@@ -52,14 +52,9 @@ class Kinerja extends CI_Controller {
 	{
 		$this->data['title'] = 'Data Laporan Kinerja';
 		$this->data['header'] = 'Management Data Laporan Kinerja';
-
-        if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		}
-
-		if(date('Y-m-d') >= date('Y-m-01', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) AND date('Y-m-d') < date('Y-m-01', mktime(0, 0, 0, date("m")+1, date("d"),   date("Y")))){
-			$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
-		}
+		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+		empty($this->input->get('periode')) ? $perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $perioda = $this->input->get('periode');
+		empty($this->input->get('periode')) ? $this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->data['perioda'] = $this->input->get('periode');
 
 		$tingkatPengembalianHasil = $this->kinerja_model->getData();
 
@@ -183,8 +178,8 @@ class Kinerja extends CI_Controller {
 		$danatersedia = $this->kinerja_model->getDanaTersedia();
 
 		$spreadsheet = new Spreadsheet();
-		$bulan =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+		empty($this->input->get('periode')) ? $perioda = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $perioda = $this->input->get('periode');
+		$bulan =  month_name(periode_to_month($perioda)) . ' ' . date('Y');
 
         $sheet = $spreadsheet->getActiveSheet();
 		$sheet->getColumnDimension('A')->setWidth(5);
@@ -300,7 +295,8 @@ class Kinerja extends CI_Controller {
 			'danatersedia' => $this->kinerja_model->getDanaTersedia(),
 		];
 
-		$data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+		$data['perioda'] = empty($this->input->get('periode')) ? $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->input->get('periode');
+
 
 		$this->load->view('kinerja/cetak', $data);
 	}

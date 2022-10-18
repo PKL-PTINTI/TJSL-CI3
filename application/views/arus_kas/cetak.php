@@ -8,7 +8,7 @@
    </head>
    <font size="1">
       <?php
-         $tanggal = date('t M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+         $tanggal = month_name(periode_to_month($perioda)) . ' ' . date('Y');
          $akhirtahun = 'sddes' . date('y', mktime(0, 0, 0, 0,0 , date("Y")));
          
          ?>

@@ -12,17 +12,35 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4><?= $header; ?></h4>
+                    <div class="card-header d-flex justify-content-between">
+                        <h4><?= $header; ?> <span id="header"></span></h4>
+                        <div class="dropdown d-inline">
+                            <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month" aria-expanded="false"><?= month_name(periode_to_month($perioda)) ?></a>
+                            <ul class="dropdown-menu dropdown-menu-sm periode" x-placement="bootom-start">
+                                <li class="dropdown-title">Select Month</li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=jan' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '1' ? 'active' : '' ?>">January</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=feb' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '2' ? 'active' : '' ?>">February</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=mar' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '3' ? 'active' : '' ?>">March</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=apr' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '4' ? 'active' : '' ?>">April</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=mei' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '5' ? 'active' : '' ?>">May</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=jun' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '6' ? 'active' : '' ?>">June</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=jul' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '7' ? 'active' : '' ?>">July</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=ags' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '8' ? 'active' : '' ?>">August</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=sep' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '9' ? 'active' : '' ?>">September</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=okt' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '10' ? 'active' : '' ?>">October</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=nov' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '11' ? 'active' : '' ?>">November</a></li>
+                                <li><a href="<?= base_url('Admin/laporan/arusKas?periode=des' . date('y')) ?>" class="dropdown-item <?= periode_to_month($perioda) == '12' ? 'active' : '' ?>">December</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col d-flex justify-content-between">
                                 <div>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/laporan/arusKas/createexcel') ?>">Export Data</a>
+                                        href="<?= base_url('Admin/laporan/arusKas/createexcel?periode=' . $perioda) ?>">Export Data</a>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/laporan/arusKas/cetak') ?>" target="_blank">Cetak Laporan</a>
+                                        href="<?= base_url('Admin/laporan/arusKas/cetak?periode=' . $perioda) ?>" target="_blank">Cetak Laporan</a>
                                 </div>
                             </div>
                         </div>
@@ -34,16 +52,16 @@
                                         <th>Keterangan</th>
                                         <th><?= 'Des ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
                                         <th>SD <?= 'Des ' . date('y', mktime(0, 0, 0, 0,0 , date("Y"))) ?></th>
-                                        <th><?= $bulan ?></th>
-                                        <th>SD <?= $bulan ?></th>
-                                        <th>RKA <?= $bulan ?>(1)</th>
-                                        <th>RKA-<?= $bulan ?>(2)</th>
-                                        <th>Realisasi <?= $bulan ?>(3)</th>
-                                        <th>Realisasi <?= $bulan ?>(4)</th>
+                                        <th><?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?></th>
+                                        <th>SD <?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?></th>
+                                        <th>RKA <?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?>(1)</th>
+                                        <th>RKA-<?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?>(2)</th>
+                                        <th>Realisasi <?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?>(3)</th>
+                                        <th>Realisasi <?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?>(4)</th>
                                         <th>RKA Juni 2021(5)</th>
                                         <th>RKA-Juni 2021(6)</th>
-                                        <th>(3:1)% RKA <?= $bulan ?></th>
-                                        <th>(4:2)% RKA-<?= $bulan ?></th>
+                                        <th>(3:1)% RKA <?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?></th>
+                                        <th>(4:2)% RKA-<?= month_name(periode_to_month($perioda)) . ' ' . date('Y') ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
