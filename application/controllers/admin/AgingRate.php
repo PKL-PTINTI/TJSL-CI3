@@ -1,11 +1,7 @@
 
-<?php
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-defined('BASEPATH') OR exit('No direct script access allowed');
-
-use Dompdf\Dompdf;
 
 class AgingRate extends CI_Controller {
 

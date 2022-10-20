@@ -56,9 +56,6 @@ class PosisiKeuangan extends CI_Controller {
 		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		empty($this->input->get('periode')) ? $this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->data['perioda'] = $this->input->get('periode');
 		$this->data['neraca'] = $this->posisikeuangan_model->getData();
-
-		var_dump($this->data['neraca']);
-		die;
 		
 		$this->template->load('posisi_keuangan/index', $this->data);
 	}

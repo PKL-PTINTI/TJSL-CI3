@@ -3,7 +3,6 @@
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class NeracaSaldo extends CI_Controller {
 
@@ -2332,9 +2331,9 @@ class NeracaSaldo extends CI_Controller {
 		echo nl2br("\n");
 
 		// var_dump(memory_get_usage(), memory_get_usage()/1024);
-		// return redirect(base_url('Admin/neracaSaldo'));
+		return redirect(base_url('Admin/neracaSaldo'));
 
-		echo memory_get_usage();
+		// echo memory_get_usage();
 	}
 
 	private function getElementData($array, $id){

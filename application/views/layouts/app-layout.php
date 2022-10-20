@@ -324,7 +324,7 @@
         var statistics_chart_mitra = document.getElementById("mitraMB").getContext('2d');
         if(statistics_chart_mitra){
             var myChart = new Chart(statistics_chart_mitra, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: [<?php foreach($data_piutang_mb['piutangMB'] as $key => $value) { echo '"'._tanggal($key).'",'; } ?>],
                 datasets: [{

@@ -24,7 +24,7 @@
                                     <a class="btn btn-primary mb-3" 
                                         href="<?= base_url('Admin/neracaSaldo/hitungNeracaSaldo') ?>">Hitung Neraca Saldo</a>
                                     <a class="btn btn-primary mb-3" 
-                                        href="<?= base_url('Admin/neracaSaldo/cetakNeracaSaldo') ?>">Cetak Neraca Saldo</a>
+                                        href="<?= base_url('Admin/neracaSaldo/cetakNeracaSaldo') ?>" target="_blank">Cetak Neraca Saldo</a>
                                 </div>
                             </div>
                         </div>

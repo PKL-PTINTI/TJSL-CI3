@@ -31,11 +31,11 @@
                <tr>
                   <td align="center"><b>KODE REKENING</b></td>
                   <td><b> U R A I A N</b></td>
-                  <td align="right"><b> DES <?= date('Y', mktime(0, 0, 0, 0, 0, date("Y"))) ?></b></td>
-                  <td align="right"><b>DEBIT</b></td>
-                  <td align="right"><b>KREDIT</b></td>
-                  <td align="right"><b>SALDO</b></td>
-                  <td align="right"><b>SELISIH</b></td>
+                  <td align="center"><b> DES <?= date('Y', mktime(0, 0, 0, 0, 0, date("Y"))) ?></b></td>
+                  <td align="center"><b>DEBIT</b></td>
+                  <td align="center"><b>KREDIT</b></td>
+                  <td align="center"><b>SALDO</b></td>
+                  <td align="center"><b>SELISIH</b></td>
                </tr>
             </thead>
             <tbody>

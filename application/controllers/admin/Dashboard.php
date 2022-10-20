@@ -53,6 +53,7 @@ class Dashboard extends PerhitunganLaporan {
 
 	public function index()
 	{
+		$this->_initAwalTahun();
 		$this->data['title'] = 'Dashboard';
 		$this->data['countMitra'] = $this->db->count_all('mitra');
 		$this->data['countMitraNormal'] = $this->db->where('tdkbermasalah', 'normal', 'Normal', 'NORMAL')->count_all_results('mitra');
@@ -92,6 +93,782 @@ class Dashboard extends PerhitunganLaporan {
 		$this->data['data_piutang_mb'] = $this->_get_data_chart_piutang();
 
 		$this->template->load('dashboard/index', $this->data);
+	}
+
+	private function _initAwalTahun(){
+		$saldoPerioda = array (
+			1 =>   'Jan ' . date('Y'),
+			'Feb ' . date('Y'),
+			'Mar ' . date('Y'),
+			'Apr ' . date('Y'),
+			'May ' . date('Y'),
+			'Jun ' . date('Y'),
+			'Jul ' . date('Y'),
+			'Aug ' . date('Y'),
+			'Sep ' . date('Y'),
+			'Oct ' . date('Y'),
+			'Nov ' . date('Y'),
+			'Dec ' . date('Y')
+		);
+
+		$tahun = date('y');
+		$tahunlalu = $tahun - 1;
+		$tahunberikutnya = $tahun + 1;
+		$destahunlalu = 'des' . $tahunlalu;
+		$deskripsiNeraca = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'neraca'")->result_array();
+		$deskripsiAktivitas = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'aktivitas'")->result_array();
+		$deskripsiAruskas = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'aruskas'")->result_array();
+		$deskripsiKinerja1 = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'tingkatpengembalianhasil'")->result_array();
+		$deskripsiKinerja2 = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'danayangdisalurkan'")->result_array();
+		$deskripsiKinerja3 = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'danatersedia'")->result_array();
+		$deskripsiCatatan = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'catatan'")->result_array();
+
+		// if(date('d m') == '01 01'){
+			for ($i=1; $i <= count($saldoPerioda); $i++) { 
+				$this->db->query("INSERT INTO `saldokasbank` (`id`, `mandiri`, `bri`, `kaskecil`, `perioda`, `updated`, `updated_at`) VALUES (NULL, '0', '0', '0', '" . $saldoPerioda[$i] ."', 'admin', CURRENT_TIMESTAMP)");
+			}
+
+			// posisi keuangan
+			if($this->db->table_exists('neraca_'. $tahunlalu)){
+				echo "table neraca_". $tahunlalu ." sudah ada";
+			}else{
+				$this->db->query("ALTER TABLE `neraca` RENAME TO `neraca_$tahunlalu`");
+				$this->db->query("CREATE TABLE `neraca` (
+					`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+					`id_akun` int(11) NOT NULL,
+					`nama_akun` varchar(255) NOT NULL,
+					`$destahunlalu` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`jan$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`feb$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`mar$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`apr$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`mei$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`jun$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`jul$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`ags$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`sep$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`okt$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`nop$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`des$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`realjan$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`realsdjan$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahunlalu` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahunlalu` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenjan$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenfeb$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenmar$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenapr$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenmei$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenjun$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenjul$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenags$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensep$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosenokt$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosennop$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosendes$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdjan$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdfeb$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdmar$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdapr$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdmei$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdjun$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdjul$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdags$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdsep$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdokt$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensdnop$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`prosensddes$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`realmar$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`realsdmar$tahun` decimal(20, 2) NOT NULL DEFAULT '0.00',
+					`updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+				) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+				$neracaDesTahunLalu = $this->db->query("SELECT `$destahunlalu` FROM neraca_" . $tahunlalu)->result_array();
+				foreach ($deskripsiNeraca as $key => $desNeraca) {
+					$this->db->query("INSERT INTO `neraca` (`id`, `id_akun`, `nama_akun`, `$destahunlalu`) VALUES (NULL, '0', '". $desNeraca['nama'] ."', '" . $neracaDesTahunLalu[$key][$destahunlalu] ."');");
+				}
+			}
+
+			// aktivitas
+			if($this->db->table_exists('perubahanasetnetotidakterikat_' . $tahunlalu)){
+				echo "table neraca_". $tahunlalu ." sudah ada";
+			} else {
+				$this->db->query("ALTER TABLE `perubahanasetnetotidakterikat` RENAME TO `perubahanasetnetotidakterikat_$tahunlalu`");
+				$this->db->query(
+					"CREATE TABLE `perubahanasetnetotidakterikat` (
+						`id` int(11) NOT NULL,
+						`keterangan` text NOT NULL,
+						`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdnop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sddes$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`jan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`feb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`mar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`apr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`mei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`jun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`jul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`ags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`okt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`nop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`des$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkajan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkasdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`realjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`realsdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkajan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkasdjan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						PRIMARY KEY (`id`)
+					  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;"
+				);
+				$aktivitasTahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `sdnop$tahunlalu`, `des$tahunlalu` , `sddes$tahunlalu` FROM perubahanasetnetotidakterikat_" . $tahunlalu)->result_array();
+				foreach ($deskripsiAktivitas as $key => $desAktivitas) {
+					$this->db->query("INSERT INTO `perubahanasetnetotidakterikat` (
+						`id`, 
+						`keterangan`, 
+						`nop$tahunlalu`, 
+						`sdnop$tahunlalu`, 
+						`des$tahunlalu`, 
+						`sddes$tahunlalu`
+					) VALUES (
+						NULL, 
+						'" . $desAktivitas['nama'] ."', 
+						'" . $aktivitasTahunLalu[$key]['nop' . $tahunlalu] ."', 
+						'" . $aktivitasTahunLalu[$key]['sdnop' . $tahunlalu] ."', 
+						'" . $aktivitasTahunLalu[$key]['des' . $tahunlalu] ."', 
+						'" . $aktivitasTahunLalu[$key]['sddes' . $tahunlalu] ."'
+					);");
+				}
+			}
+
+			//aruskas
+			if($this->db->table_exists('aktivitasoperasikasditerima_' . $tahunlalu)){
+				echo "table aktivitasoperasikasditerima_". $tahunlalu ." sudah ada";
+			} else {
+				$this->db->query("ALTER TABLE `aktivitasoperasikasditerima` RENAME TO `aktivitasoperasikasditerima_$tahunlalu`");
+				$this->db->query(
+				"CREATE TABLE `aktivitasoperasikasditerima` (
+					`id` int(11) NOT NULL AUTO_INCREMENT,
+					`keterangan` text NOT NULL,
+					`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`feb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`mar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`apr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`mei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`ags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`okt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`nop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`des$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdnop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sddes$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jan$tahunberikutnya` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sdjan$tahunberikutnya` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realsdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					PRIMARY KEY (`id`)
+				  ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;"
+				);
+				$aruskasTahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `des$tahunlalu`, `sdnop$tahunlalu`, `sddes$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu` FROM aktivitasoperasikasditerima_" . $tahunlalu)->result_array();
+				foreach ($deskripsiAruskas as $key => $desAruskas) {
+					$this->db->query("INSERT INTO `aktivitasoperasikasditerima` (
+						`id`, 
+						`keterangan`, 
+						`nop$tahunlalu`, 
+						`des$tahunlalu`, 
+						`sdnop$tahunlalu`, 
+						`sddes$tahunlalu`, 
+						`rkajan$tahunlalu`, 
+						`rkasdjan$tahunlalu`
+					) VALUES (
+						NULL, 
+						'" . $desAruskas['nama'] ."', 
+						'" . $aruskasTahunLalu[$key]['nop' . $tahunlalu] ."', 
+						'" . $aruskasTahunLalu[$key]['des' . $tahunlalu] ."', 
+						'" . $aruskasTahunLalu[$key]['sdnop' . $tahunlalu] ."', 
+						'" . $aruskasTahunLalu[$key]['sddes' . $tahunlalu] ."',
+						'" . $aruskasTahunLalu[$key]['rkajan' . $tahunlalu] ."', 
+						'" . $aruskasTahunLalu[$key]['rkasdjan' . $tahunlalu] ."'
+					);");
+				}
+			}
+
+			// kinerja
+			if($this->db->table_exists('tingkatpengembalianhasil_' . $tahunlalu)){
+				echo "table tingkatpengembalianhasil_". $tahunlalu ." sudah ada";
+			} else {
+				$this->db->query("ALTER TABLE `tingkatpengembalianhasil` RENAME TO `tingkatpengembalianhasil_$tahunlalu`");
+				$this->db->query(
+					"CREATE TABLE `tingkatpengembalianhasil` (
+					`id` int(11) NOT NULL,
+					`sektor` text NOT NULL,
+					`jan$tahunlalu` int(11) NOT NULL DEFAULT '0.00',
+					`prosenjan$tahunlalu` int(11) NOT NULL DEFAULT '0.00',
+					`prosensdjan$tahunlalu` int(11) NOT NULL DEFAULT '0.00',
+					`okt$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`feb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`mar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`apr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`mei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`ags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`okt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`nop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`des$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosen` int(11) NOT NULL DEFAULT '0.00',
+					`timbangjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangdes$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`timbangdes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realsdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					PRIMARY KEY (`id`)
+				  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+				");
+
+				$kinerja1TahunLalu = $this->db->query("SELECT `jan$tahunlalu`, `prosenjan$tahunlalu`, `prosensdjan$tahunlalu`, `okt$tahunlalu`, `nop$tahunlalu`, `des$tahunlalu`, `timbangdes$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu` FROM tingkatpengembalianhasil_" . $tahunlalu)->result_array();
+				foreach ($deskripsiKinerja1 as $key => $desKinerja1) {
+					$this->db->query("INSERT INTO `tingkatpengembalianhasil` (
+						`id`, 
+						`sektor`, 
+						`jan$tahunlalu`, 
+						`prosenjan$tahunlalu`, 
+						`prosensdjan$tahunlalu`, 
+						`okt$tahunlalu`, 
+						`nop$tahunlalu`, 
+						`des$tahunlalu`, 
+						`timbangdes$tahunlalu`, 
+						`rkajan$tahunlalu`, 
+						`rkasdjan$tahunlalu`
+					) VALUES (
+						NULL, 
+						'" . $desKinerja1['nama'] ."', 
+						'" . $kinerja1TahunLalu[$key]['jan' . $tahunlalu] ."', 
+						'" . $kinerja1TahunLalu[$key]['prosenjan' . $tahunlalu] ."', 
+						'" . $kinerja1TahunLalu[$key]['prosensdjan' . $tahunlalu] ."', 
+						'" . $kinerja1TahunLalu[$key]['okt' . $tahunlalu] ."',
+						'" . $kinerja1TahunLalu[$key]['nop' . $tahunlalu] ."', 
+						'" . $kinerja1TahunLalu[$key]['des' . $tahunlalu] ."',
+						'" . $kinerja1TahunLalu[$key]['timbangdes' . $tahunlalu] ."',
+						'" . $kinerja1TahunLalu[$key]['rkajan' . $tahunlalu] ."',
+						'" . $kinerja1TahunLalu[$key]['rkasdjan' . $tahunlalu] ."'
+					);");
+				}
+			}
+
+			// kinerja
+			if($this->db->table_exists('danayangdisalurkan_' . $tahunlalu)){
+				echo "Table 'danayangdisalurkan_" . $tahun . "' already exists";
+			} else {
+				$this->db->query("ALTER TABLE `danayangdisalurkan` RENAME TO `danayangdisalurkan_$tahunlalu`");
+				$this->db->query(
+					"CREATE TABLE `danayangdisalurkan` (
+					`id` int(11) NOT NULL AUTO_INCREMENT,
+					`sektor` text NOT NULL,
+					`rka` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jan$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`feb$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`mar$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`apr$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`mei$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`jun$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`jul$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`ags$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`sep$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`okt$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`nop$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`des$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`rkajan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realsdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjan$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`prosensdjan$tahun` decimal(10,0) NOT NULL DEFAULT '0.00',
+					`prosenfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					PRIMARY KEY (`id`)
+				  ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+				");
+				$kinerja2TahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `des$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu` FROM danayangdisalurkan_" . $tahunlalu)->result_array();
+				foreach ($deskripsiKinerja2 as $key => $desKinerja2) {
+					$this->db->query("INSERT INTO `danayangdisalurkan` (
+						`id`, 
+						`sektor`, 
+						`nop$tahunlalu`, 
+						`des$tahunlalu`, 
+						`rkajan$tahunlalu`, 
+						`rkasdjan$tahunlalu`
+					) VALUES (
+						NULL, 
+						'" . $desKinerja2['nama'] ."', 
+						'" . $kinerja2TahunLalu[$key]['nop' . $tahunlalu] ."', 
+						'" . $kinerja2TahunLalu[$key]['des' . $tahunlalu] ."', 
+						'" . $kinerja2TahunLalu[$key]['rkajan' . $tahunlalu] ."', 
+						'" . $kinerja2TahunLalu[$key]['rkasdjan' . $$tahunlalu] ."'
+					);");
+				}
+
+			}
+
+			// kinerja
+			if($this->db->table_exists('danatersedia_' . $tahunlalu)){
+				echo "Table 'danatersedia_" . $tahunlalu . "' already exists.<br>";
+			} else {
+				$this->db->query("ALTER TABLE `danatersedia` RENAME TO `danatersedia_$tahunlalu`");
+				$this->db->query(
+					"CREATE TABLE `danatersedia` (
+					`id` int(11) NOT NULL AUTO_INCREMENT,
+					`sektor` text NOT NULL,
+					`jan$tahunlalu` int(11) NOT NULL DEFAULT '0.00',
+					`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`feb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`mar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`apr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`mei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`jul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`ags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`sep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`okt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`nop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`des$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`realsdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkajan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`rkasdjan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosensdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosenokt$tahun` int(11) NOT NULL DEFAULT '0.00',
+					`prosensdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+					`prosennop$tahun` int(11) NOT NULL DEFAULT '0.00',
+					`prosensdnop$tahun` int(11) NOT NULL DEFAULT '0.00',
+					`prosendes$tahun` int(11) NOT NULL DEFAULT '0.00',
+					`prosensddes$tahun` int(11) NOT NULL DEFAULT '0.00',
+					PRIMARY KEY (`id`)
+				  ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+				");
+				$kinerja3TahunLalu = $this->db->query("SELECT `jan$tahunlalu`, `nop$tahunlalu`, `des$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu` FROM danatersedia_" . $tahunlalu)->result_array();
+				foreach ($deskripsiKinerja3 as $key => $desKinerja3) {
+					$this->db->query("INSERT INTO `danatersedia` (
+						`id`, 
+						`sektor`, 
+						`jan$tahunlalu`, 
+						`nop$tahunlalu`, 
+						`des$tahunlalu`, 
+						`rkajan$tahunlalu`, 
+						`rkasdjan$tahunlalu`
+					) VALUES (
+						NULL, 
+						'" . $desKinerja3['nama'] ."', 
+						'" . $kinerja3TahunLalu[$key]['jan' . $tahunlalu] ."', 
+						'" . $kinerja3TahunLalu[$key]['nop' . $tahunlalu] ."', 
+						'" . $kinerja3TahunLalu[$key]['des' . $tahunlalu] ."', 
+						'" . $kinerja3TahunLalu[$key]['rkajan' . $tahunlalu] ."', 
+						'" . $kinerja3TahunLalu[$key]['rkasdjan' . $$tahunlalu] ."'
+					);");
+				}
+			}
+
+			// catatan
+			if($this->db->table_exists('catatanataslapkeu_' . $tahunlalu)){
+				echo "catatanataslapkeu_" . $tahunlalu . " sudah ada"; 
+			} else {
+				$this->db->query("ALTER TABLE `catatanataslapkeu` RENAME TO `catatanataslapkeu_$tahunlalu`");
+				$this->db->query(
+					"CREATE TABLE `catatanataslapkeu` (
+						`id` int(11) NOT NULL AUTO_INCREMENT,
+						`keterangan` text NOT NULL,
+						`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`jan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`feb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`mar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`apr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`mei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`jun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`jul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`ags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`sep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`okt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`nop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`des$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkajan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkasdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`realjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`realsdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkajan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`rkasdjan$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosenokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						PRIMARY KEY (`id`)
+					  ) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
+				");
+				$catatanTahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `des$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu`, FROM catatanataslapkeu_" . $tahunlalu)->result_array();
+				foreach ($deskripsiCatatan as $key => $desCatatan) {
+					$this->db->query("INSERT INTO `catatanataslapkeu` (
+						`id`, 
+						`keterangan`, 
+						`nop$tahunlalu`,
+						`des$tahunlalu`,
+						`rkajan$tahunlalu`,
+						`rkasdjan$tahunlalu`,
+					) VALUES (
+						NULL, 
+						'" . $desCatatan['nama'] ."', 
+						'" . $catatanTahunLalu[$key]['nop' . $tahunlalu] ."', 
+						'" . $catatanTahunLalu[$key]['des' . $tahunlalu] ."', 
+						'" . $catatanTahunLalu[$key]['rkajan' . $tahunlalu] ."', 
+						'" . $catatanTahunLalu[$key]['rkasdjan' . $$tahunlalu] ."'
+					);");
+				}
+			}
+
+			// neracasaldo
+			if($this->db->table_exists('neracasaldo_' . $tahunlalu)){
+				echo "neracasaldo_" . $tahunlalu . " sudah ada";
+			} else {
+				$this->db->query("ALTER TABLE `neracasaldo` RENAME TO `neracasaldo_$tahunlalu`");
+				$this->db->query(
+					"CREATE TABLE `neracasaldo` (
+						`id` int(11) NOT NULL,
+						`id_akun` int(11) NOT NULL,
+						`nama_akun` text NOT NULL,
+						`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditjan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldojan$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditfeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldofeb$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditmar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldomar$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldoapr$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditmei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldomei$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditjun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldojun$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditjul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldojul$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldoags$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditsep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldosep$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetokt$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`kreditnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`saldonop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`debetdes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
+						`tglUpdate` date NOT NULL,
+						`selisih` int(11) NOT NULL DEFAULT '0.00',
+						PRIMARY KEY (`id`)
+					  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+				");
+
+				$neracasaldoTahunLalu = $this->db->query("SELECT `id_akun`, `nama_akun`, `saldodes$tahunlalu` FROM neracasaldo_" . $tahunlalu)->result_array();
+				foreach ($neracasaldoTahunLalu as $key => $saldo) {
+					$this->db->query("INSERT INTO `catatanataslapkeu` (
+						`id`, 
+						`id_akun`, 
+						`nama_akun`,
+						`des$tahunlalu`,
+					) VALUES (
+						NULL, 
+						'" . $saldo['id_akun'] ."', 
+						'" . $saldo['nama_akun'] ."', 
+						'" . $saldo['saldodes' . $tahunlalu] ."',
+					);");
+				}
+			}
+
+			if($this->db->table_exists('transposeagingrate_' . $tahunlalu)){
+				echo "Table transposeagingrate_" . $tahunlalu . " already exists";
+			} else {
+				$this->db->query("ALTER TABLE `transposeagingrate` RENAME TO `transposeagingrate_$tahunlalu`");
+				$this->db->query(
+					"CREATE TABLE `transposeagingrate` (
+						`id` int(11) NOT NULL,
+						`bulan` date NOT NULL,
+						`lancar` decimal(12,2) NOT NULL,
+						`kuranglancar` decimal(12,2) NOT NULL,
+						`diragukan` decimal(12,2) NOT NULL,
+						`macet` decimal(12,2) NOT NULL,
+						`selisih` decimal(12,2) NOT NULL,
+						`jumlah` decimal(12,2) NOT NULL,
+						`lankekrglan` decimal(12,10) NOT NULL,
+						`krglankediragu` decimal(12,10) NOT NULL,
+						`diragukemacet` decimal(12,10) NOT NULL,
+						`prodeflancar` decimal(12,10) NOT NULL,
+						`prodefkuranglancar` decimal(12,10) NOT NULL
+					  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+				");
+				$no = 1;
+				$transposeAgingRateTahunLalu = $this->db->query("SELECT * FROM transposeagingrate_" . $tahunlalu)->result_array();
+				foreach ($transposeAgingRateTahunLalu as $key => $agingrate) {
+					if($no > 12){
+						$bulan = $agingrate['bulan'];
+						$lancar = $agingrate['lancar'];
+						$kuranglancar = $agingrate['kuranglancar'];
+						$diragukan = $agingrate['diragukan'];
+						$macet = $agingrate['macet'];
+
+						if($no == 13) {
+							$selisih=0;
+						} else {
+							$selisih=$agingrate['selisih'];  
+						}
+						
+						$jumlah = $agingrate['jumlah'];
+						$lankekrglan = $agingrate['lankekrglan'];
+						$krglankediragu = $agingrate['krglankediragu'];
+						$diragukemacet = $agingrate['diragukemacet'];
+						$prodeflancar = $agingrate['prodeflancar'];
+						$prodefkuranglancar = $agingrate['prodefkuranglancar'];
+						$noid = $no-12;
+
+						$this->db->query("INSERT INTO `transposeagingrate`(`id`, `bulan`, `lancar`, `kuranglancar`, `diragukan`, `macet`, `selisih`, `jumlah`, `lankekrglan`, `krglankediragu`, `diragukemacet`, `prodeflancar`, `prodefkuranglancar`) 
+        				VALUES ('$noid','$bulan','$lancar','$kuranglancar','$diragukan','$macet','$selisih','$jumlah','$lankekrglan','$krglankediragu','$diragukemacet','$prodeflancar','$prodefkuranglancar')");
+					}
+
+					$no++;
+				}
+
+				$no = 1;
+
+				foreach ($transposeAgingRateTahunLalu as $key => $agingrate) {
+					if($no > 12){
+						if($no==13) {
+							$hari_ini = date("Y-m-d");
+							//  $tglawal = date('Y-m-01', strtotime($hari_ini));
+							$tglakhir = date('Y-m-t', strtotime($hari_ini));
+						} else {
+							$hari_ini= date('Y-m-d', strtotime('+1 days', strtotime($tglakhir))); 
+							$tglakhir= date('Y-m-t', strtotime($hari_ini)); 
+						}
+
+						$bulan=$tglakhir;
+						$lancar=0;
+						$kuranglancar=0;
+						$diragukan=0;
+						$macet=0;
+						$selisih=0;
+						
+						$jumlah=0;
+						$lankekrglan=0;
+						$krglankediragu=0;
+						$diragukemacet=0;
+						$prodeflancar=0;
+						$prodefkuranglancar=0;
+
+						$noid=$no;
+
+						$this->db->query("INSERT INTO `transposeagingrate`(`id`, `bulan`, `lancar`, `kuranglancar`, `diragukan`, `macet`, `selisih`, `jumlah`, `lankekrglan`, `krglankediragu`, `diragukemacet`, `prodeflancar`, `prodefkuranglancar`) 
+        				VALUES ('$noid','$bulan','$lancar','$kuranglancar','$diragukan','$macet','$selisih','$jumlah','$lankekrglan','$krglankediragu','$diragukemacet','$prodeflancar','$prodefkuranglancar')");
+					}
+
+					$no++;
+				}
+			}
+
+		}
 	}
 
 	private function _get_data_chart_piutang(){
