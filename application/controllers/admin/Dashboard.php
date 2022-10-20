@@ -124,13 +124,14 @@ class Dashboard extends PerhitunganLaporan {
 		$deskripsiCatatan = $this->db->query("SELECT `nama` FROM deskripsi_laporan WHERE laporan = 'catatan'")->result_array();
 
 		// if(date('d m') == '01 01'){
+		if(true){
 			for ($i=1; $i <= count($saldoPerioda); $i++) { 
 				$this->db->query("INSERT INTO `saldokasbank` (`id`, `mandiri`, `bri`, `kaskecil`, `perioda`, `updated`, `updated_at`) VALUES (NULL, '0', '0', '0', '" . $saldoPerioda[$i] ."', 'admin', CURRENT_TIMESTAMP)");
 			}
 
 			// posisi keuangan
 			if($this->db->table_exists('neraca_'. $tahunlalu)){
-				echo "table neraca_". $tahunlalu ." sudah ada";
+				// echo "table neraca_". $tahunlalu ." sudah ada";
 			}else{
 				$this->db->query("ALTER TABLE `neraca` RENAME TO `neraca_$tahunlalu`");
 				$this->db->query("CREATE TABLE `neraca` (
@@ -192,12 +193,12 @@ class Dashboard extends PerhitunganLaporan {
 
 			// aktivitas
 			if($this->db->table_exists('perubahanasetnetotidakterikat_' . $tahunlalu)){
-				echo "table neraca_". $tahunlalu ." sudah ada";
+				// echo "table neraca_". $tahunlalu ." sudah ada";
 			} else {
 				$this->db->query("ALTER TABLE `perubahanasetnetotidakterikat` RENAME TO `perubahanasetnetotidakterikat_$tahunlalu`");
 				$this->db->query(
 					"CREATE TABLE `perubahanasetnetotidakterikat` (
-						`id` int(11) NOT NULL,
+						`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 						`keterangan` text NOT NULL,
 						`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
 						`sdnop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
@@ -257,7 +258,6 @@ class Dashboard extends PerhitunganLaporan {
 						`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 						`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 						`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-						PRIMARY KEY (`id`)
 					  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;"
 				);
 				$aktivitasTahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `sdnop$tahunlalu`, `des$tahunlalu` , `sddes$tahunlalu` FROM perubahanasetnetotidakterikat_" . $tahunlalu)->result_array();
@@ -282,12 +282,12 @@ class Dashboard extends PerhitunganLaporan {
 
 			//aruskas
 			if($this->db->table_exists('aktivitasoperasikasditerima_' . $tahunlalu)){
-				echo "table aktivitasoperasikasditerima_". $tahunlalu ." sudah ada";
+				// echo "table aktivitasoperasikasditerima_". $tahunlalu ." sudah ada";
 			} else {
 				$this->db->query("ALTER TABLE `aktivitasoperasikasditerima` RENAME TO `aktivitasoperasikasditerima_$tahunlalu`");
 				$this->db->query(
 				"CREATE TABLE `aktivitasoperasikasditerima` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
+					`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 					`keterangan` text NOT NULL,
 					`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
@@ -348,9 +348,8 @@ class Dashboard extends PerhitunganLaporan {
 					`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-					PRIMARY KEY (`id`)
-				  ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;"
+					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00'
+				  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
 				);
 				$aruskasTahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `des$tahunlalu`, `sdnop$tahunlalu`, `sddes$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu` FROM aktivitasoperasikasditerima_" . $tahunlalu)->result_array();
 				foreach ($deskripsiAruskas as $key => $desAruskas) {
@@ -378,12 +377,12 @@ class Dashboard extends PerhitunganLaporan {
 
 			// kinerja
 			if($this->db->table_exists('tingkatpengembalianhasil_' . $tahunlalu)){
-				echo "table tingkatpengembalianhasil_". $tahunlalu ." sudah ada";
+				// echo "table tingkatpengembalianhasil_". $tahunlalu ." sudah ada";
 			} else {
 				$this->db->query("ALTER TABLE `tingkatpengembalianhasil` RENAME TO `tingkatpengembalianhasil_$tahunlalu`");
 				$this->db->query(
 					"CREATE TABLE `tingkatpengembalianhasil` (
-					`id` int(11) NOT NULL,
+					`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 					`sektor` text NOT NULL,
 					`jan$tahunlalu` int(11) NOT NULL DEFAULT '0.00',
 					`prosenjan$tahunlalu` int(11) NOT NULL DEFAULT '0.00',
@@ -446,8 +445,7 @@ class Dashboard extends PerhitunganLaporan {
 					`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-					PRIMARY KEY (`id`)
+					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00'
 				  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 				");
 
@@ -483,12 +481,12 @@ class Dashboard extends PerhitunganLaporan {
 
 			// kinerja
 			if($this->db->table_exists('danayangdisalurkan_' . $tahunlalu)){
-				echo "Table 'danayangdisalurkan_" . $tahun . "' already exists";
+				// echo "Table 'danayangdisalurkan_" . $tahun . "' already exists";
 			} else {
 				$this->db->query("ALTER TABLE `danayangdisalurkan` RENAME TO `danayangdisalurkan_$tahunlalu`");
 				$this->db->query(
 					"CREATE TABLE `danayangdisalurkan` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
+					`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 					`sektor` text NOT NULL,
 					`rka` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
@@ -534,9 +532,8 @@ class Dashboard extends PerhitunganLaporan {
 					`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 					`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-					PRIMARY KEY (`id`)
-				  ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+					`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00'
+				  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 				");
 				$kinerja2TahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `des$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu` FROM danayangdisalurkan_" . $tahunlalu)->result_array();
 				foreach ($deskripsiKinerja2 as $key => $desKinerja2) {
@@ -553,7 +550,7 @@ class Dashboard extends PerhitunganLaporan {
 						'" . $kinerja2TahunLalu[$key]['nop' . $tahunlalu] ."', 
 						'" . $kinerja2TahunLalu[$key]['des' . $tahunlalu] ."', 
 						'" . $kinerja2TahunLalu[$key]['rkajan' . $tahunlalu] ."', 
-						'" . $kinerja2TahunLalu[$key]['rkasdjan' . $$tahunlalu] ."'
+						'" . $kinerja2TahunLalu[$key]['rkasdjan' . $tahunlalu] ."'
 					);");
 				}
 
@@ -561,12 +558,12 @@ class Dashboard extends PerhitunganLaporan {
 
 			// kinerja
 			if($this->db->table_exists('danatersedia_' . $tahunlalu)){
-				echo "Table 'danatersedia_" . $tahunlalu . "' already exists.<br>";
+				// echo "Table 'danatersedia_" . $tahunlalu . "' already exists.<br>";
 			} else {
 				$this->db->query("ALTER TABLE `danatersedia` RENAME TO `danatersedia_$tahunlalu`");
 				$this->db->query(
 					"CREATE TABLE `danatersedia` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
+					`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 					`sektor` text NOT NULL,
 					`jan$tahunlalu` int(11) NOT NULL DEFAULT '0.00',
 					`nop$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
@@ -612,9 +609,8 @@ class Dashboard extends PerhitunganLaporan {
 					`prosennop$tahun` int(11) NOT NULL DEFAULT '0.00',
 					`prosensdnop$tahun` int(11) NOT NULL DEFAULT '0.00',
 					`prosendes$tahun` int(11) NOT NULL DEFAULT '0.00',
-					`prosensddes$tahun` int(11) NOT NULL DEFAULT '0.00',
-					PRIMARY KEY (`id`)
-				  ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+					`prosensddes$tahun` int(11) NOT NULL DEFAULT '0.00'
+				  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 				");
 				$kinerja3TahunLalu = $this->db->query("SELECT `jan$tahunlalu`, `nop$tahunlalu`, `des$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu` FROM danatersedia_" . $tahunlalu)->result_array();
 				foreach ($deskripsiKinerja3 as $key => $desKinerja3) {
@@ -633,14 +629,14 @@ class Dashboard extends PerhitunganLaporan {
 						'" . $kinerja3TahunLalu[$key]['nop' . $tahunlalu] ."', 
 						'" . $kinerja3TahunLalu[$key]['des' . $tahunlalu] ."', 
 						'" . $kinerja3TahunLalu[$key]['rkajan' . $tahunlalu] ."', 
-						'" . $kinerja3TahunLalu[$key]['rkasdjan' . $$tahunlalu] ."'
+						'" . $kinerja3TahunLalu[$key]['rkasdjan' . $tahunlalu] ."'
 					);");
 				}
 			}
 
 			// catatan
 			if($this->db->table_exists('catatanataslapkeu_' . $tahunlalu)){
-				echo "catatanataslapkeu_" . $tahunlalu . " sudah ada"; 
+				// echo "catatanataslapkeu_" . $tahunlalu . " sudah ada"; 
 			} else {
 				$this->db->query("ALTER TABLE `catatanataslapkeu` RENAME TO `catatanataslapkeu_$tahunlalu`");
 				$this->db->query(
@@ -690,9 +686,8 @@ class Dashboard extends PerhitunganLaporan {
 						`prosennop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 						`prosensdnop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 						`prosendes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-						`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
-						PRIMARY KEY (`id`)
-					  ) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
+						`prosensddes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00'
+					  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 				");
 				$catatanTahunLalu = $this->db->query("SELECT `nop$tahunlalu`, `des$tahunlalu`, `rkajan$tahunlalu`, `rkasdjan$tahunlalu`, FROM catatanataslapkeu_" . $tahunlalu)->result_array();
 				foreach ($deskripsiCatatan as $key => $desCatatan) {
@@ -716,12 +711,12 @@ class Dashboard extends PerhitunganLaporan {
 
 			// neracasaldo
 			if($this->db->table_exists('neracasaldo_' . $tahunlalu)){
-				echo "neracasaldo_" . $tahunlalu . " sudah ada";
+				// echo "neracasaldo_" . $tahunlalu . " sudah ada";
 			} else {
 				$this->db->query("ALTER TABLE `neracasaldo` RENAME TO `neracasaldo_$tahunlalu`");
 				$this->db->query(
 					"CREATE TABLE `neracasaldo` (
-						`id` int(11) NOT NULL,
+						`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 						`id_akun` int(11) NOT NULL,
 						`nama_akun` text NOT NULL,
 						`des$tahunlalu` decimal(20,2) NOT NULL DEFAULT '0.00',
@@ -758,34 +753,33 @@ class Dashboard extends PerhitunganLaporan {
 						`saldonop$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 						`debetdes$tahun` decimal(20,2) NOT NULL DEFAULT '0.00',
 						`tglUpdate` date NOT NULL,
-						`selisih` int(11) NOT NULL DEFAULT '0.00',
-						PRIMARY KEY (`id`)
+						`selisih` int(11) NOT NULL DEFAULT '0.00'
 					  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 				");
 
-				$neracasaldoTahunLalu = $this->db->query("SELECT `id_akun`, `nama_akun`, `saldodes$tahunlalu` FROM neracasaldo_" . $tahunlalu)->result_array();
-				foreach ($neracasaldoTahunLalu as $key => $saldo) {
-					$this->db->query("INSERT INTO `catatanataslapkeu` (
-						`id`, 
-						`id_akun`, 
-						`nama_akun`,
-						`des$tahunlalu`,
-					) VALUES (
-						NULL, 
-						'" . $saldo['id_akun'] ."', 
-						'" . $saldo['nama_akun'] ."', 
-						'" . $saldo['saldodes' . $tahunlalu] ."',
-					);");
-				}
+				// $neracasaldoTahunLalu = $this->db->query("SELECT `id_akun`, `nama_akun`, `saldodes$tahunlalu` FROM neracasaldo_" . $tahunlalu)->result_array();
+				// foreach ($neracasaldoTahunLalu as $key => $saldo) {
+				// 	$this->db->query("INSERT INTO `catatanataslapkeu` (
+				// 		`id`, 
+				// 		`id_akun`, 
+				// 		`nama_akun`,
+				// 		`des$tahunlalu`,
+				// 	) VALUES (
+				// 		NULL, 
+				// 		'" . $saldo['id_akun'] ."', 
+				// 		'" . $saldo['nama_akun'] ."', 
+				// 		'" . $saldo['saldodes' . $tahunlalu] ."',
+				// 	);");
+				// }
 			}
 
 			if($this->db->table_exists('transposeagingrate_' . $tahunlalu)){
-				echo "Table transposeagingrate_" . $tahunlalu . " already exists";
+				// echo "Table transposeagingrate_" . $tahunlalu . " already exists";
 			} else {
 				$this->db->query("ALTER TABLE `transposeagingrate` RENAME TO `transposeagingrate_$tahunlalu`");
 				$this->db->query(
 					"CREATE TABLE `transposeagingrate` (
-						`id` int(11) NOT NULL,
+						`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 						`bulan` date NOT NULL,
 						`lancar` decimal(12,2) NOT NULL,
 						`kuranglancar` decimal(12,2) NOT NULL,
