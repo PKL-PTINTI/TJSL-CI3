@@ -96,6 +96,9 @@ class Dashboard extends PerhitunganLaporan {
 	}
 
 	private function _initAwalTahun(){
+		$tahun = date('y');
+		$tahunlalu = $tahun - 1;
+
 		$saldoPerioda = array (
 			1 =>   'Jan ' . date('Y'),
 			'Feb ' . date('Y'),
@@ -111,8 +114,7 @@ class Dashboard extends PerhitunganLaporan {
 			'Dec ' . date('Y')
 		);
 
-		if(date('d m') == '01 01'){
-		// if(true){
+		if(date('m' == '01')){
 			for ($i=1; $i <= count($saldoPerioda); $i++) { 
 				$this->db->query("INSERT INTO `saldokasbank` (`id`, `mandiri`, `bri`, `kaskecil`, `perioda`, `updated`, `updated_at`) VALUES (NULL, '0', '0', '0', '" . $saldoPerioda[$i] ."', 'admin', CURRENT_TIMESTAMP)");
 			}

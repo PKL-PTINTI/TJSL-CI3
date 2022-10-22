@@ -555,8 +555,8 @@ class Mitra extends CI_Controller {
 		$prodJasa = $this->input->post('prodJasa');
 		$prodUnggul = $this->input->post('prodUnggul');
 
-		var_dump($this->input->post());
-		die;
+		// var_dump($this->input->post());
+		// die;
 
 		// $this->db->query("UPDATE `mitra` SET `nokontrak`='$nokontrak',`nama_peminjam`='$nama_peminjam',`sektorUsaha`=
 		// '$sektorUsaha',`pinjpokok`='$pinjpokok',`pinjjasa`='$pinjjasa',`hp`='$hp',`ktp`='$ktp',`noRekBank`='$noRekBank',

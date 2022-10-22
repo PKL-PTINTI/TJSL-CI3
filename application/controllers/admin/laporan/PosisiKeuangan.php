@@ -54,9 +54,11 @@ class PosisiKeuangan extends CI_Controller {
 		$this->data['title'] = 'Data Laporan Posisi Keuangan';
 		$this->data['header'] = 'Management Data Laporan Posisi Keuangan';
 		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		empty($this->input->get('periode')) ? $this->data['perioda'] = $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->data['perioda'] = $this->input->get('periode');
-		$this->data['neraca'] = $this->posisikeuangan_model->getData();
-		
+		$this->data['perioda'] = empty($this->input->get('periode')) ? $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->input->get('periode');
+		$this->data['neraca_des'] = $this->posisikeuangan_model->getDataDes();
+		$this->data['neraca_perioda'] = $this->posisikeuangan_model->getData($this->data['perioda']);
+		$this->data['neraca_deskripsi'] = $this->posisikeuangan_model->getDataDeskripsi();
+
 		$this->template->load('posisi_keuangan/index', $this->data);
 	}
 

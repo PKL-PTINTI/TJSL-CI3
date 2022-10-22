@@ -21,7 +21,7 @@
             <div class="p-2 bd-highlight">
                <th><b>Tanggung Jawab Sosial Lingkungan (TJSL) </th>
                <br>
-               <th> LAPORAN Neraca Saldo</th>
+               <th> LAPORAN NERACA SALDO</th>
                <br>
                <b>   PER  <?= $tanggal ?> </b>
             </div>

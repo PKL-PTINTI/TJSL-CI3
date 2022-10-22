@@ -67,7 +67,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $no = 1; ?>
-                                    <?php foreach($neraca as $d): ?>
+                                    <?php foreach($neraca_deskripsi as $d): ?>
                                     <tr>
                                         <?php
                                             echo $no == 1 ? '<td colspan="4"> ASET <br class="pt-1"></td></tr>' : '';
@@ -81,9 +81,9 @@
                                             echo $no == 17 ? '<td colspan="4"> ASET NETO <br class="pt-1"></td></tr>' : '';
                                         ?>
                                         <td class="text-center"><?= $no++ ?></td>
-                                        <td><?= $d['nama_akun'] ?></td>
-                                        <td><?= number_format($d['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
-                                        <td><?= number_format($d[$perioda]) ?></td>
+                                        <td><?= $d['nama'] ?></td>
+                                        <td><?= number_format($neraca_des[$d['nama_field']]) ?></td>
+                                        <td><?= number_format($neraca_perioda[$d['nama_field']]) ?></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

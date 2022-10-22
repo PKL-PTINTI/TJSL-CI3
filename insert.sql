@@ -179,3 +179,43 @@ INSERT INTO `deskripsi_laporan` (`id`, `nama`, `laporan`, `nama_field`) VALUES
 (NULL, 'ASET NETO AWAL TAHUN', 'aktivitas', NULL),
 (NULL, 'ASET NETO AKHIR TAHUN', 'aktivitas', NULL)
 
+    ["kas"]=>
+    string(10) "7198061.00"
+    ["bank"]=>
+    string(12) "670013184.00"
+    ["piutang_mb"]=>
+    string(13) "4692951888.00"
+    ["alokasi_piutang"]=>
+    string(14) "-1520457188.00"
+    ["jumlah_aset_lancar"]=>
+    string(13) "3849705945.00"
+    ["inventaris_peralatan"]=>
+    string(11) "40478000.00"
+    ["akumulasi"]=>
+    string(12) "-40478000.00"
+    ["jumlah_aset_bersih"]=>
+    string(4) "0.00"
+    ["piutang_bermasalah"]=>
+    string(13) "4306137003.00"
+    ["alokasi_piutang_bermasalah"]=>
+    string(14) "-4306137003.00"
+    ["jumlah_aset_lain"]=>
+    string(4) "0.00"
+    ["jumlah_aset"]=>
+    string(13) "3849705945.00"
+    ["kelebihan_pembayaran"]=>
+    string(10) "4527770.00"
+    ["angsuran_tak_teridentifikasi"]=>
+    string(12) "132847588.00"
+    ["kewajiban_jangka_panjang"]=>
+    string(4) "0.00"
+    ["jumlah_liabilitas"]=>
+    string(12) "137375358.00"
+    ["aset_neto_terikat"]=>
+    string(4) "0.00"
+    ["aset_neto_tak_terikat"]=>
+    string(13) "3712330587.00"
+    ["jumlah_aset_neto"]=>
+    string(13) "3712330587.00"
+    ["jumlah_liabilitas_dan_neto"]=>
+    string(13) "3849705945.00"
