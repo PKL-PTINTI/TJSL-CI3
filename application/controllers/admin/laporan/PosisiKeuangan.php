@@ -33,7 +33,7 @@ class PosisiKeuangan extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Admin/laporan/posisikeuangan';
+			$this->data['link_active'] = 'Admin/Laporan/posisiKeuangan';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {
@@ -55,10 +55,33 @@ class PosisiKeuangan extends CI_Controller {
 		$this->data['header'] = 'Management Data Laporan Posisi Keuangan';
 		$this->data['bulan'] =  date('M Y', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
 		$this->data['perioda'] = empty($this->input->get('periode')) ? $this->_tanggal(date('y-m', mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))) : $this->input->get('periode');
-		$this->data['neraca_des'] = $this->posisikeuangan_model->getDataDes();
-		$this->data['neraca_perioda'] = $this->posisikeuangan_model->getData($this->data['perioda']);
+		$this->data['neraca'] = $this->posisikeuangan_model->getData();
 		$this->data['neraca_deskripsi'] = $this->posisikeuangan_model->getDataDeskripsi();
 
+		// foreach ($this->data['neraca_deskripsi'] as $key => $deskripsi) {
+		// 	echo ($key + 1) . $deskripsi['nama_field'];
+		// 	echo '<br>';
+		// }
+
+		// foreach ($neraca as $key => $neracadata) {
+		// 	foreach ($neracadata as $keys => $value) {
+		// 		foreach($this->data['neraca_deskripsi'] as $key => $deskripsi){
+		// 			if($value['22'] == 'sep22'){
+		// 				if($deskripsi['nama_field'] == $keys){
+		// 					$this->data['neraca'][$deskripsi['nama_field']] = $value;
+		// 				}
+		// 			}
+
+		// 		// 	// var_dump($keys, $deskripsi['nama_field']);
+		// 		// 	// echo "<br>";
+		// 		}
+		// 	}
+		// }
+		
+		// echo '<pre>';
+		// var_dump($this->db->list_fields('neraca_ref'));
+		// die;
+		
 		$this->template->load('posisi_keuangan/index', $this->data);
 	}
 

@@ -16,14 +16,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | If it is not set, then CodeIgniter will try to guess the protocol and
 | path to your installation, but due to security concerns the hostname will
 | be set to $_SERVER['SERVER_ADDR'] if available, or localhost otherwise.
-| The auto-detection mechanism exists only for convenience during
+| The auto-detection mechanism exists only for conveniePnce during
 | development and MUST NOT be used in production!
 |
 | If you need to allow multiple domains, remember that this file is still
 | a PHP script and you can easily do that on your own.
 |
 */
-// $config['base_url'] = 'https://6b75-125-164-23-213.ap.ngrok.io';
+// $config['base_url'] = 'https://dlvh6.localtonet.com';
 $config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
 $config['base_url'] .= "://" . $_SERVER['HTTP_HOST'];
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);

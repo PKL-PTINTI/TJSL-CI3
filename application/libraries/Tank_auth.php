@@ -58,8 +58,17 @@ class Tank_auth
 				$get_user_func = 'get_user_by_email';
 			}
 
+			// var_dump(is_numeric($login));
+			// die;
+
 			if(is_numeric($login)){
 				$mitra = $this->ci->mitra_model->getMitra($login);
+				// var_dump($mitra);
+				// var_dump()
+				//lowercase and remove space $mitra->sektorUsaha
+				$mitra->sektorUsaha = strtolower(str_replace(' ', '', $mitra->sektorUsaha));
+				// var_dump($mitra->sektorUsaha);
+				// die;
 				if ($password == $mitra->sektorUsaha) {
 					$this->ci->session->set_userdata(array(
 						'user_id' => $mitra->nokontrak,

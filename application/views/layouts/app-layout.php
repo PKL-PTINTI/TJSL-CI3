@@ -322,7 +322,7 @@
         ?>
 
         var statistics_chart_mitra = document.getElementById("mitraMB").getContext('2d');
-        if(statistics_chart_mitra){
+        if(statistics_chart_mitra != null){
             var myChart = new Chart(statistics_chart_mitra, {
             type: 'bar',
             data: {
@@ -512,5 +512,30 @@
             });
         }
     </script>
+
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Kolektibilitas', 'Jumlah'],
+          ['Lancar', <?= $countLancar->count ?>],
+          ['Kurang Lancar', <?= $countKurangLancar->count ?>],
+          ['Diragukan', <?= $countDiragukan->count ?>],
+          ['Macet', <?= $countMacet->count ?>]
+        ]);
+
+        var options = {
+          title: ''
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
 </body>
 </html>

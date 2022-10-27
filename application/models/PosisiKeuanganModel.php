@@ -3,14 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class PosisiKeuanganModel extends CI_Model {
     
-    public function _getData() {
+    public function getData() {
         $this->db->select('*');
         $this->db->from('neraca');
         $query = $this->db->get();
         return $query->result_array();
     }
 
-    public function getData($perioda){
+    public function _getData($perioda){
         $this->db->select('kas');
         $this->db->select('bank');
         $this->db->select('piutang_mb');

@@ -31,7 +31,7 @@ class Catatan extends CI_Controller {
 				$this->data['full_name_role'] = $val['full'];
 			}
 
-			$this->data['link_active'] = 'Admin/laporan/catatan';
+			$this->data['link_active'] = 'Admin/Laporan/catatan';
 
 			//buat permission
 			if (!$this->tank_auth->permit($this->data['link_active'])) {

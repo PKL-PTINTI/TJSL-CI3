@@ -24,6 +24,7 @@ class Mitra extends CI_Controller {
 			$this->data['role'] = 'Mitra';
 			$this->data['full_name_role'] = 'Mitra Binaan';
 			$this->load->model('MitraModel', 'mitra_model');
+
 		}
 	}
 

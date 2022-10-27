@@ -67,23 +67,32 @@
                                 </thead>
                                 <tbody>
                                     <?php $no = 1; ?>
-                                    <?php foreach($neraca_deskripsi as $d): ?>
+                                    <?php foreach($neraca as $d): ?>
+                                    <!-- array search column -->
                                     <tr>
                                         <?php
-                                            echo $no == 1 ? '<td colspan="4"> ASET <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 1 ? '<td colspan="4"> ASET LANCAR <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 6 ? '<td colspan="4"> ASET TETAP BERSIH <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 9 ? '<td colspan="4"> ASET LAIN-LAIN <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 13 ? '<td colspan="4"> LIABILITAS DAN ASET NETO <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 13 ? '<td colspan="4"> LIABILITAS <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 13 ? '<td colspan="4"> LIABILITAS JANGKA PENDEK <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 15 ? '<td colspan="4"> LIABILITAS JANGKA PANJANG <br class="pt-1"></td></tr>' : '';
-                                            echo $no == 17 ? '<td colspan="4"> ASET NETO <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 1 ? '<td colspan="12"> ASET <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 1 ? '<td colspan="12"> ASET LANCAR <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 6 ? '<td colspan="12"> ASET TETAP BERSIH <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 9 ? '<td colspan="12"> ASET LAIN-LAIN <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 13 ? '<td colspan="12"> LIABILITAS DAN ASET NETO <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 13 ? '<td colspan="12"> LIABILITAS <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 13 ? '<td colspan="12"> LIABILITAS JANGKA PENDEK <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 15 ? '<td colspan="12"> LIABILITAS JANGKA PANJANG <br class="pt-1"></td></tr>' : '';
+                                            echo $no == 17 ? '<td colspan="12"> ASET NETO <br class="pt-1"></td></tr>' : '';
                                         ?>
                                         <td class="text-center"><?= $no++ ?></td>
-                                        <td><?= $d['nama'] ?></td>
-                                        <td><?= number_format($neraca_des[$d['nama_field']]) ?></td>
-                                        <td><?= number_format($neraca_perioda[$d['nama_field']]) ?></td>
+                                        <td><?= $d['nama_akun'] ?></td>
+                                        <td><?= number_format($d['des' . date('y', mktime(0, 0, 0, 0,0 , date("Y")))]) ?></td>
+                                        <td><?= number_format($d[$perioda]) ?></td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

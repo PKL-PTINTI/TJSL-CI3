@@ -65,6 +65,11 @@ class Dashboard extends PerhitunganLaporan {
 		$this->data['pemasukan_bulanan'] = 0;
 		$this->data['pengeluaran_bulanan'] = 0;
 
+		$this->data['countLancar'] = $this->db->query("SELECT COUNT(kolektibilitas) as count FROM mitra WHERE (kolektibilitas = 'lancar' OR kolektibilitas = 'Lancar' OR kolektibilitas = 'LANCAR') AND (tdkbermasalah = 'normal' OR tdkbermasalah = 'Normal' OR tdkbermasalah = 'NORMAL') AND saldopokok > 0")->row();
+		$this->data['countKurangLancar'] = $this->db->query("SELECT COUNT(kolektibilitas) as count FROM mitra WHERE (kolektibilitas = 'kurang lancar' OR kolektibilitas = 'Kurang Lancar' OR kolektibilitas = 'KURANG LANCAR') AND (tdkbermasalah = 'normal' OR tdkbermasalah = 'Normal' OR tdkbermasalah = 'NORMAL') AND saldopokok > 0")->row();
+		$this->data['countDiragukan'] = $this->db->query("SELECT COUNT(kolektibilitas) as count FROM mitra WHERE (kolektibilitas = 'diragukan' OR kolektibilitas = 'Diragukan' OR kolektibilitas = 'DIRAGUKAN') AND (tdkbermasalah = 'normal' OR tdkbermasalah = 'Normal' OR tdkbermasalah = 'NORMAL') AND saldopokok > 0")->row();
+		$this->data['countMacet'] = $this->db->query("SELECT COUNT(kolektibilitas) as count FROM mitra WHERE (kolektibilitas = 'macet' OR kolektibilitas = 'Macet' OR kolektibilitas = 'MACET') AND (tdkbermasalah = 'normal' OR tdkbermasalah = 'Normal' OR tdkbermasalah = 'NORMAL') AND saldopokok > 0")->row();
+
 		$pemasukanBulanIni = $this->db->query("SELECT SUM(pemasukan) as pemasukan FROM opex WHERE DATE_FORMAT(`tanggal`, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')")->row()->pemasukan == null ? 0 : $this->db->query("SELECT SUM(pemasukan) as pemasukan FROM opex WHERE DATE_FORMAT(`tanggal`, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')")->row()->pemasukan;
 		$pemasukanBulanKemarin = intval($this->db->query("SELECT SUM(pemasukan) as pemasukan FROM opex WHERE DATE_FORMAT(`tanggal`, '%Y-%m') = DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m')")->row()->pemasukan);
 
@@ -114,7 +119,7 @@ class Dashboard extends PerhitunganLaporan {
 			'Dec ' . date('Y')
 		);
 
-		if(date('m' == '01')){
+		if(date('m' == '01') AND ($this->db->table_exists('neraca_'. $tahunlalu))){
 			for ($i=1; $i <= count($saldoPerioda); $i++) { 
 				$this->db->query("INSERT INTO `saldokasbank` (`id`, `mandiri`, `bri`, `kaskecil`, `perioda`, `updated`, `updated_at`) VALUES (NULL, '0', '0', '0', '" . $saldoPerioda[$i] ."', 'admin', CURRENT_TIMESTAMP)");
 			}

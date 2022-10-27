@@ -115,10 +115,11 @@ class Mitra extends CI_Controller {
 							<i class="fas fa-ellipsis-v"></i>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="' . base_url('Admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
+
 							<a class="dropdown-item" href="' . base_url('Admin/mitra/detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
 							<a class="dropdown-item" href="' . base_url('Admin/mitra/update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
 							<a class="dropdown-item" href="' . base_url('Admin/mitra/cetak_surat/' . $mitra->nokontrak) . '"><i class="fas fa-print pr-2"></i></i> Cetak Surat peringatan </a>
-							<a class="dropdown-item" href="' . base_url('Admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
 							<a class="dropdown-item" onclick="delete_mitra(this)" data-url="' . base_url('Admin/mitra/destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
 						</div>
 					</div>
@@ -131,9 +132,9 @@ class Mitra extends CI_Controller {
 							<i class="fas fa-ellipsis-v"></i>
 						</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="' . base_url('Admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
 							<a class="dropdown-item" href="' . base_url('Admin/mitra/detail/' . $mitra->nokontrak) . '"><i class="fas fa-eye text-primary pr-2"></i> Detail </a>
 							<a class="dropdown-item" href="' . base_url('Admin/mitra/update/' . $mitra->nokontrak) . '"><i class="fas fa-edit text-warning pr-2"></i> Update </a>
-							<a class="dropdown-item" href="' . base_url('Admin/mitra/cicilan/' . $mitra->nokontrak) . '"><i class="fas fa-money-bill-transfer text-primary pr-2"></i></i> Cicilan </a>
 							<a class="dropdown-item" onclick="delete_mitra(this)" data-url="' . base_url('Admin/mitra/destroy/' . $mitra->id) . '"><i class="fas fa-trash text-danger pr-2"></i> Delete </a>
 						</div>
 					</div>
